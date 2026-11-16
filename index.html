@@ -937,6 +937,7 @@ nav.tabs:has(a:focus-visible) a:not(:focus-visible) .nh{opacity:0!important;visi
   <div class="or">或者 <span class="en">or</span></div>
   <form data-lgemail novalidate><label>电子邮件 <span class="en">Email</span><input type="email" name="em" autocomplete="email" inputmode="email" placeholder="you@example.com" required></label></form>
   <button class="go" type="button" data-lgsend>寄登录链接到邮箱 <span class="en">Email me a sign-in link</span></button>
+  <div class="lgin" id="lgin" hidden><p class="msg" id="lgwho"></p><button class="go" type="button" data-lgout>登出 <span class="en">Sign out</span></button></div>
   <p class="msg" id="lgmsg" aria-live="polite">不用设密码：我们会寄一封邮件给你，按里面的链接就登录了。</p>
 </div></div>
 
@@ -948,14 +949,22 @@ nav.tabs:has(a:focus-visible) a:not(:focus-visible) .nh{opacity:0!important;visi
    SB_URL / SB_KEY 是 Supabase 项目的网址和可公开的 publishable key，还没填时登录按钮会说明正在准备。 */
 window.HOLO_AUTH=(function(){
   var SB_URL="https://hojqzzkhjsqceoepgeub.supabase.co", SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhvanF6emtoanNxY2VvZXBnZXViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ4NDQyMzAsImV4cCI6MjExMDQyMDIzMH0.XCpIGiZ387C-UOcBUpteFOwrlOUt55PigoSPerOJrck", OWNER_HASH=["5ceb205ce3a7ae17348bfca94330f94f5c80ad80a84bab637d3d613f84ba2507"];
-  var sb=null, user=null, isOwn=false, el=function(id){ return document.getElementById(id) };
+  var sb=null, user=null, isOwn=false, myRole=null, staff=null, el=function(id){ return document.getElementById(id) };
+  async function loadStaff(){ if(!sb) return; try{ var r=await sb.from("staff").select("email,role,added_at").order("added_at"); staff=r.data||[] }catch(e){ staff=[] } if(typeof render==="function") render() }
+  async function saveStaff(em){ em=(em||"").trim().toLowerCase(); if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return toast("请填一个正确的邮箱"); var r=await sb.from("staff").upsert({email:em,role:"admin"}); if(r.error) return toast("没保存成功："+r.error.message); toast("已加入管理员"); loadStaff() }
+  async function removeStaff(em){ var r=await sb.from("staff").delete().eq("email",em); if(r.error) return toast("删不掉："+r.error.message); toast("已移除"); loadStaff() }
+  document.addEventListener("click",function(e){ var d=e.target.closest&&e.target.closest("[data-sdel]"); if(d&&confirm("确定移除这位管理员？")) removeStaff(d.getAttribute("data-sdel")) });
+  document.addEventListener("submit",function(e){ if(e.target.matches&&e.target.matches("[data-sadd]")){ e.preventDefault(); saveStaff(e.target.querySelector("input[name=se]").value) } });
   function msg(t,c){ var m=el("lgmsg"); if(m){ m.textContent=t; m.className="msg"+(c?" "+c:"") } }
   async function sha(t){ var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t)); return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("") }
   async function setUser(u){ user=u||null; isOwn=false; if(user&&user.email){ try{ isOwn=OWNER_HASH.indexOf(await sha(user.email.trim().toLowerCase()))>=0 }catch(e){} }
-    if(typeof owner!=="undefined"&&mode!=="db"){ owner=isOwn; if(!owner&&typeof route!=="undefined"&&route==="admin"){ location.hash="home" } }
+    myRole=null; if(sb&&user&&user.email){ try{ var q=await sb.from("staff").select("role").eq("email",user.email.trim().toLowerCase()).maybeSingle(); myRole=q.data?q.data.role:null }catch(e){} }
+    if(isOwn) myRole="owner"; if(myRole==="owner") loadStaff(); else staff=null;
+    if(typeof owner!=="undefined"&&mode!=="db"){ owner=(myRole==="owner"||myRole==="admin"); if(!owner&&typeof route!=="undefined"&&route==="admin"){ location.hash="home" } }
     paint(); if(typeof render==="function") try{ render() }catch(e){} }
   function paint(){ var b=el("loginbtn"); if(!b) return; if(user){ var n=(user.user_metadata&&(user.user_metadata.name||user.user_metadata.full_name))||(user.email||"").split("@")[0]; b.classList.add("in"); b.innerHTML='<span class="av">'+(n[0]||"?").toUpperCase()+'</span><span class="lt"></span>'; b.querySelector(".lt").textContent=n.length>12?n.slice(0,11)+"…":n; b.title=(user.email||"")+"（再按一下可以登出）" } else { b.classList.remove("in"); b.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg><span class="lt">登录 <span class="en">Sign in</span></span>'; b.title="" } }
-  function open(){ var m=el("lgm"); m.hidden=false; document.documentElement.style.overflow="hidden"; if(!sb) msg("登录功能还在接通中，很快就能用。","err"); setTimeout(function(){ var i=m.querySelector("input"); if(i&&matchMedia("(pointer:fine)").matches) i.focus() },50) }
+  function view(){ var on=!!user, n=el("lgin"); if(!n) return; n.hidden=!on; el("lgwho").textContent=on?"已登录："+(user.email||""):""; var f=document.querySelector("#lgm form[data-lgemail]"), g=document.querySelector("#lgm .gbtn"), o=document.querySelector("#lgm .or"), h=el("lgmh"); if(f) f.hidden=on; if(g) g.hidden=on; if(o) o.hidden=on; if(h) h.firstChild.textContent=on?"店主与员工 ":"登录 Holofen "; msg(on?"":"不用设密码：我们会寄一封邮件给你，按里面的链接就登录了。") }
+  function open(){ var m=el("lgm"); view(); m.hidden=false; document.documentElement.style.overflow="hidden"; if(!sb&&!user) msg("登录功能还在接通中，很快就能用。","err"); setTimeout(function(){ var i=m.querySelector("input"); if(i&&matchMedia("(pointer:fine)").matches) i.focus() },50) }
   function close(){ el("lgm").hidden=true; document.documentElement.style.overflow="" }
   async function google(){ if(!sb) return msg("登录功能还在接通中，很快就能用。","err"); msg("正在打开 Google…");
     try{ var st=await (await fetch(SB_URL+"/auth/v1/settings",{headers:{apikey:SB_KEY}})).json(); if(!(st.external&&st.external.google)) return msg("Google 登录还在设定中，请先用电子邮件登录。","err") }catch(e){}
@@ -964,17 +973,18 @@ window.HOLO_AUTH=(function(){
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){ i.focus(); return msg("请填一个正确的电子邮件地址。","err") }
     msg("寄出中…"); var r=await sb.auth.signInWithOtp({email:v,options:{emailRedirectTo:location.origin+location.pathname}});
     if(r.error) return msg("寄不出去："+r.error.message,"err"); msg("已寄出！请到 "+v+" 收信，按里面的链接就登录了。","ok") }
-  document.addEventListener("click",function(e){ var t=e.target.closest&&e.target.closest("#loginbtn,[data-lgclose],[data-lggoogle],[data-lgsend]"); if(!t){ if(e.target&&e.target.id==="lgm") close(); return }
-    if(t.id==="loginbtn"){ if(user){ if(confirmOut()) out() } else open() }
+  document.addEventListener("click",function(e){ var t=e.target.closest&&e.target.closest("#loginbtn,[data-lgclose],[data-lggoogle],[data-lgsend],[data-lgout]"); if(!t){ if(e.target&&e.target.id==="lgm") close(); return }
+    if(t.id==="loginbtn"){ open() }
+    else if(t.hasAttribute("data-lgout")) out();
     else if(t.hasAttribute("data-lgclose")) close(); else if(t.hasAttribute("data-lggoogle")) google(); else if(t.hasAttribute("data-lgsend")) email() });
   document.addEventListener("submit",function(e){ if(e.target.matches&&e.target.matches("[data-lgemail]")){ e.preventDefault(); email() } });
   document.addEventListener("keydown",function(e){ if(e.key==="Escape"&&!el("lgm").hidden) close() });
   var pendingOut=0; function confirmOut(){ if(Date.now()-pendingOut<4000) return true; pendingOut=Date.now(); if(typeof toast==="function") toast("再按一次就登出"); return false }
-  async function out(){ if(sb) await sb.auth.signOut(); setUser(null); if(typeof toast==="function") toast("已登出") }
+  async function out(){ if(sb) await sb.auth.signOut(); await setUser(null); close(); if(typeof toast==="function") toast("已登出") }
   try{ if(SB_URL&&SB_KEY&&window.supabase){ sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,detectSessionInUrl:true,flowType:"pkce"}});
     sb.auth.getSession().then(function(r){ setUser(r.data&&r.data.session&&r.data.session.user); if(r.data&&r.data.session) close() });
     sb.auth.onAuthStateChange(function(ev,ses){ setUser(ses&&ses.user); if(ses) close() }) } }catch(e){}
-  return { isOwner:function(){ return isOwn }, user:function(){ return user }, paint:paint, open:open };
+  return { isOwner:function(){ return isOwn }, role:function(){ return myRole }, staffList:function(){ return staff }, user:function(){ return user }, paint:paint, open:open, removeStaff:removeStaff, saveStaff:saveStaff };
 })();
 </script>
 <script src="data.js"></script>
@@ -1227,11 +1237,12 @@ function readHash(){ ui.msheet=false; let h=location.hash.replace("#",""); try{ 
 
 let lang="zh"; try{ if(localStorage.getItem("lang")==="en") lang="en" }catch(e){}
 function applyLang(){ document.documentElement.dataset.lang=lang; document.documentElement.lang=lang==="en"?"en":"zh"; const b=$("#langbtn"); if(b){ b.innerHTML=`<span class="${lang==="zh"?"on":""}">中</span><span class="${lang==="en"?"on":""}">EN</span>`; b.setAttribute("aria-label",lang==="zh"?"Switch to English":"切换到中文") } if(lang==="en") langPass() }
+function adminTabs(){ return ATABS.concat(window.HOLO_AUTH&&HOLO_AUTH.role()==="owner"?[["staff","员工权限","Staff"]]:[]) }
 function render(){
   const adm=route==="admin"&&owner;
   $("#bar").className="bar"+(adm?" adm":"");
   $("#brand").innerHTML=buddy(26)+(adm?`店主后台<small>Admin</small>`:`Holofen`);
-  $("#tabs").innerHTML=adm?ATABS.map(t=>`<a href="#admin" data-atab="${t[0]}" class="${ui.atab===t[0]?"on":""}">${t[1]}<i>${t[2]}</i></a>`).join("")
+  $("#tabs").innerHTML=adm?adminTabs().map(t=>`<a href="#admin" data-atab="${t[0]}" class="${ui.atab===t[0]?"on":""}">${t[1]}<i>${t[2]}</i></a>`).join("")
     :TABS.map(t=>`<a href="#${t[0]}" class="${(PARENT[route]||route)===t[0]?"on":""}"${(PARENT[route]||route)===t[0]?' aria-current="page"':""}>${t[1]}<i>${t[2]}</i>${NAVHINT[t[0]]?`<span class="nh" aria-hidden="true"><img src="intro/holofen-mark.webp" alt="">${NAVHINT[t[0]]}</span>`:""}</a>`).join("");
   $("#cartbtn").classList.toggle("here",PARENT[route]==="cart");
   const cq=cart.reduce((a,c)=>a+c.qty,0);
@@ -2094,6 +2105,15 @@ ROUTES.add("wish"); ROUTES.add("wall"); GROUPS.cart.splice(1,0,["wish","收藏",
 window.BTM_MORE.splice(window.BTM_MORE.length-1,0,["wall","晒卡墙",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-5-8 7"/></svg>`]);
 ATABS.splice(ATABS.length-1,0,["wall","晒卡墙","Pull wall"]);
 { const _adm=V.admin; V.admin=()=>owner&&ui.atab==="wall"?admWall():_adm() }
+function admStaff(){
+  const H=window.HOLO_AUTH, boss=H.role()==="owner", list=H.staffList();
+  const head=`${H1("员工权限","Staff access")}<p class="muted">这里加的管理员，用他们的邮箱登录网站后，就能进店主后台。管理员能看和处理所有后台页面；只有店主能加人或移除人。</p>`;
+  if(!boss) return head+`<p class="muted">只有店主能管理员工。</p>`;
+  const rows=list===null?`<p class="muted">读取中…</p>`:(list.map(x=>`<div class="alrow"><b>${esc(x.email)}</b><span class="chip">${x.role==="owner"?"店主":"管理员"}</span>${x.role==="owner"?"":`<button data-sdel="${esc(x.email)}">移除</button>`}</div>`).join("")||`<p class="muted">还没有管理员。</p>`);
+  return `${head}<div class="panel stack"><h3>现有名单</h3>${rows}</div>
+  <div class="panel stack"><h3>加一个管理员</h3><form data-sadd class="row"><input type="email" name="se" placeholder="对方的邮箱" required style="flex:1;min-width:200px"><button class="pri" type="submit">加入</button></form><p class="muted">对方要先用这个邮箱登录网站一次，之后才能进后台。</p></div>`;
+}
+{ const _adm2=V.admin; V.admin=()=>owner&&ui.atab==="staff"&&window.HOLO_AUTH&&HOLO_AUTH.role()==="owner"?admStaff():_adm2() }
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-wish],[data-wclear],[data-bmsave],[data-wpub],[data-wunpub]"); if(!b) return; const ds=b.dataset;
   if(ds.wish){ e.preventDefault(); e.stopPropagation(); return toggleWish(ds.wish) }
   if(ds.wclear) return clearAlerts();
