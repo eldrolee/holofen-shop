@@ -1,0 +1,1 @@
+{ "cleanUrls": true, "headers": [ { "source": "/(hd|img|big|deck|deckimg|setlogo|sprite|intro)/(.*)", "headers": [ { "key": "Cache-Control", "value": "public, max-age=604800" } ] } ] }
