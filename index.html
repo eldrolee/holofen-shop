@@ -982,8 +982,46 @@ window.HOLO_AUTH=(function(){
   var pendingOut=0; function confirmOut(){ if(Date.now()-pendingOut<4000) return true; pendingOut=Date.now(); if(typeof toast==="function") toast("再按一次就登出"); return false }
   async function out(){ if(sb) await sb.auth.signOut(); await setUser(null); close(); if(typeof toast==="function") toast("已登出") }
   try{ if(SB_URL&&SB_KEY&&window.supabase){ sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,detectSessionInUrl:true,flowType:"pkce"}});
-    sb.auth.getSession().then(function(r){ setUser(r.data&&r.data.session&&r.data.session.user); if(r.data&&r.data.session) close() });
-    sb.auth.onAuthStateChange(function(ev,ses){ setUser(ses&&ses.user); if(ses) close() }) } }catch(e){}
+    var ready=sb.auth.getSession().then(function(r){ var ses=r.data&&r.data.session; if(ses) close(); return setUser(ses&&ses.user).then(function(){ return ses }) });
+    sb.auth.onAuthStateChange(function(ev,ses){ setUser(ses&&ses.user); if(ses) close(); if(window.HOLO_SB&&bootUid!==undefined&&(ses?ses.user.id:"guest")!==bootUid) setTimeout(function(){ location.reload() },300) });
+    if(!window.claude&&/vercel\.app$|^localhost$|^127\.0\.0\.1$|holofen/i.test(location.hostname)) installStore(ready) } }catch(e){}
+  /* 正式网站（不在 Claude 试运行站里）：订单、会员、评价、晒卡、商品改动都存在 Supabase 的 docs 表，照片存在 photos 储存桶。
+     安全规则在数据库里：顾客只能读写自己的资料，店主和管理员能看全部，site/ 只有店主和管理员能改。 */
+  var bootUid;
+  function installStore(ready){
+    var subs={}, chan=null;
+    function fire(col){ (subs[col]||[]).forEach(function(f){ try{ f() }catch(e){} }) }
+    function listen(col,f){ (subs[col]=subs[col]||[]).push(f); if(!chan) chan=sb.channel("docs-live").on("postgres_changes",{event:"*",schema:"public",table:"docs"},function(p){ var c=(p.new&&p.new.col)||(p.old&&p.old.col); if(c) fire(c); else Object.keys(subs).forEach(fire) }).subscribe(); f() }
+    function split(path){ var i=path.indexOf("/"); return [path.slice(0,i),path.slice(i+1)] }
+    async function put(col,id,data){ var r=await sb.from("docs").upsert({col:col,id:id,data:data}); if(r.error) throw r.error; fire(col) }
+    var db={
+      doc:function(path){ var p=split(path), col=p[0], id=p[1];
+        return { onSnapshot:function(cb,err){ listen(col,function(){ sb.from("docs").select("data").eq("col",col).eq("id",id).maybeSingle().then(function(r){ if(r.error) return err&&err(r.error); var d=r.data; cb({exists:!!d,data:function(){ return d?d.data:undefined }}) }) }); return function(){} },
+          set:function(data){ if(id==="guest"){ open(); return Promise.reject(new Error("login")) } return put(col,id,JSON.parse(JSON.stringify(data))) } } },
+      collection:function(col){ return { onSnapshot:function(cb,err){ listen(col,function(){ sb.from("docs").select("id,data").eq("col",col).limit(5000).then(function(r){ if(r.error) return err&&err(r.error); cb({docs:(r.data||[]).map(function(x){ return {id:x.id,data:function(){ return x.data }} })}) }) }); return function(){} } } }
+    };
+    var moved=null;
+    async function moveLocal(ses){ /* 第一次在正式网站登录时，把这台电脑以前存在浏览器里的资料搬上去（只搬云端还没有的） */
+      if(!ses) return; var uid=ses.user.id, staffOk=myRole==="owner"||myRole==="admin";
+      function ls(k){ try{ return JSON.parse(localStorage.getItem(k)) }catch(e){ return null } }
+      var jobs=[["mine","orders",uid,function(v){ return v&&Array.isArray(v.orders)&&v.orders.length?{orders:v.orders}:null }],
+        ["myrev","reviews",uid,function(v){ return Array.isArray(v)&&v.length?{list:v}:null }],
+        ["me","me",uid,function(v){ return v&&typeof v==="object"?v:null }],
+        ["mypulls","pulls",uid,function(v){ return Array.isArray(v)&&v.length?{list:v}:null }]];
+      if(staffOk) jobs=jobs.concat([["catalog","site","catalog",function(v){ return v&&typeof v==="object"?v:null }],["pubrev","site","reviews",function(v){ return Array.isArray(v)&&v.length?{list:v}:null }],
+        ["wall","site","wall",function(v){ return Array.isArray(v)&&v.length?{list:v}:null }],["lucky","site","lucky",function(v){ return v&&typeof v==="object"?v:null }]]);
+      for(var j of jobs){ var v=j[3](ls(j[0])); if(!v) continue;
+        try{ var r=await sb.from("docs").select("id").eq("col",j[1]).eq("id",j[2]).maybeSingle(); if(!r.error&&!r.data) await sb.from("docs").insert({col:j[1],id:j[2],data:v}) }catch(e){} } }
+    window.HOLO_SB={ url:function(id){ return SB_URL+"/storage/v1/object/public/photos/"+encodeURIComponent(id) } };
+    ready.then(function(ses){ bootUid=ses?ses.user.id:"guest" });
+    window.claude={ use:async function(name){ var ses=await ready;
+      if(name==="db"){ if(!moved) moved=moveLocal(ses); await moved; return db }
+      if(name==="user") return { id:async function(){ return ses?ses.user.id:"guest" }, isOwner:async function(){ return myRole==="owner"||myRole==="admin" } };
+      if(name==="assets") return { upload:async function(f){ if(!ses){ open(); throw new Error("login") }
+        var a=new Uint8Array(16); crypto.getRandomValues(a); var id=Array.from(a).map(function(x){ return x.toString(16).padStart(2,"0") }).join("");
+        var r=await sb.storage.from("photos").upload(id,f,{contentType:f.type||"image/jpeg",upsert:false}); if(r.error) throw r.error; return {id:id} } };
+      throw new Error("unknown") } };
+  }
   return { isOwner:function(){ return isOwn }, role:function(){ return myRole }, staffList:function(){ return staff }, user:function(){ return user }, paint:paint, open:open, removeStaff:removeStaff, saveStaff:saveStaff };
 })();
 </script>
@@ -1003,6 +1041,7 @@ window.HOLO_AUTH=(function(){
 /* 暂用商品图（TCGplayer 目录图），之后换成实拍。Keldeo 单包吊卡还没有公开图，保留占位。 */
 (function(){ const T={"Knock Out Collection|30th Celebration":"prod/knockout-30th.webp","Booster Pack|Journey Together":"prod/jtg-booster.webp","Booster Pack|Surging Sparks":"prod/ssp-booster.webp"};
   (window.PRODUCTS||[]).forEach(p=>{ const u=T[p.n+"|"+p.s]; if(u&&!p.img) p.tmpimg=u }) })();
+const BLOB=id=>window.HOLO_SB?window.HOLO_SB.url(id):"/_blob/"+id;
 const P = window.PRODUCTS || [], PM = Object.fromEntries(P.map(p=>[p.id,p]));
 /* 店主后台「商品管理」的改动存在 db 的 site/catalog（只有店主能写，所有人能读），载入时盖在原始商品资料上。 */
 const ALLP = P.slice(), ORIG = Object.fromEntries(P.map(p=>[p.id,{price:p.price,n:p.n,zh:p.zh}]));
@@ -1026,9 +1065,9 @@ function applyCatalog(){
   if(typeof SINGLES!=="undefined") SINGLES.splice(0,SINGLES.length,...P.filter(p=>p.c==="single"));
   if(typeof cartWait!=="undefined"&&cartWait.length){ const ok=cartWait.filter(c=>sellable(PM[c.id])&&PM[c.id].price>0&&!cart.some(x=>x.id===c.id)); if(ok.length){ cart=cart.concat(ok.map(c=>({id:c.id,qty:clampN(c.qty,1,99)}))); cartWait=cartWait.filter(c=>!ok.includes(c)) } }
 }
-const simg = p => p.photo?"/_blob/"+p.photo:p.img?"img/"+p.img+".jpg":p.tmpimg?p.tmpimg:p.loose&&window.SETINFO&&window.SETINFO[p.s]?window.SETINFO[p.s].logo:NOIMG;
-const bimg = p => p.photo?"/_blob/"+p.photo:p.img?(p.big?"big":"img")+"/"+p.img+".jpg":simg(p);
-const bigF = p => p.photo?"/_blob/"+p.photo:p.img?"big/"+p.img+".jpg":p.tmpimg||NOIMG;
+const simg = p => p.photo?BLOB(p.photo):p.img?"img/"+p.img+".jpg":p.tmpimg?p.tmpimg:p.loose&&window.SETINFO&&window.SETINFO[p.s]?window.SETINFO[p.s].logo:NOIMG;
+const bimg = p => p.photo?BLOB(p.photo):p.img?(p.big?"big":"img")+"/"+p.img+".jpg":simg(p);
+const bigF = p => p.photo?BLOB(p.photo):p.img?"big/"+p.img+".jpg":p.tmpimg||NOIMG;
 const NOIMG = "data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 63 88"><rect width="63" height="88" rx="4" fill="#eef1f7"/><text x="31.5" y="47" font-size="7" text-anchor="middle" fill="#8a93ad" font-family="sans-serif">No photo</text></svg>');
 const sellable = p => p&&!p.hidden&&(p.stock!==0||!!isPre(p))&&listed(p);
 const INTL = (window.INTL||[]).filter(c=>c.h>c.w);
@@ -1159,7 +1198,7 @@ const arr=x=>Array.isArray(x)?x:[];
 async function saveDoc(u,doc){
   const orders=arr(doc.orders).slice(0,200);
   if(u===uid) mine={orders}; all[u]={orders};
-  if(mode==="db"){ try{ await db.doc("orders/"+u).set({orders}) }catch(e){ toast("保存失败，请稍后再试 Could not save") } }
+  if(mode==="db"){ try{ await db.doc("orders/"+u).set({orders}) }catch(e){ toast(e&&e.message==="login"?"请先登录 Please sign in":"保存失败，请稍后再试 Could not save") } }
   else lsSet("mine",{orders});
   render();
 }
@@ -1915,7 +1954,7 @@ V.orders=()=>{
 };
 function admOrder(u,o){ return `<div class="panel order"><div class="row" style="justify-content:space-between"><h3 class="price">${o.id}</h3><span class="muted">${new Date(o.at).toLocaleString("zh-CN")}</span></div>${stepBar(o)}${o.badCoupon?`<div class="chip bad">优惠码无效，已不计入金额</div>`:""}${o.badPts?`<div class="chip bad">积分不够或无效，已不计入金额</div>`:""}${o.priceMismatch&&!quoted(u,o)?`<div class="chip bad">顾客端金额和目录价不符，以这里显示的为准</div>`:""}
    <div>${esc(o.name)} · ${esc(o.phone)}${o.addr?` · ${esc(o.addr)}，${esc(o.post)} ${esc(o.state)}`:""}</div>${o.note?`<div class="muted">留言：${esc(o.note)}</div>`:""}${orderLines(o)}
-   ${o.items.filter(c=>c.brief).map(c=>{const b=c.brief;return `<div class="note"><b>组牌需求 <span class="en">Brief</span></b>：${esc(b.format)} · ${esc(b.use)} · ${esc(b.level)} · 预算 ${esc(b.budget)} · 打法 ${esc(b.style)} · 想用 ${esc(b.want)}${b.must?" · 必放 "+esc(b.must):""}<br>联系 ${esc(b.contact)}：${esc(b.handle)}${b.note?`<br>已有的卡：${esc(b.note)}`:""}${b.list?`<details><summary>顾客贴的牌表 <span class="en">Pasted list</span></summary><pre class="list">${esc(b.list)}</pre></details>`:""}${(b.files||[]).map(f=>f.kind==="text"?`<details><summary>${esc(f.name)}</summary><pre class="list">${esc(f.text)}</pre></details>`:`<div><a href="/_blob/${esc(aid(f.id))}" target="_blank" rel="noopener"><img src="/_blob/${esc(aid(f.id))}" alt="${esc(f.name)}" style="max-height:160px;border-radius:8px"></a></div>`).join("")}</div>`}).join("")}
+   ${o.items.filter(c=>c.brief).map(c=>{const b=c.brief;return `<div class="note"><b>组牌需求 <span class="en">Brief</span></b>：${esc(b.format)} · ${esc(b.use)} · ${esc(b.level)} · 预算 ${esc(b.budget)} · 打法 ${esc(b.style)} · 想用 ${esc(b.want)}${b.must?" · 必放 "+esc(b.must):""}<br>联系 ${esc(b.contact)}：${esc(b.handle)}${b.note?`<br>已有的卡：${esc(b.note)}`:""}${b.list?`<details><summary>顾客贴的牌表 <span class="en">Pasted list</span></summary><pre class="list">${esc(b.list)}</pre></details>`:""}${(b.files||[]).map(f=>f.kind==="text"?`<details><summary>${esc(f.name)}</summary><pre class="list">${esc(f.text)}</pre></details>`:`<div><a href="${esc(BLOB(aid(f.id)))}" target="_blank" rel="noopener"><img src="${esc(BLOB(aid(f.id)))}" alt="${esc(f.name)}" style="max-height:160px;border-radius:8px"></a></div>`).join("")}</div>`}).join("")}
    ${o.ref?`<div>${esc(o.pay)}，参考号 <span class="price">${esc(o.ref)}</span></div>`:`<div class="muted">顾客还没付款（${esc(o.pay)}）</div>`}${o.status==="unpaid"&&o.items.some(c=>(item(c.id)||{}).quote)?`<div class="row"><label class="f" style="flex:0 1 220px">组牌报价 RM（建议 130–250）<input id="qt-${o.id}" type="number" min="1" step="1" value="${quoted(u,o)||""}"></label><button class="pri" data-adm="quote" data-u="${u}" data-o="${o.id}">${quoted(u,o)?"更新报价":"发报价给顾客"}</button><span class="muted">顾客看到报价后才会付款。</span></div>`:""}
    ${o.status==="review"?`<div class="row"><button class="pri" data-adm="approve" data-u="${u}" data-o="${o.id}">款已到账，通过审核 <span class="en">Approve</span></button><input id="rej-${o.id}" aria-label="不通过的原因" placeholder="不通过的原因" style="flex:1 1 160px"><button data-adm="reject" data-u="${u}" data-o="${o.id}">不通过 <span class="en">Reject</span></button></div>`:""}
    ${o.items.some(c=>c.brief)&&["approved","shipped","delivered"].includes(o.status)?`<label class="f">交付牌表（顾客会在订单里看到）<textarea id="dl-${o.id}">${esc(o.delivery||"")}</textarea></label><div><button data-adm="deliver" data-u="${u}" data-o="${o.id}">${o.svcOnly?"发送牌表并完成":"保存牌表"}</button></div>`:""}
@@ -2036,7 +2075,7 @@ async function initExtra(){
   XDB=null; XU="local"; ME=normMe(lsGet("me",null)); MEALL={local:ME}; MYPULLS=lsGet("mypulls",[]); PULLALL={local:MYPULLS}; WALL=lsGet("wall",[]); render();
 }
 function saveMe(){ const d=JSON.parse(JSON.stringify(ME)); MEALL[XU]=ME; render();
-  meQ=meQ.then(()=>XDB?XDB.doc("me/"+XU).set(d):lsSet("me",d)).catch(()=>toast("没有保存成功，请再试一次 Could not save")); return meQ }
+  meQ=meQ.then(()=>XDB?XDB.doc("me/"+XU).set(d):lsSet("me",d)).catch(e=>toast(e&&e.message==="login"?"请先登录，签到和积分才会记在你的账号":"没有保存成功，请再试一次 Could not save")); return meQ }
 function looseFor(s){ return P.concat(ALLP).find(p=>p.loose&&p.s===s) }
 const BT=(zh,en)=>isEN()?en:zh;
 function boxFor(s){ return P.concat(ALLP).find(p=>p.c==="box"&&p.s===s&&/^booster box$/i.test(p.n||"")) }
@@ -2084,7 +2123,7 @@ V.wish=()=>{ const al=alerts(), wl=ME.wish.map(id=>PM[id]).filter(Boolean);
   <section class="stack" style="gap:10px">${H2(`我的收藏（${wl.length}）`,"Saved items")}${wl.length?`<div class="grid">${wl.map(prodCard).join("")}</div>`:`<p class="muted">${B("在商品图右上角按爱心就能收藏。","Tap the heart on a product to save it.")}</p>`}</section>`;
 };
 /* 晒卡墙 */
-const wallItem=w=>`<figure class="wcard"><img loading="lazy" src="/_blob/${esc(aid(w.img))}" alt="${esc(w.name)}"><figcaption><b>${esc(w.name)}</b>${w.set?`<span class="muted">${esc(w.set)}</span>`:""}${w.text?`<p>${esc(w.text)}</p>`:""}<span class="muted">${esc(w.nick||"顾客")} · ${new Date(num(w.at)||0).toLocaleDateString("zh-CN")}</span></figcaption></figure>`;
+const wallItem=w=>`<figure class="wcard"><img loading="lazy" src="${esc(BLOB(aid(w.img)))}" alt="${esc(w.name)}"><figcaption><b>${esc(w.name)}</b>${w.set?`<span class="muted">${esc(w.set)}</span>`:""}${w.text?`<p>${esc(w.text)}</p>`:""}<span class="muted">${esc(w.nick||"顾客")} · ${new Date(num(w.at)||0).toLocaleDateString("zh-CN")}</span></figcaption></figure>`;
 V.wall=()=>{ const mine=MYPULLS.slice().reverse(), pubKeys=new Set(WALL.map(w=>w.key));
   return `${H1("晒卡墙","Pull wall")}
   <p>${B("开包抽到好卡？拍下来和大家分享。店主看过后会放上来，所有人都能看到。","Pulled something great? Share a photo. It shows here after the shop approves it.")}</p>
@@ -2094,11 +2133,11 @@ V.wall=()=>{ const mine=MYPULLS.slice().reverse(), pubKeys=new Set(WALL.map(w=>w
    <label class="f">${B("想说的话（可不填）","A few words (optional)")}<input id="w-text" maxlength="120" placeholder="例如：第三包就开到了！"></label>
    <label class="f">${B("照片","Photo")}<input type="file" id="w-file" accept="image/*" required></label>
    <div><button class="pri" type="submit">${B("送出，等店主审核","Submit for review")}</button></div></form>`:`<p class="note">${B("这里暂时收不了照片。正式上线后就能上传；现在可以先把照片发到我们的 IG 或 WhatsApp。","Photo upload isn't available here yet; send it to our IG or WhatsApp for now.")}</p>`}
-  ${mine.length?`<div class="stack" style="gap:6px"><h3>${B("我的投稿","My submissions")}</h3>${mine.map(w=>`<div class="alrow"><img src="/_blob/${esc(aid(w.img))}" alt=""><b>${esc(w.name)}</b><span class="chip">${pubKeys.has(XU+":"+cleanId(w.id))?B("已公开","Public"):B("等店主审核","In review")}</span></div>`).join("")}</div>`:""}</section>`;
+  ${mine.length?`<div class="stack" style="gap:6px"><h3>${B("我的投稿","My submissions")}</h3>${mine.map(w=>`<div class="alrow"><img src="${esc(BLOB(aid(w.img)))}" alt=""><b>${esc(w.name)}</b><span class="chip">${pubKeys.has(XU+":"+cleanId(w.id))?B("已公开","Public"):B("等店主审核","In review")}</span></div>`).join("")}</div>`:""}</section>`;
 };
 function admWall(){ const rows=[]; Object.entries(PULLALL).forEach(([u,l])=>arr(l).forEach(w=>rows.push({u,w,key:u+":"+cleanId(w.id)}))); rows.sort((a,b)=>(num(b.w.at)||0)-(num(a.w.at)||0)); const pub=new Set(WALL.map(w=>w.key));
   return `${H1("店主后台","Admin")}${H2("晒卡墙","Pull wall")}<p class="muted">顾客上传的晒卡要你按「公开」才会出现在晒卡墙和首页。不合适的不用理会，它不会公开。</p>
-  ${rows.length?`<div class="wgrid">${rows.map(r=>`<figure class="wcard${pub.has(r.key)?"":" off"}"><img loading="lazy" src="/_blob/${esc(aid(r.w.img))}" alt=""><figcaption><b>${esc(cleanTxt(r.w.name,60))}</b><span class="muted">${esc(cleanTxt(r.w.set,60))}</span><p>${esc(cleanTxt(r.w.text,120))}</p><span class="muted">${esc(cleanTxt(r.w.nick,20)||"顾客")} · ${new Date(num(r.w.at)||0).toLocaleDateString("zh-CN")}</span>${pub.has(r.key)?`<button data-wunpub="${esc(r.key)}">取消公开</button>`:`<button class="pri" data-wpub="${esc(r.key)}">公开</button>`}</figcaption></figure>`).join("")}</div>`:`<p class="muted">还没有顾客投稿。</p>`}` }
+  ${rows.length?`<div class="wgrid">${rows.map(r=>`<figure class="wcard${pub.has(r.key)?"":" off"}"><img loading="lazy" src="${esc(BLOB(aid(r.w.img)))}" alt=""><figcaption><b>${esc(cleanTxt(r.w.name,60))}</b><span class="muted">${esc(cleanTxt(r.w.set,60))}</span><p>${esc(cleanTxt(r.w.text,120))}</p><span class="muted">${esc(cleanTxt(r.w.nick,20)||"顾客")} · ${new Date(num(r.w.at)||0).toLocaleDateString("zh-CN")}</span>${pub.has(r.key)?`<button data-wunpub="${esc(r.key)}">取消公开</button>`:`<button class="pri" data-wpub="${esc(r.key)}">公开</button>`}</figcaption></figure>`).join("")}</div>`:`<p class="muted">还没有顾客投稿。</p>`}` }
 async function setWall(list){ if(!owner) return; WALL=list.slice(0,60); render();
   if(XDB){ try{ await XDB.doc("site/wall").set({list:WALL}) }catch(e){ toast("保存失败 Could not save") } } else lsSet("wall",WALL) }
 async function submitPull(){ const f=document.getElementById("w-file").files[0], name=val("w-name");
@@ -2373,6 +2412,7 @@ document.addEventListener("submit",e=>{
     add(plan,{format:rad("b-format"),use:rad("b-use"),level:rad("b-level"),budget:rad("b-budget"),style:rad("b-style"),want:val("b-want"),must:val("b-must"),note:val("b-note"),list:val("b-list").slice(0,3000),contact:val("b-contact"),handle:val("b-handle"),files:ui.files.slice()});
     ui.files=[]; ui.bstep=1; return go("cart") }
   if(e.target.id==="checkout"){
+    if(window.HOLO_SB&&uid==="guest"){ HOLO_AUTH.open(); return toast("请先登录再下单，订单会存进你的账号。购物车会保留。") }
     const bad=cart.filter(c=>{const p=item(c.id);return !p.svc&&(!sellable(p)||(p.stock>0&&c.qty>p.stock))});
     if(bad.length){ bad.forEach(c=>{const p=item(c.id); if(sellable(p)&&p.stock>0) c.qty=p.stock}); cart=cart.filter(c=>{const p=item(c.id);return p.svc||sellable(p)}); saveCart(); render(); return toast("有商品缺货或库存不足，购物车已更新，请再确认一次") }
     const t=cartTotals(); const now=new Date();
