@@ -870,7 +870,7 @@ html.intro-on,html.intro-on body{overflow:hidden}
    店主后台没有任何前台入口；只有登录的是店主邮箱（只存它的 SHA-256，不把邮箱写进网页）才能打开 #admin。
    SB_URL / SB_KEY 是 Supabase 项目的网址和可公开的 publishable key，还没填时登录按钮会说明正在准备。 */
 window.HOLO_AUTH=(function(){
-  var SB_URL="", SB_KEY="", OWNER_HASH=["5ceb205ce3a7ae17348bfca94330f94f5c80ad80a84bab637d3d613f84ba2507"];
+  var SB_URL="https://hojqzzkhjsqceoepgeub.supabase.co", SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhvanF6emtoanNxY2VvZXBnZXViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ4NDQyMzAsImV4cCI6MjExMDQyMDIzMH0.XCpIGiZ387C-UOcBUpteFOwrlOUt55PigoSPerOJrck", OWNER_HASH=["5ceb205ce3a7ae17348bfca94330f94f5c80ad80a84bab637d3d613f84ba2507"];
   var sb=null, user=null, isOwn=false, el=function(id){ return document.getElementById(id) };
   function msg(t,c){ var m=el("lgmsg"); if(m){ m.textContent=t; m.className="msg"+(c?" "+c:"") } }
   async function sha(t){ var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t)); return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("") }
@@ -880,7 +880,9 @@ window.HOLO_AUTH=(function(){
   function paint(){ var b=el("loginbtn"); if(!b) return; if(user){ var n=(user.user_metadata&&(user.user_metadata.name||user.user_metadata.full_name))||(user.email||"").split("@")[0]; b.classList.add("in"); b.innerHTML='<span class="av">'+(n[0]||"?").toUpperCase()+'</span><span class="lt"></span>'; b.querySelector(".lt").textContent=n.length>12?n.slice(0,11)+"…":n; b.title=(user.email||"")+"（再按一下可以登出）" } else { b.classList.remove("in"); b.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg><span class="lt">登录 <span class="en">Sign in</span></span>'; b.title="" } }
   function open(){ var m=el("lgm"); m.hidden=false; document.documentElement.style.overflow="hidden"; if(!sb) msg("登录功能还在接通中，很快就能用。","err"); setTimeout(function(){ var i=m.querySelector("input"); if(i&&matchMedia("(pointer:fine)").matches) i.focus() },50) }
   function close(){ el("lgm").hidden=true; document.documentElement.style.overflow="" }
-  async function google(){ if(!sb) return msg("登录功能还在接通中，很快就能用。","err"); msg("正在打开 Google…"); var r=await sb.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.origin+location.pathname}}); if(r.error) msg("Google 登录暂时用不了："+r.error.message,"err") }
+  async function google(){ if(!sb) return msg("登录功能还在接通中，很快就能用。","err"); msg("正在打开 Google…");
+    try{ var st=await (await fetch(SB_URL+"/auth/v1/settings",{headers:{apikey:SB_KEY}})).json(); if(!(st.external&&st.external.google)) return msg("Google 登录还在设定中，请先用电子邮件登录。","err") }catch(e){}
+    var r=await sb.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.origin+location.pathname}}); if(r.error) msg("Google 登录暂时用不了："+r.error.message,"err") }
   async function email(){ if(!sb) return msg("登录功能还在接通中，很快就能用。","err"); var i=document.querySelector("#lgm input[name=em]"), v=(i.value||"").trim();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){ i.focus(); return msg("请填一个正确的电子邮件地址。","err") }
     msg("寄出中…"); var r=await sb.auth.signInWithOtp({email:v,options:{emailRedirectTo:location.origin+location.pathname}});
