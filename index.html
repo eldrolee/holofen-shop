@@ -1000,6 +1000,9 @@ window.HOLO_AUTH=(function(){
 (function(){ const L=window.PRODUCTS||(window.PRODUCTS=[]), SIx=window.SETINFO||{};
   Object.keys(SIx).forEach(s=>{ const ex=L.find(p=>p.s===s&&p.n==="Booster Pack"); if(ex){ ex.loose=1; return }
     L.push({id:"lp-"+s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""),s,n:"Booster Pack",zh:"散包（单包补充包）",t:"B",no:"",usd:0,myr:0,loc:null,price:0,img:null,src:"",c:"pack",loose:1}) }) })();
+/* 暂用商品图（TCGplayer 目录图），之后换成实拍。Keldeo 单包吊卡还没有公开图，保留占位。 */
+(function(){ const T={"Knock Out Collection|30th Celebration":"prod/knockout-30th.webp","Booster Pack|Journey Together":"prod/jtg-booster.webp","Booster Pack|Surging Sparks":"prod/ssp-booster.webp"};
+  (window.PRODUCTS||[]).forEach(p=>{ const u=T[p.n+"|"+p.s]; if(u&&!p.img) p.tmpimg=u }) })();
 const P = window.PRODUCTS || [], PM = Object.fromEntries(P.map(p=>[p.id,p]));
 /* 店主后台「商品管理」的改动存在 db 的 site/catalog（只有店主能写，所有人能读），载入时盖在原始商品资料上。 */
 const ALLP = P.slice(), ORIG = Object.fromEntries(P.map(p=>[p.id,{price:p.price,n:p.n,zh:p.zh}]));
@@ -1023,9 +1026,9 @@ function applyCatalog(){
   if(typeof SINGLES!=="undefined") SINGLES.splice(0,SINGLES.length,...P.filter(p=>p.c==="single"));
   if(typeof cartWait!=="undefined"&&cartWait.length){ const ok=cartWait.filter(c=>sellable(PM[c.id])&&PM[c.id].price>0&&!cart.some(x=>x.id===c.id)); if(ok.length){ cart=cart.concat(ok.map(c=>({id:c.id,qty:clampN(c.qty,1,99)}))); cartWait=cartWait.filter(c=>!ok.includes(c)) } }
 }
-const simg = p => p.photo?"/_blob/"+p.photo:p.img?"img/"+p.img+".jpg":p.loose&&window.SETINFO&&window.SETINFO[p.s]?window.SETINFO[p.s].logo:NOIMG;
+const simg = p => p.photo?"/_blob/"+p.photo:p.img?"img/"+p.img+".jpg":p.tmpimg?p.tmpimg:p.loose&&window.SETINFO&&window.SETINFO[p.s]?window.SETINFO[p.s].logo:NOIMG;
 const bimg = p => p.photo?"/_blob/"+p.photo:p.img?(p.big?"big":"img")+"/"+p.img+".jpg":simg(p);
-const bigF = p => p.photo?"/_blob/"+p.photo:p.img?"big/"+p.img+".jpg":NOIMG;
+const bigF = p => p.photo?"/_blob/"+p.photo:p.img?"big/"+p.img+".jpg":p.tmpimg||NOIMG;
 const NOIMG = "data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 63 88"><rect width="63" height="88" rx="4" fill="#eef1f7"/><text x="31.5" y="47" font-size="7" text-anchor="middle" fill="#8a93ad" font-family="sans-serif">No photo</text></svg>');
 const sellable = p => p&&!p.hidden&&(p.stock!==0||!!isPre(p))&&listed(p);
 const INTL = (window.INTL||[]).filter(c=>c.h>c.w);
