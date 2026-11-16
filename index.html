@@ -765,6 +765,24 @@ button.pri:active,.cartbtn:active,button.sun:active{box-shadow:0 1px 0 var(--ink
 .hero .hero-in>:not(.hlogo):not(h1){grid-column:1 / -1}
 @media (max-width:640px){.hero .hero-in{grid-template-columns:1fr;justify-items:start}.hero .hlogo{height:150px;justify-self:center}.hero .hero-in h1{grid-row:auto;grid-column:1}.brand{font-size:19px}}
 @media (prefers-reduced-motion:reduce){.hero .aur i,.hero .leaves i,.hero .hlogo{animation:none!important}.hero .leaves{display:none}}
+/* 顾客登录（电子邮件或 Google） */
+.loginbtn{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:6px 14px;min-height:40px;background:#fff;color:var(--ink);border:2px solid var(--ink);font-weight:700;font-family:var(--display);white-space:nowrap}
+.loginbtn.in{background:var(--tile);border-color:var(--line);font-weight:600}
+.loginbtn[hidden]{display:none!important}
+.loginbtn .av{width:24px;height:24px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-size:13px}
+@media (max-width:640px){.loginbtn{padding:0;width:36px;height:36px;min-height:36px;justify-content:center}.loginbtn .lt{display:none}.loginbtn.in{border-color:var(--ink)}}
+.lgm{position:fixed;inset:0;z-index:30;background:rgba(16,22,43,.55);display:grid;place-items:center;padding:16px}
+.lgm[hidden]{display:none}
+.lgm .box{background:#fff;border-radius:22px;border:2px solid var(--ink);box-shadow:0 6px 0 var(--ink);width:min(420px,100%);padding:24px;display:grid;gap:14px;position:relative}
+.lgm h2{margin:0;font-size:24px}
+.lgm .x{position:absolute;right:12px;top:12px;width:40px;height:40px;border-radius:50%;border:0;background:var(--tile);font-size:20px;line-height:1}
+.lgm .gbtn{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;border-radius:99px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:15px}
+.lgm .gbtn:hover{border-color:var(--ink)}
+.lgm .or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}.lgm .or::before,.lgm .or::after{content:"";flex:1;height:1px;background:var(--line)}
+.lgm label{display:grid;gap:6px;font-weight:600;font-size:14px}
+.lgm input{min-height:48px;border-radius:14px;border:1.5px solid var(--line);padding:0 14px;font-size:16px}
+.lgm .go{min-height:48px;border-radius:99px;background:var(--red);color:#fff;border:2px solid var(--ink);box-shadow:0 3px 0 var(--ink);font-weight:800;font-family:var(--display);font-size:16px}
+.lgm .msg{font-size:13.5px;color:var(--muted);margin:0}.lgm .msg.ok{color:var(--up)}.lgm .msg.err{color:var(--down)}
 /* 每个页面的动态：换页时内容依次浮上来，卡片滚到才出现，背景有叶子慢慢飘 */
 html.pgin #view>*{animation:pgin .55s cubic-bezier(.2,.7,.2,1) both}
 html.pgin #view>*:nth-child(2){animation-delay:.07s}html.pgin #view>*:nth-child(3){animation-delay:.14s}html.pgin #view>*:nth-child(4){animation-delay:.21s}html.pgin #view>*:nth-child(n+5){animation-delay:.28s}
@@ -803,6 +821,7 @@ html.intro-on,html.intro-on body{overflow:hidden}
   <button class="kfbtn" data-contact="1" aria-label="联系客服 Customer service"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="2.5" y="12.5" width="4" height="6" rx="1.6"/><rect x="17.5" y="12.5" width="4" height="6" rx="1.6"/><path d="M19.5 18.5c0 1.6-2 2.5-5.5 2.5"/></svg><span>客服</span></button>
   <button class="lang" id="langbtn" aria-label="显示或隐藏英文 Show or hide English">EN</button>
   <a class="mebtn" id="mebtn" href="#orders" hidden></a>
+  <button class="loginbtn" id="loginbtn" type="button" aria-haspopup="dialog" aria-label="登录 Sign in"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg><span class="lt">登录 <span class="en">Sign in</span></span></button>
   <button class="cartbtn" id="cartbtn" data-go="cart" aria-label="购物车 Cart">购物车 0</button>
 </div></header>
 <nav class="btm" id="btm" aria-label="主导航"></nav>
@@ -833,7 +852,52 @@ html.intro-on,html.intro-on body{overflow:hidden}
 <footer style="padding:0;border:0"><div id="band"></div><div class="wrap row" id="foot" style="padding-block:20px 40px"></div></footer>
 <div id="modal"></div>
 <div class="toast" id="toast" hidden></div>
+<div class="lgm" id="lgm" hidden role="dialog" aria-modal="true" aria-labelledby="lgmh"><div class="box">
+  <button class="x" type="button" data-lgclose aria-label="关闭 Close">×</button>
+  <h2 id="lgmh">登录 Holofen <small>Sign in</small></h2>
+  <p class="msg">登录后可以看订单、收集积分和每日签到。</p>
+  <button class="gbtn" type="button" data-lggoogle><svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>用 Google 登录 <span class="en">Continue with Google</span></button>
+  <div class="or">或者 <span class="en">or</span></div>
+  <form data-lgemail novalidate><label>电子邮件 <span class="en">Email</span><input type="email" name="em" autocomplete="email" inputmode="email" placeholder="you@example.com" required></label></form>
+  <button class="go" type="button" data-lgsend>寄登录链接到邮箱 <span class="en">Email me a sign-in link</span></button>
+  <p class="msg" id="lgmsg" aria-live="polite">不用设密码：我们会寄一封邮件给你，按里面的链接就登录了。</p>
+</div></div>
 
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+/* 顾客登录：Supabase Auth（电子邮件免密码链接，或 Google）。
+   店主后台没有任何前台入口；只有登录的是店主邮箱（只存它的 SHA-256，不把邮箱写进网页）才能打开 #admin。
+   SB_URL / SB_KEY 是 Supabase 项目的网址和可公开的 publishable key，还没填时登录按钮会说明正在准备。 */
+window.HOLO_AUTH=(function(){
+  var SB_URL="", SB_KEY="", OWNER_HASH=["5ceb205ce3a7ae17348bfca94330f94f5c80ad80a84bab637d3d613f84ba2507"];
+  var sb=null, user=null, isOwn=false, el=function(id){ return document.getElementById(id) };
+  function msg(t,c){ var m=el("lgmsg"); if(m){ m.textContent=t; m.className="msg"+(c?" "+c:"") } }
+  async function sha(t){ var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t)); return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("") }
+  async function setUser(u){ user=u||null; isOwn=false; if(user&&user.email){ try{ isOwn=OWNER_HASH.indexOf(await sha(user.email.trim().toLowerCase()))>=0 }catch(e){} }
+    if(typeof owner!=="undefined"&&mode!=="db"){ owner=isOwn; if(!owner&&typeof route!=="undefined"&&route==="admin"){ location.hash="home" } }
+    paint(); if(typeof render==="function") try{ render() }catch(e){} }
+  function paint(){ var b=el("loginbtn"); if(!b) return; if(user){ var n=(user.user_metadata&&(user.user_metadata.name||user.user_metadata.full_name))||(user.email||"").split("@")[0]; b.classList.add("in"); b.innerHTML='<span class="av">'+(n[0]||"?").toUpperCase()+'</span><span class="lt"></span>'; b.querySelector(".lt").textContent=n.length>12?n.slice(0,11)+"…":n; b.title=(user.email||"")+"（再按一下可以登出）" } else { b.classList.remove("in"); b.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg><span class="lt">登录 <span class="en">Sign in</span></span>'; b.title="" } }
+  function open(){ var m=el("lgm"); m.hidden=false; document.documentElement.style.overflow="hidden"; if(!sb) msg("登录功能还在接通中，很快就能用。","err"); setTimeout(function(){ var i=m.querySelector("input"); if(i&&matchMedia("(pointer:fine)").matches) i.focus() },50) }
+  function close(){ el("lgm").hidden=true; document.documentElement.style.overflow="" }
+  async function google(){ if(!sb) return msg("登录功能还在接通中，很快就能用。","err"); msg("正在打开 Google…"); var r=await sb.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.origin+location.pathname}}); if(r.error) msg("Google 登录暂时用不了："+r.error.message,"err") }
+  async function email(){ if(!sb) return msg("登录功能还在接通中，很快就能用。","err"); var i=document.querySelector("#lgm input[name=em]"), v=(i.value||"").trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){ i.focus(); return msg("请填一个正确的电子邮件地址。","err") }
+    msg("寄出中…"); var r=await sb.auth.signInWithOtp({email:v,options:{emailRedirectTo:location.origin+location.pathname}});
+    if(r.error) return msg("寄不出去："+r.error.message,"err"); msg("已寄出！请到 "+v+" 收信，按里面的链接就登录了。","ok") }
+  document.addEventListener("click",function(e){ var t=e.target.closest&&e.target.closest("#loginbtn,[data-lgclose],[data-lggoogle],[data-lgsend]"); if(!t){ if(e.target&&e.target.id==="lgm") close(); return }
+    if(t.id==="loginbtn"){ if(user){ if(confirmOut()) out() } else open() }
+    else if(t.hasAttribute("data-lgclose")) close(); else if(t.hasAttribute("data-lggoogle")) google(); else if(t.hasAttribute("data-lgsend")) email() });
+  document.addEventListener("submit",function(e){ if(e.target.matches&&e.target.matches("[data-lgemail]")){ e.preventDefault(); email() } });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape"&&!el("lgm").hidden) close() });
+  var pendingOut=0; function confirmOut(){ if(Date.now()-pendingOut<4000) return true; pendingOut=Date.now(); if(typeof toast==="function") toast("再按一次就登出"); return false }
+  async function out(){ if(sb) await sb.auth.signOut(); setUser(null); if(typeof toast==="function") toast("已登出") }
+  try{ if(SB_URL&&SB_KEY&&window.supabase){ sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,detectSessionInUrl:true,flowType:"pkce"}});
+    sb.auth.getSession().then(function(r){ setUser(r.data&&r.data.session&&r.data.session.user); if(r.data&&r.data.session) close() });
+    sb.auth.onAuthStateChange(function(ev,ses){ setUser(ses&&ses.user); if(ses) close() }) } }catch(e){}
+  return { isOwner:function(){ return isOwn }, user:function(){ return user }, paint:paint, open:open };
+})();
+</script>
 <script src="data.js"></script>
 <script src="cards.js"></script>
 <script src="setcards.js"></script>
@@ -967,7 +1031,7 @@ function contents(p){
 }
 
 /* ---------- 存储 ---------- */
-let db=null, assets=null, uid="local", owner=true, mode="local";
+let db=null, assets=null, uid="local", owner=false, mode="local";
 let mine={orders:[]}, all={}, reviews=[], admS={}, myReviews={}, pubRev=[];
 let cart=[], cartWait=[]; try{const c0=(x=>Array.isArray(x)?x:[])(JSON.parse(localStorage.getItem("cart")||"[]")).filter(c=>c&&typeof c.id==="string"); cart=c0.filter(c=>item(c.id)); cartWait=c0.filter(c=>!item(c.id)&&/^n[a-z0-9]+$/.test(c.id)).slice(0,50)}catch(e){}
 const saveCart=()=>{try{localStorage.setItem("cart",JSON.stringify(cart))}catch(e){} $("#cartbtn").innerHTML=CARTICON+`<span class="ct">购物车 <span class="en">Cart </span></span>`+cart.reduce((a,c)=>a+c.qty,0)};
@@ -992,8 +1056,9 @@ async function initStore(){
       db.doc("site/catalog").onSnapshot(s=>{ const d=s.exists?(s.data()||{}):{}; CAT={items:d.items||{},added:arr(d.added),rules:d.rules||{}}; applyCatalog(); render() },()=>{});
       if(route==="admin"&&!owner) route="home";
       render(); return;
-    }catch(e){ mode="local"; uid="local"; owner=true }
+    }catch(e){ mode="local"; uid="local"; owner=false }
   }
+  owner=!!(window.HOLO_AUTH&&HOLO_AUTH.isOwner()); if(route==="admin"&&!owner) route="home";
   mine={orders:arr(lsGet("mine",{}).orders)}; all={local:mine}; admS={local:lsGet("adm",{})}; myReviews={local:lsGet("myrev",[])}; pubRev=lsGet("pubrev",[]); CAT=lsGet("catalog",{items:{},added:[],rules:{}}); applyCatalog(); render();
 }
 const arr=x=>Array.isArray(x)?x:[];
@@ -1093,7 +1158,7 @@ function render(){
   $("#btm").hidden=adm; { const cur=PARENT[route]||route, inMore=BTM_MORE.some(t=>t[0]===cur||t[0]===route);
   $("#btm").innerHTML=adm?"":BTM.map(t=>t[0]==="more"?`<a href="#" data-msheet="1" class="${inMore||ui.msheet?"on":""}" aria-expanded="${!!ui.msheet}">${t[2]}<span>${t[1]}</span></a>`:`<a href="#${t[0]}" class="${cur===t[0]?"on":""}">${t[2]}<span>${t[1]}</span>${t[0]==="cart"&&cq?`<b>${cq}</b>`:""}</a>`).join("")+(ui.msheet?`<div class="msheet" role="menu">${BTM_MORE.map(t=>`<a href="#${t[0]}" role="menuitem" class="${cur===t[0]||route===t[0]?"on":""}">${t[2]}<span>${t[1]}</span></a>`).join("")}</div>`:""); }
   applyLang();
-  $("#cartbtn").hidden=adm; { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm } { const mb=$("#mebtn"); if(mb){ mb.hidden=adm; if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
+  $("#cartbtn").hidden=adm; { const lb=$("#loginbtn"); if(lb){ lb.hidden=adm; if(window.HOLO_AUTH) HOLO_AUTH.paint() } } { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm } { const mb=$("#mebtn"); if(mb){ mb.hidden=adm; if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
   $("#band").innerHTML=adm?"":band();
   $("#foot").innerHTML=adm?`<a href="#home">回到顾客前台 <span class="en">Back to storefront</span></a>`:`${DOTS}<span>${B("中文、英文和日文版宝可梦卡牌，马来西亚发货，也寄新加坡和中国","Chinese, English &amp; Japanese Pokémon cards, shipped from Malaysia to MY, SG &amp; China")}</span>${owner?`<a href="#admin" style="margin-left:auto">店主入口 <span class="en">Admin</span></a>`:""}`;
   const keep=document.activeElement&&document.activeElement.id, pos=keep&&document.activeElement.selectionStart;
