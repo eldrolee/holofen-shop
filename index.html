@@ -561,6 +561,8 @@ textarea{font:inherit;width:100%;box-sizing:border-box;border:1px solid var(--li
 .kfbtn{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:6px 12px 6px 9px;background:#e9f7ef;color:#1e7a46;border:1px solid #bfe6cf;font-weight:700;min-height:40px}
 .kfbtn:hover{background:#d8f1e3}
 @media (max-width:640px){.kfbtn{padding:6px 8px;min-height:36px}.kfbtn span{display:none}}
+@media (min-width:641px) and (max-width:1200px){nav.tabs a{padding:8px 6px;font-size:13px}.bar .wrap{gap:8px}}
+@media (min-width:641px) and (max-width:1320px){.kfbtn span{display:none}.kfbtn{padding:6px 9px}.ownbtn{padding:6px 10px}}
 .hero-cta4{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:10px;max-width:980px}
 .hgo{display:flex;align-items:center;gap:10px;padding:12px 12px 12px 12px;border-radius:16px;background:rgba(255,255,255,.88);border:1.5px solid color-mix(in srgb,var(--hc) 30%,transparent);color:var(--ink);text-decoration:none;box-shadow:0 4px 14px rgba(20,37,74,.08);transition:transform .18s var(--ease-out),box-shadow .18s}
 .hgo .hi{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--hc) 14%,#fff);color:var(--hc)}
@@ -878,6 +880,8 @@ nav.tabs a.on{background:color-mix(in srgb,var(--red) 8%,transparent)}
 @media (max-width:640px){.fcols{grid-template-columns:1fr 1fr}}
 .ctc a .tbd{font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:99px;background:var(--note);color:var(--note-ink);border:1px solid #f2d98f}
 nav.tabs:has(a:focus-visible) a:not(:focus-visible) .nh{opacity:0!important;visibility:hidden!important}
+.loginbtn.in{padding:0 4px 0 0;gap:6px}.loginbtn.in .lt{display:none}
+@media (max-width:1440px){.loginbtn.in .lt{display:none}}
 @media (max-width:440px){header.bar .wrap{gap:5px}.loginbtn{flex:none}#cartbtn{padding-inline:10px;flex:none}button.lang span{padding-inline:6px}.kfbtn{flex:none}#brand{min-width:0;overflow:hidden;font-size:17px;gap:5px}}
 @media (max-width:400px){button.lang span.on{display:none}button.lang span{background:none}}
 /* 空状态 */
