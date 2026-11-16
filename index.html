@@ -811,9 +811,82 @@ html.intro-on,html.intro-on body{overflow:hidden}
 .rv{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
 .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+/* ===== v57 改版：颜色取自定稿 logo（深蓝灰 #1e343f、奶油 #fef6e9、浅金 #fed793、灰绿 #698774），整站浅色、暖白底 ===== */
+:root{--hmark:url(intro/holofen-mark.webp);--ink:#1e343f;--bg:#fffdf9;--surface:#ffffff;--tile:#fbf6ec;--soft:#f6f1e6;--note:#fff1cf;--note-ink:#5a4300;--sky:#e8f5fb;--cream:#fef6e9;--sage:#698774;--muted:#5a6873}
+body{background:var(--bg)}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px;border-radius:6px}
+/* 试运行提示：明显一点 */
+.trial{background:var(--note);color:var(--note-ink);font-size:13px;font-weight:700;padding:7px 16px;border-bottom:1px solid #f2d98f;display:flex;gap:8px;align-items:center;justify-content:center}
+.trial::before{content:"!";flex:none;width:18px;height:18px;border-radius:50%;background:#e0a100;color:#fff;font:800 12px/18px var(--num);text-align:center}
+/* 导航：小白鹿提示 */
+.bar:not(.adm) nav.tabs a .nh{position:absolute;left:50%;top:calc(100% + 8px);display:flex;align-items:center;gap:6px;width:max-content;max-width:220px;padding:6px 10px 6px 6px;border-radius:12px;background:#fff;border:1.5px solid var(--ink);box-shadow:0 3px 0 var(--ink);color:var(--ink);font:600 12.5px/1.35 var(--body);text-align:left;white-space:normal;opacity:0;visibility:hidden;transform:translate(-50%,-4px);transition:opacity .16s,transform .2s var(--ease-out),visibility 0s .2s;pointer-events:none;z-index:40}
+.bar:not(.adm) nav.tabs a .nh::before{content:"";position:absolute;left:50%;top:-7px;width:12px;height:12px;margin-left:-6px;background:#fff;border-left:1.5px solid var(--ink);border-top:1.5px solid var(--ink);transform:rotate(45deg)}
+.bar:not(.adm) nav.tabs a .nh img{width:28px;height:28px;flex:none}
+.bar:not(.adm) nav.tabs a:hover .nh,.bar:not(.adm) nav.tabs a:focus-visible .nh{opacity:1;visibility:visible;transform:translate(-50%,0);transition:opacity .16s .12s,transform .2s .12s var(--ease-out),visibility 0s .12s}
+nav.tabs a.on{background:color-mix(in srgb,var(--red) 8%,transparent)}
+.nhint{position:fixed;left:12px;right:12px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:29;display:flex;gap:8px;align-items:center;max-width:420px;margin:0 auto;padding:8px 12px 8px 8px;border-radius:14px;background:#fff;border:1.5px solid var(--ink);box-shadow:0 3px 0 var(--ink);font-size:13.5px;font-weight:600;color:var(--ink);transition:opacity .2s,transform .2s var(--ease-out)}
+.nhint img{width:34px;height:34px;flex:none}.nhint[hidden]{display:none}.nhint.out{opacity:0;transform:translateY(6px)}
+@media (min-width:641px){.nhint{display:none}}
+@media (prefers-reduced-motion:reduce){.bar:not(.adm) nav.tabs a .nh,.nhint{transition:none}}
+/* 店主自己的后台捷径（只有店主登录才出现） */
+.ownbtn[hidden]{display:none!important}
+.ownbtn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;min-height:36px;border-radius:99px;background:var(--ink);color:#fff;font-size:13px;font-weight:700;text-decoration:none}
+/* 首页名卡标签不被裁掉 */
+.mqlab{padding-left:clamp(12px,2vw,20px)}
+/* 系列轮播：浅色底 */
+.sld{color:var(--ink);background:radial-gradient(90% 120% at 85% 40%,color-mix(in srgb,var(--sc) 30%,#fff) 0%,transparent 60%),linear-gradient(135deg,#f3fafd 0%,var(--cream) 100%);border:1.5px solid color-mix(in srgb,var(--sc) 35%,var(--line))}
+.sld .lg{filter:drop-shadow(0 3px 6px rgba(30,52,63,.25))}
+.sld .sd{opacity:1;color:var(--muted)}
+.sld .go2{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
+.sld .pics img{filter:drop-shadow(0 10px 18px rgba(30,52,63,.25))}
+.sld .pics .ph{position:absolute;right:8%;top:50%;transform:translateY(-50%);width:min(220px,60%);aspect-ratio:1;border-radius:24px;background:var(--cream);border:2px dashed color-mix(in srgb,var(--sc) 40%,var(--line));display:grid;place-items:center;text-align:center;font-size:12.5px;color:var(--muted);padding:12px}
+.sld .pics .ph img{position:static;filter:none;width:72px;height:auto;border-radius:0}
+/* 行情：浅色 */
+.tape{background:var(--cream);color:var(--ink);border:1px solid #f0e2c4}
+.tape b.up{color:var(--up)}.tape b.down{color:var(--down)}
+.mhero{background:radial-gradient(90% 140% at 100% 0%,#d9eef8 0%,transparent 60%),linear-gradient(135deg,#f3fafd,var(--cream));color:var(--ink);border:1.5px solid #d6e9f2}
+.mhero p{opacity:1;color:var(--muted)}
+.msearch{border:1.5px solid var(--ink);box-shadow:0 3px 0 var(--ink)}
+.mkpi>div{background:#fff;border:1px solid var(--line)}.mkpi small{opacity:1;color:var(--muted)}.mkpi .up{color:var(--up)}.mkpi .down{color:var(--down)}
+.board{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+.board .bh{border-bottom-color:var(--line);background:var(--cream)}.board .bh b{color:var(--ink)}
+.board .tag{border-color:var(--line);color:var(--muted);background:#fff}.board .tag.live{border-color:var(--up);color:var(--up)}
+.board .col{border-left-color:var(--line)}.board .ch{border-bottom-color:var(--line)}
+.brow{border-bottom-color:#f0f2f6}.brow:hover{background:#f7fafc}.brow .no,.brow .sb{color:var(--muted)}.brow img{background:var(--tile)}
+.board .foot,.board .bf{border-top-color:var(--line)}
+.chg.up{color:var(--up);background:#e9f7ef;border-color:#b9e2c9}.chg.down{color:var(--down);background:#fdecea;border-color:#f3c0b8}
+.qbox{background:var(--line)}.qbox>div{background:#fff;color:var(--ink)}.qbox small,.qbox .np{color:var(--muted)}.qbox b.up{color:var(--up)}.qbox b.down{color:var(--down)}
+.mc .rk,.dkc b{background:var(--ink)}
+/* 关于我们：浅色 */
+.vis{background:radial-gradient(80% 120% at 100% 0%,#d9eef8 0%,transparent 60%),linear-gradient(135deg,#f3fafd,var(--cream));color:var(--ink);border:1.5px solid #d6e9f2}
+.vis .lbl{color:#a86f00}
+.trust{background:var(--cream);color:var(--ink);border:1.5px solid #f0e2c4}.trust .lbl{color:#a86f00}.trust .shield{color:var(--red)}
+/* 统一的缺图占位：Holofen 小白鹿 */
+.spr.noimg,.bthumb.noimg{background:var(--cream) var(--hmark) no-repeat center 26%/40% auto;color:var(--muted);border:1px dashed #e6d6b3}
+.spr.noimg{justify-content:flex-end;padding:0 8px 18%;font-size:12px}
+.bthumb.noimg{background-size:70% auto;color:transparent}
+/* 新闻：来源按钮清楚一点 */
+.news article h3 a{color:var(--ink);text-decoration:none}.news article h3 a:hover{text-decoration:underline}
+.nsrc{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:700;color:var(--accent);text-decoration:none}
+.nsrc:hover{text-decoration:underline}
+/* 页脚 */
+.fcols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;padding:22px 0 6px;border-top:1px solid var(--line)}
+.fcols h4{margin:0 0 8px;font:700 14px var(--display);color:var(--ink)}
+.fcols a,.fcols button{display:block;padding:4px 0;color:var(--muted);text-decoration:none;font-size:13.5px;background:none;border:0;min-height:0;font:inherit;font-size:13.5px;text-align:left;cursor:pointer}
+.fcols a:hover,.fcols button:hover{color:var(--ink);text-decoration:underline}
+@media (max-width:640px){.fcols{grid-template-columns:1fr 1fr}}
+.ctc a .tbd{font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:99px;background:var(--note);color:var(--note-ink);border:1px solid #f2d98f}
+nav.tabs:has(a:focus-visible) a:not(:focus-visible) .nh{opacity:0!important;visibility:hidden!important}
+@media (max-width:440px){header.bar .wrap{gap:5px}.loginbtn{flex:none}#cartbtn{padding-inline:10px;flex:none}button.lang span{padding-inline:6px}.kfbtn{flex:none}#brand{min-width:0;overflow:hidden;font-size:17px;gap:5px}}
+@media (max-width:400px){button.lang span.on{display:none}button.lang span{background:none}}
+/* 空状态 */
+.empty{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:16px;background:var(--cream);border:1px dashed #e6d6b3}
+.empty img{width:52px;height:auto;flex:none}.empty p{margin:0}
 </style>
 
 <div class="bgfx" aria-hidden="true"></div>
+<div class="nhint" id="nhint" hidden role="status"><img src="intro/holofen-mark.webp" alt=""><span></span></div>
 <div class="trial">试运行版：标「待定」的是占位值，付款不会扣钱。<span class="en"> Trial version. No real payment is taken.</span></div>
 <header class="bar" id="bar"><div class="wrap">
   <div class="brand" id="brand"></div>
@@ -821,7 +894,7 @@ html.intro-on,html.intro-on body{overflow:hidden}
   <button class="kfbtn" data-contact="1" aria-label="联系客服 Customer service"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="2.5" y="12.5" width="4" height="6" rx="1.6"/><rect x="17.5" y="12.5" width="4" height="6" rx="1.6"/><path d="M19.5 18.5c0 1.6-2 2.5-5.5 2.5"/></svg><span>客服</span></button>
   <button class="lang" id="langbtn" aria-label="显示或隐藏英文 Show or hide English">EN</button>
   <a class="mebtn" id="mebtn" href="#orders" hidden></a>
-  <button class="loginbtn" id="loginbtn" type="button" aria-haspopup="dialog" aria-label="登录 Sign in"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg><span class="lt">登录 <span class="en">Sign in</span></span></button>
+  <a class="ownbtn" id="ownbtn" href="#admin" hidden>店主后台</a><button class="loginbtn" id="loginbtn" type="button" aria-haspopup="dialog" aria-label="登录 Sign in"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg><span class="lt">登录 <span class="en">Sign in</span></span></button>
   <button class="cartbtn" id="cartbtn" data-go="cart" aria-label="购物车 Cart">购物车 0</button>
 </div></header>
 <nav class="btm" id="btm" aria-label="主导航"></nav>
@@ -1132,6 +1205,7 @@ function eff(u,o){
     coupon:st==="done"?couponCode(id):null,badCoupon:!!o.couponCode&&!cp,pts,ptsOff,badPts:want>0&&!pts,priceMismatch:o.total!=null&&Math.abs(num(o.total)-Math.max(0,sub+fee-off))>0.01};
 }
 /* ---------- 界面 ---------- */
+const NAVHINT=window.NAVHINT={home:"欢迎来 Holofen！新品和热门都在这里",shop:"补充包盒、ETB、礼盒，在这里下单",series:"每个系列的完整卡表和稀有度",market:"查卡价，看最近谁在涨谁在跌",decks:"比赛冠军卡组，也可以请我们帮你组",news:"新品发售、比赛结果和马来西亚活动",about:"我们是谁，怎么分辨正版卡"};
 const TABS=[["home","首页","Home"],["shop","商店","Shop"],["series","系列和卡牌","Sets & cards"],["market","卡牌行情","Card market"],["decks","卡组和代组","Decks & building"],["news","最新消息","News"],["about","关于我们","About us"]];
 /* 二级导航：每个顶部栏目下面的分页。购物车和我的订单放在一起，从右上角的按钮进。 */
 const GROUPS={decks:[["decks","比赛卡组","Tournament decks"],["build","代组服务","Deck building"],["howto","如何游玩","How to play"]],cart:[["cart","购物车","Cart"],["orders","我的订单","My orders"]]};
@@ -1154,15 +1228,15 @@ function render(){
   $("#bar").className="bar"+(adm?" adm":"");
   $("#brand").innerHTML=buddy(26)+(adm?`店主后台<small>Admin</small>`:`Holofen`);
   $("#tabs").innerHTML=adm?ATABS.map(t=>`<a href="#admin" data-atab="${t[0]}" class="${ui.atab===t[0]?"on":""}">${t[1]}<i>${t[2]}</i></a>`).join("")
-    :TABS.map(t=>`<a href="#${t[0]}" class="${(PARENT[route]||route)===t[0]?"on":""}">${t[1]}<i>${t[2]}</i></a>`).join("");
+    :TABS.map(t=>`<a href="#${t[0]}" class="${(PARENT[route]||route)===t[0]?"on":""}"${(PARENT[route]||route)===t[0]?' aria-current="page"':""}>${t[1]}<i>${t[2]}</i>${NAVHINT[t[0]]?`<span class="nh" aria-hidden="true"><img src="intro/holofen-mark.webp" alt="">${NAVHINT[t[0]]}</span>`:""}</a>`).join("");
   $("#cartbtn").classList.toggle("here",PARENT[route]==="cart");
   const cq=cart.reduce((a,c)=>a+c.qty,0);
   $("#btm").hidden=adm; { const cur=PARENT[route]||route, inMore=BTM_MORE.some(t=>t[0]===cur||t[0]===route);
   $("#btm").innerHTML=adm?"":BTM.map(t=>t[0]==="more"?`<a href="#" data-msheet="1" class="${inMore||ui.msheet?"on":""}" aria-expanded="${!!ui.msheet}">${t[2]}<span>${t[1]}</span></a>`:`<a href="#${t[0]}" class="${cur===t[0]?"on":""}">${t[2]}<span>${t[1]}</span>${t[0]==="cart"&&cq?`<b>${cq}</b>`:""}</a>`).join("")+(ui.msheet?`<div class="msheet" role="menu">${BTM_MORE.map(t=>`<a href="#${t[0]}" role="menuitem" class="${cur===t[0]||route===t[0]?"on":""}">${t[2]}<span>${t[1]}</span></a>`).join("")}</div>`:""); }
   applyLang();
-  $("#cartbtn").hidden=adm; { const lb=$("#loginbtn"); if(lb){ lb.hidden=adm; if(window.HOLO_AUTH) HOLO_AUTH.paint() } } { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm } { const mb=$("#mebtn"); if(mb){ mb.hidden=adm; if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
+  $("#cartbtn").hidden=adm; { const ob=$("#ownbtn"); if(ob) ob.hidden=adm||!owner } { const lb=$("#loginbtn"); if(lb){ lb.hidden=adm; if(window.HOLO_AUTH) HOLO_AUTH.paint() } } { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm } { const mb=$("#mebtn"); if(mb){ mb.hidden=adm; if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
   $("#band").innerHTML=adm?"":band();
-  $("#foot").innerHTML=adm?`<a href="#home">回到顾客前台 <span class="en">Back to storefront</span></a>`:`${DOTS}<span>${B("中文、英文和日文版宝可梦卡牌，马来西亚发货，也寄新加坡和中国","Chinese, English &amp; Japanese Pokémon cards, shipped from Malaysia to MY, SG &amp; China")}</span>${owner?`<a href="#admin" style="margin-left:auto">店主入口 <span class="en">Admin</span></a>`:""}`;
+  $("#foot").innerHTML=adm?`<a href="#home">回到顾客前台 <span class="en">Back to storefront</span></a>`:`${DOTS}<span>${B("中文、英文和日文版宝可梦卡牌，马来西亚发货，也寄新加坡和中国","Chinese, English &amp; Japanese Pokémon cards, shipped from Malaysia to MY, SG &amp; China")}</span>`;
   const keep=document.activeElement&&document.activeElement.id, pos=keep&&document.activeElement.selectionStart;
   $("#view").innerHTML=subnav()+(V[route]||V.home)();
   $("#view").classList.toggle("hassub",!!GROUPS[PARENT[route]]);
@@ -1237,7 +1311,7 @@ const ic=(k,sz=22,c="currentColor")=>`<svg width="${sz}" height="${sz}" viewBox=
 function setFeature(s){ const c=SINGLES.filter(p=>p.s===s&&p.big).sort((a,b)=>mp(b)-mp(a))[0]||SINGLES.filter(p=>p.s===s).sort((a,b)=>mp(b)-mp(a))[0]; const bx=P.filter(p=>p.s===s&&(p.c==="box"||p.c==="etb"||p.c==="bundle")).sort((a,b)=>b.price-a.price)[0]; return [c,bx] }
 function serCarousel(){
   const n=SETS.length, i=((ui.sc%n)+n)%n;
-  return `<section class="scar" aria-roledescription="carousel" aria-label="卡牌系列 Card sets"><div class="strk" style="${scarPos(i)}">${SETS.map((s,k)=>{ const [c,bx]=setFeature(s); return `<div class="sld${k===i?" on":""}" style="--sc:${SETC[s]||"#1c8fc4"}" role="group" aria-label="${esc(s)}"><div><img class="lg" src="${SI[s].logo}" alt="${esc(s)}"><div class="sd">${B("发售日期 "+SI[s].date,"Released "+SI[s].date)}<span> · </span>${B("共 "+SI[s].total+" 张","Set of "+SI[s].total)}</div><div class="row"><a class="go" href="${setUrl(s)}">${B("查看系列卡牌","Explore the set")}</a><a class="go2" href="#shop" data-ser="${esc(s)}">${B("购买产品","Shop products")}</a></div></div><div class="pics">${bx?`<img class="c2" src="${simg(bx)}" alt="">`:""}${c?`<img class="c1" src="${c.big?"big":"img"}/${c.img}.jpg" alt="">`:""}</div></div>` }).join("")}</div>
+  return `<section class="scar" aria-roledescription="carousel" aria-label="卡牌系列 Card sets"><div class="strk" style="${scarPos(i)}">${SETS.map((s,k)=>{ const [c,bx]=setFeature(s); return `<div class="sld${k===i?" on":""}" style="--sc:${SETC[s]||"#1c8fc4"}" role="group" aria-label="${esc(s)}"><div><img class="lg" src="${SI[s].logo}" alt="${esc(s)}"><div class="sd">${B("发售日期 "+SI[s].date,"Released "+SI[s].date)}<span> · </span>${B("共 "+SI[s].total+" 张","Set of "+SI[s].total)}</div><div class="row"><a class="go" href="${setUrl(s)}">${B("查看系列卡牌","Explore the set")}</a><a class="go2" href="#shop" data-ser="${esc(s)}">${B("购买产品","Shop products")}</a></div></div><div class="pics">${bx?`<img class="c2" src="${simg(bx)}" alt="${esc(bx.n)}">`:""}${c?`<img class="c1" src="${c.big?"big":"img"}/${c.img}.jpg" alt="${esc(c.n)}">`:""}${!c&&!bx?`<div class="ph"><span><img src="intro/holofen-mark.webp" alt="">${B("这个系列的产品照片还在准备","Product photos coming soon")}</span></div>`:""}</div></div>` }).join("")}</div>
   <button class="sarr l" data-scar="-1" aria-label="上一个系列 Previous"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button class="sarr r" data-scar="1" aria-label="下一个系列 Next"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
   <div class="sdots" aria-hidden="true">${SETS.map((_,k)=>`<i class="${k===i?"on":""}"></i>`).join("")}</div></section>`;
 }
@@ -1352,7 +1426,10 @@ const CONTACT=[
  ["xhs","小红书","#ff2442","",`<text x="12" y="16.5" text-anchor="middle" font-size="13" font-weight="800" fill="#fff" stroke="none" font-family="sans-serif">书</text>`]];
 function band(){
   return `<button class="topband" data-top="1" aria-label="回到顶部 Back to top"><span class="wrap" style="display:flex"><span class="mas" aria-hidden="true">${buddy(30,"smile")}${buddy(22,"wow")}</span><span class="totop"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>回到顶部 <span class="en">Back to top</span></span><span class="mas r" aria-hidden="true">${buddy(30,"smile")}${buddy(22,"zzz")}</span></span></button>
-  <div class="wrap"><div class="ctc" id="contact">${CONTACT.map(c=>`<a href="${c[3]||"#"}" ${c[3]?'target="_blank" rel="noopener"':`data-tbd="${c[1]}"`}><span class="ic" style="background:${c[2]}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${c[4]}</svg></span>${c[1]}</a>`).join("")}</div></div>`;
+  <div class="wrap"><div class="ctc" id="contact">${CONTACT.map(c=>`<a href="${c[3]||"#"}" ${c[3]?'target="_blank" rel="noopener"':`data-tbd="${c[1]}"`}><span class="ic" style="background:${c[2]}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${c[4]}</svg></span>${c[1]}${c[3]?"":`<span class="tbd">${B("待开通","Soon")}</span>`}</a>`).join("")}</div>
+  <div class="fcols"><div><h4>${B("买卡","Shop")}</h4><a href="#shop">${B("商店","Shop")}</a><a href="#series">${B("系列和卡牌","Sets & cards")}</a><a href="#market">${B("卡牌行情","Card market")}</a></div>
+  <div><h4>${B("服务","Services")}</h4><a href="#decks">${B("卡组和代组","Decks & building")}</a><a href="#wall">${B("晒卡墙","Pull wall")}</a><a href="#lucky">${B("签到和抽奖","Check-in & draw")}</a><button type="button" data-contact="1">${B("联系客服","Customer service")}</button></div>
+  <div><h4>${B("关于","About")}</h4><a href="#about">${B("关于我们","About us")}</a><a href="#fake">${B("防伪指南","Spot fakes")}</a><a href="#news">${B("最新消息","News")}</a></div></div></div>`;
 }
 V.item=()=>{
   const p=PM[ui.item]; if(!p) return V.shop();
@@ -1609,7 +1686,7 @@ V.home=()=>{
   <div class="hero-mq" aria-label="名卡展览 Famous cards"><div class="hm1"><div class="mqlab">${B("涨幅前 5 · 跌幅前 5","Top 5 up · top 5 down")} <span>${B("PriceCharting 最近一次价格变动，"+PC_DATE,"PriceCharting latest move, "+PC_DATE)}</span></div>${marquee(row1)}</div><div class="hm2"><div class="mqlab">${B("名卡巡礼","Grail cards")} <span>${B("全球最贵、最受追捧的宝可梦卡，只供欣赏","The most wanted Pokémon cards in the world, just for looking")}</span></div>${marquee(row2,1)}</div></div></section></div>
   <section class="sec" aria-label="卡牌系列 Card sets">${serCarousel()}</section>
   ${pubRev.length?`<section class="stack sec">${H2("顾客评价","Customer reviews")}${reviewList()}</section>`:""}
-  <section class="stack sec">${H2("晒卡墙","Pull wall")}${WALL.length?`<div class="wgrid">${WALL.slice(0,4).map(wallItem).join("")}</div>`:`<p class="muted">${B("开包抽到好卡？拍照上传，店主看过后会放在这里给大家看。","Pulled something great? Share a photo and it may appear here.")}</p>`}<div><a href="#wall">${B("看晒卡墙、我也要晒","See the wall and share yours")} ›</a></div></section>
+  <section class="stack sec">${H2("晒卡墙","Pull wall")}${WALL.length?`<div class="wgrid">${WALL.slice(0,4).map(wallItem).join("")}</div>`:`<div class="empty"><img src="intro/holofen-mark.webp" alt=""><p>${B("还没有人晒卡。开包抽到好卡？拍照上传，店主看过后会放在这里给大家看。","No pulls yet. Pulled something great? Share a photo and it may appear here.")}</p></div>`}<div><a href="#wall">${B("看晒卡墙、我也要晒","See the wall and share yours")} ›</a></div></section>
   <section class="stack sec"><div class="row" style="justify-content:space-between">${H2("最近的宝可梦新闻","Latest Pokémon news")}<a href="#news">全部 <span class="en">All</span></a></div>
     <div class="panel news">${NEWS.filter(n=>n.d&&n.d<=DATA_DATE&&!n.h).sort((a,b)=>b.d.localeCompare(a.d)).slice(0,3).map(newsItem).join("")}</div></section>`;
 };
@@ -1664,7 +1741,7 @@ V.trends=()=>{
   <div class="tw"><table class="mob"><thead><tr><th></th>${TH("卡牌","Card")}${TH("涨跌幅","% Chg",1)}${TH("本店售价","Our price",1)}<th></th></tr></thead><tbody>
   ${list.map(m=>`<tr><td class="th">${m.p?`<img loading="lazy" src="${simg(m.p)}" alt="">`:""}</td><td><b>${esc(m.n)}</b><div class="muted">${esc(m.s)}</div></td><td class="n"><span class="pill ${sg(m)}">${ar(m)} ${Math.abs(m.pct).toFixed(2)}%</span></td><td class="n">${m.p?`<b style="color:var(--red)">${rm(m.p.price)}</b>`:`<span class="muted">暂无</span>`}</td><td>${m.p?`<button data-add="${m.p.id}">加入购物车</button>`:""}</td></tr>`).join("")}</tbody></table></div>`;
 };
-const newsItem=n=>`<article>${newsThumb(n)}<div><div class="row" style="gap:8px"><span class="chip">${NCAT[n.c][0]} <span class="en">${NCAT[n.c][1]}</span></span><time>${n.d||B("官网未标日期","undated")}</time></div><h3>${src(n.t,n.u)}</h3><p class="en">${esc(n.e)}</p><p class="zh${n.h?" muted":""}">${esc(n.b)}${n.u2?" "+src("Learn to Play",n.u2):""}</p><p class="muted">${B("来源","Source")}: ${esc(n.s)}</p></div></article>`;
+const newsItem=n=>`<article>${newsThumb(n)}<div><div class="row" style="gap:8px"><span class="chip">${NCAT[n.c][0]} <span class="en">${NCAT[n.c][1]}</span></span><time>${n.d||B("官网未标日期","undated")}</time></div><h3>${src(n.t,n.u)}</h3><p class="en">${esc(n.e)}</p><p class="zh${n.h?" muted":""}">${esc(n.b)}${n.u2?" "+src("Learn to Play",n.u2):""}</p><p class="muted">${B("来源","Source")}: ${esc(n.s)}${n.u?` · <a class="nsrc" href="${esc(n.u)}" target="_blank" rel="noopener">${B("看原文","Read source")} ↗</a>`:""}</p></div></article>`;
 V.news=()=>{
   const list=NEWS.filter(n=>ui.ncat==="all"||n.c===ui.ncat).sort((a,b)=>(b.d||"0").localeCompare(a.d||"0"));
   return `${H1("宝可梦新闻","Pokémon news")}<p>赢了比赛的玩家和他们的套牌、新品发售、马来西亚的官方活动、怎么入门。每条都链接到原文，${DATA_DATE} 手动整理，不会自动更新。<span class="en"> Winning players and decks, new releases, official Malaysia events and how to start. Every item links to its source.</span></p>
@@ -1758,7 +1835,7 @@ V.about=()=>`${H1("关于我们","About us")}
     <a class="go" href="#fake">${B("教你怎么分辨盗版卡","How to spot a fake card")} ›</a></div>
     <div class="shield" aria-hidden="true"><svg width="120" height="140" viewBox="0 0 24 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 3.5v7.5c0 6-4 10.5-9 13-5-2.5-9-7-9-13V5.5z" fill="rgba(255,203,5,.18)"/><path d="M7.5 14l3 3 6-6.5" stroke-width="2.2"/></svg></div></section>
   <section class="stack sec" style="gap:12px">${H2("联系客服","Customer service")}<p>${B("下单前想问库存、卡况、运费，收到货有问题，都可以直接找我们。","Questions about stock, condition, shipping or your order? Message us.")}</p><div class="kfl wide">${kfLinks()}</div></section>
-  <p class="muted">以上内容为草稿，品牌名和联系方式确定后会更新。<span class="en"> Draft; brand name and contact details to follow.</span></p>
+  <p class="muted">以上联系方式还在开通中，开通后会换成真的链接。<span class="en"> These contact links are not live yet.</span></p>
   <div class="row"><button class="pri" data-go="shop">去商店 <span class="en">Go to shop</span></button><button data-go="news">看最新消息 <span class="en">Latest news</span></button></div>`;
 const TRUST=[
  ["货源只来自官方授权经销商和正规渠道，每件商品都可以说出来源。","Stock comes only from authorised distributors and legitimate channels."],
@@ -2304,4 +2381,8 @@ readHash(); initStore(); initExtra(); initLucky();
   addEventListener("scroll",function(){ if(!tick) tick=requestAnimationFrame(show) },{passive:true}); addEventListener("resize",show);
   new MutationObserver(hook).observe(view,{childList:true}); hook();
 })();
+</script>
+<script>
+(function(){ var t1,t2; document.addEventListener("click",function(e){ var a=e.target.closest&&e.target.closest("nav.btm a[href^='#']"); if(!a||!window.NAVHINT) return; var k=a.getAttribute("href").slice(1), h=NAVHINT[k], el=document.getElementById("nhint"); if(!h||!el) return;
+  el.querySelector("span").textContent=h; el.hidden=false; el.classList.remove("out"); clearTimeout(t1); clearTimeout(t2); t1=setTimeout(function(){ el.classList.add("out"); t2=setTimeout(function(){ el.hidden=true },220) },2200) }) })();
 </script>
