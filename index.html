@@ -889,6 +889,8 @@ nav.tabs:has(a:focus-visible) a:not(:focus-visible) .nh{opacity:0!important;visi
 .empty{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:16px;background:var(--cream);border:1px dashed #e6d6b3}
 .empty img{width:52px;height:auto;flex:none}.empty p{margin:0}
 .lchk{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:6px}.lchk li{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:start}.lchk i{width:20px;height:20px;border-radius:6px;border:2px solid #c9d3d8;display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:800;margin-top:2px}.lchk .ok i{background:#1e7a46;border-color:#1e7a46;color:#fff}.lchk .ok span{color:var(--muted)}.lchk b{font-size:12px;border-radius:99px;padding:2px 9px;white-space:nowrap}.lchk .ok b{background:#e9f7ef;color:#1e7a46}.lchk .todo b{background:#fff1d6;color:#8a5a00}
+.prof summary{display:flex;gap:10px;align-items:center;flex-wrap:wrap;cursor:pointer;list-style:none}.prof summary::-webkit-details-marker{display:none}.prof summary .muted{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.utab td{vertical-align:top}.utab td:nth-child(3){min-width:160px;max-width:260px}.utab .chip{font-weight:700}
 </style>
 
 <div class="bgfx" aria-hidden="true"></div>
@@ -1024,7 +1026,8 @@ window.HOLO_AUTH=(function(){
         var r=await sb.storage.from("photos").upload(id,f,{contentType:f.type||"image/jpeg",upsert:false}); if(r.error) throw r.error; return {id:id} } };
       throw new Error("unknown") } };
   }
-  return { isOwner:function(){ return isOwn }, role:function(){ return myRole }, staffList:function(){ return staff }, user:function(){ return user }, paint:paint, open:open, removeStaff:removeStaff, saveStaff:saveStaff };
+  async function listUsers(){ if(!sb) return null; try{ var r=await sb.rpc("list_users"); return r.error?null:(r.data||[]) }catch(e){ return null } }
+  return { listUsers:listUsers, isOwner:function(){ return isOwn }, role:function(){ return myRole }, staffList:function(){ return staff }, user:function(){ return user }, paint:paint, open:open, removeStaff:removeStaff, saveStaff:saveStaff };
 })();
 </script>
 <script src="data.js"></script>
@@ -1261,7 +1264,7 @@ function eff(u,o){
   const [items,sub]=lines(o,a), svcOnly=items.length>0&&items.every(c=>item(c.id).svc);
   const sh=svcOnly?null:(SHIP.find(x=>x.k===o.shipKey)||SHIP[0]), fee=sh?sh.fee:0;
   const cp=o.couponCode?couponsOf(u).find(c=>c.code===o.couponCode&&c.usedBy===id&&sub>=c.min):null, mb=member(u), pts=mb.ok[id]||0, want=clampN(o.pointsUsed,0,1e7), ptsOff=Math.min(sub,pts/mb.R.redeemPts*mb.R.redeemRM), off=(cp?cp.amount:0)+ptsOff;
-  return {id,at:num(o.at)||0,name:cleanTxt(o.name,80),phone:cleanTxt(o.phone,30),addr:cleanTxt(o.addr,200),post:cleanTxt(o.post,10),state:cleanTxt(o.state,40),note:cleanTxt(o.note,300),pay:cleanTxt(o.pay,40),ref:cleanTxt(o.ref,60),
+  return {id,at:num(o.at)||0,name:cleanTxt(o.name,80),phone:cleanTxt(o.phone,30),addr:cleanTxt(o.addr,200),post:cleanTxt(o.post,10),state:cleanTxt(o.state,40),email:cleanTxt(o.email,120),note:cleanTxt(o.note,300),pay:cleanTxt(o.pay,40),ref:cleanTxt(o.ref,60),
     status:st,reason:a.reason,courier:a.courier,tracking:a.tracking,shippedAt:a.shippedAt,delivery:a.delivery,items,sub,fee,off,total:Math.max(0,sub+fee-off),svcOnly,shipName:svcOnly?(isEN()?"No shipping":"不需寄送"):(isEN()?sh.en:sh.n),
     coupon:st==="done"?couponCode(id):null,badCoupon:!!o.couponCode&&!cp,pts,ptsOff,badPts:want>0&&!pts,priceMismatch:o.total!=null&&Math.abs(num(o.total)-Math.max(0,sub+fee-off))>0.01};
 }
@@ -1963,7 +1966,7 @@ V.cart=()=>{
   const t=cartTotals(), cps=couponsOf(uid).filter(c=>!c.used);
   return `${H1("购物车和结账","Cart & checkout")}<div class="two"><div class="stack">
   <div class="tw"><table><thead><tr><th></th>${TH("商品","Item")}${TH("单价","Price",1)}${TH("数量","Qty")}${TH("小计","Subtotal",1)}<th></th></tr></thead><tbody>${cart.map((c,i)=>{const p=item(c.id);return `<tr><td class="th">${p.svc?buddy(30):`<img src="${simg(p)}" alt="">`}</td><td>${esc(p.svc?(lang==="en"?p.en:p.n):PN(p))}<div class="muted">${esc(p.svc?(c.brief?`${c.brief.format} · ${c.brief.budget} · ${c.brief.want}`:""):(PNs(p)?PNs(p)+" · ":"")+p.s)}${!p.svc&&isPre(p)?`<div class="up">${B(`预购，预计 ${preTxt(p)}到货`,`Pre-order, expected ${isPre(p)}`)}</div>`:""}</div></td><td class="n">${p.quote?`<span class="muted">${B("待报价","To be quoted")}<br>RM130–250</span>`:rm(p.price)}</td><td>${p.svc?"1":`<span class="row" style="gap:4px;flex-wrap:nowrap"><button data-qty="${i}" data-d="-1" aria-label="减少">−</button><span class="price">${c.qty}</span><button data-qty="${i}" data-d="1" aria-label="增加">+</button></span>`}</td><td class="n">${rm(p.price*c.qty)}</td><td><button data-rm="${i}">移除</button></td></tr>`}).join("")}</tbody></table></div>
-  <form class="panel stack" id="checkout">${H2("收件资料","Delivery details")}
+  <form class="panel stack" id="checkout">${H2("收件资料","Delivery details")}${signedIn()?`<p class="muted" style="margin:0">${myEmail()?`${B("登录账号","Signed in as")}：${esc(myEmail())}。`:""}${profOK()?B("已带入你保存的资料，可以直接改；这次填的会更新到「我的资料」。","Filled in from your saved details. Changes here update your saved details."):B("这次填的会保存到「我的资料」，下次不用重填。","What you enter here is saved to your details for next time.")}</p>`:""}
    <div class="row"><label class="f">${B("姓名","Name")}<input id="c-name" required value="${esc(ui.cname||"")}"></label><label class="f">${B("手机号码","Phone")}<input id="c-phone" required inputmode="tel" placeholder="${(SHIP.find(x=>x.k===(ui.ship||"wm"))||{}).cc==="sg"?"+65 xxxx xxxx":(SHIP.find(x=>x.k===(ui.ship||"wm"))||{}).cc==="cn"?"+86 1xx xxxx xxxx":"01x-xxxxxxx"}" value="${esc(ui.cphone||"")}"></label></div>
    ${t.onlySvc?`<p class="muted">只买组牌服务不需要寄送。 No shipping needed for the deck service.</p>`:`<label class="f">${B("地址","Address")}<input id="c-addr" required value="${esc(ui.caddr||"")}"></label>
    ${(()=>{ const cc=(SHIP.find(x=>x.k===(ui.ship||"wm"))||{}).cc; return `<div class="row"><label class="f">${B("邮编","Postcode")}<input id="c-post" required inputmode="numeric" pattern="${cc?"[0-9]{6}":"[0-9]{5}"}" value="${esc(ui.cpost||"")}"></label>${cc==="sg"?`<label class="f">${B("国家","Country")}<input id="c-state" value="Singapore 新加坡" readonly></label>`:cc==="cn"?`<label class="f">${B("省份和城市","Province & city")}<input id="c-state" required placeholder="例如 广东省 深圳市" value="${esc(STATES.includes(ui.cstate)?"":ui.cstate||"")}"></label>`:`<label class="f">${B("州属","State")}<select id="c-state">${STATES.map(s=>`<option ${ui.cstate===s?"selected":""}>${s}</option>`).join("")}</select></label>`}</div>${cc?`<p class="muted" style="margin:0">${B(cc==="sg"?"寄新加坡：一般 5 到 10 个工作天，进口税费（如有）由收件人支付。":"寄中国：一般 7 到 14 个工作天，进口税费（如有）由收件人支付。","International delivery; any import duties are paid by the recipient.")}</p>`:""}` })()}
@@ -1985,11 +1988,11 @@ function orderLines(o){ return `<div class="olist">${o.items.map(c=>{const p=PM[
   <div class="sum" style="max-width:340px"><span>${B("小计","Subtotal")}</span><span class="price">${rm(o.sub)}</span><span>${B("运费","Shipping")}（${esc(o.shipName)}）</span><span class="price">${rm(o.fee)}</span>${o.off-o.ptsOff>0?`<span>${B("回购优惠","Coupon")}</span><span class="price">−${rm(o.off-o.ptsOff)}</span>`:""}${o.ptsOff?`<span>${B("积分抵扣","Points")} (${o.pts})</span><span class="price">−${rm(o.ptsOff)}</span>`:""}<b>${B("合计","Total")}</b><b class="price">${rm(o.total)}</b></div>` }
 V.orders=()=>{
   const os=arr(mine.orders).map(o=>eff(uid,o)).sort((a,b)=>b.at-a.at);
-  if(!os.length) return `${H1("我的订单","My orders")}${memberCard()}<div class="buddy">${buddy(52,"zzz")}<div>你还没有订单。下单后可以在这里付款、看审核和寄送进度、写评价。<br><span class="en">No orders yet. After you order, you can pay, follow progress and leave a review here.</span></div></div><div><button class="pri" data-go="shop">去逛商店 <span class="en">Go to shop</span></button></div>`;
-  return `${H1("我的订单","My orders")}${memberCard()}${os.map(o=>{const m=MOOD[o.status]||MOOD.review;return `<div class="panel order"><div class="row" style="justify-content:space-between"><h3 class="price">${o.id}</h3><span class="muted">${new Date(o.at).toLocaleString(isEN()?"en-MY":"zh-CN")}</span></div>
+  if(!os.length) return `${H1("我的订单","My orders")}${memberCard()}${profPanel()}<div class="buddy">${buddy(52,"zzz")}<div>你还没有订单。下单后可以在这里付款、看审核和寄送进度、写评价。<br><span class="en">No orders yet. After you order, you can pay, follow progress and leave a review here.</span></div></div><div><button class="pri" data-go="shop">去逛商店 <span class="en">Go to shop</span></button></div>`;
+  return `${H1("我的订单","My orders")}${memberCard()}${profPanel()}${os.map(o=>{const m=MOOD[o.status]||MOOD.review;return `<div class="panel order"><div class="row" style="justify-content:space-between"><h3 class="price">${o.id}</h3><span class="muted">${new Date(o.at).toLocaleString(isEN()?"en-MY":"zh-CN")}</span></div>
   <div class="buddy">${buddy(44,m[0])}<div><b>${m[1]}</b><br><span class="en">${m[2]}</span></div></div>
-  ${stepBar(o)}${orderLines(o)}
-  ${o.status==="unpaid"&&needQuote(uid,o)?`<div class="note">${B("店主正在看你的需求，1 天内会把报价（RM130–250）显示在这里，你同意再付款。不想做了可以取消订单。","We are preparing your quote (RM130–250). It will show here within 1 day; pay only if you agree.")}</div><div><button data-cancel="${o.id}">取消订单 <span class="en">Cancel</span></button></div>`:o.status==="unpaid"?`<div class="note">${quoted(uid,o)?`${B("店主报价","Our quote")}：<b>${rm(quoted(uid,o))}</b>。`:""}请用「${esc(o.pay)}」付 <b>${rm(o.total)}</b>，然后填上付款参考号。<span class="chip tbd">待定 <span class="en">TBD</span></span> 收款账号和二维码要等店主开通收款通道后放在这里；试运行阶段随便填一个参考号就能继续。<br><span class="en">Pay ${rm(o.total)} and enter your payment reference. In this trial any reference works.</span></div>
+  ${stepBar(o)}<div class="note" style="margin:0"><b>${B("收件资料","Delivery details")}</b>${isEN()?": ":"："}${esc(o.name)} · ${esc(o.phone)}${o.svcOnly?"":` · ${esc(o.addr)}${isEN()?", ":"，"}${esc(o.post)} ${esc(o.state)}`}</div>${orderLines(o)}
+  ${o.status==="unpaid"&&needQuote(uid,o)?`<div class="note">${B("店主正在看你的需求，1 天内会把报价（RM130–250）显示在这里，你同意再付款。不想做了可以取消订单。","We are preparing your quote (RM130–250). It will show here within 1 day; pay only if you agree.")}</div><div><button data-cancel="${o.id}">取消订单 <span class="en">Cancel</span></button></div>`:o.status==="unpaid"?`<div class="note">${quoted(uid,o)?`${B("店主报价","Our quote")}：<b>${rm(quoted(uid,o))}</b>。`:""}${BL(`订单已收到，应付 <b>${rm(o.total)}</b>（${esc(o.pay)}）。线上付款还在接通中，现在不用付款，店主会用你留的手机号码联系你确认订单和付款方式。付款后把参考号填在下面。`,`We have your order. Total <b>${rm(o.total)}</b> (${esc(o.pay)}). Online payment is still being set up, so don't pay yet: we will contact you on the phone number you gave to confirm the order and how to pay. After paying, enter the reference below.`)}</div>
    <div class="row"><input id="ref-${o.id}" aria-label="付款参考号" placeholder="付款参考号 Payment reference" style="flex:1 1 200px"><button class="pri" data-paid="${o.id}">我已付款 <span class="en">I've paid</span></button><button data-cancel="${o.id}">取消订单 <span class="en">Cancel</span></button></div>`:""}
   ${o.status==="review"?`<p>${BL("已收到你的付款参考号","We received your payment reference")} <span class="price">${esc(o.ref)}</span>${isEN()?".":"。"}</p>`:""}
   ${o.tracking?`<p>${esc(o.courier||"快递")} ${B("运单号","Tracking no.")} <span class="price">${esc(o.tracking)}</span> <button data-copy="${esc(o.tracking)}">复制 <span class="en">Copy</span></button>${o.shippedAt?` <span class="muted">寄出于 ${new Date(o.shippedAt).toLocaleDateString("zh-CN")}</span>`:""}</p><p class="muted">把运单号贴到快递公司官网可以查实时位置。<span class="en"> Paste it on the courier's site for live tracking.</span></p>`:""}
@@ -2000,7 +2003,7 @@ V.orders=()=>{
   </div>`}).join("")}`;
 };
 function admOrder(u,o){ return `<div class="panel order"><div class="row" style="justify-content:space-between"><h3 class="price">${o.id}</h3><span class="muted">${new Date(o.at).toLocaleString(isEN()?"en-MY":"zh-CN")}</span></div>${stepBar(o)}${o.badCoupon?`<div class="chip bad">优惠码无效，已不计入金额</div>`:""}${o.badPts?`<div class="chip bad">积分不够或无效，已不计入金额</div>`:""}${o.priceMismatch&&!quoted(u,o)?`<div class="chip bad">顾客端金额和目录价不符，以这里显示的为准</div>`:""}
-   <div>${esc(o.name)} · ${esc(o.phone)}${o.addr?` · ${esc(o.addr)}，${esc(o.post)} ${esc(o.state)}`:""}</div>${o.note?`<div class="muted">${isEN()?"Note: ":"留言："}${esc(o.note)}</div>`:""}${orderLines(o)}
+   <div>${esc(o.name)} · ${esc(o.phone)}${o.email?` · ${esc(o.email)}`:""}${o.addr?` · ${esc(o.addr)}，${esc(o.post)} ${esc(o.state)}`:""}</div>${o.note?`<div class="muted">${isEN()?"Note: ":"留言："}${esc(o.note)}</div>`:""}${orderLines(o)}
    ${o.items.filter(c=>c.brief).map(c=>{const b=c.brief;return `<div class="note">${(()=>{const E=isEN(),L=(z,e)=>E?e:z;return `<b>${BL("组牌需求","Brief")}</b>${L("：",": ")}${esc(b.format)} · ${esc(b.use)} · ${esc(b.level)} · ${L("预算","Budget")} ${esc(b.budget)} · ${L("打法","Style")} ${esc(b.style)} · ${L("想用","Wants")} ${esc(b.want)}${b.must?" · "+L("必放","Must include")+" "+esc(b.must):""}<br>${L("联系","Contact")} ${esc(b.contact)}${L("：",": ")}${esc(b.handle)}${b.note?`<br>${L("已有的卡：","Cards owned: ")}${esc(b.note)}`:""}`})()}${b.list?`<details><summary>顾客贴的牌表 <span class="en">Pasted list</span></summary><pre class="list">${esc(b.list)}</pre></details>`:""}${(b.files||[]).map(f=>f.kind==="text"?`<details><summary>${esc(f.name)}</summary><pre class="list">${esc(f.text)}</pre></details>`:`<div><a href="${esc(BLOB(aid(f.id)))}" target="_blank" rel="noopener"><img src="${esc(BLOB(aid(f.id)))}" alt="${esc(f.name)}" style="max-height:160px;border-radius:8px"></a></div>`).join("")}</div>`}).join("")}
    ${o.ref?`<div>${esc(o.pay)}${isEN()?", reference":"，参考号"} <span class="price">${esc(o.ref)}</span></div>`:`<div class="muted">${isEN()?"Not paid yet ("+esc(o.pay)+")":"顾客还没付款（"+esc(o.pay)+"）"}</div>`}${o.status==="unpaid"&&o.items.some(c=>(item(c.id)||{}).quote)?`<div class="row"><label class="f" style="flex:0 1 220px">组牌报价 RM（建议 130–250）<input id="qt-${o.id}" type="number" min="1" step="1" value="${quoted(u,o)||""}"></label><button class="pri" data-adm="quote" data-u="${u}" data-o="${o.id}">${quoted(u,o)?"更新报价":"发报价给顾客"}</button><span class="muted">顾客看到报价后才会付款。</span></div>`:""}
    ${o.status==="review"?`<div class="row"><button class="pri" data-adm="approve" data-u="${u}" data-o="${o.id}">款已到账，通过审核 <span class="en">Approve</span></button><input id="rej-${o.id}" aria-label="不通过的原因" placeholder="不通过的原因" style="flex:1 1 160px"><button data-adm="reject" data-u="${u}" data-o="${o.id}">不通过 <span class="en">Reject</span></button></div>`:""}
@@ -2106,14 +2109,49 @@ async function admPhoto(k,f){
 /* ---------- v34 回购：收藏提醒、新系列预购、晒卡墙、会员进度 ----------
    顾客自己的收藏、提醒基准和生日月存在 me/<id>；晒卡投稿存在 pulls/<id>；店主公开的晒卡在 site/wall。 */
 let XDB=null, XU="local", XOWN=true, ME=null, MEALL={}, MYPULLS=[], PULLALL={}, WALL=[], meQ=Promise.resolve();
+/* 顾客的基本资料：姓名、手机、收件地址。存在自己的 me/<id> 里，只有本人和店主看得到。结账时自动带入。 */
+const normProf=x=>{ x=x&&typeof x==="object"?x:{}; return {name:cleanTxt(x.name,80),phone:cleanTxt(x.phone,30),ship:SHIP.some(z=>z.k===x.ship&&z.k!=="pickup")?x.ship:"wm",addr:cleanTxt(x.addr,200),post:cleanTxt(x.post,10),state:cleanTxt(x.state,40),at:num(x.at)||0} };
+/* 活跃度：第一次来、最近一次来、来过几次、来过哪几天（马来西亚日期，留最近 120 天） */
+const normAct=x=>{ x=x&&typeof x==="object"?x:{}; return {first:num(x.first)||0,last:num(x.last)||0,visits:clampN(x.visits,0,1e6),days:[...new Set(arr(x.days).filter(d=>typeof d==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(d)))].sort().slice(-120),email:cleanTxt(x.email,120),nick:cleanTxt(x.nick,80)} };
+const myDay=t=>new Date((t||Date.now())+8*3600e3).toISOString().slice(0,10);
+let ACTDONE=false;
+function touchAct(){ if(ACTDONE||!signedIn()||!MELOADED) return; ACTDONE=true; const a=ME.act, now=Date.now(), d=myDay(now), em=myEmail();
+  let nick=""; try{ const u=HOLO_AUTH.user(), md=u&&u.user_metadata||{}; nick=cleanTxt(md.full_name||md.name||"",80) }catch(e){}
+  if(now-a.last<30*60e3&&a.days.includes(d)&&a.email===em) return;
+  ME.act=normAct({first:a.first||now,last:now,visits:a.visits+(now-a.last>=30*60e3?1:0),days:a.days.concat(d),email:em||a.email,nick:nick||a.nick}); saveMe() }
+const profOK=()=>!!(ME.prof&&ME.prof.name&&ME.prof.phone), signedIn=()=>typeof XU==="string"&&XU!=="local"&&XU!=="guest"&&XU!=="";
+const myEmail=()=>{ try{ const u=window.HOLO_AUTH&&HOLO_AUTH.user(); return u&&u.email?String(u.email).slice(0,120):"" }catch(e){ return "" } };
+function profFields(pre,pf,withAddr){
+  return `<div class="row"><label class="f">${B("姓名","Name")}<input id="${pre}-name" required maxlength="80" autocomplete="name" value="${esc(pf.name)}"></label><label class="f">${B("手机号码","Phone")}<input id="${pre}-phone" required maxlength="30" inputmode="tel" autocomplete="tel" placeholder="01x-xxxxxxx" value="${esc(pf.phone)}"></label></div>${!withAddr?"":`
+  <label class="f">${B("寄到哪里","Deliver to")}<select id="${pre}-ship">${SHIP.filter(z=>z.k!=="pickup").map(z=>`<option value="${z.k}" ${pf.ship===z.k?"selected":""}>${isEN()?({wm:"West Malaysia",em:"East Malaysia",sg:"Singapore",cn:"China"}[z.k]):({wm:"西马",em:"东马",sg:"新加坡",cn:"中国"}[z.k])}</option>`).join("")}</select></label>
+  <label class="f">${B("收件地址","Delivery address")}<input id="${pre}-addr" maxlength="200" autocomplete="street-address" value="${esc(pf.addr)}"></label>
+  <div class="row"><label class="f">${B("邮编","Postcode")}<input id="${pre}-post" maxlength="10" inputmode="numeric" autocomplete="postal-code" value="${esc(pf.post)}"></label><label class="f">${B("州属或城市","State or city")}<input id="${pre}-state" maxlength="40" list="stlist" value="${esc(pf.state)}"></label></div><datalist id="stlist">${STATES.map(z=>`<option value="${z}">`).join("")}</datalist>`}` }
+function readProf(pre){ const o=ME.prof||{}, has=!!document.getElementById(pre+"-addr"); return normProf({name:val(pre+"-name").trim(),phone:val(pre+"-phone").trim(),ship:has?val(pre+"-ship"):o.ship,addr:has?val(pre+"-addr").trim():o.addr,post:has?val(pre+"-post").trim():o.post,state:has?val(pre+"-state").trim():o.state,at:Date.now()}) }
+function profToUi(force){ const f=ME.prof; if(!f) return; [["cname","name"],["cphone","phone"],["caddr","addr"],["cpost","post"],["cstate","state"]].forEach(([a,b])=>{ if(f[b]&&(force||!ui[a])) ui[a]=f[b] }); if(f.name&&(force||!ui.ship)) ui.ship=f.ship }
+function profPanel(){ if(!signedIn()) return ""; const f=ME.prof, ok=profOK(), em=myEmail();
+  return `<details class="panel prof" ${ok&&!ui.profOpen?"":"open"}><summary><b>${B("我的资料","My details")}</b>${ok?`<span class="muted">${esc(f.name)} · ${esc(f.phone)}${f.addr?" · "+esc(f.addr):""}</span><span class="chip">${B("修改","Edit")}</span>`:`<span class="chip tbd">${B("还没填","Not filled in")}</span>`}</summary>
+  <form id="profform" class="stack" style="gap:10px;margin-top:10px">${em?`<p class="muted" style="margin:0">${B("登录账号","Signed in as")}：${esc(em)}</p>`:""}${profFields("pf",f,!!f.addr)}
+  <p class="muted" style="margin:0">${f.addr?B("只有你和店主看得到。下单时会自动带入，不用每次重填。","Only you and the shop can see this. It fills in automatically at checkout."):B("只有你和店主看得到。收件地址等你下单时再填，填过一次就会记住。","Only you and the shop can see this. You add a delivery address when you order, and it is remembered after that.")}</p><div><button class="pri" type="submit">${B("保存资料","Save details")}</button></div></form></details>` }
+/* 登录后第一次：请顾客填基本资料（可以稍后再填，这次浏览不再打扰） */
+function profPrompt(){ let m=document.getElementById("profm"); const need=signedIn()&&MELOADED&&!profOK()&&!ui.profSkip&&!owner;
+  if(!need){ if(m) m.hidden=true; return } if(m&&!m.hidden) return;
+  if(!m){ m=document.createElement("div"); m.id="profm"; m.className="lgm"; m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true"); m.setAttribute("aria-labelledby","profmh"); document.body.appendChild(m) }
+  m.innerHTML=`<div class="box" style="width:min(520px,100%);max-height:100%;overflow:auto"><h2 id="profmh">${BL("欢迎来 Holofen","Welcome to Holofen")}</h2><p class="msg">${BL("先留个名字和手机号码，方便店主联系你。收件地址等你下单时才需要填。","Leave your name and phone number so we can reach you. A delivery address is only needed when you order.")}</p>
+  <form id="profmform" class="stack" style="gap:10px">${profFields("pm",ME.prof,false)}<div class="row"><button class="pri" type="submit">${B("保存","Save")}</button><button type="button" data-profskip="1">${B("稍后再填","Later")}</button></div></form></div>`;
+  m.hidden=false; if(lang==="en"&&typeof langPass==="function") langPass() }
+let MELOADED=false;
+document.addEventListener("submit",e=>{ const id=e.target.id; if(id!=="profform"&&id!=="profmform") return; e.preventDefault(); e.stopPropagation();
+  const f=readProf(id==="profform"?"pf":"pm"); if(!f.name||!f.phone) return toast("请填姓名和手机号码 Please enter your name and phone");
+  ME.prof=f; ui.profOpen=false; profToUi(true); saveMe().then(()=>toast("资料已保存 Details saved")); const m=document.getElementById("profm"); if(m) m.hidden=true },true);
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-profskip]"); if(!b) return; ui.profSkip=true; const m=document.getElementById("profm"); if(m) m.hidden=true; toast("可以随时在「我的订单」里填资料 You can add your details any time under My orders") });
 const normMe=d=>{ d=d&&typeof d==="object"?d:{}; const seen={}; const s0=d.seen&&typeof d.seen==="object"?d.seen:{};
   Object.keys(s0).slice(0,300).forEach(k=>{ const v=s0[k]; if(v&&typeof v==="object") seen[cleanId(k)]={st:v.st==="on"?"on":"off",pr:num(v.pr)||0} });
-  return {wish:arr(d.wish).map(cleanId).filter(Boolean).slice(0,200),seen,bm:clampN(d.bm,0,12),bmAt:num(d.bmAt)||0,follow:d.follow===true,sets:arr(d.sets).filter(x=>typeof x==="string").slice(0,80),draws:arr(d.draws).map(normDraw).filter(Boolean).slice(-300),ci:[...new Set(arr(d.ci).filter(x=>typeof x==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(x)))].sort().slice(-400)} };
+  return {wish:arr(d.wish).map(cleanId).filter(Boolean).slice(0,200),seen,bm:clampN(d.bm,0,12),bmAt:num(d.bmAt)||0,follow:d.follow===true,sets:arr(d.sets).filter(x=>typeof x==="string").slice(0,80),draws:arr(d.draws).map(normDraw).filter(Boolean).slice(-300),ci:[...new Set(arr(d.ci).filter(x=>typeof x==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(x)))].sort().slice(-400),prof:normProf(d.prof),act:normAct(d.act)} };
 ME=normMe(null);
 async function initExtra(){
   try{ if(window.claude&&window.claude.use){ XDB=await window.claude.use("db"); const us=await window.claude.use("user");
     if(XDB&&us){ XU=await us.id(); XOWN=await us.isOwner();
-      XDB.doc("me/"+XU).onSnapshot(s=>{ ME=normMe(s.exists?s.data():null); MEALL[XU]=ME; render() },()=>{});
+      XDB.doc("me/"+XU).onSnapshot(s=>{ ME=normMe(s.exists?s.data():null); MEALL[XU]=ME; MELOADED=true; profToUi(false); render(); profPrompt(); touchAct() },()=>{});
       XDB.doc("pulls/"+XU).onSnapshot(s=>{ MYPULLS=arr(s.exists?s.data().list:[]); render() },()=>{});
       XDB.doc("site/wall").onSnapshot(s=>{ WALL=arr(s.exists?s.data().list:[]); render() },()=>{});
       if(XOWN){ XDB.collection("me").onSnapshot(s=>{ const m={}; s.docs.forEach(d=>m[d.id]=normMe(d.data())); MEALL=m; syncLog(); render() },()=>{});
@@ -2136,7 +2174,7 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   const mx=+el.max||99, n=clampN(el.value||1,1,mx);
   if(b.dataset.lstep){ el.value=clampN(n+(+b.dataset.d),1,mx); return lqUpd(k) }
   if(!(+el.value>=1)) return toast(BT("请填要几包","Enter how many packs")); add(k,null,n); el.value=1; lqUpd(k) },true);
-document.addEventListener("input",e=>{ const id=e.target.id||""; if(id.startsWith("lq-")) lqUpd(id.slice(3)) },true);
+document.addEventListener("input",e=>{ const id=e.target.id||""; if(id.startsWith("lq-")) lqUpd(id.slice(3)); const k={"c-name":"cname","c-phone":"cphone","c-addr":"caddr","c-post":"cpost","c-note":"cnote"}[id]; if(k) ui[k]=e.target.value; if(id==="c-state"&&e.target.tagName==="INPUT"&&!e.target.readOnly) ui.cstate=e.target.value },true);
 function isPre(p){ const x=p&&own(CAT.items,p.id)?CAT.items[p.id]:null; return x&&typeof x.pre==="string"&&/^\d{4}-\d{2}$/.test(x.pre)?x.pre:"" }
 const preTxt=p=>{ const v=isPre(p); if(!v) return ""; const [y,m]=v.split("-"); return `${y} 年 ${+m} 月` };
 const stK=p=>p&&listed(p)&&(p.stock!==0||isPre(p))?"on":"off";
@@ -2206,6 +2244,33 @@ function admStaff(){
   return `${head}<div class="panel stack"><h3>现有名单</h3>${rows}</div>
   <div class="panel stack"><h3>加一个管理员</h3><form data-sadd class="row"><input type="email" name="se" placeholder="对方的邮箱" required style="flex:1;min-width:200px"><button class="pri" type="submit">加入</button></form><p class="muted">对方要先用这个邮箱登录网站一次，之后才能进后台。</p></div>`;
 }
+/* 后台「用户」：所有登录过的人、基本资料和活跃度 */
+let AUSERS=null, AULOAD=false;
+function loadUsers(force){ if(AULOAD&&!force) return; AULOAD=true; const H=window.HOLO_AUTH; if(!H||!H.listUsers||!window.HOLO_SB){ AUSERS=[]; return } H.listUsers().then(r=>{ AUSERS=r||[]; render() }) }
+function admUsers(){ loadUsers(); const E=isEN(), now=Date.now(), dago=n=>myDay(now-n*864e5);
+  const ids=new Set(Object.keys(MEALL||{}).filter(u=>u!=="local"&&u!=="guest")); arr(AUSERS).forEach(u=>ids.add(u.id)); Object.keys(all||{}).forEach(u=>{ if(u!=="local"&&u!=="guest") ids.add(u) });
+  const au=Object.fromEntries(arr(AUSERS).map(u=>[u.id,u]));
+  const fd=t=>t?new Date(t).toLocaleDateString(E?"en-MY":"zh-CN",{year:"numeric",month:"short",day:"numeric"}):"—";
+  const ago=t=>{ if(!t) return "—"; const d=Math.floor((now-t)/864e5); return d<=0?(E?"Today":"今天"):d===1?(E?"Yesterday":"昨天"):d<30?(E?d+" days ago":d+" 天前"):fd(t) };
+  let rows=[...ids].map(u=>{ const me=MEALL[u]||normMe(null), a=au[u]||{}, f=me.prof, act=me.act, os=arr((all[u]||{}).orders); let m=null; try{ m=member(u) }catch(e){}
+    const last=Math.max(act.last||0,a.last_sign_in_at?+new Date(a.last_sign_in_at):0), first=a.created_at?+new Date(a.created_at):act.first;
+    const d30=act.days.filter(d=>d>=dago(29)).length, d7=act.days.filter(d=>d>=dago(6)).length;
+    return {u,name:f.name||a.name||act.nick||"",email:a.email||act.email||arr(os).map(o=>cleanTxt(o.email,120)).filter(Boolean).pop()||"",phone:f.phone||arr(os).map(o=>cleanTxt(o.phone,30)).filter(Boolean).pop()||"",addr:f.addr?[f.addr,f.post,f.state].filter(Boolean).join(", "):"",prov:a.provider||"",first,last,visits:act.visits,d7,d30,ci:arr(me.ci).length,orders:os.length,life:m?m.life:0,tier:m?m.tier:null,filled:!!(f.name&&f.phone)} });
+  const q=(ui.uq||"").trim().toLowerCase(); const tot=rows.length, a7=rows.filter(r=>r.last&&now-r.last<7*864e5).length, fil=rows.filter(r=>r.filled).length, buy=rows.filter(r=>r.orders>0).length;
+  if(q) rows=rows.filter(r=>(r.name+" "+r.email+" "+r.phone+" "+r.addr).toLowerCase().includes(q));
+  const srt=ui.usort||"last"; rows.sort((x,y)=>srt==="new"?(y.first||0)-(x.first||0):srt==="spend"?y.life-x.life:srt==="act"?y.d30-x.d30:(y.last||0)-(x.last||0));
+  const lvl=r=>r.d7>=4?[E?"Very active":"很活跃","#1e7a46","#e9f7ef"]:r.d30>=4||r.d7>=2?[E?"Active":"活跃","#0e6b78","#e2f4f6"]:r.last&&now-r.last<30*864e5?[E?"Occasional":"偶尔来","#8a5a00","#fff1d6"]:[E?"Quiet":"很久没来","#6b7280","#eef1f4"];
+  const kpi=(n,z,e)=>`<div class="kpi"><span class="muted">${B(z,e)}</span><b>${n}</b></div>`;
+  return `${H1("用户","Users")}<p class="muted">${BL("所有登录过网站的人。资料是顾客自己填的，地址要等对方下过单才会有。活跃度按对方登录后打开网站的日子算。只有你和管理员看得到这一页。","Everyone who has signed in. Details are entered by the customer, and an address only appears after they order. Activity counts the days they opened the site while signed in. Only you and admins can see this page.")}</p>
+  <div class="kpis">${kpi(tot,"登录过的用户","Signed-in users")}${kpi(a7,"近 7 天来过","Active in 7 days")}${kpi(fil,"已填资料","Details filled in")}${kpi(buy,"下过单","Have ordered")}</div>
+  ${AUSERS===null?`<p class="muted">${BL("读取中…","Loading…")}</p>`:""}
+  <div class="row"><input id="uq" type="search" value="${esc(ui.uq||"")}" placeholder="${E?"Search name, email or phone":"搜索名字、邮箱、手机"}" aria-label="${E?"Search users":"搜索用户"}" style="flex:1;min-width:180px"><select id="usort" aria-label="${E?"Sort":"排序"}">${[["last","最近来过","Last active"],["new","最新注册","Newest"],["act","最活跃","Most active"],["spend","消费最多","Top spend"]].map(o=>`<option value="${o[0]}" ${srt===o[0]?"selected":""}>${E?o[2]:o[1]}</option>`).join("")}</select><button data-urefresh="1">${B("刷新","Refresh")}</button></div>
+  ${rows.length?`<div class="tw"><table class="utab"><thead><tr><th>${B("用户","User")}</th><th>${B("手机","Phone")}</th><th>${B("收件地址","Address")}</th><th>${B("注册","Joined")}</th><th>${B("最近来过","Last active")}</th><th>${B("活跃度","Activity")}</th><th class="n">${B("来访","Visits")}</th><th class="n">${B("签到","Check-ins")}</th><th class="n">${B("订单","Orders")}</th><th class="n">${B("累计消费","Spent")}</th><th>${B("等级","Tier")}</th></tr></thead><tbody>${rows.slice(0,ui.ushown||50).map(r=>{ const L=lvl(r); return `<tr><td><b>${esc(r.name||(E?"(no name yet)":"（还没填名字）"))}</b><div class="muted">${esc(r.email||"—")}${r.prov==="google"?" · Google":""}</div></td><td>${esc(r.phone||"—")}</td><td>${esc(r.addr||"—")}</td><td>${fd(r.first)}</td><td>${ago(r.last)}</td><td><span class="chip" style="color:${L[1]};background:${L[2]};border-color:transparent">${L[0]}</span><div class="muted">${E?`${r.d7} of 7 days · ${r.d30} of 30`:`近 7 天 ${r.d7} 天 · 近 30 天 ${r.d30} 天`}</div></td><td class="n">${r.visits}</td><td class="n">${r.ci}</td><td class="n">${r.orders}</td><td class="n">${rm(r.life)}</td><td>${r.tier?(E&&r.tier[1]?r.tier[1]:r.tier[0]):"—"}</td></tr>` }).join("")}</tbody></table></div>${rows.length>(ui.ushown||50)?`<div><button data-umore="1">${B("再显示 50 位","Show 50 more")}</button></div>`:""}`:`<p class="muted">${AUSERS===null?"":BL(q?"没有符合的用户。":"还没有人登录过。","No users "+(q?"match.":"have signed in yet."))}</p>`}` }
+ATABS.splice(3,0,["users","用户","Users"]);
+{ const _admU=V.admin; V.admin=()=>owner&&ui.atab==="users"?admUsers():_admU() }
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-urefresh],[data-umore]"); if(!b) return; if(b.dataset.umore){ ui.ushown=(ui.ushown||50)+50; return render() } AUSERS=null; loadUsers(true); render() });
+document.addEventListener("change",e=>{ if(e.target.id==="usort"){ ui.usort=e.target.value; render() } });
+document.addEventListener("input",e=>{ if(e.target.id!=="uq") return; ui.uq=e.target.value; clearTimeout(admUsers.t); admUsers.t=setTimeout(()=>{ render(); const el=document.getElementById("uq"); if(el){ el.focus(); el.setSelectionRange(el.value.length,el.value.length) } },250) });
 { const _adm2=V.admin; V.admin=()=>owner&&ui.atab==="staff"&&window.HOLO_AUTH&&HOLO_AUTH.role()==="owner"?admStaff():_adm2() }
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-wish],[data-wclear],[data-bmsave],[data-wpub],[data-wunpub]"); if(!b) return; const ds=b.dataset;
   if(ds.wish){ e.preventDefault(); e.stopPropagation(); return toggleWish(ds.wish) }
@@ -2465,10 +2530,11 @@ document.addEventListener("submit",e=>{
     const t=cartTotals(); const now=new Date();
     const id="KP"+String(now.getFullYear()).slice(2)+String(now.getMonth()+1).padStart(2,"0")+String(now.getDate()).padStart(2,"0")+"-"+Math.random().toString(36).slice(2,6).toUpperCase();
     const o={id,at:Date.now(),name:val("c-name"),phone:val("c-phone"),addr:val("c-addr"),post:val("c-post"),state:t.onlySvc?"":val("c-state"),note:val("c-note"),pay:val("c-pay"),
-      shipKey:t.onlySvc?"none":t.sh.k,couponCode:t.cp?t.cp.code:null,pointsUsed:t.pts||0,total:t.total,
+      email:myEmail(),shipKey:t.onlySvc?"none":t.sh.k,couponCode:t.cp?t.cp.code:null,pointsUsed:t.pts||0,total:t.total,
       items:cart.map(c=>{const r={id:c.id,qty:c.qty}; if(c.brief) r.brief=c.brief; return r})};
+    if(signedIn()){ const pf=normProf({name:o.name,phone:o.phone,ship:t.onlySvc?ME.prof.ship:(t.sh.k==="pickup"?ME.prof.ship:t.sh.k),addr:o.addr||ME.prof.addr,post:o.post||ME.prof.post,state:t.onlySvc?ME.prof.state:(o.state||ME.prof.state),at:Date.now()}); ME.prof=pf; saveMe() }
     cart=[]; ui.coupon=""; ui.pts=0; saveCart();
-    saveDoc(uid,{orders:arr(mine.orders).concat(o)}).then(()=>{ toast("订单 "+id+" 已提交，请付款 Order placed"); go("orders") });
+    saveDoc(uid,{orders:arr(mine.orders).concat(o)}).then(()=>{ toast(isEN()?"Order "+id+" placed":"订单 "+id+" 已提交"); go("orders") });
   }
 });
 document.addEventListener("pointermove",e=>{
