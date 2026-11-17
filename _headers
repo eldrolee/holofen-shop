@@ -1,0 +1,16 @@
+/hd/*
+  Cache-Control: public, max-age=604800
+/img/*
+  Cache-Control: public, max-age=604800
+/big/*
+  Cache-Control: public, max-age=604800
+/deck/*
+  Cache-Control: public, max-age=604800
+/deckimg/*
+  Cache-Control: public, max-age=604800
+/setlogo/*
+  Cache-Control: public, max-age=604800
+/sprite/*
+  Cache-Control: public, max-age=604800
+/intro/*
+  Cache-Control: public, max-age=604800

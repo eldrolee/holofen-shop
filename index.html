@@ -1,4 +1,11 @@
 <title>Holofen 宝可梦卡牌店</title>
+<meta name="description" content="Holofen：马来西亚宝可梦卡牌店，卖中文、英文、日文版原盒和补充包，也做代组服务，寄马来西亚、新加坡和中国。Pokémon TCG sealed products shipped from Malaysia.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Holofen">
+<meta property="og:title" content="Holofen 宝可梦卡牌店">
+<meta property="og:description" content="中文、英文、日文版宝可梦卡原盒和补充包，马来西亚发货。Pokémon TCG sealed products shipped from Malaysia.">
+<meta property="og:image" content="https://holofen-shop.vercel.app/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Rubik:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
@@ -894,7 +901,7 @@ nav.tabs:has(a:focus-visible) a:not(:focus-visible) .nh{opacity:0!important;visi
 .prof summary{display:flex;gap:10px;align-items:center;flex-wrap:wrap;cursor:pointer;list-style:none}.prof summary::-webkit-details-marker{display:none}.prof summary .muted{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .utab td{vertical-align:top}.utab td:nth-child(3){min-width:160px;max-width:260px}.utab .chip{font-weight:700}
 .aseg{display:flex;flex-wrap:wrap;gap:8px}.aseg button{border-radius:99px;padding:7px 14px;min-height:40px}.aseg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}.aseg button b{font-size:12px;background:rgba(0,0,0,.08);border-radius:99px;padding:1px 7px;margin-left:2px}.aseg button.on b{background:rgba(255,255,255,.22)}
-.flinks{display:flex;flex-wrap:wrap;gap:6px 22px;justify-content:center;padding:14px 0 4px;font-size:14px}.flinks a{color:var(--muted)}
+.linkbtn{background:none;border:0;padding:0;min-height:0;color:var(--down);text-decoration:underline;font:inherit;cursor:pointer}.prose ul{margin:0;padding-left:20px;display:grid;gap:4px}.prose h3{margin:6px 0 0}.pbchips{align-items:center}.pbchips>.muted{font-size:13px;margin-right:2px}.disc{text-align:center;font-size:12px;color:var(--muted);margin:8px auto 0;max-width:720px;line-height:1.5}.flinks{display:flex;flex-wrap:wrap;gap:6px 22px;justify-content:center;padding:14px 0 4px;font-size:14px}.flinks a{color:var(--muted)}
 </style>
 
 <div class="bgfx" aria-hidden="true"></div>
@@ -945,7 +952,7 @@ nav.tabs:has(a:focus-visible) a:not(:focus-visible) .nh{opacity:0!important;visi
   <div class="or">或者 <span class="en">or</span></div>
   <form data-lgemail novalidate><label>电子邮件 <span class="en">Email</span><input type="email" name="em" autocomplete="email" inputmode="email" placeholder="you@example.com" required></label></form>
   <button class="go" type="button" data-lgsend>寄登录链接到邮箱 <span class="en">Email me a sign-in link</span></button>
-  <div class="lgin" id="lgin" hidden><p class="msg" id="lgwho"></p><div id="lgprof"></div><a class="go" href="#orders" data-lgclose style="margin:10px 0;text-decoration:none">我的订单和会员 <span class="en">My orders &amp; membership</span></a><button class="go" type="button" data-lgout>登出 <span class="en">Sign out</span></button></div>
+  <div class="lgin" id="lgin" hidden><p class="msg" id="lgwho"></p><div id="lgprof"></div><a class="go" href="#orders" data-lgclose style="margin:10px 0;text-decoration:none">我的订单和会员 <span class="en">My orders &amp; membership</span></a><button class="go" type="button" data-lgout>登出 <span class="en">Sign out</span></button><p style="text-align:center;margin:10px 0 0;font-size:13px"><a href="#privacy" data-lgclose>隐私声明 <span class="en">Privacy</span></a> · <button type="button" class="linkbtn" data-delme>删除我的资料 <span class="en">Delete my data</span></button></p></div>
   <p class="msg" id="lgmsg" aria-live="polite">不用设密码：我们会寄一封邮件给你，按里面的链接就登录了。</p>
 </div></div>
 
@@ -992,7 +999,7 @@ window.HOLO_AUTH=(function(){
   try{ if(SB_URL&&SB_KEY&&window.supabase){ sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,detectSessionInUrl:true,flowType:"pkce"}});
     var ready=sb.auth.getSession().then(function(r){ var ses=r.data&&r.data.session; if(ses) close(); return setUser(ses&&ses.user).then(function(){ return ses }) });
     sb.auth.onAuthStateChange(function(ev,ses){ setUser(ses&&ses.user); if(ses) close(); if(window.HOLO_SB&&bootUid!==undefined&&(ses?ses.user.id:"guest")!==bootUid) setTimeout(function(){ location.reload() },300) });
-    if(!window.claude&&/vercel\.app$|^localhost$|^127\.0\.0\.1$|holofen/i.test(location.hostname)) installStore(ready) } }catch(e){}
+    if(!window.claude&&/vercel\.app$|pages\.dev$|^localhost$|^127\.0\.0\.1$|holofen/i.test(location.hostname)) installStore(ready) } }catch(e){}
   /* 正式网站（不在 Claude 试运行站里）：订单、会员、评价、晒卡、商品改动都存在 Supabase 的 docs 表，照片存在 photos 储存桶。
      安全规则在数据库里：顾客只能读写自己的资料，店主和管理员能看全部，site/ 只有店主和管理员能改。 */
   var bootUid;
@@ -1031,7 +1038,7 @@ window.HOLO_AUTH=(function(){
       throw new Error("unknown") } };
   }
   async function listUsers(){ if(!sb) return null; try{ var r=await sb.rpc("list_users"); return r.error?null:(r.data||[]) }catch(e){ return null } }
-  return { isOwnerEmail:function(em){ return sha(String(em||"").trim().toLowerCase()).then(function(h){ return OWNER_HASH.indexOf(h)>=0 }).catch(function(){ return false }) }, listUsers:listUsers, isOwner:function(){ return isOwn }, role:function(){ return myRole }, staffList:function(){ return staff }, user:function(){ return user }, paint:paint, open:open, removeStaff:removeStaff, saveStaff:saveStaff };
+  return { signOut:out, isOwnerEmail:function(em){ return sha(String(em||"").trim().toLowerCase()).then(function(h){ return OWNER_HASH.indexOf(h)>=0 }).catch(function(){ return false }) }, listUsers:listUsers, isOwner:function(){ return isOwn }, role:function(){ return myRole }, staffList:function(){ return staff }, user:function(){ return user }, paint:paint, open:open, removeStaff:removeStaff, saveStaff:saveStaff };
 })();
 </script>
 <script src="data.js"></script>
@@ -1306,7 +1313,7 @@ function render(){
   $("#btm").hidden=adm; { const cur=PARENT[route]||route, inMore=BTM_MORE.some(t=>t[0]===cur||t[0]===route);
   $("#btm").innerHTML=adm?"":BTM.map(t=>t[0]==="more"?`<a href="#" data-msheet="1" class="${inMore||ui.msheet?"on":""}" aria-expanded="${!!ui.msheet}">${t[2]}<span>${t[1]}</span></a>`:`<a href="#${t[0]}" class="${cur===t[0]?"on":""}">${t[2]}<span>${t[1]}</span>${t[0]==="cart"&&cq?`<b>${cq}</b>`:""}</a>`).join("")+(ui.msheet?`<div class="msheet" role="menu">${BTM_MORE.map(t=>`<a href="#${t[0]}" role="menuitem" class="${cur===t[0]||route===t[0]?"on":""}">${t[2]}<span>${t[1]}</span></a>`).join("")}</div>`:""); }
   applyLang();
-  $("#cartbtn").hidden=adm; { const ob=$("#ownbtn"); if(ob) ob.hidden=adm||!owner } { const lb=$("#loginbtn"); if(lb){ lb.hidden=adm; if(window.HOLO_AUTH) HOLO_AUTH.paint() } } { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm } { const mb=$("#mebtn"); if(mb){ mb.hidden=adm||(typeof isGuest==="function"&&isGuest()); if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
+  $("#cartbtn").hidden=adm; { const ob=$("#ownbtn"); if(ob) ob.hidden=adm||!owner } { const lb=$("#loginbtn"); if(lb){ lb.hidden=adm; if(window.HOLO_AUTH) HOLO_AUTH.paint() } } { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm||!CONTACT.some(c=>c[3]) } { const mb=$("#mebtn"); if(mb){ mb.hidden=adm||(typeof isGuest==="function"&&isGuest()); if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
   $("#band").innerHTML=adm?"":band();
   $("#foot").innerHTML=adm?`<a href="#home">${BL("回到顾客前台","Back to storefront")}</a>`:`${DOTS}<span>${B("中文、英文和日文版宝可梦卡牌，马来西亚发货，也寄新加坡和中国","Chinese, English &amp; Japanese Pokémon cards, shipped from Malaysia to MY, SG &amp; China")}</span>`;
   const keep=document.activeElement&&document.activeElement.id, pos=keep&&document.activeElement.selectionStart;
@@ -1460,7 +1467,7 @@ Object.assign(TR,{
 "顾客上传的晒卡要你按「公开」才会出现在晒卡墙和首页。不合适的不用理会，它不会公开。":"Customer pull photos only appear on the wall and home page after you press Publish. Ignore any that aren't suitable and they stay hidden.",
 "上线前请先确认：在马来西亚办需要消费才能参加的幸运抽奖，可能要向政府申请准证。这一点我没有核对，建议问一下会计师或 SSM 秘书。":"Check before launch: in Malaysia, a lucky draw that needs a purchase to enter may need a government permit. This hasn't been checked; ask your accountant or SSM company secretary.",
 "开放抽奖（顾客看得到、能抽）":"Open the lucky draw (customers can see and play)","抽一次要几分":"Points per draw","「没中」的权重":"Weight for \"no prize\"","奖品，一行一个：名字, 权重（权重越大越容易抽中；中奖率 = 权重 ÷ 全部权重加起来）":"Prizes, one per line: name, weight (higher weight = more likely; win chance = weight ÷ total of all weights)","按「保存」会开新的一期：之后的抽奖用新的奖品和中奖率，已经抽过的结果不会变。":"Saving starts a new round: later draws use the new prizes and odds, and past results don't change.","标记已安排":"Mark as arranged","已安排 ✓":"Arranged ✓",
-"我的资料 ":"My details ","登录功能还在接通中，很快就能用。":"Sign-in is being set up and will be ready soon.","登录后可以看订单、收集积分和每日签到。":"Sign in to see your orders, collect points and check in daily.","不用设密码：我们会寄一封邮件给你，按里面的链接就登录了。":"No password needed: we'll email you a link, and tapping it signs you in.","正在打开 Google…":"Opening Google…","Google 登录还在设定中，请先用电子邮件登录。":"Google sign-in is still being set up. Please use email for now.","请填一个正确的电子邮件地址。":"Please enter a valid email address.","寄出中…":"Sending…","店主与员工 ":"Owner & staff ","登录 Holofen ":"Sign in to Holofen ","（再按一下可以登出）":" (tap again to sign out)",
+"我的资料 ":"My details ","确定删除你的个人资料、签到、收藏和活跃记录？删除后不能恢复。订单记录会保留。":"Delete your profile, check-ins, saved items and activity? This cannot be undone. Order records are kept.","登录功能还在接通中，很快就能用。":"Sign-in is being set up and will be ready soon.","登录后可以看订单、收集积分和每日签到。":"Sign in to see your orders, collect points and check in daily.","不用设密码：我们会寄一封邮件给你，按里面的链接就登录了。":"No password needed: we'll email you a link, and tapping it signs you in.","正在打开 Google…":"Opening Google…","Google 登录还在设定中，请先用电子邮件登录。":"Google sign-in is still being set up. Please use email for now.","请填一个正确的电子邮件地址。":"Please enter a valid email address.","寄出中…":"Sending…","店主与员工 ":"Owner & staff ","登录 Holofen ":"Sign in to Holofen ","（再按一下可以登出）":" (tap again to sign out)",
 "员工权限":"Staff access","这里加的管理员，用他们的邮箱登录网站后，就能进店主后台。管理员能看和处理所有后台页面；只有店主能加人或移除人。":"Admins added here can open the admin pages after signing in with their email. Admins can see and handle every admin page; only the owner can add or remove people.","只有店主能管理员工。":"Only the owner can manage staff.","读取中…":"Loading…","店主":"Owner","管理员":"Admin","还没有管理员。":"No admins yet.","现有名单":"Current list","加一个管理员":"Add an admin","对方的邮箱":"Their email","加入":"Add","对方要先用这个邮箱登录网站一次，之后才能进后台。":"They need to sign in to the site once with this email before they can open the admin pages.","确定移除这位管理员？":"Remove this admin?",
 "上传中…":"Uploading…","上传失败，请再试一次":"Upload failed, please try again","今天已经签到了":"Already checked in today","再按一次就登出":"Tap again to sign out","售价要填数字":"Price must be a number","奖品的权重不能全是 0":"Prize weights can't all be 0","已付款的订单请联系店主取消":"To cancel a paid order, please contact us","已加入管理员":"Admin added","已标记寄出":"Marked as shipped","已登出":"Signed out","已移除":"Removed","已通过审核":"Approved","库存要填 0 或以上的整数":"Stock must be a whole number, 0 or more","投稿最多 30 张":"Up to 30 submissions","报价已发给顾客":"Quote sent to the customer","抽奖设定没有保存成功":"Lucky draw settings weren't saved","抽奖还没开始":"The lucky draw hasn't started","新商品要有英文名和售价，才会在前台出现":"A new item needs an English name and price before it shows in the shop","有商品缺货或库存不足，购物车已更新，请再确认一次":"Some items are out of stock or low on stock. Your cart was updated, please check it again.","照片上传失败，请再试一次":"Photo upload failed, please try again","照片太大，请小于 8MB":"Photo too large, please keep it under 8MB","牌表已保存":"Deck list saved","规则要填 0 或以上的数字":"Rules must be numbers, 0 or more","评价没有保存成功，请再试一次":"Review wasn't saved, please try again","请先登录再下单，订单会存进你的账号。购物车会保留。":"Please sign in to order so it's saved to your account. Your cart is kept.","请先登录，签到和积分才会记在你的账号":"Please sign in so check-ins and points are saved to your account","请先贴上牌表":"Please paste a deck list first","请写卡名":"Please enter the card name","请填一个正确的邮箱":"Please enter a valid email","请填报价":"Please enter a quote","请填要几包":"Please enter how many packs","请填运单号":"Please enter the tracking number","请至少写一个奖品":"Please add at least one prize","请选一张照片":"Please choose a photo","请选图片文件":"Please choose an image file","请选月份":"Please choose a month","这里暂时收不了照片":"Photos can't be uploaded here yet","这里暂时收不了照片，请用文字清单":"Photos can't be uploaded here yet, please use a text list","「多少分起换」至少 1 分":"Minimum points to redeem must be at least 1","请先登录 Please sign in":"Please sign in","今天还没签到":"Not checked in today","待定":"To be confirmed","选择":"Select","近 7 天均价对比近 30 天均价":"7-day average vs 30-day average","主导航":"Main navigation","分页":"Sections","产品类别":"Product category","关闭":"Close","减少":"Decrease","增加":"Increase","切换到中文":"Switch to Chinese","排序":"Sort","稀有度":"Rarity","鉴定公司":"Grading company","首页主视觉":"Home banner","Holofen 开场动画":"Holofen intro animation","选择系列":"Choose set","不填＝未录入":"Empty = not entered","例如：实拍卡况、边角、是否有白边、附送卡套等":"e.g. real condition, corners, whitening, sleeves included","搜索卡名或编号":"Search name or number","搜索名字、系列、编号":"Search name, set or number","ETB 一盒, 1":"ETB box, 1","客服":"Help","首页":"Home","商店":"Shop","行情":"Prices","卡组":"Decks","更多":"More","消息":"News","关于":"About","推荐（RM50–300 优先）":"Recommended (RM50–300 first)","价格从高到低":"Price: high to low","价格从低到高":"Price: low to high","按名称":"By name","帮我推荐":"Recommend one for me","其他，写在下一题":"Other (write it in the next question)","换多少令吉 RM":"Worth how much, RM","近 12 个月消费满多少升银卡 RM":"12-month spend for Silver, RM","近 12 个月消费满多少升金卡 RM":"12-month spend for Gold, RM","不通过的原因":"Reason for rejecting","顾客端金额和目录价不符，以这里显示的为准":"The customer's total doesn't match the catalogue; the amount shown here is what counts","优惠码无效，已不计入金额":"Invalid coupon, not applied","积分不够或无效，已不计入金额":"Not enough or invalid points, not applied","免运费":"Free shipping","书":"XHS"
 });
@@ -1538,8 +1545,8 @@ const CONTACT=[
  ["xhs","小红书","#ff2442","",`<text x="12" y="16.5" text-anchor="middle" font-size="13" font-weight="800" fill="#fff" stroke="none" font-family="sans-serif">书</text>`]];
 function band(){
   return `<button class="topband" data-top="1" aria-label="回到顶部 Back to top"><span class="wrap" style="display:flex"><span class="mas" aria-hidden="true">${buddy(30,"smile")}${buddy(22,"wow")}</span><span class="totop"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>回到顶部 <span class="en">Back to top</span></span><span class="mas r" aria-hidden="true">${buddy(30,"smile")}${buddy(22,"zzz")}</span></span></button>
-  <div class="wrap"><div class="ctc" id="contact">${CONTACT.map(c=>`<a href="${c[3]||"#"}" ${c[3]?'target="_blank" rel="noopener"':`data-tbd="${c[1]}"`}><span class="ic" style="background:${c[2]}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${c[4]}</svg></span>${c[1]}${c[3]?"":`<span class="tbd">${B("待开通","Soon")}</span>`}</a>`).join("")}</div>
-  <nav class="flinks" aria-label="${isEN()?"More":"更多"}"><a href="#wall">${B("晒卡墙","Pull wall")}</a><a href="#lucky">${B("签到和抽奖","Check-in & draw")}</a><a href="#fake">${B("防伪指南","Spot fakes")}</a></nav></div>`;
+  <div class="wrap">${CONTACT.some(c=>c[3])?`<div class="ctc" id="contact">${CONTACT.filter(c=>c[3]).map(c=>`<a href="${c[3]||"#"}" ${c[3]?'target="_blank" rel="noopener"':`data-tbd="${c[1]}"`}><span class="ic" style="background:${c[2]}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${c[4]}</svg></span>${c[1]}${c[3]?"":`<span class="tbd">${B("待开通","Soon")}</span>`}</a>`).join("")}</div>`:""}
+  <nav class="flinks" aria-label="${isEN()?"More":"更多"}"><a href="#wall">${B("晒卡墙","Pull wall")}</a><a href="#lucky">${B("签到和抽奖","Check-in & draw")}</a><a href="#fake">${B("防伪指南","Spot fakes")}</a><a href="#privacy">${B("隐私声明","Privacy")}</a></nav><p class="disc">${B("Holofen 是独立卡牌店，不是 The Pokémon Company 的官方商店。Pokémon 及相关名称和图片的商标归各自权利人所有。","Holofen is an independent card shop, not an official store of The Pokémon Company. Pokémon and related names and images are trademarks of their respective owners.")}</p></div>`;
 }
 V.item=()=>{
   const p=PM[ui.item]; if(!p) return V.shop();
@@ -1612,8 +1619,8 @@ function cbkStrip(side,row){ const n=8; return `<div class="cbks ${side}" data-r
   document.addEventListener("dragstart",e=>{ if(e.target.closest&&e.target.closest(".mq")) e.preventDefault() });
 })();
 function kfModal(){ return `<div class="modal"><div class="box kf" role="dialog" aria-label="联系客服 Customer service"><div class="row" style="justify-content:space-between;flex-wrap:nowrap;align-items:flex-start"><div><h2>${B("联系客服","Talk to us")}</h2><p class="muted">${B("问库存、问卡况、问运费、售后，都可以直接找我们。","Stock, condition, shipping or after-sales: message us directly.")}</p></div><button data-close="1" aria-label="关闭 Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-  <div class="kfl">${kfLinks()}</div><p class="muted" style="font-size:12.5px">${B("账号还在开通中的会标「待开通」。","Channels marked pending are being set up.")}</p></div></div>` }
-function kfLinks(){ return CONTACT.map(c=>`<a href="${c[3]||"#"}" ${c[3]?'target="_blank" rel="noopener"':`data-tbd="${c[1]}"`}><span class="ic" style="background:${c[2]}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${c[4]}</svg></span><b>${c[1]}</b>${c[3]?"":`<span class="chip tbd">${B("待开通","pending")}</span>`}</a>`).join("") }
+  <div class="kfl">${kfLinks()}</div></div></div>` }
+function kfLinks(){ if(!CONTACT.some(c=>c[3])) return `<p class="note" style="margin:0">${B("客服账号正在开通，开通后会放在这里。","Our customer service accounts are being set up and will appear here.")}</p>`; return CONTACT.filter(c=>c[3]).map(c=>`<a href="${c[3]||"#"}" ${c[3]?'target="_blank" rel="noopener"':`data-tbd="${c[1]}"`}><span class="ic" style="background:${c[2]}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${c[4]}</svg></span><b>${c[1]}</b>${c[3]?"":`<span class="chip tbd">${B("待开通","pending")}</span>`}</a>`).join("") }
 /* 比赛卡组前 3 */
 const TOP3=[
  {d:"Dragapult ex",id:29678,zh:"使用率 36.50%，排第一。下面这份 60 张牌表在四场比赛里进了 6 次前八：路易维尔冠军 Riley McKay、普埃布拉冠军 Andrew Hedrick 和亚军 Caleb Rogerson、格但斯克第 3 名和第 8 名、尼斯第 5 名用的都是它。",en:"36.50% of the field. This exact 60-card list made top 8 six times across the four Regionals, including two wins."},
@@ -1807,7 +1814,7 @@ V.home=()=>{
   <section class="sec" aria-label="卡牌系列 Card sets">${serCarousel()}</section>
   ${pubRev.length?`<section class="stack sec">${H2("顾客评价","Customer reviews")}${reviewList()}</section>`:""}
   <section class="sec" aria-label="每日签到 Daily check-in">${homeCi()}</section>
-  <section class="stack sec">${H2("晒卡墙","Pull wall")}${WALL.length?`<div class="wgrid">${WALL.slice(0,4).map(wallItem).join("")}</div>`:`<div class="empty"><img src="intro/holofen-mark.webp" alt=""><p>${B("还没有人晒卡。开包抽到好卡？拍照上传，店主看过后会放在这里给大家看。","No pulls yet. Pulled something great? Share a photo and it may appear here.")}</p></div>`}<div><a href="#wall">${B("看晒卡墙、我也要晒","See the wall and share yours")} ›</a></div></section>
+  ${WALL.length?`<section class="stack sec">${H2("晒卡墙","Pull wall")}<div class="wgrid">${WALL.slice(0,4).map(wallItem).join("")}</div><div><a href="#wall">${B("看晒卡墙、我也要晒","See the wall and share yours")} ›</a></div></section>`:""}
   <section class="stack sec"><div class="row" style="justify-content:space-between">${H2("最近的宝可梦新闻","Latest Pokémon news")}<a href="#news">全部 <span class="en">All</span></a></div>
     <div class="panel news">${NEWS.filter(n=>n.d&&n.d<=DATA_DATE&&!n.h).sort((a,b)=>b.d.localeCompare(a.d)).slice(0,3).map(newsItem).join("")}</div></section>`;
 };
@@ -1818,12 +1825,13 @@ function reviewList(){
 }
 V.shop=()=>{
   const SP=P.filter(listed), series=[...new Set(SP.map(p=>p.s))], q=ui.q.trim().toLowerCase();
-  let list=SP.filter(p=>(!ui.series||p.s===ui.series)&&(!ui.cat||p.c===ui.cat)&&(!q||(p.n+" "+p.zh+" "+p.s+" "+p.no).toLowerCase().includes(q)));
+  const PB={a:[0,50],b:[50,150],c:[150,300],d:[300,1e9]}, pb=PB[ui.pb]; let list=SP.filter(p=>(!ui.series||p.s===ui.series)&&(!ui.cat||p.c===ui.cat)&&(!pb||p.price>=pb[0]&&p.price<pb[1])&&(!q||(p.n+" "+p.zh+" "+p.s+" "+p.no).toLowerCase().includes(q)));
   const band=p=>p.price>=50&&p.price<=300?0:p.price<50?1:2;
   list.sort((ui.sort||"rec")==="rec"?(a,b)=>band(a)-band(b)||b.price-a.price:ui.sort==="hi"?(a,b)=>b.price-a.price:ui.sort==="lo"?(a,b)=>a.price-b.price:(a,b)=>a.n.localeCompare(b.n));
   const n=c=>SP.filter(p=>p.c===c&&(!ui.series||p.s===ui.series)).length;
   return `${H1("商店","Shop")}
   <div class="chips" role="group" aria-label="产品类别"><button data-cat="" class="${ui.cat===""?"on":""}">全部 <span class="en">All</span></button>${Object.entries(CATS).filter(([k])=>k!=="single").map(([k,v])=>`<button data-cat="${k}" class="${ui.cat===k?"on":""}">${v[0]} <span class="en">${v[1]}</span> <span class="cnt">${n(k)}</span></button>`).join("")}</div>
+  <div class="chips pbchips" role="group" aria-label="送礼预算 Gift budget"><span class="muted">${B("送礼预算","Gift budget")}</span>${[["","不限","Any"],["a","RM50 以下","Under RM50"],["b","RM50–150","RM50–150"],["c","RM150–300","RM150–300"],["d","RM300 以上","RM300+"]].map(x=>`<button data-pb="${x[0]}" class="${(ui.pb||"")===x[0]?"on":""}">${B(x[1],x[2])}</button>`).join("")}</div>
   <div class="serstrip" role="group" aria-label="选择系列 Series"><button class="all${ui.series===""?" on":""}" data-ser="">全部系列<span class="en" style="font-weight:400">All sets</span></button>${series.map(s=>`<button data-ser="${esc(s)}" class="${ui.series===s?"on":""}" aria-pressed="${ui.series===s}" title="${esc(s)}" style="--sc:${SETC[s]||"#1c8fc4"}">${slogo(s,"")}<span>${esc(s)}</span></button>`).join("")}</div>
   ${ui.series&&SI[ui.series]?`<div class="serhead">${slogo(ui.series,"")}<div><b>${esc(ui.series)}</b><div class="muted">${SI[ui.series].date} 发售 · 官方编号共 ${SI[ui.series].total} 张 · 本店 ${SP.filter(p=>p.s===ui.series).length} 件商品 · <a href="${setUrl(ui.series)}">看这个系列的完整卡表 ›</a></div></div></div>`:""}
   <div class="row"><input id="q" type="search" placeholder="搜索卡名或编号" value="${esc(ui.q)}" style="flex:1 1 220px">
@@ -2240,6 +2248,33 @@ async function submitPull(){ if(needLogin("要先登录或注册才能晒卡","P
     MYPULLS=MYPULLS.concat({id:"w"+Date.now().toString(36),img:id,name:cleanTxt(name,60),set:cleanTxt(val("w-set"),60),nick:cleanTxt(val("w-nick"),20),text:cleanTxt(val("w-text"),120),at:Date.now()});
     if(XDB) await XDB.doc("pulls/"+XU).set({list:MYPULLS}); else { lsSet("mypulls",MYPULLS); PULLALL.local=MYPULLS }
     toast("已送出，店主审核后会公开 Submitted"); render() }catch(e){ toast("上传失败，请再试一次") } }
+
+/* ---------- v75 隐私声明 + 删除我的资料（按 PDPA 2010 的做法写，条文待律师核对） ---------- */
+ROUTES.add("privacy");
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-pb]"); if(!b) return; ui.pb=b.dataset.pb; ui.shown=24; render() });
+
+V.privacy=()=>`${H1("隐私声明","Privacy notice")}
+<div class="panel stack prose" style="gap:12px">
+<p>${B("这一页说明 Holofen 收集你的哪些资料、用来做什么、谁看得到，以及你怎么删除。","This page explains what Holofen collects, why, who can see it, and how to delete it.")}</p>
+<h3>${B("我们收集什么","What we collect")}</h3>
+<ul><li>${B("登录用的邮箱（用 Google 登录时还有 Google 账号名字）。","Your sign-in email (and your Google account name if you sign in with Google).")}</li>
+<li>${B("你自己填的姓名、手机号码；下单时填的收件地址。","The name and phone number you enter, and the delivery address you give when you order.")}</li>
+<li>${B("订单、付款参考号、评价和晒卡照片。","Your orders, payment references, reviews and pull photos.")}</li>
+<li>${B("签到日期、收藏的商品，以及你登录后哪几天打开过网站。","Your check-in dates, saved items, and the days you opened the site while signed in.")}</li></ul>
+<h3>${B("用来做什么","Why we use it")}</h3>
+<ul><li>${B("处理和寄送你的订单，有问题时联系你。","To process and ship your orders, and contact you about them.")}</li>
+<li>${B("计算会员积分、签到和抽奖。","To work out your points, check-ins and lucky draws.")}</li>
+<li>${B("了解网站有多少人在用，改进网站。","To see how the site is used and improve it.")}</li></ul>
+<p>${B("我们不卖、不出租你的资料，也不用来投广告。","We never sell or rent your data, or use it for advertising.")}</p>
+<h3>${B("谁看得到","Who can see it")}</h3>
+<p>${B("只有你和本店店主、员工。资料存在 Supabase 的服务器上；寄货时，收件人姓名、手机和地址会交给快递公司。","Only you and the shop owner and staff. Data is stored on Supabase servers. When we ship, your name, phone and address go to the courier.")}</p>
+<h3>${B("怎么修改或删除","How to change or delete it")}</h3>
+<p>${B("登录后点右上角的名字，就能修改资料，或按「删除我的资料」。删除会清掉你的个人资料、签到、收藏和活跃记录。订单记录要留作交易凭证，不会一起删除。","Sign in and tap your name at the top to edit your details or tap “Delete my data”. This clears your profile, check-ins, saved items and activity. Order records are kept as transaction records.")}</p>
+${signedIn()?`<div><button class="linkbtn" data-delme>${B("删除我的资料","Delete my data")}</button></div>`:""}
+<p class="muted">${B("更新日期：2026-11-17。","Last updated: 2026-11-17.")}</p></div>`;
+document.addEventListener("click",async e=>{ const b=e.target.closest&&e.target.closest("[data-delme]"); if(!b) return; e.preventDefault(); e.stopPropagation();
+  if(!signedIn()) return; if(!confirm(trT("确定删除你的个人资料、签到、收藏和活跃记录？删除后不能恢复。订单记录会保留。"))) return;
+  ME=normMe(null); await saveMe(); toast("你的资料已删除 Your data has been deleted"); if(window.HOLO_AUTH&&HOLO_AUTH.signOut) HOLO_AUTH.signOut() },true);
 ROUTES.add("wish"); ROUTES.add("wall"); GROUPS.cart.splice(1,0,["wish","收藏","Saved"]); PARENT.wish="cart";
 window.BTM_MORE.splice(window.BTM_MORE.length-1,0,["wall","晒卡墙",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-5-8 7"/></svg>`]);
 ATABS.splice(ATABS.length-1,0,["wall","晒卡墙","Pull wall"]);
@@ -2377,8 +2412,22 @@ ATABS.splice(ATABS.length-1,0,["lucky","抽奖","Lucky draw"]);
       return H1("设置","Settings")+off+seg("data-stab",st,tabs)+body }
     const rows=[]; Object.entries(all).forEach(([u,d])=>arr(d.orders).forEach(o=>rows.push([u,eff(u,o)]))); rows.sort((a,b)=>b[1].at-a[1].at);
     const f=OF.find(x=>x[0]===ui.ofil)||OF[0], list=rows.filter(r=>f[3](r[1]));
-    return H1("订单","Orders")+off+seg("data-ofil",f[0],OF.map(x=>[x[0],x[1],x[2],rows.filter(r=>x[3](r[1])).length]))+expBar("orders")+(list.length?list.map(r=>admOrder(r[0],r[1])).join(""):`<p class="muted">${rows.length?BL("这个状态下没有订单。","No orders in this state."):BL("还没有订单。顾客下单后会出现在这里，审核、寄送都在这一页做。","No orders yet. New orders appear here, and you review and ship them on this page.")}</p>`) };
+    return H1("订单","Orders")+off+seg("data-ofil",f[0],OF.map(x=>[x[0],x[1],x[2],rows.filter(r=>x[3](r[1])).length]))+ordStats(rows)+(f[0]==="toship"&&list.length?`<div class="row"><button class="pri" data-plabel="1">${B("打印 "+list.length+" 张寄件地址","Print "+list.length+" shipping labels")}</button></div>`:"")+expBar("orders")+(list.length?list.map(r=>admOrder(r[0],r[1])).join(""):`<p class="muted">${rows.length?BL("这个状态下没有订单。","No orders in this state."):BL("还没有订单。顾客下单后会出现在这里，审核、寄送都在这一页做。","No orders yet. New orders appear here, and you review and ship them on this page.")}</p>`) };
 
+  /* v75 本月营业额、热卖前 5、库存快没了；待寄出的一键打印地址 */
+  const PAID=o=>o.status==="approved"||o.status==="shipped"||o.status==="delivered"||o.status==="done";
+  window.ordStats=rows=>{ const E=isEN(), mon=dayStr(Date.now()).slice(0,7), mo=rows.map(r=>r[1]).filter(o=>PAID(o)&&dayStr(o.at).slice(0,7)===mon);
+    const rev=mo.reduce((t,o)=>t+o.total,0), cnt={}; mo.forEach(o=>o.items.forEach(c=>{ cnt[c.name]=(cnt[c.name]||0)+c.qty }));
+    const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,5);
+    const low=P.filter(p=>listed(p)&&!isPre(p)&&p.stock>0&&p.stock<=2).slice(0,8);
+    const kpi=(n,z,e)=>`<div class="kpi"><span class="muted">${B(z,e)}</span><b>${n}</b></div>`;
+    return `<div class="kpis">${kpi(rm(rev),"本月营业额（已收款）","Revenue this month (paid)")}${kpi(mo.length,"本月已收款订单","Paid orders this month")}${kpi(rows.filter(r=>r[1].status==="review").length,"等你审核","Waiting for you")}</div>
+    ${top.length?`<p class="muted" style="margin:6px 0 0">${B("本月热卖","Top sellers this month")}：${top.map(t=>esc(t[0])+" ×"+t[1]).join("，")}</p>`:""}
+    ${low.length?`<p class="note" style="margin:6px 0 0">${B("库存快没了","Low stock")}：${low.map(p=>esc(PN(p))+" "+p.stock).join("，")}</p>`:""}` };
+  document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-plabel]"); if(!b||!owner) return;
+    const rows=[]; Object.entries(all).forEach(([u,d])=>arr(d.orders).forEach(o=>{ const x=eff(u,o); if(x.status==="approved"&&!x.svcOnly) rows.push(x) })); rows.sort((a,b)=>a.at-b.at);
+    const w=window.open("","_blank"); if(!w) return toast("浏览器挡住了新窗口，请允许弹出窗口 Please allow pop-ups");
+    w.document.write(`<!doctype html><meta charset="utf-8"><title>Holofen labels</title><style>body{font-family:sans-serif;margin:0}.l{box-sizing:border-box;width:100mm;min-height:60mm;border:1px dashed #999;padding:5mm;margin:4mm;display:inline-block;vertical-align:top;page-break-inside:avoid;font-size:12pt;line-height:1.45}.l b{font-size:14pt}.l small{display:block;color:#555;font-size:9pt;margin-top:3mm}</style>`+rows.map(o=>`<div class="l"><b>${esc(o.name)}</b><br>${esc(o.phone)}<br>${esc(o.addr)}<br>${esc(o.post)} ${esc(o.state)}<small>${esc(o.id)} · ${esc(o.shipName)}<br>${o.items.map(c=>esc(c.name)+" ×"+c.qty).join("<br>")}</small></div>`).join("")+`<script>onload=()=>print()<\/script>`); w.document.close() });
   /* v73 导出 CSV：订单和用户都可以按时间段、指定的人导出。Excel 打开中文不乱码（加 BOM）。 */
   const stName=o=>{ const x=OF.slice(1).find(f=>f[3](o)); return x?(isEN()?x[2]:x[1]):o.status };
   const people=()=>{ const m=new Map(); arr(window.UROWS).forEach(r=>m.set(r.u,(r.name||"")+(r.email?" · "+r.email:"")));
@@ -2541,7 +2590,7 @@ document.addEventListener("click",e=>{
   if(ds.amore){ ui.ashown=(ui.ashown||24)+24; return render() }
   if(ds.rsave){ if(!owner) return; const r={}; for(const k of Object.keys(RULES0)){ const v=num(val("r-"+k)); if(!isFinite(v)||v<0) return toast("规则要填 0 或以上的数字"); r[k]=v } if(r.redeemPts<1) return toast("「多少分起换」至少 1 分"); CAT.rules=r; return saveCat() }
   if(ds.adm){ if(!owner) return; const u=ds.u,oid=ds.o,[,raw]=findOrder(u,oid); if(!raw) return; const o=eff(u,raw);
-    if(ds.adm==="approve") return saveAdm(u,oid,{status:"approved",approvedAt:Date.now(),snap:Object.fromEntries(o.items.map(c=>[c.id,c.price]))}).then(()=>toast("已通过审核"));
+    if(ds.adm==="approve") return saveAdm(u,oid,{status:"approved",approvedAt:Date.now(),stockOut:1,snap:Object.fromEntries(o.items.map(c=>[c.id,c.price]))}).then(async()=>{ const low=[]; let ch=0; const it={...CAT.items}; o.items.forEach(c=>{ const p=item(c.id); if(!p||p.svc||isPre(p)||!(p.stock>0)) return; const n=Math.max(0,p.stock-c.qty); it[c.id]={...(own(it,c.id)?it[c.id]:{}),stock:n}; ch=1; if(n<=2) low.push(PN(p)+"："+n) }); if(ch){ CAT.items=it; await saveCat() } toast("已通过审核"+(ch?"，库存已扣":"")+(low.length?"。库存快没了："+low.join("、"):"")) });
     if(ds.adm==="quote"){ const q=Math.round(num(val("qt-"+oid))); if(!(q>0)) return toast("请填报价"); if(q<130||q>250) toast("提醒：报价不在 RM130–250 之间"); return saveAdm(u,oid,{quote:q,snap:{"svc-deck":q}}).then(()=>toast("报价已发给顾客")) }
     if(ds.adm==="reject") return saveAdm(u,oid,{status:"rejected",reason:val("rej-"+oid)});
     if(ds.adm==="ship"){ const tn=val("tn-"+oid); if(!tn) return toast("请填运单号"); return saveAdm(u,oid,{status:"shipped",courier:val("cr-"+oid),tracking:tn,shippedAt:Date.now()}).then(()=>toast("已标记寄出")) }
