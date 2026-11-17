@@ -901,7 +901,50 @@ nav.tabs:has(a:focus-visible) a:not(:focus-visible) .nh{opacity:0!important;visi
 .prof summary{display:flex;gap:10px;align-items:center;flex-wrap:wrap;cursor:pointer;list-style:none}.prof summary::-webkit-details-marker{display:none}.prof summary .muted{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .utab td{vertical-align:top}.utab td:nth-child(3){min-width:160px;max-width:260px}.utab .chip{font-weight:700}
 .aseg{display:flex;flex-wrap:wrap;gap:8px}.aseg button{border-radius:99px;padding:7px 14px;min-height:40px}.aseg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}.aseg button b{font-size:12px;background:rgba(0,0,0,.08);border-radius:99px;padding:1px 7px;margin-left:2px}.aseg button.on b{background:rgba(255,255,255,.22)}
-.linkbtn{background:none;border:0;padding:0;min-height:0;color:var(--down);text-decoration:underline;font:inherit;cursor:pointer}.prose ul{margin:0;padding-left:20px;display:grid;gap:4px}.prose h3{margin:6px 0 0}.pbchips{align-items:center}.pbchips>.muted{font-size:13px;margin-right:2px}.disc{text-align:center;font-size:12px;color:var(--muted);margin:8px auto 0;max-width:720px;line-height:1.5}.flinks{display:flex;flex-wrap:wrap;gap:6px 22px;justify-content:center;padding:14px 0 4px;font-size:14px}.flinks a{color:var(--muted)}
+.linkbtn{background:none;border:0;padding:0;min-height:0;color:var(--down);text-decoration:underline;font:inherit;cursor:pointer}.prose ul{margin:0;padding-left:20px;display:grid;gap:4px}.prose h3{margin:6px 0 0}.disc{text-align:center;font-size:12px;color:var(--muted);margin:8px auto 0;max-width:720px;line-height:1.5}.flinks{display:flex;flex-wrap:wrap;gap:6px 22px;justify-content:center;padding:14px 0 4px;font-size:14px}.flinks a{color:var(--muted)}
+
+/* ---------- v76 柔和配色（取自 Holofen logo 定稿 PNG：奶油 #f0f0e0/#f0e0c0、深海军蓝 #002030、青绿 #006070、金 #f0c050）
+   奶油底、薄荷/浅蓝交替区块、深蓝字、青绿按钮、少量金色；不再用纯白大面积 ---------- */
+:root{--bg:#f8f2e4;--surface:#fffbf2;--ink:#102637;--muted:#55606f;--line:#e6dcc6;--mint:#e8f3ee;--skyb:#e7f0f6;--teal:#0b6672;
+  --sun:#f0c050;--sun-ink:#102637;--red:#0b6672;--note:#fdf0cf;--tile:#f3ecdc;--soft:#f3ecdc}
+body{background:var(--bg)}
+.bgfx,.bgleaf{display:none}
+:root{--accent:#0b6672;--blue:#0b6672}
+.chips button.on,.chips button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.hero .leaves,.hero .spot{display:none}
+.hero{background:linear-gradient(180deg,#bfe3f4 0%,#d9eef3 36%,#e8f3ee 62%,var(--bg) 92%)}
+#view>section.sec{padding:18px clamp(14px,2.5vw,24px) 20px;border-radius:22px;background:var(--mint);border:1px solid #d6e9e0}
+#view>section.sec:nth-of-type(even){background:var(--skyb);border-color:#d3e3ee}
+
+/* v76 导航小提示：一行、贴着导航项，放在页头和标题之间预留的空位里，不盖住标题 */
+@media (min-width:641px){
+  main{padding-top:40px}
+  .bar:not(.adm) nav.tabs a .nh{top:calc(100% + 5px);max-width:none;white-space:nowrap;padding:2px 10px 2px 3px;border-radius:99px;font-size:12px;line-height:20px;box-shadow:0 2px 0 var(--ink);border-width:1.5px;z-index:12}
+  .bar:not(.adm) nav.tabs a .nh img{width:20px;height:20px}
+  .bar:not(.adm) nav.tabs a .nh::before{top:-5px;width:8px;height:8px;margin-left:-4px}
+}
+
+/* v76 滚动卡左右箭头：一直看得到，手指也能拖 */
+.mqw{position:relative}
+.mqa{position:absolute;top:50%;z-index:3;width:38px;height:38px;min-height:0;padding:0;border-radius:99px;transform:translateY(-50%);display:grid;place-items:center;background:var(--surface);border:1.5px solid var(--ink);box-shadow:0 2px 0 var(--ink);color:var(--ink);font-size:22px;font-weight:800;line-height:1;cursor:pointer}
+.mqa.l{left:4px}.mqa.r{right:4px}
+@media (max-width:640px){.mqa{width:32px;height:32px;font-size:19px}}
+.serstrip,.setsw{-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 48px),transparent);mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 48px),transparent);padding-right:40px}
+.imgcap{margin:6px 2px 0;font-size:12px;color:var(--muted);line-height:1.45}.paynote b{color:var(--note-ink)}
+.wrules ul{margin:8px 0 0;padding-left:20px;display:grid;gap:4px;font-size:14px}.wrules summary{cursor:pointer}
+.shipnote summary{cursor:pointer}.shipnote ul{margin:6px 0 0;padding-left:18px;display:grid;gap:3px;font-size:13.5px}
+
+/* v76 回到顶部：一条虚线分隔，中间一个小白鹿按钮，不再用整条黄色色带 */
+.totopw{margin:44px 0 34px;border-top:1.5px dashed #d9ccb0;text-align:center;height:0}
+.topbtn{position:relative;top:-24px;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:5px 18px 5px 5px;border-radius:99px;background:var(--surface);border:1.5px solid var(--ink);box-shadow:0 3px 0 var(--ink);color:var(--ink);font:800 14px/1 var(--body);cursor:pointer}
+.topbtn .pk{width:34px;height:34px;border-radius:99px;background:var(--mint);display:grid;place-items:center;overflow:hidden;transition:transform .25s var(--ease-out)}
+.topbtn .pk img{width:30px;height:30px;object-fit:contain}
+.topbtn:hover .pk,.topbtn:focus-visible .pk{transform:translateY(-3px) rotate(-6deg)}
+.topbtn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.topbtn:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.topbtn .pk{transition:none}.topbtn:hover .pk,.topbtn:focus-visible .pk{transform:none}}
+footer,.foot-wrap{margin-top:0}
+#checkout>label.f{flex:none}
 </style>
 
 <div class="bgfx" aria-hidden="true"></div>
@@ -920,7 +963,7 @@ nav.tabs:has(a:focus-visible) a:not(:focus-visible) .nh{opacity:0!important;visi
 <div id="intro" role="img" aria-label="Holofen 开场动画"><video muted playsinline preload="auto" poster="intro/holofen-intro-first.jpg" src="intro/holofen-intro-720.mp4"></video><button class="skip" type="button">跳过 <span class="en">Skip</span></button></div>
 <script>
 (function(){ var el=document.getElementById("intro"), h=location.hash.replace("#",""), v=el.querySelector("video"), done=false, swapped=false, started=false;
-  function end(){ if(done) return; done=true; el.classList.add("out"); document.documentElement.classList.remove("intro-on"); setTimeout(function(){ try{ v.pause() }catch(e){} el.remove() },800) }
+  function end(){ if(done) return; done=true; try{ sessionStorage.setItem("introSeen","1") }catch(e){} document.removeEventListener("keydown",esc); el.classList.add("out"); document.documentElement.classList.remove("intro-on"); setTimeout(function(){ try{ v.pause() }catch(e){} el.remove() },800) }
   /* 浏览器不让视频自动播放时，换成会动的图片 */
   function swap(){ if(swapped||done) return; swapped=true; var im=new Image(); im.alt=""; im.className="iv";
     im.onload=function(){ if(done) return; try{ v.pause() }catch(e){} v.replaceWith(im); setTimeout(end,5900) };
@@ -928,15 +971,21 @@ nav.tabs:has(a:focus-visible) a:not(:focus-visible) .nh{opacity:0!important;visi
     im.src="intro/holofen-intro-anim-s.webp" }
   /* 等整段缓冲好才开始播，这样不会一卡一卡 */
   function start(){ if(started||done) return; started=true; var pr; try{ pr=v.play() }catch(e){ return swap() } if(pr&&pr.catch) pr.catch(swap); setTimeout(end,9000) }
-  if(h&&h!=="home"){ el.remove(); return }
+  /* v76：每个浏览器会话只播一次；系统设了减少动态就不播；按 Esc 或「跳过」结束；不盖住顶部的付款提示 */
+  var seen=false; try{ seen=sessionStorage.getItem("introSeen")==="1" }catch(e){}
+  var rm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if((h&&h!=="home")||seen||rm){ el.remove(); return }
+  function esc(e){ if(e.key==="Escape") end() }
+  document.addEventListener("keydown",esc);
+  var tr=document.querySelector(".trial"); if(tr){ el.style.top=tr.offsetHeight+"px" }
   document.documentElement.classList.add("intro-on");
-  el.querySelector(".skip").addEventListener("click",end);
+  var sk=el.querySelector(".skip"); sk.addEventListener("click",end); setTimeout(function(){ try{ sk.focus({preventScroll:true}) }catch(e){} },50);
   v.addEventListener("ended",function(){ setTimeout(end,700) });
   v.addEventListener("error",swap);
   v.addEventListener("canplaythrough",start);
   if(v.readyState>=4) start();
-  setTimeout(start,6000);
-  setTimeout(end,22000);
+  setTimeout(start,2500);
+  setTimeout(end,10000);
 })();
 </script>
 <div class="bgleaf" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -1342,6 +1391,7 @@ function detail(p){
   return `<div class="modal"><div class="box" role="dialog" aria-label="${esc(pname(p))}"><img src="${bimg(p)}" alt="${esc(pname(p))}">
   <div class="stack" style="gap:12px"><div><div class="row" style="justify-content:space-between;flex-wrap:nowrap;align-items:flex-start"><h2>${esc(PN(p))}</h2><button data-close="1" aria-label="关闭 Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="muted">${esc(p.zh)} · ${CATS[p.c][0]} ${CATS[p.c][1]}</div></div>
   <div><div class="bigp" style="font-size:30px">${rm(p.price)}</div><span class="muted">马来西亚发货，运费在结账时列出 <span class="en">Ships from Malaysia; shipping shown at checkout</span></span></div>
+    ${payNote(1)}
   ${p.c==="single"&&CI[p.id]?cardInfo(p,1):`<div><h3>${B("内容","What's inside")}</h3><p>${esc(c[0])}</p><p class="en">${esc(c[1])}</p>${c[2]?`<span class="chip tbd">待核对 <span class="en">Unverified</span></span>`:""}</div>`}
   <div class="row" style="gap:8px">${slogo(p.s)}<span class="muted">${esc(p.s)}${p.no?" · "+esc(numTxt(p)):""}</span></div>
   <p class="muted">图片为参考图，实物以实拍为准。<span class="en"> Reference photo; real photos to follow.</span></p>
@@ -1393,9 +1443,12 @@ const ic=(k,sz=22,c="currentColor")=>`<svg width="${sz}" height="${sz}" viewBox=
 function setFeature(s){ const c=SINGLES.filter(p=>p.s===s&&p.big).sort((a,b)=>mp(b)-mp(a))[0]||SINGLES.filter(p=>p.s===s).sort((a,b)=>mp(b)-mp(a))[0]; const bx=P.filter(p=>p.s===s&&(p.c==="box"||p.c==="etb"||p.c==="bundle")).sort((a,b)=>b.price-a.price)[0]; return [c,bx] }
 /* 没有本店单卡照片的系列：用卡表里最贵的那张卡做代表（卡图来自 TCGdex） */
 const SETFEAT={"Journey Together":["feat/sv9-184.webp","Lillie's Clefairy ex 184"],"Surging Sparks":["feat/sv8-238.webp","Pikachu ex 238"]};
+/* v76 系列张数统一写法：卡面编号内的张数 + 编号以外（隐藏稀有、经典典藏等），共几张 */
+function setCnt(s){ const pr=(SC[s]&&SC[s].printed)||(SI[s]&&SI[s].total)||0, all=Object.values(CARDS).filter(c=>c.s===s).length||pr, x=Math.max(0,all-pr);
+  return x?B(`编号 ${pr} 张 + 编号以外 ${x} 张，共 ${all} 张`,`${pr} numbered + ${x} beyond the number = ${all} cards`):B(`共 ${pr} 张`,`${pr} cards`) }
 function serCarousel(){
   const n=SETS.length, i=((ui.sc%n)+n)%n;
-  return `<section class="scar" aria-roledescription="carousel" aria-label="卡牌系列 Card sets"><div class="strk" style="${scarPos(i)}">${SETS.map((s,k)=>{ const [c,bx]=setFeature(s); return `<div class="sld${k===i?" on":""}" style="--sc:${SETC[s]||"#1c8fc4"}" role="group" aria-label="${esc(s)}"><div><img class="lg" src="${SI[s].logo}" alt="${esc(s)}"><div class="sd">${B("发售日期 "+SI[s].date,"Released "+SI[s].date)}<span> · </span>${B("共 "+SI[s].total+" 张","Set of "+SI[s].total)}</div><div class="row"><a class="go" href="${setUrl(s)}">${B("查看系列卡牌","Explore the set")}</a><a class="go2" href="#shop" data-ser="${esc(s)}">${B("购买产品","Shop products")}</a></div></div><div class="pics">${bx?`<img class="c2" src="${simg(bx)}" alt="${esc(bx.n)}">`:""}${c?`<img class="c1" src="${c.big?"big":"img"}/${c.img}.jpg" alt="${esc(c.n)}">`:SETFEAT[s]?`<img class="c1" src="${SETFEAT[s][0]}" alt="${esc(SETFEAT[s][1])}">`:""}${!c&&!bx&&!SETFEAT[s]?`<div class="ph"><span><img src="intro/holofen-mark.webp" alt="">${B("这个系列的产品照片还在准备","Product photos coming soon")}</span></div>`:""}</div></div>` }).join("")}</div>
+  return `<section class="scar" aria-roledescription="carousel" aria-label="卡牌系列 Card sets"><div class="strk" style="${scarPos(i)}">${SETS.map((s,k)=>{ const [c,bx]=setFeature(s); return `<div class="sld${k===i?" on":""}" style="--sc:${SETC[s]||"#1c8fc4"}" role="group" aria-label="${esc(s)}"><div><img class="lg" src="${SI[s].logo}" alt="${esc(s)}"><div class="sd">${B("发售日期 "+SI[s].date,"Released "+SI[s].date)}<span> · </span>${setCnt(s)}</div><div class="row"><a class="go" href="${setUrl(s)}">${B("查看系列卡牌","Explore the set")}</a><a class="go2" href="#shop" data-ser="${esc(s)}">${B("购买产品","Shop products")}</a></div></div><div class="pics">${bx?`<img class="c2" src="${simg(bx)}" alt="${esc(bx.n)}">`:""}${c?`<img class="c1" src="${c.big?"big":"img"}/${c.img}.jpg" alt="${esc(c.n)}">`:SETFEAT[s]?`<img class="c1" src="${SETFEAT[s][0]}" alt="${esc(SETFEAT[s][1])}">`:""}${!c&&!bx&&!SETFEAT[s]?`<div class="ph"><span><img src="intro/holofen-mark.webp" alt="">${B("这个系列的产品照片还在准备","Product photos coming soon")}</span></div>`:""}</div></div>` }).join("")}</div>
   <button class="sarr l" data-scar="-1" aria-label="上一个系列 Previous"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button class="sarr r" data-scar="1" aria-label="下一个系列 Next"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
   <div class="sdots" aria-hidden="true">${SETS.map((_,k)=>`<i class="${k===i?"on":""}"></i>`).join("")}</div></section>`;
 }
@@ -1434,12 +1487,13 @@ V.market=()=>{
    <div class="cgrid">${all.slice(0,ui.mshown||24).map(ctile).join("")||`<p class="muted">${B("没有符合的卡","No cards match")}</p>`}</div>${all.length>(ui.mshown||24)?`<div><button data-mmore="1">${B("再显示 24 张","Show 24 more")}</button></div>`:""}</section>`;
   return `<section class="mhero"><div class="mh1"><span class="tag live">${isEN()?"MARKET":"行情"}</span><h1>${B("卡价雷达","Card price radar")}</h1><p>${B(`${Object.keys(CARDS).length} 张卡，${SETS.length} 个系列每一张都有价格。手上的卡值多少、最近谁在涨，搜一下就知道。`,`${Object.keys(CARDS).length} cards across ${SETS.length} sets, every one priced. Search to see what yours is worth.`)}</p>
     <div class="msearch">${ic("search",20)}<input id="mq" type="search" placeholder="输入卡名或编号，例如 月亮伊布 161、Pikachu" value="${esc(ui.mq)}" aria-label="搜索卡牌 Search cards"></div>
-    <div class="mkpi"><div><small>${B("合计市值","Total value")}</small><b>${rm(tot)}</b></div><div><small>${B("7 天上涨","Up 7d")}</small><b class="up">${up}</b></div><div><small>${B("7 天下跌","Down 7d")}</small><b class="down">${dn}</b></div><div><small>${B("价格更新","Updated")}</small><b>${TD.date}</b></div></div></div></section>
+    <div class="mkpi"><div><small>${B("所列卡牌参考价合计","Sum of listed reference prices")}</small><b>${rm(tot)}</b></div><div><small>${B("7 天上涨 / 有涨跌数据","Up 7d / with data")}</small><b class="up">${up} <span class="muted" style="font-size:.6em">/ ${mov.length}</span></b></div><div><small>${B("7 天下跌 / 有涨跌数据","Down 7d / with data")}</small><b class="down">${dn} <span class="muted" style="font-size:.6em">/ ${mov.length}</span></b></div><div><small>${B("价格更新","Updated")}</small><b>${TD.date}</b></div></div></div></section>
   ${q?results:`<div class="tape"><div class="track">${tape}${tape}</div></div>
   <div class="serstrip" role="group" aria-label="选择系列 Set">${`<button class="all${!sel?" on":""}" data-mser="">${B("全部系列","All sets")}</button>`}${SETS.map(s=>`<button data-mser="${esc(s)}" class="${sel===s?"on":""}" aria-pressed="${sel===s}">${slogo(s,"")}<span>${esc(s)}</span></button>`).join("")}</div>
   <div class="board"><div class="bh"><b>${B("行情榜单","MARKET BOARD")}</b><span class="tag live">${isEN()?"MARKET":"行情"}</span><span class="tag">${B("更新于 "+TD.date,"Updated "+TD.date)}</span><span class="tag">${sel?esc(sel):B("全部系列","All sets")}</span></div>
    <div class="cols">${col("7 天涨幅前 5","Top 5 gainers (7d)",gain)}${col("7 天跌幅前 5","Top 5 losers (7d)",lose)}${col("高价前 5","Top 5 by value",hot)}</div>
-   <div class="kstrip"><div><small>${B("收录卡牌","Cards")}</small><b>${callp.length}</b></div><div><small>${B("7 天上涨","Up")}</small><b class="up">${up}</b></div><div><small>${B("7 天下跌","Down")}</small><b class="down">${dn}</b></div><div><small>${B("合计市值","Total value")}</small><b>${rm(tot)}</b></div></div></div>
+   <div class="kstrip"><div><small>${B("收录卡牌","Cards")}</small><b>${callp.length}</b></div><div><small>${B("7 天上涨","Up")}</small><b class="up">${up} / ${mov.length}</b></div><div><small>${B("7 天下跌","Down")}</small><b class="down">${dn} / ${mov.length}</b></div><div><small>${B("所列卡牌参考价合计","Sum of listed prices")}</small><b>${rm(tot)}</b></div></div></div>
+  <div class="note" style="font-size:12.5px">${B(`怎么算：「所列卡牌参考价合计」是${sel?"这个系列":"全部系列"}有价格的 ${priced.length} 张卡各一张的 TCGplayer 参考价加起来，不是市场总值，也不是本店估价。美元价按 1 USD = RM${FX.toFixed(4)} 换成令吉。「7 天上涨 / 下跌」的分母是 RM20 以上、有 7 天涨跌数据的 ${mov.length} 张卡。以下都是第三方参考价，不是本店收购价或售价，也不是投资建议；价格只在每周一更新时换，不会自己刷新。`,`How it is worked out: the sum adds one copy of each of the ${priced.length} priced cards ${sel?"in this set":"across all sets"} at the TCGplayer reference price. It is not a market valuation or a shop price. USD prices are converted at 1 USD = RM${FX.toFixed(4)}. Up/down counts are out of the ${mov.length} cards over RM20 with 7-day data. All prices are third-party references, not our buy or sell prices and not investment advice. They change only at the Monday update.`)}</div>
   <p class="muted" style="font-size:12px">${B(`点榜单里的卡直接看价格走势。涨跌幅是 Cardmarket 近 7 天平均成交价对比近 30 天（只算 RM20 以上的卡），价格是 TCGplayer 市场价，都经 TCGdex 读取，${TD.date}；本店跟踪的 73 张卡用 PriceCharting。`,`Tap a card for its price history. Change = Cardmarket 7-day vs 30-day average (cards over RM20); prices are TCGplayer market via TCGdex, ${TD.date}.`)}</p>
   <section class="stack sec" style="gap:16px">${H2(sel?"高价前 15":"各系列高价前 15","Top 15 by value per set")}
    ${sets.map(s=>{ const l=(CBYSET[s]||[]).filter(c=>cRM(c)!=null).sort((a,b)=>cRM(b)-cRM(a)).slice(0,15); return l.length?`<div class="stack" style="gap:8px"><div class="sethd"><div class="l">${slogo(s,"")}<b>${esc(s)}</b><span class="muted">${SI[s].date}</span></div><a href="${setUrl(s)}">${B("本系列完整卡表","This set's full card list")} ›</a></div><div class="crow">${l.map((c,i)=>ctile(c).replace('<div class="ctop">',`<span class="rk">#${i+1}</span><div class="ctop">`)).join("")}</div></div>`:"" }).join("")}
@@ -1544,7 +1598,7 @@ const CONTACT=[
  ["fb","Facebook","#1877f2","",`<path d="M14 8.5h2V5.2h-2.4C11 5.2 10 7 10 9.2v1.6H8v3.3h2V20h3.4v-5.9h2.4l.4-3.3h-2.8V9.5c0-.6.2-1 .6-1z" fill="#fff" stroke="none"/>`],
  ["xhs","小红书","#ff2442","",`<text x="12" y="16.5" text-anchor="middle" font-size="13" font-weight="800" fill="#fff" stroke="none" font-family="sans-serif">书</text>`]];
 function band(){
-  return `<button class="topband" data-top="1" aria-label="回到顶部 Back to top"><span class="wrap" style="display:flex"><span class="mas" aria-hidden="true">${buddy(30,"smile")}${buddy(22,"wow")}</span><span class="totop"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>回到顶部 <span class="en">Back to top</span></span><span class="mas r" aria-hidden="true">${buddy(30,"smile")}${buddy(22,"zzz")}</span></span></button>
+  return `<div class="totopw"><button class="topbtn" type="button" data-top="1"><span class="pk" aria-hidden="true"><img src="intro/holofen-mark.webp" alt="" width="34" height="34"></span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>${B("回到顶部","Back to top")}</button></div>
   <div class="wrap">${CONTACT.some(c=>c[3])?`<div class="ctc" id="contact">${CONTACT.filter(c=>c[3]).map(c=>`<a href="${c[3]||"#"}" ${c[3]?'target="_blank" rel="noopener"':`data-tbd="${c[1]}"`}><span class="ic" style="background:${c[2]}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${c[4]}</svg></span>${c[1]}${c[3]?"":`<span class="tbd">${B("待开通","Soon")}</span>`}</a>`).join("")}</div>`:""}
   <nav class="flinks" aria-label="${isEN()?"More":"更多"}"><a href="#wall">${B("晒卡墙","Pull wall")}</a><a href="#lucky">${B("签到和抽奖","Check-in & draw")}</a><a href="#fake">${B("防伪指南","Spot fakes")}</a><a href="#privacy">${B("隐私声明","Privacy")}</a></nav><p class="disc">${B("Holofen 是独立卡牌店，不是 The Pokémon Company 的官方商店。Pokémon 及相关名称和图片的商标归各自权利人所有。","Holofen is an independent card shop, not an official store of The Pokémon Company. Pokémon and related names and images are trademarks of their respective owners.")}</p></div>`;
 }
@@ -1553,14 +1607,15 @@ V.item=()=>{
   const c=CI[p.id], cc=contents(p), st=SI[p.s];
   const same=P.filter(x=>x.s===p.s&&x.id!==p.id).sort((a,b)=>b.price-a.price).slice(0,4);
   return `<div class="crumb"><a href="#shop">${B("商店","Shop")}</a> › <a href="#shop" data-ser="${esc(p.s)}">${esc(p.s)}</a> › ${esc(PZ(p))}</div>
-  <div class="pp"><div class="art"><img src="${bimg(p)}" alt="${esc(pname(p))}"></div>
+  <div class="pp"><div class="art"><img src="${bimg(p)}" alt="${esc(pname(p))}">${p.photo?`<p class="imgcap">${B("本店实拍","Our own photo")}</p>`:`<p class="imgcap">${B("示意图（官方或公开商品图），不是本店实拍；收到的语言版和包装以商品名称为准。","Illustrative image (official or public product photo), not our own photo. The language and packaging you receive follow the item name.")}</p>`}</div>
   <div class="stack" style="gap:14px">
     <div>${st?`<div class="row" style="gap:8px">${slogo(p.s,"slogo")}<span class="muted">${esc(p.s)}</span></div>`:""}
       <h1 style="margin:6px 0 2px">${esc(PZ(p))}${isEN()||!p.zh?"":`<small>${esc(p.n)}</small>`}</h1>
       <div class="muted">${p.no?esc(numTxt(p))+" · ":""}${c&&c.rarity?esc(RAR[c.rarity]||c.rarity)+" · ":""}${CATS[p.c][0]} <span class="en">${CATS[p.c][1]}</span></div></div>
     <div><div class="bigp" style="font-size:34px">${rm(p.price)}</div><span class="muted">马来西亚发货，运费在结账时列出 <span class="en">Ships from Malaysia; shipping shown at checkout</span></span></div>
+    ${payNote(1)}
     <div class="row">${!listed(p)?`<button disabled>已下架 <span class="en">Not for sale</span></button>`:isPre(p)?`<button class="pri" data-add="${p.id}">预购 <span class="en">Pre-order</span></button>`:p.stock===0?`<button disabled>缺货 <span class="en">Out of stock</span></button>`:p.loose?(()=>{ const k=p.id, cap=p.stock>0?Math.min(99,p.stock):99; return `<div class="lq lcus"><span class="row" style="gap:4px;flex-wrap:nowrap"><button type="button" data-lstep="${k}" data-d="-1" aria-label="${BT("少一包","One less")}">−</button><input id="lq-${k}" type="number" min="1" max="${cap}" step="1" inputmode="numeric" value="1" aria-label="${BT("要几包","Number of packs")}" data-lprice="${p.price||0}"><button type="button" data-lstep="${k}" data-d="1" aria-label="${BT("多一包","One more")}">+</button></span><button class="pri" data-addq="${k}">${B("加入购物车","Add to cart")}<small id="lqt-${k}">${p.price>0?`1 ${B("包","pack")} · ${rm(p.price)}`:B("价格待定","Price TBD")}</small></button></div><span class="muted" style="flex-basis:100%">${B("要几包自己填，1 到 "+cap+" 包都可以。","Enter any number of packs, from 1 to "+cap+".")}</span>` })():`<button class="pri" data-add="${p.id}">加入购物车 <span class="en">Add to cart</span></button>`}${wishBtn(p,1)}<span class="muted">${isPre(p)?"":p.stock>0?`${B("现货","In stock")} ${p.stock}`:p.stock===0?"":B("库存待店主录入","Stock TBD")}</span></div>
-    ${isPre(p)&&listed(p)?`<div class="note">${B(`预购：预计 ${preTxt(p)}到货。下单时全额付款，到货后按下单先后寄出。到货时间以官方和代理商为准，如果延期会通知你。`,`Pre-order: expected ${isPre(p)}. Pay in full now; we ship in order of purchase when stock arrives, and tell you if it is delayed.`)}</div>`:""}
+    ${isPre(p)&&listed(p)?`<div class="note">${B(`预购：预计 ${preTxt(p)}到货。到货时间以官方和代理商为准。付款时间和寄出顺序待店主确认。`,`Pre-order: expected ${isPre(p)}. Arrival depends on the official release. Payment timing and shipping order are to be confirmed by the shop.`)}</div>`:""}
     ${p.lng||p.cond?`<div class="row" style="gap:6px">${p.lng?`<span class="chip">${esc(p.lng)}</span>`:""}${p.cond?`<span class="chip">${B("卡况","Condition")} ${esc(p.cond)}</span>`:""}</div>`:""}
     ${p.desc?`<div class="note" style="white-space:pre-line">${esc(p.desc)}</div>`:""}
     ${p.c==="single"?`${H2("卡牌资料","Card details")}${cardInfo(p)}`:p.desc?"":`<div><h3>${B("内容","What's inside")}</h3><p>${esc(cc[0])}</p><p class="en">${esc(cc[1])}</p>${cc[2]?`<span class="chip tbd">待核对 <span class="en">Unverified</span></span>`:""}</div>`}
@@ -1608,7 +1663,7 @@ function cbkStrip(side,row){ const n=8; return `<div class="cbks ${side}" data-r
   function frame(now){ const dt=Math.min(.05,(now-prev)/1000); prev=now;
     document.querySelectorAll(".mq .track").forEach(t=>{ const o=st(t), half=t.scrollWidth/2; if(!half) return;
       const hov=t.parentElement.matches(":hover")&&matchMedia("(hover:hover)").matches;
-      if(!(drag&&drag.t===t)&&!hov&&!RM.matches){ o.x+=(o.rev?-1:1)*half/o.dur*dt }
+      if(o.tgt!=null){ const d=o.tgt-o.x; o.x+=Math.abs(d)<1?d:d*Math.min(1,dt*9); if(Math.abs(d)<1) o.tgt=null; o.hold=now+2500 } else if(!(drag&&drag.t===t)&&!hov&&!RM.matches&&!(o.hold>now)){ o.x+=(o.rev?-1:1)*half/o.dur*dt }
       o.x=((o.x%half)+half)%half; t._x=o.x; t.style.transform=`translate3d(${-o.x}px,0,0)` });
     requestAnimationFrame(frame) }
   requestAnimationFrame(frame);
@@ -1617,6 +1672,8 @@ function cbkStrip(side,row){ const n=8; return `<div class="cbks ${side}" data-r
   const end=e=>{ if(!drag) return; const d=drag; drag=null; d.t.parentElement.classList.remove("dragging"); if(d.moved){ const kill=ev=>{ ev.preventDefault(); ev.stopPropagation() }; document.addEventListener("click",kill,{capture:true,once:true}); setTimeout(()=>document.removeEventListener("click",kill,{capture:true}),50) } };
   document.addEventListener("pointerup",end); document.addEventListener("pointercancel",end);
   document.addEventListener("dragstart",e=>{ if(e.target.closest&&e.target.closest(".mq")) e.preventDefault() });
+  /* v76 左右箭头：每按一次移动约 2 张，停 2.5 秒再继续自动滚 */
+  document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-mq]"); if(!b) return; const t=b.parentElement.querySelector(".track"); if(!t) return; const o=st(t), f=t.querySelector("figure"), w=f?f.getBoundingClientRect().width+12:180; const base=o.tgt!=null?o.tgt:o.x; o.tgt=base+(+b.dataset.mq)*w*2; o.hold=performance.now()+2500 });
 })();
 function kfModal(){ return `<div class="modal"><div class="box kf" role="dialog" aria-label="联系客服 Customer service"><div class="row" style="justify-content:space-between;flex-wrap:nowrap;align-items:flex-start"><div><h2>${B("联系客服","Talk to us")}</h2><p class="muted">${B("问库存、问卡况、问运费、售后，都可以直接找我们。","Stock, condition, shipping or after-sales: message us directly.")}</p></div><button data-close="1" aria-label="关闭 Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <div class="kfl">${kfLinks()}</div></div></div>` }
@@ -1761,7 +1818,7 @@ V.set=()=>{
   const prods=P.filter(p=>listed(p)&&p.s===s).sort((a,b)=>b.price-a.price);
   const promo=PROMOS[s]||[];
   return `<div class="crumb">${B("系列和卡牌","Sets & cards")} › ${esc(s)}</div>
-  <div class="row sethead"><h1 style="margin:0">${esc(s)} ${B("卡牌列表","card list")}</h1></div><p class="muted" style="margin:0">${B(st.date+" 发售 · 卡面编号到 "+d.printed+"，加上隐藏稀有共 "+all.length+" 张",`Released ${st.date} · ${d.printed} numbered + secret rares = ${all.length} cards`)}</p>
+  <div class="row sethead"><h1 style="margin:0"><span>${esc(s)}</span> ${B("卡牌列表","card list")}</h1></div><p class="muted" style="margin:0">${B(st.date+" 发售","Released "+st.date)} · ${setCnt(s)}</p>
   <nav class="serstrip setsw" aria-label="切换系列 Other sets">${SETS.map(x=>`<a href="${setUrl(x)}" class="${x===s?"on":""}" ${x===s?'aria-current="page"':""} style="--sc:${SETC[x]||"#1c8fc4"}">${slogo(x,"")}<span>${esc(x)}</span></a>`).join("")}</nav>
   ${prods.length?`<section class="stack" style="gap:10px"><div class="row" style="justify-content:space-between">${H2("本店的 "+s+" 商品","Our "+s+" products")}<a href="#shop" data-ser="${esc(s)}">${B("全部 "+prods.length+" 件","All "+prods.length)} ›</a></div>${marquee(prods.map(p=>({id:p.id,href:"#p/"+p.id,n:PN(p),s:rm(p.price),src:simg(p)})))}</section>`:""}
   <a class="svcstrip" href="#build">${buddy(44,"wow")}<span><b>${B("想要一副用 "+s+" 卡牌组成的卡组？","Want a deck with "+s+" cards?")}</b><small>${B("代组服务：说预算和打法，我们帮你配好 60 张，1 天内报价","Deck building: tell us your budget and style, we build the 60 cards and quote within 1 day")}</small></span><span class="go">${B("填需求","Start")} ›</span></a>
@@ -1791,10 +1848,10 @@ const PROMOS={"30th Celebration":[
  ["Mew","在《30th Celebration》梦幻公仔礼盒里","Figure Collection: Mew"],
  ["Ditto","在《30th Celebration》百变怪高级礼盒里","Ditto Premium Collection"],
  ["Pikachu ex、Espeon ex、Umbreon ex","在《30th Celebration》UPC 大礼盒（Ultra-Premium Collection）里","Ultra-Premium Collections"]]};
-function marquee(list,rev){ let l=list.slice(); while(l.length&&l.length<16) l=l.concat(list); const one=l.map(c=>`<figure>${c.id||c.href?`<a href="${c.href||"#card/"+((PM[c.id]&&PM[c.id].ck)||c.id)}" tabindex="-1">`:""}<img src="${c.src}" alt="${esc(c.n)}">${c.id?"</a>":""}${c.b||""}<figcaption>${esc(c.n)}<br>${esc(c.s)}</figcaption></figure>`).join(""); return `<div class="mq${rev?" rev":""}"><div class="track" style="animation-duration:${l.length*3.75}s">${one}${one}</div></div>` }
+function marquee(list,rev){ let l=list.slice(); while(l.length&&l.length<16) l=l.concat(list); const one=l.map(c=>`<figure>${c.id||c.href?`<a href="${c.href||"#card/"+((PM[c.id]&&PM[c.id].ck)||c.id)}" tabindex="-1">`:""}<img src="${c.src}" alt="${esc(c.n)}">${c.id?"</a>":""}${c.b||""}<figcaption>${esc(c.n)}<br>${esc(c.s)}</figcaption></figure>`).join(""); return `<div class="mqw"><button type="button" class="mqa l" data-mq="-1" aria-label="${isEN()?"Scroll left":"向左看"}">‹</button><div class="mq${rev?" rev":""}"><div class="track" style="animation-duration:${l.length*3.75}s">${one}${one}</div></div><button type="button" class="mqa r" data-mq="1" aria-label="${isEN()?"Scroll right":"向右看"}">›</button></div>` }
 function homeCi(){ const g=isGuest(), d=!g&&ciDone(), R=rules(), st=g?0:ciStreak(XU);
   if(d) return `<div class="hci ok"><span class="hci-t"><b>${B("✓ 今天已签到","✓ Checked in today")}</b><small>${B("本周已连续 "+st+" 天，明天再来","This week: "+st+" days in a row. Come back tomorrow")}</small></span><a class="hci-b" href="#lucky">${B("去抽奖","Lucky draw")}</a></div>`;
-  return `<div class="hci"><span class="hci-t"><b>${B("每日签到领 "+R.ciPts+" 分","Check in daily for "+R.ciPts+" pts")}</b><small>${B("周一到周日每天都签，周日再送 "+R.ci7+" 分，积分可抽奖和抵现"+(g?"（要先登录）":""),"Check in Mon to Sun for +"+R.ci7+" pts on Sunday. Use points for the draw or discounts"+(g?" (sign in first)":""))}</small></span><button class="hci-b" type="button" data-ci="1">${B("立即签到","Check in")}</button></div>` }
+  return `<div class="hci"><span class="hci-t"><b>${B("每日签到领 "+R.ciPts+" 分","Check in daily for "+R.ciPts+" pts")}</b><small>${B("周一到周日每天都签，周日再送 "+R.ci7+" 分"+(g?"（要先登录）":""),"Check in Mon to Sun for +"+R.ci7+" pts on Sunday"+(g?" (sign in first)":""))}</small></span><button class="hci-b" type="button" data-ci="1">${B("立即签到","Check in")}</button></div>` }
 V.home=()=>{
   const mv=MOVES.filter(m=>m.p&&m.p.c==="single"), toM=(m,up)=>({id:m.p.id,n:m.p.n,s:m.p.s,src:"img/"+m.p.img+".jpg",b:`<span class="bdg ${up?"up":"down"}">${up?"▲":"▼"} ${Math.abs(m.pct).toFixed(1)}%</span>`});
   const gain=mv.filter(m=>m.ch>0).sort((a,b)=>b.pct-a.pct).slice(0,5).map(m=>toM(m,1)), lose=mv.filter(m=>m.ch<0).sort((a,b)=>a.pct-b.pct).slice(0,5).map(m=>toM(m,0));
@@ -1825,15 +1882,14 @@ function reviewList(){
 }
 V.shop=()=>{
   const SP=P.filter(listed), series=[...new Set(SP.map(p=>p.s))], q=ui.q.trim().toLowerCase();
-  const PB={a:[0,50],b:[50,150],c:[150,300],d:[300,1e9]}, pb=PB[ui.pb]; let list=SP.filter(p=>(!ui.series||p.s===ui.series)&&(!ui.cat||p.c===ui.cat)&&(!pb||p.price>=pb[0]&&p.price<pb[1])&&(!q||(p.n+" "+p.zh+" "+p.s+" "+p.no).toLowerCase().includes(q)));
+  let list=SP.filter(p=>(!ui.series||p.s===ui.series)&&(!ui.cat||p.c===ui.cat)&&(!q||(p.n+" "+p.zh+" "+p.s+" "+p.no).toLowerCase().includes(q)));
   const band=p=>p.price>=50&&p.price<=300?0:p.price<50?1:2;
   list.sort((ui.sort||"rec")==="rec"?(a,b)=>band(a)-band(b)||b.price-a.price:ui.sort==="hi"?(a,b)=>b.price-a.price:ui.sort==="lo"?(a,b)=>a.price-b.price:(a,b)=>a.n.localeCompare(b.n));
   const n=c=>SP.filter(p=>p.c===c&&(!ui.series||p.s===ui.series)).length;
   return `${H1("商店","Shop")}
   <div class="chips" role="group" aria-label="产品类别"><button data-cat="" class="${ui.cat===""?"on":""}">全部 <span class="en">All</span></button>${Object.entries(CATS).filter(([k])=>k!=="single").map(([k,v])=>`<button data-cat="${k}" class="${ui.cat===k?"on":""}">${v[0]} <span class="en">${v[1]}</span> <span class="cnt">${n(k)}</span></button>`).join("")}</div>
-  <div class="chips pbchips" role="group" aria-label="送礼预算 Gift budget"><span class="muted">${B("送礼预算","Gift budget")}</span>${[["","不限","Any"],["a","RM50 以下","Under RM50"],["b","RM50–150","RM50–150"],["c","RM150–300","RM150–300"],["d","RM300 以上","RM300+"]].map(x=>`<button data-pb="${x[0]}" class="${(ui.pb||"")===x[0]?"on":""}">${B(x[1],x[2])}</button>`).join("")}</div>
   <div class="serstrip" role="group" aria-label="选择系列 Series"><button class="all${ui.series===""?" on":""}" data-ser="">全部系列<span class="en" style="font-weight:400">All sets</span></button>${series.map(s=>`<button data-ser="${esc(s)}" class="${ui.series===s?"on":""}" aria-pressed="${ui.series===s}" title="${esc(s)}" style="--sc:${SETC[s]||"#1c8fc4"}">${slogo(s,"")}<span>${esc(s)}</span></button>`).join("")}</div>
-  ${ui.series&&SI[ui.series]?`<div class="serhead">${slogo(ui.series,"")}<div><b>${esc(ui.series)}</b><div class="muted">${SI[ui.series].date} 发售 · 官方编号共 ${SI[ui.series].total} 张 · 本店 ${SP.filter(p=>p.s===ui.series).length} 件商品 · <a href="${setUrl(ui.series)}">看这个系列的完整卡表 ›</a></div></div></div>`:""}
+  ${ui.series&&SI[ui.series]?`<div class="serhead">${slogo(ui.series,"")}<div><b>${esc(ui.series)}</b><div class="muted">${SI[ui.series].date} ${B("发售","released")} · ${setCnt(ui.series)} · 本店 ${SP.filter(p=>p.s===ui.series).length} 件商品 · <a href="${setUrl(ui.series)}">看这个系列的完整卡表 ›</a></div></div></div>`:""}
   <div class="row"><input id="q" type="search" placeholder="搜索卡名或编号" value="${esc(ui.q)}" style="flex:1 1 220px">
    <details class="filt" ${ui.fopen?"open":""}><summary>排序 <span class="en">Sort</span>${(ui.sort||"rec")!=="rec"?" ·":""}</summary><div class="row">
    <select id="sort" aria-label="排序"><option value="rec" ${(ui.sort||"rec")==="rec"?"selected":""}>推荐（RM50–300 优先）</option><option value="hi" ${ui.sort==="hi"?"selected":""}>价格从高到低</option><option value="lo" ${ui.sort==="lo"?"selected":""}>价格从低到高</option><option value="az" ${ui.sort==="az"?"selected":""}>按名称</option></select></div></details></div>
@@ -1882,7 +1938,7 @@ function listBox(id){ return `<div class="panel stack" style="gap:8px">${deckGri
 V.decks=()=>`${H1("比赛卡组","Tournament decks")}
   <p>只收官方比赛：下面四场都是 Play! Pokémon 的区域锦标赛（Regional Championships），不含店铺自办的普通比赛。数据来自 Limitless TCG，读取于 ${DATA_DATE}。<span class="en"> Official events only: all four are Play! Pokémon Regional Championships. Data from Limitless TCG.</span></p>
   ${H2("使用率排名（标准赛制 TEF–30C）","Most-played decks, Standard")}
-  <p class="muted">按 Limitless 的积分占比，页面没有写统计起止日期。来源 Source: ${src("limitlesstcg.com/decks","https://limitlesstcg.com/decks")}</p>
+  <div class="note" style="font-size:12.5px">${B(`统计范围：Limitless TCG 收录的全球标准赛制（TEF–30C）比赛，不含马来西亚本地赛。百分比是 Limitless 算的积分占比。统计起止日期和分母（多少场比赛、多少副卡组）Limitless 页面没有写。读取日期 ${DATA_DATE}。`,`Scope: Standard (TEF–30C) events tracked by Limitless TCG worldwide, not Malaysian local events. Percentages are the share of points as Limitless calculates it. The date range and denominator (events, decks) are not shown on the page. Retrieved ${DATA_DATE}.`)} ${OWNER_TBD()}</div><p class="muted">来源 Source: ${src("limitlesstcg.com/decks","https://limitlesstcg.com/decks")}</p>
   <div class="panel"><div class="share">${META.map((m,i)=>`<div style="min-width:0" class="dn">${deckImg(m[0])?`<img src="${deckImg(m[0])}" alt="" loading="lazy">`:""}<span>${i+1}. ${src(m[0],"https://limitlesstcg.com/decks/"+m[2])}</span></div><div><div class="b${i?"":" top"}" style="width:${(m[1]/META[0][1]*100).toFixed(1)}%"></div></div><div class="price" style="text-align:right">${m[1].toFixed(2)}%</div>`).join("")}</div></div>
   ${top3Decks()}
   ${H2("谁在哪场比赛用什么拿了第几名","Who placed where, with what")}
@@ -1957,19 +2013,20 @@ V.about=()=>`${H1("关于我们","About us")}
     <div class="vals">${VALUES.map((v,i)=>`<div class="val" style="--c:${v[4]}"><span class="no">${String(i+1).padStart(2,"0")}</span><h3>${v[0]} <span class="en">${v[1]}</span></h3><p>${v[2]}</p><p class="en">${v[3]}</p></div>`).join("")}</div></section>
   <section class="stack sec" style="gap:14px">${H2("发展路径","Roadmap")}
     <ol class="road">${ROAD.map((r,i)=>`<li class="${i===0?"now":""}"><span class="st">${r[0]}</span><h3>${r[1]} <span class="en">${r[2]}</span></h3><p>${r[3]}</p><p class="en">${r[4]}</p></li>`).join("")}</ol></section>
-  <section class="trust sec"><div class="tl"><span class="lbl">${B("正品承诺","Genuine cards only")}</span>
-    <p class="big">${B("我们不卖盗版卡。","We never sell fakes.")}</p>
-    <ul>${TRUST.map(t=>`<li>${B(t[0],t[1])}</li>`).join("")}</ul>
+  <section class="trust sec"><div class="tl"><span class="lbl">${B("正品核验","How we check authenticity")}</span>
+    <p class="big">${B("每件商品寄出前都按这几步核对。","Every item goes through these checks before it ships.")}</p>
+    <ul>${TRUST.map(t=>`<li>${B(t[0],t[1])}${t[2]?" "+OWNER_TBD():""}</li>`).join("")}</ul>
     <a class="go" href="#fake">${B("教你怎么分辨盗版卡","How to spot a fake card")} ›</a></div>
     <div class="shield" aria-hidden="true"><svg width="120" height="140" viewBox="0 0 24 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 3.5v7.5c0 6-4 10.5-9 13-5-2.5-9-7-9-13V5.5z" fill="rgba(255,203,5,.18)"/><path d="M7.5 14l3 3 6-6.5" stroke-width="2.2"/></svg></div></section>
   <div class="row"><button class="pri" data-go="shop">去商店 <span class="en">Go to shop</span></button><button data-go="news">看最新消息 <span class="en">Latest news</span></button></div>`;
 const TRUST=[
- ["货源只来自官方授权经销商和正规渠道，每件商品都可以说出来源。","Stock comes only from authorised distributors and legitimate channels."],
- ["原盒保留出厂收缩膜，寄出前拍照存档。","Sealed product keeps its factory wrap, photographed before shipping."],
- ["收到货后如果经 PSA、CGC 等第三方鉴定为非正版，全额退款（具体条款待店主确认）。","If a third-party grader such as PSA or CGC finds an item is not genuine, full refund (exact terms to be confirmed)."]];
+ ["进货：每批货记录供应商和单据。供应商名单：","Sourcing: we keep the supplier and invoice for every batch. Supplier list:",1],
+ ["收货核对：语言版、系列、包装规格和出厂收缩膜，和商品名称一致才上架。","On arrival: language, set, packaging size and factory wrap must match the listing."],
+ ["寄出前拍照存档，原盒不拆封。","Photographed before shipping; sealed items stay sealed."],
+ ["收到后有疑问，联系我们复核。复核流程、退款和退换规则：","If you have doubts after delivery, contact us for a review. Review, refund and return rules:",1]];
 const VALUES=[
  ["定价清楚","Clear pricing","标价就是售价，没有隐藏费用；运费在结账前清楚列出。","The price you see is the price you pay, with shipping shown before checkout.","var(--water)"],
- ["正品保障","Authenticity","只卖正版卡牌，卡况如实标注，以实拍图为准。","Genuine cards only, with honest condition grading and real photos.","var(--red)"],
+ ["正品核对","Authenticity checks","每件按语言、版本和包装核对后才寄出；实拍图陆续补上。","Each item is checked for language, version and packaging before it ships. Our own photos are being added.","var(--red)"],
  ["专业服务","Expertise","持续跟踪官方赛事和市场数据，为玩家提供组牌与收藏建议。","We follow official tournaments and market data to advise on decks and collections.","var(--grass)"],
  ["社群优先","Community","通过比赛、教学和活动，把玩家聚在一起。","Tournaments, lessons and events that bring players together.","#d9a400"]];
 const ROAD=[
@@ -1985,15 +2042,26 @@ V.cart=()=>{
    <div class="row"><label class="f">${B("姓名","Name")}<input id="c-name" required value="${esc(ui.cname||"")}"></label><label class="f">${B("手机号码","Phone")}<input id="c-phone" required inputmode="tel" placeholder="${(SHIP.find(x=>x.k===(ui.ship||"wm"))||{}).cc==="sg"?"+65 xxxx xxxx":(SHIP.find(x=>x.k===(ui.ship||"wm"))||{}).cc==="cn"?"+86 1xx xxxx xxxx":"01x-xxxxxxx"}" value="${esc(ui.cphone||"")}"></label></div>
    ${t.onlySvc?`<p class="muted">只买组牌服务不需要寄送。 No shipping needed for the deck service.</p>`:`<label class="f">${B("地址","Address")}<input id="c-addr" required value="${esc(ui.caddr||"")}"></label>
    ${(()=>{ const cc=(SHIP.find(x=>x.k===(ui.ship||"wm"))||{}).cc; return `<div class="row"><label class="f">${B("邮编","Postcode")}<input id="c-post" required inputmode="numeric" pattern="${cc?"[0-9]{6}":"[0-9]{5}"}" value="${esc(ui.cpost||"")}"></label>${cc==="sg"?`<label class="f">${B("国家","Country")}<input id="c-state" value="Singapore 新加坡" readonly></label>`:cc==="cn"?`<label class="f">${B("省份和城市","Province & city")}<input id="c-state" required placeholder="例如 广东省 深圳市" value="${esc(STATES.includes(ui.cstate)?"":ui.cstate||"")}"></label>`:`<label class="f">${B("州属","State")}<select id="c-state">${STATES.map(s=>`<option ${ui.cstate===s?"selected":""}>${s}</option>`).join("")}</select></label>`}</div>${cc?`<p class="muted" style="margin:0">${B(cc==="sg"?"寄新加坡：一般 5 到 10 个工作天，进口税费（如有）由收件人支付。":"寄中国：一般 7 到 14 个工作天，进口税费（如有）由收件人支付。","International delivery; any import duties are paid by the recipient.")}</p>`:""}` })()}
-   <label class="f"><span>${B("寄送方式","Shipping")} <span class="chip tbd">运费待定 <span class="en">TBD</span></span></span><select id="c-ship">${SHIP.map(s=>`<option value="${s.k}" ${(ui.ship||"wm")===s.k?"selected":""}>${esc(s.n)} ${esc(s.en)}　${s.fee?rm(s.fee):"免运费 Free"}</option>`).join("")}</select></label>`}
+   <label class="f"><span>${B("寄送方式","Shipping")} <span class="chip tbd">运费待定 <span class="en">TBD</span></span></span><select id="c-ship">${SHIP.map(s=>`<option value="${s.k}" ${(ui.ship||"wm")===s.k?"selected":""}>${esc(s.n)} ${esc(s.en)}　${s.fee?rm(s.fee)+(isEN()?" (provisional)":"（暂定）"):(isEN()?"No fee":"免运费")}</option>`).join("")}</select></label>${shipNote()}`}
    <label class="f">${B("付款方式","Payment method")}<select id="c-pay">${PAY.map(p=>`<option ${ui.pay===p?"selected":""}>${esc(p)}</option>`).join("")}</select></label>
    ${cps.length?`<label class="f">${B("回购优惠码","Return coupon")}<select id="c-coupon"><option value="">不使用</option>${cps.map(c=>`<option value="${c.code}" ${ui.coupon===c.code?"selected":""}>${c.code}　满 ${rm(c.min)} 减 ${rm(c.amount)}</option>`).join("")}</select></label>`:""}
    ${t.maxU>0?`<label class="f">${B("使用积分","Use points")} <small class="muted">${B("你有","You have")} ${t.mb.left} ${B("分","pts")}</small><select id="c-pts"><option value="0">${B("不使用","Don't use")}</option>${Array.from({length:Math.min(t.maxU,50)},(_,i)=>(i+1)*t.mb.R.redeemPts).map(n=>`<option value="${n}" ${t.pts===n?"selected":""}>${n} ${B("分抵","pts = ")} ${rm(n/t.mb.R.redeemPts*t.mb.R.redeemRM)}</option>`).join("")}</select></label>`:""}
    <label class="f">${B("给店主的留言（可不填）","Note to the shop (optional)")}<input id="c-note" value="${esc(ui.cnote||"")}"></label>
-   <div><button class="pri" type="submit">提交订单 <span class="en">Place order</span></button></div></form></div>
+   ${payNote()}<div><button class="pri" type="submit">提交订单（不会扣款） <span class="en">Place order (no charge)</span></button></div></form></div>
   <div class="panel stack">${H2("账单","Bill")}<div class="sum"><span>${B("商品小计","Subtotal")}</span><span class="price">${rm(t.sub)}</span><span>${B("运费","Shipping")}</span><span class="price">${t.fee?rm(t.fee):"免运费"}</span>${t.cp?`<span>${B("回购优惠","Coupon")}</span><span class="price up">−${rm(t.cp.amount)}</span>`:""}${t.ptsOff?`<span>${B("积分抵扣","Points")} (${t.pts})</span><span class="price up">−${rm(t.ptsOff)}</span>`:""}${ui.coupon&&!t.cp?`<span class="muted" style="grid-column:1/-1">这张优惠码要满 ${rm((couponsOf(uid).find(c=>c.code===ui.coupon)||{}).min||0)} 才能用。</span>`:""}<b>${B("应付","Total")}</b><b class="price" style="color:var(--red);font-size:18px">${rm(t.total)}</b></div>
-  <p class="muted">提交后进入付款步骤。店主确认收到款、确认有货后才会寄出。<span class="en"> You pay on the next step. We ship after payment and stock are confirmed.</span></p></div></div>`;
+  <p class="muted">${B("店主确认收到款、确认有货后才会寄出。","We ship only after payment and stock are confirmed.")}</p></div></div>`;
 };
+/* v76 付款还没接通：商品页、购物车、订单页都用同一段说明。联系渠道、时限、未确认怎么处理都待店主确认，不写成承诺 */
+const OWNER_TBD=()=>`<span class="chip tbd">${B("待店主确认","To be confirmed")}</span>`;
+/* v76 配送说明：地区是真的；运费是暂定值；时效、追踪、关税、退换都待店主确认 */
+function shipNote(){ return `<details class="note shipnote"><summary><b>${B("配送说明","Shipping details")}</b></summary><ul>
+ <li>${B("可寄：西马、东马、新加坡、中国，也可以自取或面交。","We ship to West and East Malaysia, Singapore and China, or you can collect in person.")}</li>
+ <li>${B("运费：上面的金额是暂定值，店主确认订单时会告诉你实际运费。","Fees: the amounts above are provisional. The shop confirms the real fee with your order.")}</li>
+ <li>${B("处理和运送要几天：","Handling and delivery time: ")}${OWNER_TBD()}</li>
+ <li>${B("怎么追踪包裹：","Tracking: ")}${OWNER_TBD()}</li>
+ <li>${B("寄新加坡、中国的关税和进口费由谁付：","Who pays import duty for Singapore and China: ")}${OWNER_TBD()}</li>
+ <li>${B("取消、退换和瑕疵处理：","Cancellations, returns and damaged items: ")}${OWNER_TBD()}</li></ul></details>` }
+function payNote(short){ return `<div class="note paynote"><b>${B("线上付款还没接通，现在下单不会扣款。","Online payment is not connected yet. Placing an order does not charge you.")}</b>${short?"":`<br>${B("提交后店主会联系你确认库存、运费和付款方式，你同意了才需要付款。","After you order, the shop contacts you to confirm stock, shipping and how to pay. You only pay once you agree.")}<br>${B("联系渠道和多久内联系：","How and how soon we contact you: ")}${OWNER_TBD()}　${B("没确认或取消的订单怎么处理：","What happens to unconfirmed or cancelled orders: ")}${OWNER_TBD()}`}</div>` }
 function stepBar(o){
   if(o.status==="rejected") return `<span class="chip bad">审核未通过 <span class="en">Not approved</span>${o.reason?"："+esc(o.reason):""}</span>`;
   const idx=FLOW.findIndex(f=>f[0]===o.status);
@@ -2230,6 +2298,13 @@ V.wall=()=>{ const mine=MYPULLS.slice().reverse(), pubKeys=new Set(WALL.map(w=>w
   <p>${B("开包抽到好卡？拍下来和大家分享。店主看过后会放上来，所有人都能看到。","Pulled something great? Share a photo. It shows here after the shop approves it.")}</p>
   ${WALL.length?`<div class="wgrid">${WALL.map(wallItem).join("")}</div>`:`<p class="muted">${B("还没有晒卡，第一张可以是你的。","No pulls yet. Be the first.")}</p>`}
   <section class="stack" style="gap:10px">${H2("我也要晒","Share your pull")}
+  <details class="panel wrules" open><summary><b>${B("投稿前请看","Before you post")}</b></summary><ul>
+   <li>${B("显示在哪里：晒卡墙，也可能出现在首页。","Where it shows: the pull wall, and possibly the home page.")}</li>
+   <li>${B("会显示：照片、卡名、系列、你写的话和你自己填的昵称（不填就显示「顾客」）。不会显示你的名字、邮箱、手机或地址。","What shows: the photo, card name, set, your words and the nickname you type (blank shows “Customer”). Your name, email, phone and address are never shown.")}</li>
+   <li>${B("只拍卡。照片里不要有人脸、地址、单据或手机号码。","Photograph the card only. No faces, addresses, receipts or phone numbers.")}</li>
+   <li>${B("店主看过才公开，不合适的不会放上来。审核要多久：","The shop approves each photo before it goes up. How long review takes: ")}${OWNER_TBD()}</li>
+   <li>${B("想撤下已公开的照片：联系店主删除。联系渠道：","To take a photo down: ask the shop to remove it. Contact: ")}${OWNER_TBD()}</li>
+   <li>${B("投稿就是同意本店在这个网站上展示这张照片。会不会用在 IG、FB 等其他地方：","Posting means you agree we can show the photo on this website. Use on IG, FB or elsewhere: ")}${OWNER_TBD()}</li></ul></details>
   ${typeof isGuest==="function"&&isGuest()?`<div class="panel stack"><p style="margin:0">${B("访客不能投稿。登录或注册后就能晒卡。","Guests can't post. Sign in or register to share your pulls.")}</p><div><button class="pri" data-needlogin="1">${B("登录后晒卡","Sign in to post")}</button></div></div>`:assets?`<form class="panel stack" id="wallform" style="gap:10px"><div class="row"><label class="f">${B("卡名","Card name")}<input id="w-name" required maxlength="60" placeholder="例如 Umbreon ex"></label><label class="f">${B("系列","Set")}<select id="w-set"><option value="">不确定</option>${SETS.map(s=>`<option>${esc(s)}</option>`).join("")}</select></label><label class="f">${B("怎么称呼你","Your nickname")}<input id="w-nick" maxlength="20" placeholder="可不填"></label></div>
    <label class="f">${B("想说的话（可不填）","A few words (optional)")}<input id="w-text" maxlength="120" placeholder="例如：第三包就开到了！"></label>
    <label class="f">${B("照片","Photo")}<input type="file" id="w-file" accept="image/*" required></label>
@@ -2251,11 +2326,10 @@ async function submitPull(){ if(needLogin("要先登录或注册才能晒卡","P
 
 /* ---------- v75 隐私声明 + 删除我的资料（按 PDPA 2010 的做法写，条文待律师核对） ---------- */
 ROUTES.add("privacy");
-document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-pb]"); if(!b) return; ui.pb=b.dataset.pb; ui.shown=24; render() });
 
 V.privacy=()=>`${H1("隐私声明","Privacy notice")}
 <div class="panel stack prose" style="gap:12px">
-<p>${B("这一页说明 Holofen 收集你的哪些资料、用来做什么、谁看得到，以及你怎么删除。","This page explains what Holofen collects, why, who can see it, and how to delete it.")}</p>
+<p>${B("这一页说明 Holofen 收集你的哪些资料、用来做什么、谁看得到，以及你怎么删除。这是草稿，标「待店主确认」的部分还没定。","This page explains what Holofen collects, why, who can see it, and how to delete it. It is a draft; parts marked “to be confirmed” are not settled yet.")}</p>
 <h3>${B("我们收集什么","What we collect")}</h3>
 <ul><li>${B("登录用的邮箱（用 Google 登录时还有 Google 账号名字）。","Your sign-in email (and your Google account name if you sign in with Google).")}</li>
 <li>${B("你自己填的姓名、手机号码；下单时填的收件地址。","The name and phone number you enter, and the delivery address you give when you order.")}</li>
@@ -2265,7 +2339,9 @@ V.privacy=()=>`${H1("隐私声明","Privacy notice")}
 <ul><li>${B("处理和寄送你的订单，有问题时联系你。","To process and ship your orders, and contact you about them.")}</li>
 <li>${B("计算会员积分、签到和抽奖。","To work out your points, check-ins and lucky draws.")}</li>
 <li>${B("了解网站有多少人在用，改进网站。","To see how the site is used and improve it.")}</li></ul>
-<p>${B("我们不卖、不出租你的资料，也不用来投广告。","We never sell or rent your data, or use it for advertising.")}</p>
+<p>${B("资料会不会提供给快递以外的第三方、会不会用来投广告：","Whether data is shared with anyone other than the courier, or used for advertising: ")}${OWNER_TBD()}</p>
+<h3>${B("保存多久","How long we keep it")}</h3><p>${OWNER_TBD()}</p>
+<h3>${B("怎么联系店主","How to contact the shop")}</h3><p>${CONTACT.some(c=>c[3])?CONTACT.filter(c=>c[3]).map(c=>`<a href="${c[3]}" target="_blank" rel="noopener">${c[1]}</a>`).join(" · "):OWNER_TBD()}</p>
 <h3>${B("谁看得到","Who can see it")}</h3>
 <p>${B("只有你和本店店主、员工。资料存在 Supabase 的服务器上；寄货时，收件人姓名、手机和地址会交给快递公司。","Only you and the shop owner and staff. Data is stored on Supabase servers. When we ship, your name, phone and address go to the courier.")}</p>
 <h3>${B("怎么修改或删除","How to change or delete it")}</h3>
@@ -2365,7 +2441,15 @@ function doDraw(){ if(needLogin("要先登录或注册才能抽奖","Please sign
   if(m.left<r.cost) return toast(`积分不够，抽一次要 ${r.cost} 分`);
   const n=Math.max(0,...arr(ME.draws).map(d=>d.n),...arr(LUCKY.log[XU]).map(d=>d.n))+1;
   ME.draws=arr(ME.draws).concat({n,r:r.id,cost:r.cost,at:Date.now()}).slice(-300); ui.lastDraw=n; saveMe() }
-V.lucky=()=>`${H1("签到和抽奖","Check-in & lucky draw")}${ciPanel()}${luckyBody()}`;
+V.lucky=()=>`${H1("签到和抽奖","Check-in & lucky draw")}${ciPanel()}${ptsRules()}${luckyBody()}`;
+function ptsRules(){ const R=rules(); return `<details class="panel wrules"><summary><b>${B("积分规则","Points rules")}</b></summary><ul>
+ <li>${B(`已定：每天签到 ${R.ciPts} 分；周一到周日全签，周日再加 ${R.ci7} 分；每周一重新开始。`,`Confirmed: ${R.ciPts} pts per daily check-in; check in every day Monday to Sunday for +${R.ci7} on Sunday; resets each Monday.`)}</li>
+ <li>${B(`积分换折扣：现在后台设定是 ${R.redeemPts} 分抵 ${rm(R.redeemRM)}。`,`Points to discount: currently set to ${R.redeemPts} pts = ${rm(R.redeemRM)} off.`)}${OWNER_TBD()}</li>
+ <li>${B("每单最多抵多少：","Maximum discount per order: ")}${OWNER_TBD()}</li>
+ <li>${B("积分有效期：","Points expiry: ")}${OWNER_TBD()}</li>
+ <li>${B("能不能和回购优惠码一起用：","Can be combined with return coupons: ")}${OWNER_TBD()}</li>
+ <li>${B("抽奖规则和中奖怎么公布：","Draw rules and how winners are announced: ")}${OWNER_TBD()}</li>
+ <li>${B("签到和抽奖不保证一定得到奖品或折扣。","Checking in or drawing does not guarantee a prize or discount.")}</li></ul></details>` }
 function luckyBody(){ const r=curRound(), m=member(uid), mine=luckyDraws(XU).slice().reverse(), last=ui.lastDraw?mine.find(d=>d.n===ui.lastDraw):null;
   const tot=r?r.prizes.reduce((a,p)=>a+p.w,0)+r.miss:0, pct=w=>tot?(w/tot*100).toFixed(w/tot<0.01?2:1)+"%":"—";
   return `${H2("积分抽奖","Points lucky draw")}
