@@ -730,7 +730,7 @@ html[data-lang="en"] .lgg .en2{display:none}
 @media (max-width:640px){.mkpi{grid-template-columns:1fr 1fr}}
 button.lnk{border:0;background:none;padding:0;color:var(--blue,#2b6fd6);text-decoration:underline;min-height:0;font:inherit}
 .lres{display:flex;flex-direction:column;gap:2px;padding:14px 16px;border-radius:14px;background:#f3f5fa;border:1px solid var(--line)}.lres.win{background:linear-gradient(90deg,#fff8d6,#ffe9e2);border-color:#f2dc8a}.lres b{font-size:20px}.lres span{font-weight:700;color:var(--red)}
-.cidays{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.cidays span{display:flex;flex-direction:column;align-items:center;gap:3px}.cidays i{width:34px;height:34px;border-radius:99px;display:grid;place-items:center;background:#eef1f7;color:#fff;font-style:normal;font-weight:800}.cidays .on i{background:linear-gradient(135deg,var(--sun,#f6b93b),var(--red,#0e7c86))}.cidays .td i{outline:2px solid var(--red);outline-offset:2px}.cidays small{font-size:11px;color:var(--muted)}
+.cidays .fu i{background:#f6f7fb;color:#b9c0d4}.cidays{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.cidays span{display:flex;flex-direction:column;align-items:center;gap:3px}.cidays i{width:34px;height:34px;border-radius:99px;display:grid;place-items:center;background:#eef1f7;color:#fff;font-style:normal;font-weight:800}.cidays .on i{background:linear-gradient(135deg,var(--sun,#f6b93b),var(--red,#0e7c86))}.cidays .td i{outline:2px solid var(--red);outline-offset:2px}.cidays small{font-size:11px;color:var(--muted)}
 .setsw a{flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:132px;height:86px;padding:8px;border-radius:14px;background:color-mix(in srgb,var(--sc) 10%,#fff);border:1px solid color-mix(in srgb,var(--sc) 28%,#fff);font-size:12px;line-height:1.2;color:var(--ink);text-decoration:none;text-align:center}
 .setsw a img{height:44px;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
 .setsw a:hover{border-color:var(--sc);transform:translateY(-2px)}.setsw a{transition:transform .16s var(--ease-out),border-color .16s}
@@ -1454,7 +1454,7 @@ Object.assign(TR,{
 "「编辑」改价格、照片、名字、详情、库存和预购；「上架 / 下架」决定顾客在商店看不看得到。库存填 0 会显示缺货；不填表示还没录入。已经审核通过的订单按当时的价格算，改价不影响。":"Use Edit to change price, photo, name, details, stock and pre-order. List / Unlist decides whether customers see the item in the shop. Stock 0 shows as sold out; empty means not entered yet. Approved orders keep the price at approval, so price changes don't affect them.",
 "勾选商品左上角的方框，可以一次上架或下架多件":"Tick the box at the top-left of items to list or unlist several at once",
 "积分只按店主标记「已送达」的订单算，顾客自己改不了。下面的数字是建议的起步值，还没定案，你可以随时改。":"Points only count for orders you mark as delivered, and customers can't change them. The numbers below are suggested starting values; change them any time.",
-"每消费 RM1 得几分":"Points per RM1 spent","多少分起换":"Minimum points to redeem","每多少分抵":"Points per redemption","银卡积分倍数":"Silver points multiplier","金卡积分倍数":"Gold points multiplier","生日月下单积分倍数":"Birthday-month points multiplier","每天签到得几分":"Points per daily check-in","连续签到 7 天另外送几分":"Bonus points for a 7-day streak",
+"每消费 RM1 得几分":"Points per RM1 spent","多少分起换":"Minimum points to redeem","每多少分抵":"Points per redemption","银卡积分倍数":"Silver points multiplier","金卡积分倍数":"Gold points multiplier","生日月下单积分倍数":"Birthday-month points multiplier","每天签到得几分":"Points per daily check-in","周一到周日全签另外送几分":"Bonus for checking in every day Mon–Sun",
 "没有等着寄出或运送中的订单。":"No orders waiting to ship or in transit.","还没有订单。到前台下一单试试，它会出现在这里等你审核。":"No orders yet. Place a test order in the shop and it will show up here for review.","还没有评价。":"No reviews yet.","还没有顾客投稿。":"No customer submissions yet.","还没有人抽中。":"No winners yet.",
 "顾客的评价要你按「公开」才会出现在首页，防止有人乱写。只有真正完成的订单才能公开。":"Reviews only appear on the home page after you press Publish, so nobody can post fake ones. Only completed orders can be published.",
 "顾客上传的晒卡要你按「公开」才会出现在晒卡墙和首页。不合适的不用理会，它不会公开。":"Customer pull photos only appear on the wall and home page after you press Publish. Ignore any that aren't suitable and they stay hidden.",
@@ -1785,8 +1785,8 @@ const PROMOS={"30th Celebration":[
  ["Pikachu ex、Espeon ex、Umbreon ex","在《30th Celebration》UPC 大礼盒（Ultra-Premium Collection）里","Ultra-Premium Collections"]]};
 function marquee(list,rev){ let l=list.slice(); while(l.length&&l.length<16) l=l.concat(list); const one=l.map(c=>`<figure>${c.id||c.href?`<a href="${c.href||"#card/"+((PM[c.id]&&PM[c.id].ck)||c.id)}" tabindex="-1">`:""}<img src="${c.src}" alt="${esc(c.n)}">${c.id?"</a>":""}${c.b||""}<figcaption>${esc(c.n)}<br>${esc(c.s)}</figcaption></figure>`).join(""); return `<div class="mq${rev?" rev":""}"><div class="track" style="animation-duration:${l.length*3.75}s">${one}${one}</div></div>` }
 function homeCi(){ const g=isGuest(), d=!g&&ciDone(), R=rules(), st=g?0:ciStreak(XU);
-  if(d) return `<div class="hci ok"><span class="hci-t"><b>${B("✓ 今天已签到","✓ Checked in today")}</b><small>${B("已连续 "+st+" 天，明天再来","Streak: "+st+" days. Come back tomorrow")}</small></span><a class="hci-b" href="#lucky">${B("去抽奖","Lucky draw")}</a></div>`;
-  return `<div class="hci"><span class="hci-t"><b>${B("每日签到领 "+R.ciPts+" 分","Check in daily for "+R.ciPts+" pts")}</b><small>${B("连续 7 天再送 "+R.ci7+" 分，积分可抽奖和抵现"+(g?"（要先登录）":""),"7 days in a row adds "+R.ci7+" pts. Use points for the draw or discounts"+(g?" (sign in first)":""))}</small></span><button class="hci-b" type="button" data-ci="1">${B("立即签到","Check in")}</button></div>` }
+  if(d) return `<div class="hci ok"><span class="hci-t"><b>${B("✓ 今天已签到","✓ Checked in today")}</b><small>${B("本周已连续 "+st+" 天，明天再来","This week: "+st+" days in a row. Come back tomorrow")}</small></span><a class="hci-b" href="#lucky">${B("去抽奖","Lucky draw")}</a></div>`;
+  return `<div class="hci"><span class="hci-t"><b>${B("每日签到领 "+R.ciPts+" 分","Check in daily for "+R.ciPts+" pts")}</b><small>${B("周一到周日每天都签，周日再送 "+R.ci7+" 分，积分可抽奖和抵现"+(g?"（要先登录）":""),"Check in Mon to Sun for +"+R.ci7+" pts on Sunday. Use points for the draw or discounts"+(g?" (sign in first)":""))}</small></span><button class="hci-b" type="button" data-ci="1">${B("立即签到","Check in")}</button></div>` }
 V.home=()=>{
   const mv=MOVES.filter(m=>m.p&&m.p.c==="single"), toM=(m,up)=>({id:m.p.id,n:m.p.n,s:m.p.s,src:"img/"+m.p.img+".jpg",b:`<span class="bdg ${up?"up":"down"}">${up?"▲":"▼"} ${Math.abs(m.pct).toFixed(1)}%</span>`});
   const gain=mv.filter(m=>m.ch>0).sort((a,b)=>b.pct-a.pct).slice(0,5).map(m=>toM(m,1)), lose=mv.filter(m=>m.ch<0).sort((a,b)=>a.pct-b.pct).slice(0,5).map(m=>toM(m,0));
@@ -2090,8 +2090,8 @@ function admMembers(){
   const R=rules(), us=Object.keys(all).map(u=>[u,member(u),arr(all[u].orders).length]).sort((a,b)=>b[1].spend-a[1].spend);
   const fld=(k,t,st)=>`<label class="f">${t}<input id="r-${k}" type="number" min="0" step="${st||1}" value="${R[k]}"></label>`;
   return `${H2("会员积分规则","Points rules")}<p class="muted">积分只按店主标记「已送达」的订单算，顾客自己改不了。下面的数字是建议的起步值，还没定案，你可以随时改。</p>
-  <div class="panel stack"><div class="agrid">${fld("earn","每消费 RM1 得几分",0.1)}${fld("redeemPts","多少分起换")}${fld("redeemRM","换多少令吉 RM",0.5)}${fld("silver","近 12 个月消费满多少升银卡 RM")}${fld("silverX","银卡积分倍数",0.1)}${fld("gold","近 12 个月消费满多少升金卡 RM")}${fld("goldX","金卡积分倍数",0.1)}${fld("bdayX","生日月下单积分倍数",0.1)}${fld("ciPts","每天签到得几分")}${fld("ci7","连续签到 7 天另外送几分")}</div>
-  <p class="muted"><span class="en">Current rules: ${R.earn} pt per RM1; ${R.redeemPts} pts = ${rm(R.redeemRM)} off (about ${(R.redeemRM/R.redeemPts*R.earn*100).toFixed(1)}% back). Spend ${rm(R.silver)} in 12 months for Silver (×${R.silverX} points), ${rm(R.gold)} for Gold (×${R.goldX}); tiers are recalculated on the 1st of each month. Birthday-month orders earn ×${R.bdayX}. Check-in gives ${R.ciPts} pts a day plus ${R.ci7} for a 7-day streak.</span><span class="zh">现在的规则：每 RM1 得 ${R.earn} 分，每 ${R.redeemPts} 分抵 ${rm(R.redeemRM)}（约回馈 ${(R.redeemRM/R.redeemPts*R.earn*100).toFixed(1)}%）；近 12 个月消费满 ${rm(R.silver)} 是银卡（积分 ×${R.silverX}），满 ${rm(R.gold)} 是金卡（×${R.goldX}），每月 1 日按最新的 12 个月重新算等级；顾客生日月下的单积分 ×${R.bdayX}；每天签到 ${R.ciPts} 分，连续 7 天另送 ${R.ci7} 分（每月最多约 ${(R.ciPts*30+R.ci7*4)} 分，约 ${rm((R.ciPts*30+R.ci7*4)/R.redeemPts*R.redeemRM)}）。</span></p>
+  <div class="panel stack"><div class="agrid">${fld("earn","每消费 RM1 得几分",0.1)}${fld("redeemPts","多少分起换")}${fld("redeemRM","换多少令吉 RM",0.5)}${fld("silver","近 12 个月消费满多少升银卡 RM")}${fld("silverX","银卡积分倍数",0.1)}${fld("gold","近 12 个月消费满多少升金卡 RM")}${fld("goldX","金卡积分倍数",0.1)}${fld("bdayX","生日月下单积分倍数",0.1)}${fld("ciPts","每天签到得几分")}${fld("ci7","周一到周日全签另外送几分")}</div>
+  <p class="muted"><span class="en">Current rules: ${R.earn} pt per RM1; ${R.redeemPts} pts = ${rm(R.redeemRM)} off (about ${(R.redeemRM/R.redeemPts*R.earn*100).toFixed(1)}% back). Spend ${rm(R.silver)} in 12 months for Silver (×${R.silverX} points), ${rm(R.gold)} for Gold (×${R.goldX}); tiers are recalculated on the 1st of each month. Birthday-month orders earn ×${R.bdayX}. Check-in gives ${R.ciPts} pts a day plus ${R.ci7} for checking in every day Monday to Sunday.</span><span class="zh">现在的规则：每 RM1 得 ${R.earn} 分，每 ${R.redeemPts} 分抵 ${rm(R.redeemRM)}（约回馈 ${(R.redeemRM/R.redeemPts*R.earn*100).toFixed(1)}%）；近 12 个月消费满 ${rm(R.silver)} 是银卡（积分 ×${R.silverX}），满 ${rm(R.gold)} 是金卡（×${R.goldX}），每月 1 日按最新的 12 个月重新算等级；顾客生日月下的单积分 ×${R.bdayX}；每天签到 ${R.ciPts} 分，周一到周日全签另送 ${R.ci7} 分（每月最多约 ${(R.ciPts*30+R.ci7*4)} 分，约 ${rm((R.ciPts*30+R.ci7*4)/R.redeemPts*R.redeemRM)}）。</span></p>
   <div><button class="pri" data-rsave="1">保存规则</button></div></div>
   ${H2("会员","Members")}${us.length?`<div class="tw"><table><thead><tr><th>顾客</th><th>等级</th><th class="n">近 12 个月消费</th><th class="n">累计消费</th><th>生日月</th><th class="n">已得积分</th><th class="n">可用积分</th><th class="n">订单</th></tr></thead><tbody>${us.map(([u,m,c])=>`<tr><td>${esc(arr(all[u].orders).map(o=>cleanTxt(o.name,40)).filter(Boolean).pop()||u.slice(0,8))}</td><td>${m.tier[0]}</td><td class="n">${rm(m.spend)}</td><td class="n">${rm(m.life)}</td><td>${m.bm?m.bm+" 月":"—"}</td><td class="n">${m.earned}</td><td class="n">${m.left}</td><td class="n">${c}</td></tr>`).join("")}</tbody></table></div>`:`<p class="muted">还没有顾客。</p>`}` }
 function admCollect(k,p){ const g=f=>val("a-"+f+"-"+k), x={};
@@ -2391,28 +2391,30 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
     LUCKY.on=on; render(); return saveLucky().then(()=>toast("已保存 Saved")) } },true);
 
 /* ---------- v36 每日签到 ----------
-   顾客每天按一次「签到」得 rules.ciPts 分，连续第 7、14、21… 天再加 rules.ci7 分。日期按马来西亚时间。
+   顾客每天按一次「签到」得 rules.ciPts 分；每周一重新开始，周一到周日 7 天全签，周日再加 rules.ci7 分。日期按马来西亚时间。
    日期写在顾客自己的 me/<id>.ci。为了防止有人一次补写很多天：店主后台打开时会把看到的日期抄进 site/lucky 的 ci；
    店主还没看过的日期，只算店主上次看过的前一天之后（第一次最多往回 7 天）。 */
 const dayStr=t=>new Date(t+8*3600e3).toISOString().slice(0,10);
 const dayAdd=(d,n)=>dayStr(Date.parse(d+"T00:00:00+08:00")+n*864e5);
+/* 2026-11-17 起签到按周算：每周一是第 1 天，周日是第 7 天，下周一重新开始 */
+const monOf=d=>dayAdd(d,-((new Date(d+"T00:00:00Z").getUTCDay()+6)%7));
 function ciValid(u){ const me=(typeof MEALL!=="undefined"&&MEALL[u])||{}, rec=(LUCKY.ci||{})[u]||null, today=dayStr(Date.now());
   const seen=new Set(rec?rec.seen:[]), from=rec?dayAdd(dayStr(rec.at),-1):dayAdd(today,-7);
   return [...new Set(arr(me.ci).concat(rec?rec.seen:[]))].filter(d=>d<=today&&(seen.has(d)||d>=from)).sort() }
-function ciPoints(u,R){ const ds=ciValid(u); let pts=0, run=0, prev=""; ds.forEach(d=>{ run=prev&&dayAdd(prev,1)===d?run+1:1; prev=d; pts+=R.ciPts+(run%7===0?R.ci7:0) }); return pts }
-function ciStreak(u){ const ds=ciValid(u), today=dayStr(Date.now()); let d=ds.includes(today)?today:dayAdd(today,-1), n=0; while(ds.includes(d)){ n++; d=dayAdd(d,-1) } return n }
+function ciPoints(u,R){ const ds=ciValid(u); let pts=0, run=0, prev=""; ds.forEach(d=>{ run=prev&&dayAdd(prev,1)===d&&monOf(prev)===monOf(d)?run+1:1; prev=d; pts+=R.ciPts+(run===7?R.ci7:0) }); return pts }
+function ciStreak(u){ const ds=ciValid(u), today=dayStr(Date.now()); const m=monOf(today); let d=ds.includes(today)?today:dayAdd(today,-1), n=0; while(d>=m&&ds.includes(d)){ n++; d=dayAdd(d,-1) } return n }
 const ciDone=()=>arr(ME.ci).includes(dayStr(Date.now()));
 const isGuest=()=>!!window.HOLO_SB&&XU==="guest";
 function needLogin(zh,en){ if(!isGuest()) return false; if(window.HOLO_AUTH) HOLO_AUTH.open(); toast(isEN()?en:zh); return true }
 function doCheckin(){ if(needLogin("要先登录或注册才能签到","Please sign in or register to check in")) return; if(ciDone()) return toast("今天已经签到了"); const R=rules(), streak=ciStreak(XU)+1;
   ME.ci=arr(ME.ci).concat(dayStr(Date.now())).slice(-400); ui.ciNow=1;
-  saveMe().then(()=>toast(`签到成功 +${R.ciPts+(streak%7===0?R.ci7:0)} 分`)) }
+  saveMe().then(()=>toast(`签到成功 +${R.ciPts+(streak===7?R.ci7:0)} 分`)) }
 function ciPanel(){ const R=rules(), done=ciDone(), st=ciStreak(XU), today=dayStr(Date.now()), ds=new Set(ciValid(XU));
-  const week=Array.from({length:7},(_,i)=>dayAdd(today,i-6));
-  return `<div class="panel stack ci" style="gap:10px"><div class="row" style="justify-content:space-between"><div><span class="lbl">${B("每日签到","Daily check-in")}</span><h3 style="margin:2px 0">${B(`已连续 ${st} 天`,`${st}-day streak`)}</h3></div>
+  const m0=monOf(today), week=Array.from({length:7},(_,i)=>dayAdd(m0,i)), WZ=["一","二","三","四","五","六","日"], WE=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+  return `<div class="panel stack ci" style="gap:10px"><div class="row" style="justify-content:space-between"><div><span class="lbl">${B("每日签到","Daily check-in")}</span><h3 style="margin:2px 0">${B(`本周已连续 ${st} 天`,`${st}-day streak this week`)}</h3></div>
    ${isGuest()?`<button class="pri" data-ci="1">${B("登录后签到","Sign in to check in")}</button>`:done?`<span class="chip">${B("今天已签到 ✓","Checked in today ✓")}</span>`:`<button class="pri" data-ci="1">${B(`签到 +${R.ciPts} 分`,`Check in +${R.ciPts}`)}</button>`}</div>
-   ${isGuest()?`<p class="note" style="margin:0">${B("访客不能签到。登录或注册后才能签到和累积积分。","Guests can't check in. Sign in or register to check in and collect points.")}</p>`:""}<div class="cidays">${week.map(d=>`<span class="${ds.has(d)?"on":""}${d===today?" td":""}"><i>${ds.has(d)?"✓":""}</i><small>${d===today?B("今天","Today"):+d.slice(8)+(isEN()?"":"日")}</small></span>`).join("")}</div>
-   <p class="muted" style="margin:0">${B(`每天签到得 ${R.ciPts} 分，连续 7 天再送 ${R.ci7} 分（${B("再签","")} ${7-(st%7)} ${B("天就有","")}）。中间断一天就从头算。积分可以抽奖，也可以结账抵钱。`,`${R.ciPts} pts a day, +${R.ci7} bonus every 7 days in a row. Use points in the lucky draw or at checkout.`)}</p></div>` }
+   ${isGuest()?`<p class="note" style="margin:0">${B("访客不能签到。登录或注册后才能签到和累积积分。","Guests can't check in. Sign in or register to check in and collect points.")}</p>`:""}<div class="cidays">${week.map((d,i)=>`<span class="${ds.has(d)?"on":""}${d===today?" td":""}${d>today?" fu":""}"><i>${ds.has(d)?"✓":i===6?"🎁":""}</i><small>${d===today?B("今天","Today"):isEN()?WE[i]:"周"+WZ[i]}</small></span>`).join("")}</div>
+   <p class="muted" style="margin:0">${B(`每天签到得 ${R.ciPts} 分。每周一重新开始，周一到周日 7 天都签到，周日再送 ${R.ci7} 分。中间断一天，这周的奖励就没有了。积分可以抽奖，也可以结账抵钱。`,`${R.ciPts} pts a day. Each week starts on Monday: check in every day Monday to Sunday and get +${R.ci7} on Sunday. Miss a day and that week's bonus is gone. Use points in the lucky draw or at checkout.`)}</p></div>` }
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ci]"); if(!b) return; doCheckin() },true);
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-needlogin]"); if(b&&window.HOLO_AUTH) HOLO_AUTH.open() });
 
