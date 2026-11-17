@@ -892,6 +892,7 @@ nav.tabs:has(a:focus-visible) a:not(:focus-visible) .nh{opacity:0!important;visi
 .prof summary{display:flex;gap:10px;align-items:center;flex-wrap:wrap;cursor:pointer;list-style:none}.prof summary::-webkit-details-marker{display:none}.prof summary .muted{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .utab td{vertical-align:top}.utab td:nth-child(3){min-width:160px;max-width:260px}.utab .chip{font-weight:700}
 .aseg{display:flex;flex-wrap:wrap;gap:8px}.aseg button{border-radius:99px;padding:7px 14px;min-height:40px}.aseg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}.aseg button b{font-size:12px;background:rgba(0,0,0,.08);border-radius:99px;padding:1px 7px;margin-left:2px}.aseg button.on b{background:rgba(255,255,255,.22)}
+.flinks{display:flex;flex-wrap:wrap;gap:6px 22px;justify-content:center;padding:14px 0 4px;font-size:14px}.flinks a{color:var(--muted)}
 </style>
 
 <div class="bgfx" aria-hidden="true"></div>
@@ -1276,7 +1277,7 @@ const NAVEN={home:"Welcome to Holofen! New and popular items are here",shop:"Boo
 const NAVHINT=window.NAVHINT=new Proxy({}, {get:(_,k)=>(lang==="en"?NAVEN:NAVZH)[k]});
 const TABS=[["home","首页","Home"],["shop","商店","Shop"],["series","系列和卡牌","Sets & cards"],["market","卡牌行情","Card market"],["decks","卡组和代组","Decks & building"],["news","最新消息","News"],["about","关于我们","About us"]];
 /* 二级导航：每个顶部栏目下面的分页。购物车和我的订单放在一起，从右上角的按钮进。 */
-const GROUPS={decks:[["decks","比赛卡组","Tournament decks"],["build","代组服务","Deck building"],["howto","如何游玩","How to play"]],cart:[["cart","购物车","Cart"],["orders","我的订单","My orders"]]};
+const GROUPS={decks:[["decks","比赛卡组","Tournament decks"],["build","代组服务","Deck building"]],cart:[["cart","购物车","Cart"],["orders","我的订单","My orders"]]};
 const PARENT={}; Object.entries(GROUPS).forEach(([g,l])=>l.forEach(t=>PARENT[t[0]]=g));
 const ROUTES=new Set(["home","admin","series","market","shop","news","about","fake",...Object.keys(PARENT)]);
 PARENT.item="shop"; PARENT.set="series"; PARENT.card="market";
@@ -1303,7 +1304,7 @@ function render(){
   $("#btm").hidden=adm; { const cur=PARENT[route]||route, inMore=BTM_MORE.some(t=>t[0]===cur||t[0]===route);
   $("#btm").innerHTML=adm?"":BTM.map(t=>t[0]==="more"?`<a href="#" data-msheet="1" class="${inMore||ui.msheet?"on":""}" aria-expanded="${!!ui.msheet}">${t[2]}<span>${t[1]}</span></a>`:`<a href="#${t[0]}" class="${cur===t[0]?"on":""}">${t[2]}<span>${t[1]}</span>${t[0]==="cart"&&cq?`<b>${cq}</b>`:""}</a>`).join("")+(ui.msheet?`<div class="msheet" role="menu">${BTM_MORE.map(t=>`<a href="#${t[0]}" role="menuitem" class="${cur===t[0]||route===t[0]?"on":""}">${t[2]}<span>${t[1]}</span></a>`).join("")}</div>`:""); }
   applyLang();
-  $("#cartbtn").hidden=adm; { const ob=$("#ownbtn"); if(ob) ob.hidden=adm||!owner } { const lb=$("#loginbtn"); if(lb){ lb.hidden=adm; if(window.HOLO_AUTH) HOLO_AUTH.paint() } } { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm } { const mb=$("#mebtn"); if(mb){ mb.hidden=adm; if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
+  $("#cartbtn").hidden=adm; { const ob=$("#ownbtn"); if(ob) ob.hidden=adm||!owner } { const lb=$("#loginbtn"); if(lb){ lb.hidden=adm; if(window.HOLO_AUTH) HOLO_AUTH.paint() } } { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm } { const mb=$("#mebtn"); if(mb){ mb.hidden=adm||(typeof isGuest==="function"&&isGuest()); if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
   $("#band").innerHTML=adm?"":band();
   $("#foot").innerHTML=adm?`<a href="#home">${BL("回到顾客前台","Back to storefront")}</a>`:`${DOTS}<span>${B("中文、英文和日文版宝可梦卡牌，马来西亚发货，也寄新加坡和中国","Chinese, English &amp; Japanese Pokémon cards, shipped from Malaysia to MY, SG &amp; China")}</span>`;
   const keep=document.activeElement&&document.activeElement.id, pos=keep&&document.activeElement.selectionStart;
@@ -1533,9 +1534,7 @@ const CONTACT=[
 function band(){
   return `<button class="topband" data-top="1" aria-label="回到顶部 Back to top"><span class="wrap" style="display:flex"><span class="mas" aria-hidden="true">${buddy(30,"smile")}${buddy(22,"wow")}</span><span class="totop"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>回到顶部 <span class="en">Back to top</span></span><span class="mas r" aria-hidden="true">${buddy(30,"smile")}${buddy(22,"zzz")}</span></span></button>
   <div class="wrap"><div class="ctc" id="contact">${CONTACT.map(c=>`<a href="${c[3]||"#"}" ${c[3]?'target="_blank" rel="noopener"':`data-tbd="${c[1]}"`}><span class="ic" style="background:${c[2]}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${c[4]}</svg></span>${c[1]}${c[3]?"":`<span class="tbd">${B("待开通","Soon")}</span>`}</a>`).join("")}</div>
-  <div class="fcols"><div><h4>${B("买卡","Shop")}</h4><a href="#shop">${B("商店","Shop")}</a><a href="#series">${B("系列和卡牌","Sets & cards")}</a><a href="#market">${B("卡牌行情","Card market")}</a></div>
-  <div><h4>${B("服务","Services")}</h4><a href="#decks">${B("卡组和代组","Decks & building")}</a><a href="#wall">${B("晒卡墙","Pull wall")}</a><a href="#lucky">${B("签到和抽奖","Check-in & draw")}</a><button type="button" data-contact="1">${B("联系客服","Customer service")}</button></div>
-  <div><h4>${B("关于","About")}</h4><a href="#about">${B("关于我们","About us")}</a><a href="#fake">${B("防伪指南","Spot fakes")}</a><a href="#news">${B("最新消息","News")}</a></div></div></div>`;
+  <nav class="flinks" aria-label="${isEN()?"More":"更多"}"><a href="#wall">${B("晒卡墙","Pull wall")}</a><a href="#lucky">${B("签到和抽奖","Check-in & draw")}</a><a href="#fake">${B("防伪指南","Spot fakes")}</a></nav></div>`;
 }
 V.item=()=>{
   const p=PM[ui.item]; if(!p) return V.shop();
@@ -1820,7 +1819,6 @@ V.shop=()=>{
   <div class="row"><input id="q" type="search" placeholder="搜索卡名或编号" value="${esc(ui.q)}" style="flex:1 1 220px">
    <details class="filt" ${ui.fopen?"open":""}><summary>排序 <span class="en">Sort</span>${(ui.sort||"rec")!=="rec"?" ·":""}</summary><div class="row">
    <select id="sort" aria-label="排序"><option value="rec" ${(ui.sort||"rec")==="rec"?"selected":""}>推荐（RM50–300 优先）</option><option value="hi" ${ui.sort==="hi"?"selected":""}>价格从高到低</option><option value="lo" ${ui.sort==="lo"?"selected":""}>价格从低到高</option><option value="az" ${ui.sort==="az"?"selected":""}>按名称</option></select></div></details></div>
-  ${!ui.cat&&!ui.series&&!q?`<section class="stack" style="gap:10px">${H2("最新系列的原盒","Newest sealed product")}<div class="grid g4">${SP.filter(p=>p.s===SETS[0]||p.s===SETS[1]).sort((a,b)=>SI[b.s].date.localeCompare(SI[a.s].date)||b.price-a.price).slice(0,4).map(prodCard).join("")}</div></section>${H2("全部商品","All products")}`:""}
   <p class="muted">${BL(`共 ${list.length} 件，点图片看详情。本店不卖单卡；想知道单卡值多少，去 <a href="#market">卡价雷达</a>。`,`${list.length} items. Tap a picture for details. We don't sell singles; see the <a href="#market">price radar</a> for card values.`)}</p>
   ${list.length?`<div class="grid">${list.slice(0,ui.shown).map(prodCard).join("")}</div>`:`<p class="muted">没有符合的商品，换个关键词试试。 No items match.</p>`}
   ${list.length>ui.shown?`<div><button data-more="1">再显示 24 件 <span class="en">Show 24 more</span></button></div>`:""}`;
@@ -1946,8 +1944,6 @@ V.about=()=>`${H1("关于我们","About us")}
     <ul>${TRUST.map(t=>`<li>${B(t[0],t[1])}</li>`).join("")}</ul>
     <a class="go" href="#fake">${B("教你怎么分辨盗版卡","How to spot a fake card")} ›</a></div>
     <div class="shield" aria-hidden="true"><svg width="120" height="140" viewBox="0 0 24 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 3.5v7.5c0 6-4 10.5-9 13-5-2.5-9-7-9-13V5.5z" fill="rgba(255,203,5,.18)"/><path d="M7.5 14l3 3 6-6.5" stroke-width="2.2"/></svg></div></section>
-  <section class="stack sec" style="gap:12px">${H2("联系客服","Customer service")}<p>${B("下单前想问库存、卡况、运费，收到货有问题，都可以直接找我们。","Questions about stock, condition, shipping or your order? Message us.")}</p><div class="kfl wide">${kfLinks()}</div></section>
-  <p class="muted">以上联系方式还在开通中，开通后会换成真的链接。<span class="en"> These contact links are not live yet.</span></p>
   <div class="row"><button class="pri" data-go="shop">去商店 <span class="en">Go to shop</span></button><button data-go="news">看最新消息 <span class="en">Latest news</span></button></div>`;
 const TRUST=[
  ["货源只来自官方授权经销商和正规渠道，每件商品都可以说出来源。","Stock comes only from authorised distributors and legitimate channels."],
@@ -2215,7 +2211,7 @@ V.wall=()=>{ const mine=MYPULLS.slice().reverse(), pubKeys=new Set(WALL.map(w=>w
   <p>${B("开包抽到好卡？拍下来和大家分享。店主看过后会放上来，所有人都能看到。","Pulled something great? Share a photo. It shows here after the shop approves it.")}</p>
   ${WALL.length?`<div class="wgrid">${WALL.map(wallItem).join("")}</div>`:`<p class="muted">${B("还没有晒卡，第一张可以是你的。","No pulls yet. Be the first.")}</p>`}
   <section class="stack" style="gap:10px">${H2("我也要晒","Share your pull")}
-  ${assets?`<form class="panel stack" id="wallform" style="gap:10px"><div class="row"><label class="f">${B("卡名","Card name")}<input id="w-name" required maxlength="60" placeholder="例如 Umbreon ex"></label><label class="f">${B("系列","Set")}<select id="w-set"><option value="">不确定</option>${SETS.map(s=>`<option>${esc(s)}</option>`).join("")}</select></label><label class="f">${B("怎么称呼你","Your nickname")}<input id="w-nick" maxlength="20" placeholder="可不填"></label></div>
+  ${typeof isGuest==="function"&&isGuest()?`<div class="panel stack"><p style="margin:0">${B("访客不能投稿。登录或注册后就能晒卡。","Guests can't post. Sign in or register to share your pulls.")}</p><div><button class="pri" data-needlogin="1">${B("登录后晒卡","Sign in to post")}</button></div></div>`:assets?`<form class="panel stack" id="wallform" style="gap:10px"><div class="row"><label class="f">${B("卡名","Card name")}<input id="w-name" required maxlength="60" placeholder="例如 Umbreon ex"></label><label class="f">${B("系列","Set")}<select id="w-set"><option value="">不确定</option>${SETS.map(s=>`<option>${esc(s)}</option>`).join("")}</select></label><label class="f">${B("怎么称呼你","Your nickname")}<input id="w-nick" maxlength="20" placeholder="可不填"></label></div>
    <label class="f">${B("想说的话（可不填）","A few words (optional)")}<input id="w-text" maxlength="120" placeholder="例如：第三包就开到了！"></label>
    <label class="f">${B("照片","Photo")}<input type="file" id="w-file" accept="image/*" required></label>
    <div><button class="pri" type="submit">${B("送出，等店主审核","Submit for review")}</button></div></form>`:`<p class="note">${B("这里暂时收不了照片。正式上线后就能上传；现在可以先把照片发到我们的 IG 或 WhatsApp。","Photo upload isn't available here yet; send it to our IG or WhatsApp for now.")}</p>`}
@@ -2226,7 +2222,7 @@ function admWall(){ const rows=[]; Object.entries(PULLALL).forEach(([u,l])=>arr(
   ${rows.length?`<div class="wgrid">${rows.map(r=>`<figure class="wcard${pub.has(r.key)?"":" off"}"><img loading="lazy" src="${esc(BLOB(aid(r.w.img)))}" alt=""><figcaption><b>${esc(cleanTxt(r.w.name,60))}</b><span class="muted">${esc(cleanTxt(r.w.set,60))}</span><p>${esc(cleanTxt(r.w.text,120))}</p><span class="muted">${esc(cleanTxt(r.w.nick,20)||"顾客")} · ${new Date(num(r.w.at)||0).toLocaleDateString("zh-CN")}</span>${pub.has(r.key)?`<button data-wunpub="${esc(r.key)}">取消公开</button>`:`<button class="pri" data-wpub="${esc(r.key)}">公开</button>`}</figcaption></figure>`).join("")}</div>`:`<p class="muted">还没有顾客投稿。</p>`}` }
 async function setWall(list){ if(!owner) return; WALL=list.slice(0,60); render();
   if(XDB){ try{ await XDB.doc("site/wall").set({list:WALL}) }catch(e){ toast("保存失败 Could not save") } } else lsSet("wall",WALL) }
-async function submitPull(){ const f=document.getElementById("w-file").files[0], name=val("w-name");
+async function submitPull(){ if(needLogin("要先登录或注册才能晒卡","Please sign in or register to post")) return; const f=document.getElementById("w-file").files[0], name=val("w-name");
   if(!name) return toast("请写卡名"); if(!f||!f.type.startsWith("image/")) return toast("请选一张照片"); if(f.size>8e6) return toast("照片太大，请小于 8MB");
   if(MYPULLS.length>=30) return toast("投稿最多 30 张");
   toast("上传中…"); try{ const r=await assets.upload(f); const id=aid(r&&r.id); if(!id) throw 0;
@@ -2406,6 +2402,7 @@ function ciPanel(){ const R=rules(), done=ciDone(), st=ciStreak(XU), today=daySt
    ${isGuest()?`<p class="note" style="margin:0">${B("访客不能签到。登录或注册后才能签到和累积积分。","Guests can't check in. Sign in or register to check in and collect points.")}</p>`:""}<div class="cidays">${week.map(d=>`<span class="${ds.has(d)?"on":""}${d===today?" td":""}"><i>${ds.has(d)?"✓":""}</i><small>${d===today?B("今天","Today"):+d.slice(8)+(isEN()?"":"日")}</small></span>`).join("")}</div>
    <p class="muted" style="margin:0">${B(`每天签到得 ${R.ciPts} 分，连续 7 天再送 ${R.ci7} 分（${B("再签","")} ${7-(st%7)} ${B("天就有","")}）。中间断一天就从头算。积分可以抽奖，也可以结账抵钱。`,`${R.ciPts} pts a day, +${R.ci7} bonus every 7 days in a row. Use points in the lucky draw or at checkout.`)}</p></div>` }
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ci]"); if(!b) return; doCheckin() },true);
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-needlogin]"); if(b&&window.HOLO_AUTH) HOLO_AUTH.open() });
 
 /* ---------- 操作 ---------- */
 function add(id,brief,q){ const p=item(id); if(!p) return; if(!p.svc&&!sellable(p)) return toast("这件暂时缺货 Out of stock");
@@ -2471,7 +2468,7 @@ document.addEventListener("click",e=>{
   if(ds.cancel){ if(stOf(ds.cancel)!=="unpaid") return toast("已付款的订单请联系店主取消"); return saveDoc(uid,{orders:mine.orders.filter(o=>cleanId(o.id)!==ds.cancel)}).then(()=>toast("订单已取消 Cancelled")) }
   if(ds.recv){ if(stOf(ds.recv)!=="shipped") return; return patch(uid,ds.recv,{receivedAt:Date.now()}) }
   if(ds.star){ ui.stars[ds.star]=+ds.n; const keep=val("rv-"+ds.star); render(); const el=document.getElementById("rv-"+ds.star); if(el) el.value=keep; return }
-  if(ds.review){ const n=ui.stars[ds.review]; if(!n) return toast("请先点星星打分 Pick a star rating first");
+  if(ds.review){ if(needLogin("要先登录或注册才能评价","Please sign in or register to leave a review")) return; const n=ui.stars[ds.review]; if(!n) return toast("请先点星星打分 Pick a star rating first");
     if(stOf(ds.review)!=="delivered") return; const [,o]=findOrder(uid,ds.review); const text=cleanTxt(val("rv-"+ds.review),500); const e=eff(uid,o);
     return addReview({orderId:e.id,rating:n,text,items:e.items.map(c=>c.name).join("，"),at:Date.now()}).then(()=>patch(uid,ds.review,{rated:n})).then(()=>toast("谢谢！回购码 "+couponCode(e.id)+" 已放进你的账户")) }
   if(ds.again){ const [,o]=findOrder(uid,ds.again); if(!o) return; eff(uid,o).items.forEach(c=>{ if(PM[c.id]){ const x=cart.find(k=>k.id===c.id); x?x.qty+=c.qty:cart.push({id:c.id,qty:c.qty}) } }); saveCart(); return go("cart") }
