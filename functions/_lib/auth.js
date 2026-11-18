@@ -116,13 +116,19 @@ async function verifyAccessJwt(token, env) {
 }
 
 /**
- * 本地预览：ALLOW_DEV_ADMIN=1、还没配置 Access、并且 Host 是本机。
- * 线上只要设置了 ACCESS_AUD，这条路就关掉。正式环境不要设置 ALLOW_DEV_ADMIN。
+ * 没配好 Cloudflare Access（缺 ACCESS_TEAM_DOMAIN 或 ACCESS_AUD）时，/admin 和 /api/admin 一律拒绝。
+ * 唯一例外是本机：ALLOW_DEV_ADMIN=1 且 Host 是 localhost。正式环境和 Git 预览都没有这个开关。
  */
+export function accessConfigured(env) {
+  return !!(teamIssuer(env && env.ACCESS_TEAM_DOMAIN) && String((env && env.ACCESS_AUD) || "").trim());
+}
+
 export async function authorize(request, env) {
-  const accessConfigured = !!String(env.ACCESS_AUD || "").trim();
-  if (env.ALLOW_DEV_ADMIN === "1" && !accessConfigured && loopback(request)) {
-    return { ok: true, email: "local-dev@localhost", role: "admin", local: true };
+  if (!accessConfigured(env)) {
+    if (env.ALLOW_DEV_ADMIN === "1" && loopback(request)) {
+      return { ok: true, email: "local-dev@localhost", role: "admin", local: true };
+    }
+    return { ok: false, status: 401, error: "请先用 Cloudflare Access 登录。" };
   }
   const token = request.headers.get("Cf-Access-Jwt-Assertion");
   if (!token) return { ok: false, status: 401, error: "请先用 Cloudflare Access 登录。" };

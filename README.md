@@ -14,19 +14,10 @@ GitHub 仓库已经接到 Cloudflare Worker `holofen-shop`。main 分支会跑 `
 
 1. 安装 Node.js 后，在这个目录运行 `npm install`。
 2. 登录 Cloudflare：`npx wrangler login`。
-3. 创建免费的 D1 数据库：`npx wrangler d1 create holofen`。把印出来的 `database_id` 换成 `wrangler.toml` 里那串 `00000000-0000-0000-0000-000000000000`。`preview_database_id` 保持 `local-holofen`，那是你自己电脑上的库。
-4. 同一个 id 还要写进预览配置，否则 Git 上的预览站没有数据库。在 `wrangler.toml` 里加上：
-
-   ```toml
-   [[previews.d1_databases]]
-   binding = "DB"
-   database_name = "holofen"
-   database_id = "上一步印出的 id"
-   ```
-
-5. 把表结构灌进线上库：`npx wrangler d1 migrations apply holofen --remote`。里面含一批名字带「示例」的数据，不是真实库存。看完可以在后台总览按「删除全部示例」。
-6. 打开 Worker `holofen-shop` → Settings → Variables and Secrets，给 Production 和 Preview 都加上：
-   - `ADMIN_EMAILS` = `eldrolee@gmail.com,lieuhongjun0533@gmail.com`
+3. 数据库 `holofen` 已经建好，`database_id` 已写进 `wrangler.toml`。`preview_database_id` 仍是 `local-holofen`，那是你自己电脑上的库。
+4. 同一个 id 也写进了 `[[previews.d1_databases]]`，Git 预览用的是这一份库。
+5. 迁移 `0001` 和 `0002` 已经灌进线上库。里面有一批名字带「示例」的数据，不是真实库存。看完可以在后台总览按「删除全部示例」。
+6. 打开 Worker `holofen-shop` → Settings → Variables and Secrets。`ADMIN_EMAILS` 已经设好（`eldrolee@gmail.com,lieuhongjun0533@gmail.com`）。Production 和 Preview 还要加上：
    - `ACCESS_TEAM_DOMAIN` = `https://你的团队名.cloudflareaccess.com`
    - `ACCESS_AUD` = 下一步 Access 应用里的 Application Audience (AUD) Tag
 7. 开通免费的 Cloudflare Zero Trust（Access，50 人以内免费）。用一次性邮箱验证码即可，不必另买登录服务。新建一个 Self-hosted 应用，域名选这个 Worker 的网站，路径加上：
@@ -35,7 +26,7 @@ GitHub 仓库已经接到 Cloudflare Worker `holofen-shop`。main 分支会跑 `
    - `/api/admin`
    - `/api/admin/*`
    策略选 Allow，Include → Emails，填上 `eldrolee@gmail.com` 和 `lieuhongjun0533@gmail.com`。两人都是完整权限。身份来源选 One-time PIN。
-8. 把第 6 步的 `ACCESS_AUD` 和团队域名填好。推送到 GitHub 后，Cloudflare 会自己构建。用这两个邮箱分别打开 `https://你的网站/admin`，收验证码登录。在第 3 步的 id 换上之前，不要把这个分支合并进 main，否则线上部署会去绑一个还不存在的数据库。
+8. 把第 6 步的 `ACCESS_AUD` 和团队域名填好。在这两项填上之前，`/admin` 和 `/api/admin` 一律拒绝登录。填好后用这两个邮箱打开 `https://你的网站/admin`，收验证码登录。先不要合并。
 9. 域名还指着 Vercel 的话，先不要改 DNS。确认 Worker 网站没问题后，再把域名接到 Cloudflare。`vercel.json` 可以留着，Cloudflare 不读它。迁完、并且 Vercel 项目不再使用之后，删掉 `vercel.json` 即可。图片缓存已经写在 `_headers`。
 
 本地预览（不连线上库）：

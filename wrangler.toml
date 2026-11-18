@@ -16,20 +16,19 @@ enabled = true
 [observability.traces]
 enabled = true
 
-# database_id 仍是占位。`npx wrangler d1 create holofen` 之后换成真的 id。
-# preview_database_id 只给本机 `wrangler dev` 用。
+# preview_database_id 只给本机 `wrangler dev` 用，不要改成线上的 id。
 [[d1_databases]]
 binding = "DB"
 database_name = "holofen"
-database_id = "00000000-0000-0000-0000-000000000000"
+database_id = "e88d6a41-eeca-4580-87bd-af24d7368982"
 preview_database_id = "local-holofen"
 migrations_dir = "migrations"
 
-# `wrangler preview` 不读上面的绑定，没有这个块就会构建失败。
-# 线上还没有 D1，所以预览先不绑数据库。建好库之后，把同一个 id 加到这里：
-# [[previews.d1_databases]]
-# binding = "DB"
-# database_name = "holofen"
-# database_id = "换成 wrangler d1 create 印出的 id"
+# `wrangler preview` 不继承上面的绑定，所以预览要用同一份库再写一次。
+[[previews.d1_databases]]
+binding = "DB"
+database_name = "holofen"
+database_id = "e88d6a41-eeca-4580-87bd-af24d7368982"
+
 [previews.vars]
 APP_ENV = "preview"
