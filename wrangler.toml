@@ -1,0 +1,19 @@
+# Holofen 店务后台。免费方案：Cloudflare Pages + D1 + Cloudflare Access。
+# 还没有创建线上资源。database_id 是占位，Eldro 按 README 换掉后再部署。
+name = "holofen"
+compatibility_date = "2026-11-18"
+pages_build_output_dir = "."
+
+# preview_database_id 让 `wrangler pages dev` 使用本地库，不要改成线上 id。
+[[d1_databases]]
+binding = "DB"
+database_name = "holofen"
+database_id = "00000000-0000-0000-0000-000000000000"
+preview_database_id = "local-holofen"
+migrations_dir = "migrations"
+
+[observability]
+enabled = true
+
+[observability.traces]
+enabled = true

@@ -1,0 +1,13 @@
+{
+  "name": "holofen",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler pages dev . --ip 127.0.0.1 --port 8788",
+    "db:migrate:local": "wrangler d1 migrations apply holofen --local --persist-to .wrangler/state",
+    "check": "node --test test/*.test.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.53.0"
+  }
+}
