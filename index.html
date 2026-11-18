@@ -2617,8 +2617,12 @@ const mailErr=r=>r&&r.error==="not_configured"?"发信服务还没设定好：�
 /* 订单进度电邮：店主每按一步就寄给顾客（下单时填的邮箱）。 */
 const OMAIL={approved:["付款已确认，正在打包","Payment confirmed, we're packing your cards"],shipped:["包裹已寄出","Your parcel is on its way"],delivered:["包裹已送达","Your parcel was delivered"],rejected:["订单没有通过审核","Your order couldn't be approved"]};
 function orderMail(u,oid){ const raw=arr((all[u]||{}).orders).find(x=>cleanId(x.id)===oid); if(!raw) return; const o=eff(u,raw), m=OMAIL[o.status]; if(!m||!o.email||o.test) return;
+  /* 审核通过 = 确认收款：直接寄电子收据（明细、价钱都在收据里） */
+  if(o.status==="approved"){ const a=((admS[u]||{}).o||{})[oid]||{}; o.approvedAt=num(a.approvedAt)||Date.now();
+    const html=`<p style="font-family:Arial,sans-serif;max-width:640px;margin:16px auto;color:#1d2340">${esc(o.name||"")} 你好，我们已经确认收到你的付款，正在打包你的卡。下面是你的电子收据。<br>Hi ${esc(o.name||"")}, we've confirmed your payment and are packing your cards. Your e-receipt is below.<br><a href="${esc(location.origin+location.pathname)}#orders">查看订单进度 Track your order</a></p>`+receiptHTML(o).replace(/^<!doctype[^>]*>/i,"").replace(/<div class="bar">[\s\S]*$/,"");
+    return HOLO_AUTH.mail({kind:"order",to:[o.email],subject:`Holofen 电子收据 ${o.id}：付款已确认`,html}).then(r=>{ if(r&&r.ok) toast("已寄电子收据给顾客"); else if(r&&r.error!=="not_configured") toast("收据电邮没寄出去") }) }
   const site=location.origin+location.pathname, trk=o.status==="shipped"&&o.tracking?`\n快递 Courier：${o.courier||""}\n运单号 Tracking：${o.tracking}${trackUrl(o)?"\n"+trackUrl(o):""}`:"", why=o.status==="rejected"&&o.reason?"\n原因 Reason："+o.reason:"";
-  HOLO_AUTH.mail({kind:"order",to:[o.email],subject:`Holofen 订单 ${o.id}：${m[0]}`,text:`${o.name||""} 你好，\n\n你的订单 ${o.id}：${m[0]}。\nYour order ${o.id}: ${m[1]}.${trk}${why}\n\n查看订单进度 Track your order：${site}#orders`}).then(r=>{ if(r&&r.ok) toast("已寄电邮通知顾客"); else if(r&&r.error!=="not_configured") toast("电邮通知没寄出去") }) }
+  HOLO_AUTH.mail({kind:"order",to:[o.email],subject:`Holofen 订单 ${o.id}：${m[0]}`,text:`${o.name||""} 你好，\n\n你的订单 ${o.id}：${m[0]}。\nYour order ${o.id}: ${m[1]}.${trk}${why}\n\n${o.items.map(c=>c.name+" ×"+c.qty+"  "+rm(c.price*c.qty)).join("\n")}\n合计 Total：${rm(o.total)}\n\n查看订单进度 Track your order：${site}#orders`}).then(r=>{ if(r&&r.ok) toast("已寄电邮通知顾客"); else if(r&&r.error!=="not_configured") toast("电邮通知没寄出去") }) }
 function admUsers(){ loadUsers(); const E=isEN(), now=Date.now(), dago=n=>myDay(now-n*864e5);
   const ids=new Set(Object.keys(MEALL||{}).filter(u=>u!=="local"&&u!=="guest")); arr(AUSERS).forEach(u=>ids.add(u.id)); Object.keys(all||{}).forEach(u=>{ if(u!=="local"&&u!=="guest") ids.add(u) });
   const au=Object.fromEntries(arr(AUSERS).map(u=>[u.id,u]));
@@ -3026,7 +3030,7 @@ document.addEventListener("submit",e=>{
     if(signedIn()){ const pf=normProf({name:o.name,phone:o.phone,ship:t.onlySvc?ME.prof.ship:(t.sh.k==="pickup"?ME.prof.ship:t.sh.k),addr:o.addr||ME.prof.addr,post:o.post||ME.prof.post,state:t.onlySvc?ME.prof.state:(o.state||ME.prof.state),at:Date.now()}); ME.prof=pf; saveMe() }
     { const mk=!!(document.getElementById("c-mkt")||{}).checked; if(mk!==ME.mkt||(o.email&&o.email!==ME.email)){ ME.mkt=mk; ME.mktAt=Date.now(); if(o.email) ME.email=o.email } }
     cart=[]; ui.coupon=""; ui.pts=0; saveCart();
-    saveDoc(uid,{orders:arr(mine.orders).concat(o)}).then(()=>{ toast(isEN()?"Order "+id+" placed":"订单 "+id+" 已提交"); go("orders"); if(o.email&&window.HOLO_SB&&HOLO_AUTH.mail) HOLO_AUTH.mail({kind:"placed",orderId:id}) });
+    saveDoc(uid,{orders:arr(mine.orders).concat(o)}).then(()=>{ toast(isEN()?"Order "+id+" placed":"订单 "+id+" 已提交"); go("orders"); if(o.email&&window.HOLO_SB&&HOLO_AUTH.mail){ const x=eff(uid,o); HOLO_AUTH.mail({kind:"placed",orderId:id,lines:x.items.map(c=>({n:c.name,q:c.qty,p:c.price})),sub:x.sub,fee:x.fee,off:x.off}) } });
   }
 });
 document.addEventListener("pointermove",e=>{

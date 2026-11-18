@@ -35,15 +35,23 @@ Deno.serve(async (req) => {
       const { data } = await admin.from("docs").select("data").eq("col", "orders").eq("id", u.user.id).maybeSingle();
       const o = (data?.data?.orders ?? []).find((x: any) => x && x.id === b.orderId);
       if (!o || !okEmail(o.email) || Date.now() - Number(o.at) > 15 * 60e3) return J({ error: "no_order" }, 404);
-      await brevo(key, sender, [o.email], `Holofen 已收到你的订单 ${o.id}`, wrap(`<h2>谢谢你的订单！</h2><p>订单编号 <b>${esc(o.id)}</b>。店主确认收到付款后会开始打包，之后每一步都会再寄电邮告诉你。</p><p>We received your order <b>${esc(o.id)}</b>. We'll email you at each step.</p><p><a href="${esc(site)}#orders">查看订单进度 Track your order</a></p>`, site));
+      // 商品明细由网页传来，但数量必须和数据库里的订单一致，名字只当纯文字显示
+      const its = Array.isArray(o.items) ? o.items : [], ln = Array.isArray(b.lines) ? b.lines.slice(0, 50) : [];
+      const okLines = ln.length === its.length && ln.every((l: any, i: number) => l && Number(l.q) === Number(its[i].qty) && Number.isFinite(Number(l.p)));
+      const rm = (v: number) => "RM" + Number(v).toFixed(2);
+      const table = okLines ? `<table style="width:100%;border-collapse:collapse;font-size:14px;margin:12px 0">${ln.map((l: any) => `<tr><td style="padding:6px 0;border-bottom:1px solid #eee">${esc(String(l.n).slice(0, 100))} × ${Number(l.q)}</td><td style="padding:6px 0;border-bottom:1px solid #eee;text-align:right">${rm(Number(l.p) * Number(l.q))}</td></tr>`).join("")}
+        ${[["小计 Subtotal", b.sub], ["运费 Shipping", b.fee], ["折扣 Discount", b.off ? -Number(b.off) : null]].filter((x) => x[1] != null && Number.isFinite(Number(x[1]))).map((x) => `<tr><td style="padding:4px 0;color:#55606f">${x[0]}</td><td style="text-align:right;color:#55606f">${rm(Number(x[1]))}</td></tr>`).join("")}
+        <tr><td style="padding:8px 0;font-weight:bold;border-top:2px solid #1d2340">合计 Total</td><td style="text-align:right;font-weight:bold;border-top:2px solid #1d2340">${rm(Number(o.total))}</td></tr></table>` : "";
+      await brevo(key, sender, [o.email], `Holofen 已收到你的订单 ${o.id}`, wrap(`<h2>谢谢你的订单！</h2><p>订单编号 <b>${esc(o.id)}</b>。店主确认收到付款后会开始打包，并寄电子收据给你，之后每一步都会再寄电邮告诉你。</p><p>We received your order <b>${esc(o.id)}</b>. We'll email your receipt once payment is confirmed.</p>${table}<p><a href="${esc(site)}#orders">查看订单进度 Track your order</a></p>`, site));
       return J({ ok: true });
     }
     const { data: staff } = await user.rpc("is_staff");
     if (staff !== true) return J({ error: "forbidden" }, 403);
     const to = [...new Set((Array.isArray(b.to) ? b.to : []).map((e: string) => String(e).trim().toLowerCase()).filter(okEmail))].slice(0, 2000) as string[];
     const subject = String(b.subject ?? "").slice(0, 150).trim(), text = String(b.text ?? "").slice(0, 5000).trim();
-    if (!to.length || !subject || !text) return J({ error: "missing" }, 400);
-    const html = wrap(esc(text).replace(/\n/g, "<br>"), site);
+    if (!to.length || !subject || (!text && !b.html)) return J({ error: "missing" }, 400);
+    // 店主和管理员可以直接送 HTML（例如电子收据）；其他情况只当纯文字
+    const html = typeof b.html === "string" && b.html.length < 100000 ? b.html : wrap(esc(text).replace(/\n/g, "<br>"), site);
     await brevo(key, sender, to, subject, html);
     return J({ ok: true, sent: to.length });
   } catch (e) { const m = String((e as Error).message).slice(0, 300); console.error("send-mail failed:", m); return J({ error: m }, 502) }
