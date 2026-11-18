@@ -1230,7 +1230,7 @@ window.HOLO_AUTH=(function(){
   }
   async function listUsers(){ if(!sb) return null; try{ var r=await sb.rpc("list_users"); return r.error?null:(r.data||[]) }catch(e){ return null } }
   async function mail(body){ if(!sb) return {error:"offline"}; try{ var r=await sb.functions.invoke("send-mail",{body:Object.assign({site:location.origin+location.pathname},body)}); if(r.error){ var m="send"; try{ var j=await r.error.context.json(); m=j.error||m }catch(_){ } return {error:m} } return r.data||{ok:true} }catch(e){ return {error:"send"} } }
-  return { mail:mail, anon:anon, isAnon:function(){ return !!(user&&user.is_anonymous) }, signOut:out, isOwnerEmail:function(em){ return sha(String(em||"").trim().toLowerCase()).then(function(h){ return OWNER_HASH.indexOf(h)>=0 }).catch(function(){ return false }) }, listUsers:listUsers, isOwner:function(){ return isOwn }, role:function(){ return myRole }, staffList:function(){ return staff }, perms:function(){ return myRole==="owner"?null:myPerms }, setPerms:setPerms, user:function(){ return user }, paint:paint, open:open, removeStaff:removeStaff, saveStaff:saveStaff };
+  return { mail:mail, anon:anon, isAnon:function(){ return !!(user&&user.is_anonymous) }, signOut:out, isOwnerEmail:function(em){ return sha(String(em||"").trim().toLowerCase()).then(function(h){ return OWNER_HASH.indexOf(h)>=0 }).catch(function(){ return false }) }, listUsers:listUsers, isOwner:function(){ return isOwn }, role:function(){ return myRole }, staffList:function(){ return staff }, perms:function(){ return myRole==="owner"?null:myPerms }, setPerms:setPerms, user:function(){ return user }, client:function(){ return sb }, paint:paint, open:open, removeStaff:removeStaff, saveStaff:saveStaff };
 })();
 </script>
 <script src="data.js"></script>
@@ -1277,10 +1277,9 @@ function applyCatalog(){
   P.splice(0,P.length,...ALLP.filter(p=>!p.hidden&&(!p.added||(p.n&&p.price>0))));
   if(typeof SINGLES!=="undefined") SINGLES.splice(0,SINGLES.length,...P.filter(p=>p.c==="single"));
   if(typeof cartWait!=="undefined"&&cartWait.length){ const ok=cartWait.filter(c=>sellable(PM[c.id])&&PM[c.id].price>0&&!cart.some(x=>x.id===c.id)); if(ok.length){ cart=cart.concat(ok.map(c=>({id:c.id,qty:clampN(c.qty,1,99)}))); cartWait=cartWait.filter(c=>!ok.includes(c)) } }
-  if(window.__holoLive) applyLiveCatalog(window.__holoLive);
 }
-const simg = p => p.liveImg?p.liveImg:p.photo?BLOB(p.photo):p.img?"img/"+p.img+".jpg":p.tmpimg?p.tmpimg:p.loose&&window.SETINFO&&window.SETINFO[p.s]?window.SETINFO[p.s].logo:NOIMG;
-const bimg = p => p.liveImg?p.liveImg:p.photo?BLOB(p.photo):p.img?(p.big?"big":"img")+"/"+p.img+".jpg":simg(p);
+const simg = p => p.photo?BLOB(p.photo):p.img?"img/"+p.img+".jpg":p.tmpimg?p.tmpimg:p.loose&&window.SETINFO&&window.SETINFO[p.s]?window.SETINFO[p.s].logo:NOIMG;
+const bimg = p => p.photo?BLOB(p.photo):p.img?(p.big?"big":"img")+"/"+p.img+".jpg":simg(p);
 const bigF = p => p.photo?BLOB(p.photo):p.img?"big/"+p.img+".jpg":p.tmpimg||NOIMG;
 const NOIMG = "data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 63 88"><rect width="63" height="88" rx="4" fill="#eef1f7"/><text x="31.5" y="47" font-size="7" text-anchor="middle" fill="#8a93ad" font-family="sans-serif">No photo</text></svg>');
 const sellable = p => p&&!p.hidden&&(p.stock!==0||!!isPre(p))&&listed(p);
@@ -1543,8 +1542,7 @@ function prodCard(p){
   return `<div class="prod" data-goitem="${p.id}"${tc?` style="--glow:${tc[0]}99"`:""}><div class="pic"><a href="#p/${p.id}" aria-label="${esc(pname(p))} 商品页"><img loading="lazy" src="${simg(p)}" alt=""></a><button class="qv" data-open="${p.id}">快速查看 <span class="en">Quick view</span></button>${wishBtn(p)}${isPre(p)?`<span class="prebdg">${B("预购","Pre-order")} · ${preTxt(p)}</span>`:""}</div>
   <div class="info">${p.no?`<div class="cno">${esc(numTxt(p))}</div>`:""}<a class="nm" href="#p/${p.id}">${esc(PZ(p))}</a><div class="muted set">${slogo(p.s)}<span>${esc(p.s)}</span></div>
   <div class="bigp">${rm(p.price)}</div>
-  ${p.live?`<div class="muted">${p.liveEx?`<span class="chip tbd">示例</span> `:""}${p.stock===0?"售罄":p.stock>0?`现货 ${p.stock}`:""}</div>`:""}
-  <div class="foot">${p.live&&p.stock===0&&!isPre(p)?`<button disabled>售罄 <span class="en">Sold out</span></button>`:p.stock===0&&!isPre(p)?`<button disabled>缺货 <span class="en">Sold out</span></button>`:isPre(p)?`<button class="sun" data-add="${p.id}">预购 <span class="en">Pre-order</span></button>`:`<button class="sun" data-add="${p.id}">加入购物车 <span class="en">Add</span></button>`}</div></div></div>`;
+  <div class="foot">${p.stock===0&&!isPre(p)?`<button disabled>缺货 <span class="en">Sold out</span></button>`:isPre(p)?`<button class="sun" data-add="${p.id}">预购 <span class="en">Pre-order</span></button>`:`<button class="sun" data-add="${p.id}">加入购物车 <span class="en">Add</span></button>`}</div></div></div>`;
 }
 function detail(p){
   const c=contents(p);
@@ -1555,7 +1553,7 @@ function detail(p){
   ${p.c==="single"&&CI[p.id]?cardInfo(p,1):`<div><h3>${B("内容","What's inside")}</h3><p>${esc(c[0])}</p><p class="en">${esc(c[1])}</p>${c[2]?`<span class="chip tbd">待核对 <span class="en">Unverified</span></span>`:""}</div>`}
   <div class="row" style="gap:8px">${slogo(p.s)}<span class="muted">${esc(p.s)}${p.no?" · "+esc(numTxt(p)):""}</span></div>
   <p class="muted">图片为参考图，实物以实拍为准。<span class="en"> Reference photo; real photos to follow.</span></p>
-  <div class="row">${p.stock===0&&!isPre(p)?`<button disabled>${p.live?"售罄":"缺货"} <span class="en">Sold out</span></button>`:`<button class="pri" data-add="${p.id}">${isPre(p)?`预购 <span class="en">Pre-order</span>`:`加入购物车 <span class="en">Add to cart</span>`}</button>`}<a href="#p/${p.id}">查看完整商品页 <span class="en">Full details</span> ›</a></div></div></div></div>`;
+  <div class="row"><button class="pri" data-add="${p.id}">${isPre(p)?`预购 <span class="en">Pre-order</span>`:`加入购物车 <span class="en">Add to cart</span>`}</button><a href="#p/${p.id}">查看完整商品页 <span class="en">Full details</span> ›</a></div></div></div></div>`;
 }
 /* 上线清单：[中文, 英文, 是否完成]。只有店主和管理员在后台看得到。 */
 const LAUNCH=[
@@ -1772,9 +1770,9 @@ V.item=()=>{
     <div>${st?`<div class="row" style="gap:8px">${slogo(p.s,"slogo")}<span class="muted">${esc(p.s)}</span></div>`:""}
       <h1 style="margin:6px 0 2px">${esc(PZ(p))}${isEN()||!p.zh?"":`<small>${esc(p.n)}</small>`}</h1>
       <div class="muted">${p.no?esc(numTxt(p))+" · ":""}${c&&c.rarity?esc(RAR[c.rarity]||c.rarity)+" · ":""}${CATS[p.c][0]} <span class="en">${CATS[p.c][1]}</span></div></div>
-    <div><div class="bigp" style="font-size:34px">${rm(p.price)}</div>${p.liveEx?`<span class="chip tbd">示例</span> `:""}<span class="muted">${p.live&&p.stock>0?`现货 ${p.stock} · `:p.live&&p.stock===0?"售罄 · ":""}马来西亚发货，运费在结账时列出 <span class="en">Ships from Malaysia; shipping shown at checkout</span></span></div>
+    <div><div class="bigp" style="font-size:34px">${rm(p.price)}</div><span class="muted">马来西亚发货，运费在结账时列出 <span class="en">Ships from Malaysia; shipping shown at checkout</span></span></div>
     ${payNote(1)}
-    <div class="row">${!listed(p)?`<button disabled>已下架 <span class="en">Not for sale</span></button>`:isPre(p)?`<button class="pri" data-add="${p.id}">预购 <span class="en">Pre-order</span></button>`:p.stock===0?`<button disabled>${p.live?"售罄":"缺货"} <span class="en">Sold out</span></button>`:p.loose?(()=>{ const k=p.id, cap=p.stock>0?Math.min(99,p.stock):99; return `<div class="lq lcus"><span class="row" style="gap:4px;flex-wrap:nowrap"><button type="button" data-lstep="${k}" data-d="-1" aria-label="${BT("少一包","One less")}">−</button><input id="lq-${k}" type="number" min="1" max="${cap}" step="1" inputmode="numeric" value="1" aria-label="${BT("要几包","Number of packs")}" data-lprice="${p.price||0}"><button type="button" data-lstep="${k}" data-d="1" aria-label="${BT("多一包","One more")}">+</button></span><button class="pri" data-addq="${k}">${B("加入购物车","Add to cart")}<small id="lqt-${k}">${p.price>0?`1 ${B("包","pack")} · ${rm(p.price)}`:B("价格待定","Price TBD")}</small></button></div><span class="muted" style="flex-basis:100%">${B("要几包自己填，1 到 "+cap+" 包都可以。","Enter any number of packs, from 1 to "+cap+".")}</span>` })():`<button class="pri" data-add="${p.id}">加入购物车 <span class="en">Add to cart</span></button>`}${wishBtn(p,1)}<span class="muted">${isPre(p)?"":p.stock>0?`${B("现货","In stock")} ${p.stock}`:p.live&&p.stock===0?B("售罄","Sold out"):p.stock===0?"":B("库存待店主录入","Stock TBD")}</span></div>
+    <div class="row">${!listed(p)?`<button disabled>已下架 <span class="en">Not for sale</span></button>`:isPre(p)?`<button class="pri" data-add="${p.id}">预购 <span class="en">Pre-order</span></button>`:p.stock===0?`<button disabled>缺货 <span class="en">Out of stock</span></button>`:p.loose?(()=>{ const k=p.id, cap=p.stock>0?Math.min(99,p.stock):99; return `<div class="lq lcus"><span class="row" style="gap:4px;flex-wrap:nowrap"><button type="button" data-lstep="${k}" data-d="-1" aria-label="${BT("少一包","One less")}">−</button><input id="lq-${k}" type="number" min="1" max="${cap}" step="1" inputmode="numeric" value="1" aria-label="${BT("要几包","Number of packs")}" data-lprice="${p.price||0}"><button type="button" data-lstep="${k}" data-d="1" aria-label="${BT("多一包","One more")}">+</button></span><button class="pri" data-addq="${k}">${B("加入购物车","Add to cart")}<small id="lqt-${k}">${p.price>0?`1 ${B("包","pack")} · ${rm(p.price)}`:B("价格待定","Price TBD")}</small></button></div><span class="muted" style="flex-basis:100%">${B("要几包自己填，1 到 "+cap+" 包都可以。","Enter any number of packs, from 1 to "+cap+".")}</span>` })():`<button class="pri" data-add="${p.id}">加入购物车 <span class="en">Add to cart</span></button>`}${wishBtn(p,1)}<span class="muted">${isPre(p)?"":p.stock>0?`${B("现货","In stock")} ${p.stock}`:p.stock===0?"":B("库存待店主录入","Stock TBD")}</span></div>
     ${isPre(p)&&listed(p)?`<div class="note">${B(`预购：预计 ${preTxt(p)}到货。到货时间以官方和代理商为准。付款时间和寄出顺序待店主确认。`,`Pre-order: expected ${isPre(p)}. Arrival depends on the official release. Payment timing and shipping order are to be confirmed by the shop.`)}</div>`:""}
     ${p.lng||p.cond?`<div class="row" style="gap:6px">${p.lng?`<span class="chip">${esc(p.lng)}</span>`:""}${p.cond?`<span class="chip">${B("卡况","Condition")} ${esc(p.cond)}</span>`:""}</div>`:""}
     ${p.desc?`<div class="note" style="white-space:pre-line">${esc(p.desc)}</div>`:""}
@@ -2062,7 +2060,7 @@ V.shop=()=>{
   ${list.length>ui.shown?`<div><button data-more="1">再显示 24 件 <span class="en">Show 24 more</span></button></div>`:""}`;
 };
 function priceTable(list){ return `<div class="tw"><table class="mob"><thead><tr><th></th>${TH("商品","Item")}${TH("系列","Set")}${TH("本店售价","Our price",1)}<th></th></tr></thead><tbody>
-  ${list.map(p=>`<tr><td class="th"><img loading="lazy" src="${simg(p)}" alt=""></td><td><b>${esc(PN(p))}</b><div class="muted">${esc(PNs(p))}</div></td><td>${esc(p.s)}</td><td class="n"><b style="color:var(--red)">${rm(p.price)}</b></td><td>${p.live&&p.stock===0?`<button disabled>售罄</button>`:`<button data-add="${p.id}">加入购物车</button>`}</td></tr>`).join("")||`<tr><td colspan="5" class="muted">没有找到，换个关键词试试。 Nothing found.</td></tr>`}</tbody></table></div>`}
+  ${list.map(p=>`<tr><td class="th"><img loading="lazy" src="${simg(p)}" alt=""></td><td><b>${esc(PN(p))}</b><div class="muted">${esc(PNs(p))}</div></td><td>${esc(p.s)}</td><td class="n"><b style="color:var(--red)">${rm(p.price)}</b></td><td><button data-add="${p.id}">加入购物车</button></td></tr>`).join("")||`<tr><td colspan="5" class="muted">没有找到，换个关键词试试。 Nothing found.</td></tr>`}</tbody></table></div>`}
 V.prices=()=>{
   const q=ui.pq.trim().toLowerCase();
   const list=P.filter(p=>!q||(p.n+" "+p.zh+" "+p.s+" "+p.no).toLowerCase().includes(q)).sort((a,b)=>b.price-a.price);
@@ -2576,7 +2574,7 @@ window.BTM_MORE.splice(window.BTM_MORE.length-1,0,["wall","晒卡墙",`<svg widt
 ATABS.splice(ATABS.length-1,0,["wall","晒卡墙","Pull wall"]);
 { const _adm=V.admin; V.admin=()=>owner&&ui.atab==="wall"?admWall():_adm() }
 /* v79 员工权限：每个管理员单独勾选能进的后台页面（staff.perms；空值=全部，兼容旧账号） */
-const APERMS=[["orders","订单"],["products","商品"],["users","用户"],["review","审核"],["settings","设置"]];
+const APERMS=[["orders","订单"],["products","商品"],["stock","进货"],["users","用户"],["review","审核"],["settings","设置"]];
 function admAllowed(k){ const P=window.HOLO_AUTH&&HOLO_AUTH.perms&&HOLO_AUTH.perms(); return !P||P.includes(k) }
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 function admStaff(){
@@ -2734,11 +2732,66 @@ function admLucky(){ const r=curRound(); const rows=[]; const us=new Set(Object.
   <p class="muted">${BL(`全部抽奖 ${rows.length} 次，其中无效 ${rows.filter(x=>!x.d.ok).length} 次（顾客端记录对不上，不发奖、不扣分）。`,`${rows.length} draws in total, ${rows.filter(x=>!x.d.ok).length} invalid (customer record didn't match: no prize, no points taken).`)}</p>` }
 ROUTES.add("lucky"); GROUPS.cart.splice(2,0,["lucky","签到抽奖","Check-in"]); PARENT.lucky="cart";
 ATABS.splice(ATABS.length-1,0,["lucky","抽奖","Lucky draw"]);
+/* 进货：成本在 product_stock / restocks（只有 staff 能读）。到货只经 save_restock 加一次目录里的 stock，审核扣的是同一个数字。 */
+const sen=n=>{ n=Math.trunc(Number(n)||0); const s=n<0?"-":""; const a=Math.abs(n); return s+Math.floor(a/100)+"."+String(a%100).padStart(2,"0") };
+const toSen=s=>{ const t=String(s??"").trim(); if(!/^\d+(\.\d{1,2})?$/.test(t)) return null; const [w,f=""]=t.split("."); return Number(w)*100+Number((f+"00").slice(0,2)) };
+let RST=[], PCOST={};
+async function loadRestock(){ const sb=window.HOLO_AUTH&&HOLO_AUTH.client&&HOLO_AUTH.client(); if(!sb){ ui.rstErr="数据库没连上"; return }
+  const [a,b]=await Promise.all([sb.from("restocks").select("*").order("updated_at",{ascending:false}).limit(500), sb.from("product_stock").select("*")]);
+  if((a.error||b.error)){ ui.rstErr=(a.error||b.error).message; RST=[]; PCOST={}; return }
+  ui.rstErr=""; RST=a.data||[]; PCOST=Object.fromEntries((b.data||[]).map(x=>[x.product_id,x])); }
+function stockRows(){ const pq=pendQty(); return ALLP.filter(p=>listed(p)&&!p.svc&&!isPre(p)).map(p=>{ const c=PCOST[p.id]||{}, cost=c.cost_cents||0, open=RST.some(r=>r.product_id===p.id&&r.status!=="已到货");
+  return {p, cost, need:!!c.needs_restock||open, lv:skLevel(p,pq), av:p.stock==null?null:p.stock-(pq[p.id]||0)} }) }
+function admStock(){ if(!ui.rstAt){ ui.rstAt=1; loadRestock().then(()=>render()) }
+  const q=(ui.stq||"").toLowerCase(), rows=stockRows().filter(x=>!q||(x.p.n+" "+x.p.zh+" "+x.p.s).toLowerCase().includes(q));
+  const low=rows.filter(x=>x.lv==="low"||x.lv==="out"||x.lv==="short");
+  const open=RST.filter(r=>r.status!=="已到货"), done=RST.filter(r=>r.status==="已到货");
+  const nm=id=>{ const p=PM[id]; return p?PN(p):id };
+  const card=r=>`<form class="panel stack" data-rs="${r.id}" style="gap:8px"><b>${esc(nm(r.product_id))}</b><div class="muted">${esc(r.status)} · 创建 ${esc(r.created_by||"")} · 最后改 ${esc(r.updated_by||"")}${r.stock_applied?` · 已计入库存 ${r.stock_applied}`:""}</div>
+    <div class="row"><label class="f">数量<input name="qty" inputmode="numeric" value="${r.qty}"></label><label class="f">单价成本 RM<input name="cost" inputmode="decimal" value="${sen(r.unit_cost_cents)}"></label><label class="f">供应商<input name="supplier" maxlength="120" value="${esc(r.supplier||"")}"></label>
+    <label class="f">状态<select name="status">${["待进货","已下单","已到货"].map(s=>`<option ${r.status===s?"selected":""}>${s}</option>`).join("")}</select></label></div>
+    <div><button class="pri" type="submit">保存</button></div></form>`;
+  return `<p class="muted">${B("勾「要进货」会出现在下面，填数量和成本后保存。状态改成「已到货」才把数量加进现在的库存，再保存一次不会再加。订单审核通过时扣的也是这个库存。","Tick Restock to add a line. Stock increases only when the status becomes Arrived, and saving again does not add it twice. Order approval deducts this same stock.")}</p>
+  ${ui.rstErr?`<p class="note">${esc(ui.rstErr)}。请先在 Supabase 执行进货迁移。</p>`:""}
+  <div class="row"><input id="stq" type="search" placeholder="搜索商品" value="${esc(ui.stq||"")}" style="flex:1"><button data-rexp="1">导出 CSV</button></div>
+  ${low.length?`<h3>低库存</h3><div class="tw"><table><tbody>${low.map(x=>`<tr><td><b>${esc(PN(x.p))}</b><div class="muted">${esc(x.p.s||"")}</div></td><td class="n">${x.p.stock==null?"未录入":x.p.stock}</td><td>${x.lv==="out"?"售罄":x.lv==="short"?"不够发":"快没了"}</td></tr>`).join("")}</tbody></table></div>`:""}
+  <h3>现在的库存、成本和利润</h3>
+  <div class="tw"><table><thead><tr><th>商品</th><th class="n">库存</th><th class="n">售价</th><th>成本 RM</th><th class="n">单件利润</th><th>要进货</th></tr></thead><tbody>${rows.slice(0,ui.stn||40).map(x=>{ const profit=x.p.price?Math.round(x.p.price*100)-x.cost:null;
+    return `<tr><td><b>${esc(PN(x.p))}</b><div class="muted">${esc(x.p.s||"")}</div></td><td class="n">${x.p.stock==null?"—":x.p.stock}</td><td class="n">${x.p.price?rm(x.p.price):"—"}</td><td><input data-rcost="${esc(x.p.id)}" inputmode="decimal" value="${sen(x.cost)}" aria-label="${esc(PN(x.p))} 成本" style="width:7em"></td><td class="n">${profit==null?"—":rm(profit/100)}</td><td><label class="row" style="gap:6px"><input type="checkbox" data-rneed="${esc(x.p.id)}" ${x.need?"checked":""}>要进货</label></td></tr>` }).join("")||`<tr><td colspan="6" class="muted">没有在售的实物商品。</td></tr>`}</tbody></table></div>
+  ${rows.length>(ui.stn||40)?`<div><button data-stmore="1">再显示 40 件</button></div>`:""}
+  <h3>要进货</h3>${open.map(card).join("")||`<p class="muted">没有待处理的进货。</p>`}
+  <h3>进货记录</h3>${done.length?`<div class="tw"><table><thead><tr><th>商品</th><th class="n">数量</th><th class="n">单价</th><th>供应商</th><th>创建</th><th>最后修改</th></tr></thead><tbody>${done.map(r=>`<tr><td>${esc(nm(r.product_id))}</td><td class="n">${r.qty}</td><td class="n">RM${sen(r.unit_cost_cents)}</td><td>${esc(r.supplier||"")}</td><td>${esc(r.created_by||"")}</td><td>${esc(r.updated_by||"")}</td></tr>`).join("")}</tbody></table></div>`:`<p class="muted">还没有到货记录。</p>`}` }
+document.addEventListener("input",e=>{ if(e.target.id==="stq"){ ui.stq=e.target.value; clearTimeout(admStock.t); admStock.t=setTimeout(render,200) } });
+document.addEventListener("change",async e=>{ const t=e.target;
+  if(!owner||!admAllowed("stock")) return; const sb=window.HOLO_AUTH&&window.HOLO_AUTH.client(); if(!sb) return; const who=(window.HOLO_AUTH.user()||{}).email||"";
+  if(t.dataset&&t.dataset.rcost){ const cost=toSen(t.value); if(cost==null) return toast("成本要填 0 或以上的金额");
+    const id=t.dataset.rcost, prev=PCOST[id]||{}; const r=await sb.from("product_stock").upsert({product_id:id,cost_cents:cost,needs_restock:!!prev.needs_restock,updated_by:who});
+    if(r.error) return toast(r.error.message); PCOST[id]={...prev,product_id:id,cost_cents:cost}; return render() }
+  if(t.dataset&&t.dataset.rneed){ const id=t.dataset.rneed, on=t.checked;
+    if(on){ if(RST.some(x=>x.product_id===id&&x.status!=="已到货")) return toast("已经在进货单里"); const cost=(PCOST[id]||{}).cost_cents||0; const r=await sb.from("restocks").insert({product_id:id,qty:1,unit_cost_cents:cost,supplier:"",status:"待进货"}); if(r.error){ t.checked=false; return toast(r.error.message) }
+      await sb.from("product_stock").upsert({product_id:id,cost_cents:cost,needs_restock:true,updated_by:who}) }
+    else { if(RST.some(x=>x.product_id===id&&x.status==="已下单")){ t.checked=true; return toast("这件已经下单，先改状态再取消") }
+      const r=await sb.from("restocks").delete().eq("product_id",id).eq("status","待进货").eq("stock_applied",0); if(r.error){ t.checked=true; return toast(r.error.message) }
+      await sb.from("product_stock").upsert({product_id:id,cost_cents:(PCOST[id]||{}).cost_cents||0,needs_restock:false,updated_by:who}) }
+    await loadRestock(); render(); toast(on?"已放进要进货":"已从待进货拿掉") } });
+document.addEventListener("submit",async e=>{ const f=e.target.closest&&e.target.closest("[data-rs]"); if(!f||!owner||!admAllowed("stock")) return; e.preventDefault();
+  const cost=toSen(f.cost.value), qty=Math.round(Number(f.qty.value)); if(cost==null||!(qty>0)) return toast("数量和成本请填数字");
+  const row=RST.find(x=>x.id===f.dataset.rs); if(!row) return; const sb=window.HOLO_AUTH.client();
+  const r=await sb.rpc("save_restock",{p_id:f.dataset.rs,p_product_id:row.product_id,p_qty:qty,p_cost:cost,p_supplier:f.supplier.value.trim(),p_status:f.status.value});
+  if(r.error) return toast(/stock_short/.test(r.error.message)?"库存不够，没法把已到货改回去":/stock_locked/.test(r.error.message)?"请用保存来改到货状态":r.error.message);
+  const d=r.data||{}; if(d.changed&&d.product_id!=null&&d.stock!=null){ const it={...CAT.items}; it[d.product_id]={...(it[d.product_id]||{}),stock:d.stock}; CAT.items=it; applyCatalog() }
+  await loadRestock(); render(); toast(f.status.value==="已到货"?"已到货，库存已加上":"进货已保存") });
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-stmore],[data-rexp]"); if(!b||!owner) return;
+  if(b.dataset.stmore){ ui.stn=(ui.stn||40)+40; return render() }
+  const rows=stockRows(), cell=v=>{ let t=v==null?"":String(v); if(/^[=+\-@]/.test(t)) t="'"+t; return /[",\n]/.test(t)?'"'+t.replace(/"/g,'""')+'"':t };
+  const csv="\uFEFF"+[["商品","系列","库存","售价 RM","成本 RM","单件利润 RM","要进货"]].concat(rows.map(x=>{ const profit=x.p.price?Math.round(x.p.price*100)-x.cost:""; return [PN(x.p),x.p.s||"",x.p.stock==null?"":x.p.stock,x.p.price||"",sen(x.cost),profit===""?"":sen(profit),x.need?"是":"否"] })).concat([[],["进货记录"],["商品","数量","单价 RM","供应商","状态","已计入","创建人","最后修改"]]).concat(RST.map(r=>[nmId(r.product_id),r.qty,sen(r.unit_cost_cents),r.supplier||"",r.status,r.stock_applied,r.created_by||"",r.updated_by||""])).map(r=>r.map(cell).join(",")).join("\r\n");
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"})); a.download="holofen-stock.csv"; a.click(); toast("已导出") });
+function nmId(id){ const p=PM[id]; return p?PN(p):id }
 { const _adm=V.admin; V.admin=()=>owner&&ui.atab==="lucky"?admLucky():_adm() }
 /* ---------- 后台精简（v69）：一件事只在一个地方。5 页：订单、商品、用户、审核、设置 ----------
    订单=原来的订单+寄送（用状态筛选）；用户=原来的用户+会员名单；审核=评价+晒卡；设置=积分规则+抽奖+员工+上线清单。 */
 { const _old=V.admin, part=(tab,keepP)=>{ const t=ui.atab; ui.atab=tab; let h=""; try{ h=_old() }finally{ ui.atab=t } h=h.replace(/^\s*<h1>[\s\S]*?<\/h1>/,""); return keepP?h:h.replace(/^\s*<p class="muted">[\s\S]*?<\/p>/,"") };
-  ATABS.splice(0,ATABS.length,["orders","订单","Orders"],["products","商品","Products"],["users","用户","Users"],["review","审核","Approve"],["settings","设置","Settings"]);
+  ATABS.splice(0,ATABS.length,["orders","订单","Orders"],["products","商品","Products"],["stock","进货","Restock"],["users","用户","Users"],["review","审核","Approve"],["settings","设置","Settings"]);
   adminTabs=()=>ATABS.filter(t=>admAllowed(t[0]));
   const OF=[["all","全部","All",()=>true],["unpaid","待付款","To pay",o=>o.status==="unpaid"],["review","待审核","To review",o=>o.status==="review"],["toship","待寄出","To ship",o=>o.status==="approved"&&!o.svcOnly],["shipped","运送中","In transit",o=>o.status==="shipped"],["done","已完成","Done",o=>o.status==="delivered"||o.status==="done"||(o.status==="approved"&&o.svcOnly)],["rejected","未通过","Rejected",o=>o.status==="rejected"]];
   OF.forEach(f=>{ const fn=f[3]; f[3]=o=>!o.test&&fn(o) }); OF.push(["test","测试订单","Test",o=>o.test]);
@@ -2748,6 +2801,7 @@ ATABS.splice(ATABS.length-1,0,["lucky","抽奖","Lucky draw"]);
     if(!admAllowed(ui.atab)){ const f=adminTabs()[0]; if(!f) return H1("店主后台","Admin")+`<p class="note">${BL("你的账号还没有开放任何后台页面，请联系店主。","Your account has no admin pages yet. Please ask the owner.")}</p>`; ui.atab=f[0] }
     const off=mode==="db"?"":`<p class="note">${BL("现在数据库连不上，资料只存在这台设备的浏览器里。","The database is offline, so data is only saved in this browser.")}</p>`;
     if(ui.atab==="products") return H1("商品","Products")+off+admProducts();
+    if(ui.atab==="stock") return H1("进货","Restock")+off+admStock();
     if(ui.atab==="users") return off+admUsers();
     if(ui.atab==="review") return H1("审核","Approve")+off+part("reviews")+part("wall",1);
     if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=[["rules","积分规则","Points rules"],["lucky","抽奖","Lucky draw"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"]]);
@@ -2870,7 +2924,7 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-needlogin]"); if(b&&window.HOLO_AUTH) HOLO_AUTH.open() });
 
 /* ---------- 操作 ---------- */
-function add(id,brief,q){ const p=item(id); if(!p) return; if(!p.svc&&!sellable(p)) return toast(p.live&&p.stock===0?"售罄":"这件暂时缺货 Out of stock");
+function add(id,brief,q){ const p=item(id); if(!p) return; if(!p.svc&&!sellable(p)) return toast("这件暂时缺货 Out of stock");
   q=clampN(q||1,1,99);
   if(p.svc){ cart=cart.filter(c=>!item(c.id).svc); cart.push({id,qty:1,brief}) }
   else { const c=cart.find(c=>c.id===id), cap=p.stock>0&&!isPre(p)?p.stock:99, cur=c?c.qty:0, nq=Math.min(cap,cur+q); if(nq<=cur) return toast("库存只有 "+cap+" 件 Only "+cap+" in stock"); c?c.qty=nq:cart.push({id,qty:nq}); if(nq<cur+q) toast("库存只有 "+cap+" 件，已帮你加到上限") }
@@ -3045,30 +3099,6 @@ window.addEventListener("hashchange",readHash);
 /* hero spotlight follows the pointer (fine pointers only, off for reduced motion) */
 if(matchMedia("(pointer:fine)").matches&&!matchMedia("(prefers-reduced-motion:reduce)").matches){document.addEventListener("pointermove",e=>{const h=document.querySelector(".hero");if(!h)return;const r=h.getBoundingClientRect();if(e.clientY<r.top||e.clientY>r.bottom)return;h.style.setProperty("--px",(e.clientX-r.left)+"px");h.style.setProperty("--py",(e.clientY-r.top)+"px")},{passive:true})}
 
-/* 店务后台（D1）里上架的商品：用前台编号对上旧目录时，改这件的售价和库存；没有旧编号的会多出一张卡。下架的旧编号会从商店隐藏。 */
-function applyLiveCatalog(data){
-  if(data) window.__holoLive=data;
-  data=window.__holoLive; if(!data) return;
-  const rows=Array.isArray(data.products)?data.products:[];
-  const hide=Array.isArray(data&&data.hidden_legacy_ids)?data.hidden_legacy_ids:[];
-  const cmap={pack:"pack",booster_box:"box",etb:"etb",other:"coll"};
-  const okImg=s=>typeof s==="string"&&(/^(img|big|hd|sprite|prod)\/[A-Za-z0-9._-]+$/.test(s)||/^https:\/\/\S+$/.test(s));
-  hide.forEach(id=>{ if(typeof id==="string"&&own(PM,id)) PM[id].hidden=true });
-  rows.forEach(row=>{
-    if(!row||typeof row.id!=="string"||!/^[A-Za-z0-9_-]{1,80}$/.test(row.id)) return;
-    const cents=num(row.sell_price_cents); if(!isFinite(cents)||cents<0) return;
-    const price=Math.round(cents)/100, stock=Math.max(0,Math.round(num(row.stock_qty)||0));
-    const img=okImg(row.image)?row.image:""; const lng=row.language==="JP"?"日文":"英文";
-    if(typeof row.legacy_id==="string"&&own(PM,row.legacy_id)){
-      const p=PM[row.legacy_id]; p.price=price; p.stock=stock; p.live=1; p.liveEx=row.example===true; p.hidden=false; p.lng=lng; if(img) p.liveImg=img; if(!P.includes(p)) P.push(p); return }
-    const id="d1-"+row.id; let p=own(PM,id)?PM[id]:null;
-    if(!p){ p={id,s:"",n:"",zh:"",t:"X",no:"",usd:0,myr:0,loc:null,price:0,img:null,src:"",c:"coll"}; PM[id]=p; ALLP.push(p) }
-    p.s=typeof row.series==="string"?row.series.slice(0,80):""; p.n=typeof row.name==="string"?row.name.slice(0,120):""; p.zh=p.n;
-    p.price=price; p.stock=stock; p.live=1; p.liveEx=row.example===true; p.hidden=false; p.lng=lng; p.c=cmap[row.type]||"coll"; p.t="X"; if(img) p.liveImg=img;
-    if(!P.includes(p)) P.push(p);
-  });
-}
-fetch("/api/products",{headers:{accept:"application/json"}}).then(r=>r.ok?r.json():null).then(d=>{ if(!d) return; applyLiveCatalog(d); if(typeof render==="function") render() }).catch(()=>{});
 readHash(); initStore(); initExtra(); initLucky();
 </script>
 <script>

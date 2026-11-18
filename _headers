@@ -1,4 +1,3 @@
-# Cloudflare 用这份缓存规则。vercel.json 里有同样的图片缓存，迁走 Vercel 之后可以删 vercel.json。
 /hd/*
   Cache-Control: public, max-age=604800
 /img/*
@@ -21,7 +20,3 @@
   Content-Type: text/html; charset=utf-8
 /*.js
   Content-Type: text/javascript; charset=utf-8
-/api/*
-  Cache-Control: no-store
-/admin/*
-  Cache-Control: no-store

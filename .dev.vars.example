@@ -1,8 +1,0 @@
-# 只放在你自己的电脑上，复制成 .dev.vars。不要把 .dev.vars 提交，也不要加到 Cloudflare 的线上环境变量。
-# 正式网站关掉本地后门：不设置 ALLOW_DEV_ADMIN，并设置 ACCESS_AUD。
-ALLOW_DEV_ADMIN=1
-
-# 下面三项是线上用的。本地预览可以留空。邮箱名单不要写进网页。
-# ADMIN_EMAILS=eldrolee@gmail.com,lieuhongjun0533@gmail.com
-# ACCESS_TEAM_DOMAIN=https://你的团队名.cloudflareaccess.com
-# ACCESS_AUD=Access 应用里的 Application Audience (AUD) Tag
