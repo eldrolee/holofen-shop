@@ -1413,7 +1413,13 @@ async function saveDoc(u,doc){
   else lsSet("mine",{orders});
   render();
 }
-document.addEventListener("change",e=>{ const t=e.target; if(!t||!t.dataset||!t.dataset.atest||!owner) return; saveAdm(t.dataset.u,cleanId(t.dataset.o),{test:t.checked}).then(()=>toast(t.checked?"已标成测试订单，不算营业额、积分和库存":"已改回正式订单")) });
+document.addEventListener("change",async e=>{ const t=e.target; if(!t||!t.dataset||!t.dataset.atest||!owner) return; const u=t.dataset.u, oid=cleanId(t.dataset.o), on=t.checked;
+  const raw=arr((all[u]||{}).orders).find(x=>cleanId(x.id)===oid), a=((admS[u]||{}).o||{})[oid]||{}, st=raw?rawStatus(u,raw)[0]:"";
+  /* 已审核（已扣库存）的订单改成测试：库存加回；改回正式：重新扣 */
+  const paid=["approved","shipped","delivered","done"].includes(st); let ch=0;
+  if(raw&&paid&&(on?a.stockOut:!a.stockOut)){ const it={...CAT.items}; eff(u,raw).items.forEach(c=>{ const p=item(c.id); if(!p||p.svc||isPre(p)||typeof p.stock!=="number") return; it[c.id]={...(own(it,c.id)?it[c.id]:{}),stock:Math.max(0,p.stock+(on?c.qty:-c.qty))}; ch=1 }); if(ch){ CAT.items=it; await saveCat() } }
+  await saveAdm(u,oid,paid?{test:on,stockOut:on?0:(ch?1:a.stockOut||0)}:{test:on});
+  toast(on?"已标成测试订单，不算营业额、积分和库存"+(ch?"，库存已加回":""):"已改回正式订单"+(ch?"，库存已扣":"")) });
 async function saveAdm(u,oid,ch){
   if(!owner) return;
   const cur=admS[u]||{}; const o={...(cur.o||{})}; o[oid]={...(o[oid]||{}),...ch}; admS[u]={...cur,o};
