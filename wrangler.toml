@@ -1,0 +1,9 @@
+# 已有的 Worker holofen-shop 在非 main 分支上会跑 `npx wrangler preview`。
+# 这里只发布静态文件，不绑数据库。Vercel 不读这个文件。
+name = "holofen-shop"
+compatibility_date = "2026-11-18"
+
+[assets]
+directory = "."
+
+previews = { }
