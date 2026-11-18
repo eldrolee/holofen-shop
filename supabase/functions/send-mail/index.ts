@@ -46,5 +46,5 @@ Deno.serve(async (req) => {
     const html = wrap(esc(text).replace(/\n/g, "<br>"), site);
     await brevo(key, sender, to, subject, html);
     return J({ ok: true, sent: to.length });
-  } catch (e) { return J({ error: String((e as Error).message).slice(0, 300) }, 502) }
+  } catch (e) { const m = String((e as Error).message).slice(0, 300); console.error("send-mail failed:", m); return J({ error: m }, 502) }
 });
