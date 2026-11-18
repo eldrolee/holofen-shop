@@ -1029,6 +1029,45 @@ header.bar::after{margin-top:8px}
 .hsw.can>.hsa{display:grid}.hsw.atL>.hsa.l,.hsw.atR>.hsa.r{opacity:0;pointer-events:none}
 .hsa:hover{transform:translateY(-50%) scale(1.08)}
 @media (hover:none){.hsa{width:30px;height:30px;font-size:18px}}
+.trk{text-align:center;padding:6px 4px 2px}
+.trk-ic{position:relative;display:inline-grid;place-items:center;width:64px;height:64px;color:var(--ink);margin-bottom:6px}
+.trk-ic svg{width:46px;height:46px}
+.trk-ic img{position:absolute;width:30px;height:30px;right:-18px;top:-6px;object-fit:contain;animation:tkPeek 2.4s ease-in-out infinite}
+.t-unpaid .trk-ic svg{animation:tkPulse 1.6s ease-in-out infinite}
+.t-review .trk-ic svg{animation:tkSway 1.8s ease-in-out infinite;transform-origin:45% 45%}
+.t-approved .trk-ic svg{animation:tkBox 1.2s ease-in-out infinite;transform-origin:50% 90%}
+.t-shipped .trk-ic svg{animation:tkDrive .5s ease-in-out infinite alternate}
+.t-shipped .trk-ic::after{content:"";position:absolute;left:-14px;bottom:12px;width:16px;height:2px;border-radius:2px;background:var(--muted);box-shadow:-6px -8px 0 -0px var(--muted);animation:tkWind .6s linear infinite}
+.t-delivered .trk-ic svg,.t-done .trk-ic svg{animation:tkHop 1.4s cubic-bezier(.34,1.56,.64,1) infinite}
+.trk-bar{display:flex;align-items:center;max-width:460px;margin:0 auto}
+.tdot{flex:none;width:26px;height:26px;border-radius:99px;display:grid;place-items:center;font-size:13px;font-weight:900;color:#fff;background:#d4d9dd;transform:scale(.6);opacity:0;animation:tkDot .4s cubic-bezier(.34,1.56,.64,1) forwards;animation-delay:calc(var(--d)*.35s)}
+.tdot.ok{background:var(--teal)}
+.tdot.now{background:#fff;box-shadow:inset 0 0 0 4px var(--teal);animation:tkDot .4s cubic-bezier(.34,1.56,.64,1) forwards,tkRing 1.6s ease-out infinite;animation-delay:calc(var(--d)*.35s),calc(var(--d)*.35s + .4s)}
+.tseg{flex:1;height:7px;margin:0 3px;border-radius:99px;background:#d4d9dd;position:relative;overflow:hidden}
+.tseg::before{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--teal);transform:scaleX(0);transform-origin:left}
+.tseg.f::before{animation:tkFill .35s ease-out forwards;animation-delay:calc((var(--d) - 1)*.35s + .2s)}
+.tseg.go::before{background:repeating-linear-gradient(-45deg,var(--teal) 0 8px,#3d8f99 8px 16px);background-size:22.6px 22.6px;animation:tkHalf .6s ease-out forwards,tkFlow .9s linear infinite;animation-delay:calc((var(--d) - 1)*.35s + .2s),0s}
+.trk-lab{display:flex;justify-content:space-between;max-width:490px;margin:6px auto 0;font-size:11px;color:var(--muted)}
+.trk-lab span{flex:1}.trk-lab span.on{color:var(--teal);font-weight:800}
+.trk-k{margin:14px 0 2px;font-size:13px;font-weight:700;color:var(--muted)}
+.trk-h{margin:0;font-family:var(--display);font-weight:900;font-size:clamp(22px,4.6vw,32px);line-height:1.12;letter-spacing:.01em;color:var(--ink);text-transform:uppercase}
+.trk-s{margin:6px 0 0;color:var(--muted)}
+@keyframes tkDot{to{transform:scale(1);opacity:1}}
+@keyframes tkFill{to{transform:scaleX(1)}}
+@keyframes tkHalf{to{transform:scaleX(.5)}}
+@keyframes tkFlow{to{background-position:22.6px 0}}
+@keyframes tkRing{0%{box-shadow:inset 0 0 0 4px var(--teal),0 0 0 0 rgba(11,102,114,.45)}100%{box-shadow:inset 0 0 0 4px var(--teal),0 0 0 10px rgba(11,102,114,0)}}
+@keyframes tkPulse{50%{transform:scale(1.1)}}
+@keyframes tkSway{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+@keyframes tkBox{0%,100%{transform:rotate(0)}25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+@keyframes tkDrive{from{transform:translate(-3px,0)}to{transform:translate(3px,-2px)}}
+@keyframes tkWind{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-10px)}}
+@keyframes tkHop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
+@keyframes tkPeek{0%,100%{transform:translateY(0) rotate(8deg)}50%{transform:translateY(-4px) rotate(-4deg)}}
+@media (max-width:480px){.trk-lab{font-size:10px}.tdot{width:22px;height:22px;font-size:11px}}
+@media (prefers-reduced-motion:reduce){.trk *,.trk *::before,.trk-ic::after{animation:none!important;opacity:1!important}.tdot{transform:none}.tseg.f::before{transform:scaleX(1)}.tseg.go::before{transform:scaleX(.5)}}
+.undorow{border-top:1px dashed var(--line);padding-top:8px;margin-top:4px}.undorow .linkbtn{font-size:13px;color:var(--muted)}
+.trk-ic img{right:-26px}
 </style>
 
 <div class="bgfx" aria-hidden="true"></div>
@@ -2181,6 +2220,16 @@ table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th,td{pad
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-rcpt]"); if(!b) return; const u=b.dataset.ru, d=all[u]||(u===uid?mine:null); const raw=d&&arr(d.orders).find(x=>cleanId(x.id)===b.dataset.rcpt); if(!raw) return;
   const o=eff(u,raw), a=((admS[u]||{}).o||{})[cleanId(raw.id)]||{}; o.approvedAt=num(a.approvedAt)||0; if(!PAID.includes(o.status)) return toast("店主确认收款后才有收据");
   const w=window.open("","_blank"); if(!w) return toast(isEN()?"Please allow pop-ups to open the receipt":"请允许弹出视窗，才能打开收据"); w.document.write(receiptHTML(o)); w.document.close() });
+/* v85 订单追踪（像等披萨那样）：大图标会动、圆点+进度条一段段填满、当前那段在流动、大字标题 */
+const TRK_IC={unpaid:'<rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18M16 15h2"/>',review:'<circle cx="11" cy="11" r="6"/><path d="m20 20-4.2-4.2M8.5 11l1.8 1.8 3.4-3.6"/>',approved:'<path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>',shipped:'<path d="M2 6h11v10H2zM13 9h4.5l3.5 3.5V16h-8z"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',delivered:'<path d="M3 11 12 4l9 7v9H3z"/><path d="m9 15 2 2 4-4"/>',done:'<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>'};
+const TRK_H={unpaid:["等你付款","WAITING FOR YOUR PAYMENT"],review:["店主正在核对你的付款","CHECKING YOUR PAYMENT"],approved:["你的卡正在打包","YOUR CARDS ARE BEING PACKED"],shipped:["包裹正在路上","YOUR PARCEL IS ON THE WAY"],delivered:["包裹送到啦！","YOUR PARCEL HAS ARRIVED"],done:["订单完成，谢谢你","ALL DONE. THANK YOU!"]};
+function tracker(o){ if(o.status==="rejected") return `<div class="buddy">${buddy(44,"zzz")}<div><b>${B("这张订单没有通过审核。","This order was not approved.")}</b>${o.reason?`<br>${esc(o.reason)}`:""}</div></div>`;
+  const idx=Math.max(0,FLOW.findIndex(f=>f[0]===o.status)), st=FLOW[idx][0], last=idx===FLOW.length-1, m=MOOD[st]||MOOD.review, h=TRK_H[st]||TRK_H.review;
+  const parts=[]; FLOW.forEach((f,i)=>{ if(i) parts.push(`<i class="tseg${i<=idx?" f":i===idx+1?" go":""}" style="--d:${i}"></i>`); parts.push(`<b class="tdot${i<idx||(last&&i===idx)?" ok":i===idx?" now":""}" style="--d:${i}" title="${esc(isEN()?f[2]:f[1])}">${i<idx||(last&&i===idx)?"✓":""}</b>`) });
+  return `<div class="trk t-${st}"><div class="trk-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${TRK_IC[st]}</svg><img src="intro/holofen-mark.webp" alt=""></div>
+  <div class="trk-bar" role="img" aria-label="${esc((isEN()?"Step ":"第 ")+(idx+1)+" / "+FLOW.length+(isEN()?": ":"步：")+(isEN()?FLOW[idx][2]:FLOW[idx][1]))}">${parts.join("")}</div>
+  <div class="trk-lab">${FLOW.map((f,i)=>`<span class="${i===idx?"on":""}">${isEN()?f[2]:f[1]}</span>`).join("")}</div>
+  <p class="trk-k">${B("订单追踪","Live order tracker")}</p><h3 class="trk-h">${isEN()?h[1]:h[0]}</h3><p class="trk-s">${isEN()?m[2]:m[1]}</p></div>` }
 function stepBar(o){
   if(o.status==="rejected") return `<span class="chip bad">审核未通过 <span class="en">Not approved</span>${o.reason?"："+esc(o.reason):""}</span>`;
   const idx=FLOW.findIndex(f=>f[0]===o.status);
@@ -2192,8 +2241,7 @@ V.orders=()=>{
   const os=arr(mine.orders).map(o=>eff(uid,o)).sort((a,b)=>b.at-a.at);
   if(!os.length) return `${H1("我的订单","My orders")}<div class="buddy">${buddy(52,"zzz")}<div>你还没有订单。下单后可以在这里付款、看审核和寄送进度、写评价。<br><span class="en">No orders yet. After you order, you can pay, follow progress and leave a review here.</span></div></div><div><button class="pri" data-go="shop">去逛商店 <span class="en">Go to shop</span></button></div>`;
   return `${H1("我的订单","My orders")}${os.map(o=>{const m=MOOD[o.status]||MOOD.review;return `<div class="panel order"><div class="row" style="justify-content:space-between"><h3 class="price">${o.id}</h3><span class="muted">${new Date(o.at).toLocaleString(isEN()?"en-MY":"zh-CN")} ${rcptBtn(uid,o)}</span></div>
-  <div class="buddy">${buddy(44,m[0])}<div><b>${m[1]}</b><br><span class="en">${m[2]}</span></div></div>
-  ${stepBar(o)}<div class="note" style="margin:0"><b>${B("收件资料","Delivery details")}</b>${isEN()?": ":"："}${esc(o.name)} · ${esc(o.phone)}${o.svcOnly?"":` · ${esc(o.addr)}${isEN()?", ":"，"}${esc(o.post)} ${esc(o.state)}`}</div>${orderLines(o)}
+  ${tracker(o)}<div class="note" style="margin:0"><b>${B("收件资料","Delivery details")}</b>${isEN()?": ":"："}${esc(o.name)} · ${esc(o.phone)}${o.svcOnly?"":` · ${esc(o.addr)}${isEN()?", ":"，"}${esc(o.post)} ${esc(o.state)}`}</div>${orderLines(o)}
   ${o.status==="unpaid"&&needQuote(uid,o)?`<div class="note">${B("店主正在看你的需求，1 天内会把报价显示在这里，你同意再付款。不想做了可以取消订单。","We are preparing your quote. It will show here within 1 day; pay only if you agree.")}</div><div><button data-cancel="${o.id}">取消订单 <span class="en">Cancel</span></button></div>`:o.status==="unpaid"?`<div class="note">${quoted(uid,o)?`${B("店主报价","Our quote")}：<b>${rm(quoted(uid,o))}</b>。`:""}${BL(`订单已收到，应付 <b>${rm(o.total)}</b>（${esc(o.pay)}）。线上付款还在接通中，现在不用付款，店主会用你留的手机号码联系你确认订单和付款方式。付款后把参考号填在下面。`,`We have your order. Total <b>${rm(o.total)}</b> (${esc(o.pay)}). Online payment is still being set up, so don't pay yet: we will contact you on the phone number you gave to confirm the order and how to pay. After paying, enter the reference below.`)}</div>
    <div class="row"><input id="ref-${o.id}" aria-label="付款参考号" placeholder="付款参考号 Payment reference" style="flex:1 1 200px"><button class="pri" data-paid="${o.id}">我已付款 <span class="en">I've paid</span></button><button data-cancel="${o.id}">取消订单 <span class="en">Cancel</span></button></div>`:""}
   ${o.status==="review"?`<p>${BL("已收到你的付款参考号","We received your payment reference")} <span class="price">${esc(o.ref)}</span>${isEN()?".":"。"}</p>`:""}
@@ -2204,6 +2252,10 @@ V.orders=()=>{
   ${o.status==="done"?`<p>回购码 <span class="en">Coupon </span><b class="price">${esc(o.coupon||"")}</b>：下次满 RM100 减 RM10。<span class="chip tbd">待定 <span class="en">TBD</span></span></p><div><button data-again="${o.id}">再买一次 <span class="en">Buy again</span></button></div>`:""}
   </div>`}).join("")}`;
 };
+/* v85 后台退回上一步：按错可以退回（要连按两次）。退回「已通过」会把扣掉的库存加回去 */
+const UNDO={approved:["review","等待审核","In review"],rejected:["review","等待审核","In review"],shipped:["approved","备货中","Packing"],delivered:["shipped","已寄出","Shipped"]};
+const undoBtn=(u,o)=>{ const t=UNDO[o.status]; if(!t) return ""; const back=o.status==="delivered"&&o.svcOnly?["approved","备货中","Packing"]:t; return `<div class="undorow"><button type="button" class="linkbtn" data-adm="undo" data-u="${u}" data-o="${o.id}">↩ ${BL("退回上一步："+back[1],"Undo to: "+back[2])}</button></div>` };
+let undoArm="";
 function admOrder(u,o){ return `<div class="panel order"><div class="row" style="justify-content:space-between"><h3 class="price">${o.id}</h3><span class="muted">${new Date(o.at).toLocaleString(isEN()?"en-MY":"zh-CN")} ${rcptBtn(u,o)}</span></div>${stepBar(o)}${o.badCoupon?`<div class="chip bad">优惠码无效，已不计入金额</div>`:""}${o.badPts?`<div class="chip bad">积分不够或无效，已不计入金额</div>`:""}${o.priceMismatch&&!quoted(u,o)?`<div class="chip bad">顾客端金额和目录价不符，以这里显示的为准</div>`:""}
    <div>${esc(o.name)} · ${esc(o.phone)}${o.email?` · ${esc(o.email)}`:""}${o.addr?` · ${esc(o.addr)}，${esc(o.post)} ${esc(o.state)}`:""}</div>${o.note?`<div class="muted">${isEN()?"Note: ":"留言："}${esc(o.note)}</div>`:""}${orderLines(o)}
    ${o.items.filter(c=>c.brief).map(c=>{const b=c.brief;return `<div class="note">${(()=>{const E=isEN(),L=(z,e)=>E?e:z;return `<b>${BL("组牌需求","Brief")}</b>${L("：",": ")}${esc(b.format)} · ${esc(b.use)} · ${esc(b.level)} · ${L("预算","Budget")} ${esc(b.budget)} · ${L("打法","Style")} ${esc(b.style)} · ${L("想用","Wants")} ${esc(b.want)}${b.must?" · "+L("必放","Must include")+" "+esc(b.must):""}<br>${L("联系","Contact")} ${esc(b.contact)}${L("：",": ")}${esc(b.handle)}${b.note?`<br>${L("已有的卡：","Cards owned: ")}${esc(b.note)}`:""}`})()}${b.list?`<details><summary>顾客贴的牌表 <span class="en">Pasted list</span></summary><pre class="list">${esc(b.list)}</pre></details>`:""}${(b.files||[]).map(f=>f.kind==="text"?`<details><summary>${esc(f.name)}</summary><pre class="list">${esc(f.text)}</pre></details>`:`<div><a href="${esc(BLOB(aid(f.id)))}" target="_blank" rel="noopener"><img src="${esc(BLOB(aid(f.id)))}" alt="${esc(f.name)}" style="max-height:160px;border-radius:8px"></a></div>`).join("")}</div>`}).join("")}
@@ -2211,7 +2263,7 @@ function admOrder(u,o){ return `<div class="panel order"><div class="row" style=
    ${o.status==="review"?`<div class="row"><button class="pri" data-adm="approve" data-u="${u}" data-o="${o.id}">款已到账，通过审核 <span class="en">Approve</span></button><input id="rej-${o.id}" aria-label="不通过的原因" placeholder="不通过的原因" style="flex:1 1 160px"><button data-adm="reject" data-u="${u}" data-o="${o.id}">不通过 <span class="en">Reject</span></button></div>`:""}
    ${o.items.some(c=>c.brief)&&["approved","shipped","delivered"].includes(o.status)?`<label class="f">交付牌表（顾客会在订单里看到）<textarea id="dl-${o.id}">${esc(o.delivery||"")}</textarea></label><div><button data-adm="deliver" data-u="${u}" data-o="${o.id}">${o.svcOnly?"发送牌表并完成":"保存牌表"}</button></div>`:""}
    ${o.status==="approved"&&!o.svcOnly?`<div class="row"><select id="cr-${o.id}" aria-label="快递公司" style="flex:1 1 160px"><option value="">${BL("选快递公司","Choose courier")}</option>${COURIERS.map(c=>`<option value="${esc(c[1])}">${esc(c[0]==="other"?BL("其他","Other"):c[1])}</option>`).join("")}</select><input id="tn-${o.id}" aria-label="运单号" placeholder="运单号" style="flex:1 1 140px"><button class="pri" data-adm="ship" data-u="${u}" data-o="${o.id}">标记已寄出 <span class="en">Mark shipped</span></button></div>`:""}
-   ${o.status==="shipped"?`<div class="row"><span>${esc(o.courier||"")} <span class="price">${esc(o.tracking||"")}</span>${trackUrl(o)?` <a href="${esc(trackUrl(o))}" target="_blank" rel="noopener" data-trk="${esc(o.tracking)}">${BL("查件","Track")} ↗</a>`:""}</span><button data-adm="delivered" data-u="${u}" data-o="${o.id}">标记已送达 <span class="en">Mark delivered</span></button></div>`:""}</div>` }
+   ${o.status==="shipped"?`<div class="row"><span>${esc(o.courier||"")} <span class="price">${esc(o.tracking||"")}</span>${trackUrl(o)?` <a href="${esc(trackUrl(o))}" target="_blank" rel="noopener" data-trk="${esc(o.tracking)}">${BL("查件","Track")} ↗</a>`:""}</span><button data-adm="delivered" data-u="${u}" data-o="${o.id}">标记已送达 <span class="en">Mark delivered</span></button></div>`:""}${undoBtn(u,o)}</div>` }
 V.admin=()=>{
   if(!owner) return V.home();
   const rows=[]; Object.entries(all).forEach(([u,d])=>arr(d.orders).forEach(o=>rows.push([u,eff(u,o)]))); rows.sort((a,b)=>b[1].at-a[1].at);
@@ -2746,7 +2798,7 @@ const val=id=>{const el=document.getElementById(id);return el?el.value.trim():""
 const rad=name=>{const el=document.querySelector(`input[name="${name}"]:checked`);return el?el.value:""};
 function copy(t,ok){ (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast(ok),()=>toast("复制不了，请手动选中复制 Copy failed")) }
 
-document.addEventListener("click",e=>{
+document.addEventListener("click",async e=>{
   { const bb=e.target.closest&&e.target.closest("[data-mallsets],[data-mmore]"); if(bb){ if(bb.dataset.mallsets) ui.mallsets=true; else ui.mshown=(ui.mshown||24)+24; return render() } }
   const ms=e.target.closest&&e.target.closest("[data-msheet]"); if(ms){ e.preventDefault(); ui.msheet=!ui.msheet; return render() }
   if(ui.msheet&&!(e.target.closest&&e.target.closest(".msheet"))){ ui.msheet=false; render() }
@@ -2826,6 +2878,13 @@ document.addEventListener("click",e=>{
     if(ds.adm==="reject") return saveAdm(u,oid,{status:"rejected",reason:val("rej-"+oid)});
     if(ds.adm==="ship"){ const tn=val("tn-"+oid); if(!val("cr-"+oid)) return toast("请选快递公司"); if(!tn) return toast("请填运单号"); return saveAdm(u,oid,{status:"shipped",courier:val("cr-"+oid),tracking:tn,shippedAt:Date.now()}).then(()=>toast("已标记寄出")) }
     if(ds.adm==="delivered") return saveAdm(u,oid,{status:"delivered",deliveredAt:Date.now()});
+    if(ds.adm==="undo"){ const key=u+"/"+oid; if(undoArm!==key){ undoArm=key; setTimeout(()=>{ if(undoArm===key) undoArm="" },4000); return toast(isEN()?"Tap again to undo":"再按一次确认退回") } undoArm="";
+      const a=((admS[u]||{}).o||{})[oid]||{}, st=o.status;
+      if(st==="approved"||st==="rejected"){ await saveAdm(u,oid,{status:null,approvedAt:null,reason:"",stockOut:0});
+        if(st==="approved"&&a.stockOut){ const it={...CAT.items}; let ch=0; o.items.forEach(c=>{ const p=item(c.id); if(!p||p.svc||isPre(p)||typeof p.stock!=="number") return; it[c.id]={...(own(it,c.id)?it[c.id]:{}),stock:p.stock+c.qty}; ch=1 }); if(ch){ CAT.items=it; await saveCat() } return toast("已退回等待审核"+(ch?"，库存已加回":"")) }
+        return toast("已退回等待审核") }
+      if(st==="shipped") return saveAdm(u,oid,{status:"approved",shippedAt:null,courier:"",tracking:""}).then(()=>toast("已退回备货中，可以重新填快递和运单号"));
+      if(st==="delivered") return saveAdm(u,oid,o.svcOnly?{status:"approved",deliveredAt:null}:{status:"shipped",deliveredAt:null}).then(()=>toast("已退回上一步")) }
     if(ds.adm==="deliver"){ const txt=val("dl-"+oid); if(!txt) return toast("请先贴上牌表"); return saveAdm(u,oid,o.svcOnly?{delivery:txt,status:"delivered",deliveredAt:Date.now()}:{delivery:txt}).then(()=>toast("牌表已保存")) }
   }
 });
