@@ -563,6 +563,8 @@ textarea{font:inherit;width:100%;box-sizing:border-box;border:1px solid var(--li
 @media (max-width:640px){.arow{flex-direction:column}.aph{flex-direction:row;width:auto;align-items:center}.aph img{width:64px}}
 .fbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.fbar>.muted{width:36px;flex:none}
 .fchip{border:1px solid var(--line,#d6dbe6);background:#fff;border-radius:99px;padding:5px 12px;font-size:13px;cursor:pointer}.fchip b{font-weight:600;color:var(--muted,#8a93ad);margin-left:2px}
+.sktab td{vertical-align:middle}.skt{font-style:normal;font-size:12px;padding:2px 8px;border-radius:99px;white-space:nowrap}.skt.bad{background:#fde2e2;color:#b42318}.skt.warn{background:#fff1cc;color:#8a5a00}.skt.off{background:#eef0f5;color:#5b6480}.skt.ok{background:#dff5ea;color:#1c7a4a}.sk-short td,.sk-out td{background:#fff8f7}.skin{display:inline-flex;gap:6px;align-items:center}.skin input{width:72px}
+.tbadge{font-style:normal;font-size:12px;background:#eef0f5;color:#5b6480;border-radius:99px;padding:2px 8px;vertical-align:middle}.tchk{display:inline-flex;align-items:center;gap:4px;font-size:13px;margin-right:8px;cursor:pointer}.order.istest{border-style:dashed;opacity:.85}
 .fchip.on{background:var(--ink,#1d2340);color:#fff;border-color:transparent}.fchip.on b{color:#f6b93b}.agh{margin:10px 0 0}
 .acard .pic{position:relative;padding:8px;overflow:hidden}.acard .pic img{max-width:100%;max-height:100%;width:auto;height:auto}.aedit .arow>.stack{width:100%}.acard.off{opacity:.55}.atags{position:absolute;top:8px;left:8px;display:flex;flex-wrap:wrap;gap:4px}.atags i{font-style:normal;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.15)}
 .atags i.bad{background:var(--red);color:#fff}.atags i.ok{background:#2e9d5b;color:#fff}.atags i.off{background:#1d2340;color:#fff}.atags i.tbd{background:#eef1f7;color:#5b6480}.atags i.ch{background:#f6b93b;color:#1d2340}
@@ -1397,6 +1399,7 @@ async function saveDoc(u,doc){
   else lsSet("mine",{orders});
   render();
 }
+document.addEventListener("change",e=>{ const t=e.target; if(!t||!t.dataset||!t.dataset.atest||!owner) return; saveAdm(t.dataset.u,cleanId(t.dataset.o),{test:t.checked}).then(()=>toast(t.checked?"已标成测试订单，不算营业额、积分和库存":"已改回正式订单")) });
 async function saveAdm(u,oid,ch){
   if(!owner) return;
   const cur=admS[u]||{}; const o={...(cur.o||{})}; o[oid]={...(o[oid]||{}),...ch}; admS[u]={...cur,o};
@@ -1434,7 +1437,7 @@ function lines(o,a){ const snap=a&&a.snap&&typeof a.snap==="object"?a.snap:null;
   return [items,items.reduce((t,c)=>t+c.price*c.qty,0)] }
 /* 会员积分：只从店主确认过的已送达订单算出来，不存在顾客能改的地方。抵扣按下单先后核对，超出余额的一律不算。 */
 function member(u){ const R=rules(), os=arr((all[u]||{}).orders), me=(typeof MEALL!=="undefined"&&MEALL[u])||{}, bm=clampN(me.bm,0,12), bmAt=num(me.bmAt)||0;
-  const del=[]; os.forEach(o=>{ const [st,a]=rawStatus(u,o); if(st==="delivered"||st==="done") del.push({at:num(o.at)||0,sub:lines(o,a)[1]}) }); del.sort((x,y)=>x.at-y.at);
+  const del=[]; os.forEach(o=>{ const [st,a]=rawStatus(u,o); if((st==="delivered"||st==="done")&&!a.test) del.push({at:num(o.at)||0,sub:lines(o,a)[1]}) }); del.sort((x,y)=>x.at-y.at);
   const tierOf=s=>s>=R.gold?["金卡","Gold",R.goldX]:s>=R.silver?["银卡","Silver",R.silverX]:["会员","Member",1];
   const win=(t,before)=>del.filter(d=>d.at>=winStart(t)&&(before?d.at<t:true)).reduce((a,d)=>a+d.sub,0);
   let earned=0; del.forEach(d=>{ const bd=bm&&d.at>=bmAt&&new Date(d.at).getMonth()+1===bm?R.bdayX:1; earned+=Math.floor(d.sub*R.earn*tierOf(win(d.at,1))[2]*bd) });
@@ -1452,7 +1455,7 @@ function eff(u,o){
   const sh=svcOnly?null:(SHIP.find(x=>x.k===o.shipKey)||SHIP[0]), fee=sh?sh.fee:0;
   const cp=o.couponCode?couponsOf(u).find(c=>c.code===o.couponCode&&c.usedBy===id&&sub>=c.min):null, mb=member(u), pts=mb.ok[id]||0, want=clampN(o.pointsUsed,0,1e7), ptsOff=Math.min(sub,pts/mb.R.redeemPts*mb.R.redeemRM), off=(cp?cp.amount:0)+ptsOff;
   return {id,at:num(o.at)||0,name:cleanTxt(o.name,80),phone:cleanTxt(o.phone,30),addr:cleanTxt(o.addr,200),post:cleanTxt(o.post,10),state:cleanTxt(o.state,40),email:cleanTxt(o.email,120),note:cleanTxt(o.note,300),pay:cleanTxt(o.pay,40),ref:cleanTxt(o.ref,60),
-    status:st,reason:a.reason,courier:a.courier,tracking:a.tracking,shippedAt:a.shippedAt,delivery:a.delivery,items,sub,fee,off,total:Math.max(0,sub+fee-off),svcOnly,shipName:svcOnly?(isEN()?"No shipping":"不需寄送"):(isEN()?sh.en:sh.n),
+    status:st,test:!!a.test,reason:a.reason,courier:a.courier,tracking:a.tracking,shippedAt:a.shippedAt,delivery:a.delivery,items,sub,fee,off,total:Math.max(0,sub+fee-off),svcOnly,shipName:svcOnly?(isEN()?"No shipping":"不需寄送"):(isEN()?sh.en:sh.n),
     coupon:st==="done"?couponCode(id):null,badCoupon:!!o.couponCode&&!cp,pts,ptsOff,badPts:want>0&&!pts,priceMismatch:o.total!=null&&Math.abs(num(o.total)-Math.max(0,sub+fee-off))>0.01};
 }
 /* ---------- 界面 ---------- */
@@ -1478,6 +1481,7 @@ function readHash(){ ui.msheet=false; let h=location.hash.replace("#",""); try{ 
 let lang="zh"; try{ if(localStorage.getItem("lang")==="en") lang="en" }catch(e){}
 function applyLang(){ document.documentElement.dataset.lang=lang; document.documentElement.lang=lang==="en"?"en":"zh"; const b=$("#langbtn"); if(b){ b.innerHTML=`<span class="${lang==="zh"?"on":""}">中</span><span class="${lang==="en"?"on":""}">EN</span>`; b.setAttribute("aria-label",lang==="zh"?"Switch to English":"切换到中文") } if(lang==="en") langPass() }
 function adminTabs(){ return ATABS.concat(window.HOLO_AUTH&&HOLO_AUTH.role()==="owner"?[["staff","员工权限","Staff"]]:[]) }
+const _html={}; function setHTML(sel,h){ const k=sel+"|"+lang; if(_html[sel]===k+h) return false; _html[sel]=k+h; $(sel).innerHTML=h; return true }
 function render(){
   const adm=route==="admin"&&owner;
   $("#bar").className="bar"+(adm?" adm":"");
@@ -1490,14 +1494,15 @@ function render(){
   $("#btm").innerHTML=adm?"":BTM.map(t=>t[0]==="more"?`<a href="#" data-msheet="1" class="${inMore||ui.msheet?"on":""}" aria-expanded="${!!ui.msheet}">${t[2]}<span>${t[1]}</span></a>`:`<a href="#${t[0]}" class="${cur===t[0]?"on":""}">${t[2]}<span>${t[1]}</span>${t[0]==="cart"&&cq?`<b>${cq}</b>`:""}</a>`).join("")+(ui.msheet?`<div class="msheet" role="menu">${BTM_MORE.map(t=>`<a href="#${t[0]}" role="menuitem" class="${cur===t[0]||route===t[0]?"on":""}">${t[2]}<span>${t[1]}</span></a>`).join("")}</div>`:""); }
   applyLang();
   $("#cartbtn").hidden=adm; { const bb=$("#backbtn"); if(bb) bb.hidden=!adm } { const ob=$("#ownbtn"); if(ob) ob.hidden=adm||!owner } { const lb=$("#loginbtn"); if(lb){ lb.hidden=adm; if(window.HOLO_AUTH) HOLO_AUTH.paint() } } { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm||!CONTACT.some(c=>c[3]) } { const mb=$("#mebtn"); if(mb){ mb.hidden=adm||(typeof isGuest==="function"&&isGuest()); if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
-  $("#band").innerHTML=adm?"":band();
+  setHTML("#band",adm?"":band());
   $("#foot").innerHTML=adm?`<a href="#home">${BL("回到顾客前台","Back to storefront")}</a>`:`${DOTS}<span>${B("中文、英文和日文版宝可梦卡牌，马来西亚发货，也寄新加坡和中国","Chinese, English &amp; Japanese Pokémon cards, shipped from Malaysia to MY, SG &amp; China")}</span>`;
   const keep=document.activeElement&&document.activeElement.id, pos=keep&&document.activeElement.selectionStart;
-  $("#view").innerHTML=subnav()+(V[route]||V.home)();
+  /* v86 内容没变就不重画：刷新后资料一份份载入时，首页不会一直闪 */
+  const vch=setHTML("#view",subnav()+(V[route]||V.home)());
   $("#view").classList.toggle("hassub",!!GROUPS[PARENT[route]]);
-  $("#modal").innerHTML=ui.kf?kfModal():ui.pid&&PM[ui.pid]?detail(PM[ui.pid]):ui.mid&&PM[ui.mid]?mdetail(PM[ui.mid]):ui.cid?cardModal(ui.cid):"";
+  setHTML("#modal",ui.kf?kfModal():ui.pid&&PM[ui.pid]?detail(PM[ui.pid]):ui.mid&&PM[ui.mid]?mdetail(PM[ui.mid]):ui.cid?cardModal(ui.cid):"");
   if(lang==="en") langPass();
-  if(route==="home"&&window.fitHero) requestAnimationFrame(window.fitHero);
+  if(vch&&route==="home"&&window.fitHero) requestAnimationFrame(window.fitHero);
   if(keep){ const el=document.getElementById(keep); if(el){ el.focus(); try{el.setSelectionRange(pos,pos)}catch(e){} } }
 }
 function subnav(){ const g=GROUPS[PARENT[route]]; if(!g) return ""; return `<nav class="sub" aria-label="分页">${g.map(t=>`<a href="#${t[0]}" class="${route===t[0]?"on":""}">${t[1]} <span class="en">${t[2]}</span></a>`).join("")}</nav>` }
@@ -2256,7 +2261,7 @@ V.orders=()=>{
 const UNDO={approved:["review","等待审核","In review"],rejected:["review","等待审核","In review"],shipped:["approved","备货中","Packing"],delivered:["shipped","已寄出","Shipped"]};
 const undoBtn=(u,o)=>{ const t=UNDO[o.status]; if(!t) return ""; const back=o.status==="delivered"&&o.svcOnly?["approved","备货中","Packing"]:t; return `<div class="undorow"><button type="button" class="linkbtn" data-adm="undo" data-u="${u}" data-o="${o.id}">↩ ${BL("退回上一步："+back[1],"Undo to: "+back[2])}</button></div>` };
 let undoArm="";
-function admOrder(u,o){ return `<div class="panel order"><div class="row" style="justify-content:space-between"><h3 class="price">${o.id}</h3><span class="muted">${new Date(o.at).toLocaleString(isEN()?"en-MY":"zh-CN")} ${rcptBtn(u,o)}</span></div>${stepBar(o)}${o.badCoupon?`<div class="chip bad">优惠码无效，已不计入金额</div>`:""}${o.badPts?`<div class="chip bad">积分不够或无效，已不计入金额</div>`:""}${o.priceMismatch&&!quoted(u,o)?`<div class="chip bad">顾客端金额和目录价不符，以这里显示的为准</div>`:""}
+function admOrder(u,o){ return `<div class="panel order${o.test?" istest":""}"><div class="row" style="justify-content:space-between"><h3 class="price">${o.id}${o.test?` <i class="tbadge">${BL("测试","Test")}</i>`:""}</h3><span class="muted"><label class="tchk"><input type="checkbox" data-atest="1" data-u="${u}" data-o="${o.id}" ${o.test?"checked":""}> ${BL("测试订单","Test order")}</label> ${new Date(o.at).toLocaleString(isEN()?"en-MY":"zh-CN")} ${rcptBtn(u,o)}</span></div>${stepBar(o)}${o.badCoupon?`<div class="chip bad">优惠码无效，已不计入金额</div>`:""}${o.badPts?`<div class="chip bad">积分不够或无效，已不计入金额</div>`:""}${o.priceMismatch&&!quoted(u,o)?`<div class="chip bad">顾客端金额和目录价不符，以这里显示的为准</div>`:""}
    <div>${esc(o.name)} · ${esc(o.phone)}${o.email?` · ${esc(o.email)}`:""}${o.addr?` · ${esc(o.addr)}，${esc(o.post)} ${esc(o.state)}`:""}</div>${o.note?`<div class="muted">${isEN()?"Note: ":"留言："}${esc(o.note)}</div>`:""}${orderLines(o)}
    ${o.items.filter(c=>c.brief).map(c=>{const b=c.brief;return `<div class="note">${(()=>{const E=isEN(),L=(z,e)=>E?e:z;return `<b>${BL("组牌需求","Brief")}</b>${L("：",": ")}${esc(b.format)} · ${esc(b.use)} · ${esc(b.level)} · ${L("预算","Budget")} ${esc(b.budget)} · ${L("打法","Style")} ${esc(b.style)} · ${L("想用","Wants")} ${esc(b.want)}${b.must?" · "+L("必放","Must include")+" "+esc(b.must):""}<br>${L("联系","Contact")} ${esc(b.contact)}${L("：",": ")}${esc(b.handle)}${b.note?`<br>${L("已有的卡：","Cards owned: ")}${esc(b.note)}`:""}`})()}${b.list?`<details><summary>顾客贴的牌表 <span class="en">Pasted list</span></summary><pre class="list">${esc(b.list)}</pre></details>`:""}${(b.files||[]).map(f=>f.kind==="text"?`<details><summary>${esc(f.name)}</summary><pre class="list">${esc(f.text)}</pre></details>`:`<div><a href="${esc(BLOB(aid(f.id)))}" target="_blank" rel="noopener"><img src="${esc(BLOB(aid(f.id)))}" alt="${esc(f.name)}" style="max-height:160px;border-radius:8px"></a></div>`).join("")}</div>`}).join("")}
    ${o.ref?`<div>${esc(o.pay)}${isEN()?", reference":"，参考号"} <span class="price">${esc(o.ref)}</span></div>`:`<div class="muted">${isEN()?"Not paid yet ("+esc(o.pay)+")":"顾客还没付款（"+esc(o.pay)+"）"}</div>`}${o.status==="unpaid"&&o.items.some(c=>(item(c.id)||{}).quote)?`<div class="row"><label class="f" style="flex:0 1 220px">组牌报价 RM（建议 130–250）<input id="qt-${o.id}" type="number" min="1" step="1" value="${quoted(u,o)||""}"></label><button class="pri" data-adm="quote" data-u="${u}" data-o="${o.id}">${quoted(u,o)?"更新报价":"发报价给顾客"}</button><span class="muted">顾客看到报价后才会付款。</span></div>`:""}
@@ -2309,8 +2314,20 @@ function listed(p){ if(!p||p.hidden) return false; if(!p.svc&&!(p.price>0)) retu
 function setListed(ids,on){ if(!owner) return; const it={...CAT.items}; let skip=0, n=0;
   ids.forEach(id=>{ const p=PM[id]; if(!p) return; if(on&&p.added&&!(p.n&&p.price>0)){ skip++; return } const x={...(own(it,id)?it[id]:{})}; x.off=!on; delete x.hidden; it[id]=x; n++ });
   CAT.items=it; ui.asel={}; if(skip) toast(skip+" 件缺名字或售价，没有上架"); return n?saveCat():render() }
-const AST=[["all","全部"],["live","在售中"],["out","已售完"],["off","已下架"],["pre","预购"],["tbd","库存未录入"],["ch","改过的"],["new","自己新增"]];
-const astOk=(p,f)=>f==="all"?true:f==="live"?listed(p)&&(p.stock!==0||!!isPre(p)):f==="off"?!listed(p):f==="out"?listed(p)&&p.stock===0&&!isPre(p):f==="pre"?!!isPre(p):f==="tbd"?p.stock==null:f==="ch"?own(CAT.items,p.id):f==="new"?!!p.added:true;
+/* v86 库存检测：在售的实物商品按"可卖数量"从少到多排；可卖＝库存 − 还没审核订单里的数量（审核通过时才扣库存）。 */
+const pendQty=()=>{ const m={}; Object.entries(all).forEach(([u,d])=>arr(d.orders).forEach(o=>{ const x=eff(u,o); if(x.status==="review"&&!x.test) x.items.forEach(c=>{ m[c.id]=(m[c.id]||0)+c.qty }) })); return m };
+const skLevel=(p,pq)=>p.stock==null?"tbd":p.stock-(pq[p.id]||0)<0?"short":p.stock===0?"out":p.stock-(pq[p.id]||0)<=2?"low":"ok";
+const skList=()=>{ const pq=pendQty(); return [ALLP.filter(p=>listed(p)&&!p.svc&&!isPre(p)),pq] };
+function stockChk(inC){ const [all0,pq]=skList(), ids=new Set(inC.map(p=>p.id)), L=all0.filter(p=>ids.has(p.id)), ord={short:0,out:1,tbd:2,low:3,ok:4};
+  const LV={short:["不够发","bad",B("待审核订单比库存多，先补货或联系顾客","Pending orders exceed stock")],out:["已售完","bad",""],tbd:["未录入","off",B("还没填库存","Stock not entered")],low:["快没了","warn",""],ok:["充足","ok",""]};
+  const rows=L.map(p=>[p,skLevel(p,pq)]).sort((a,b)=>ord[a[1]]-ord[b[1]]||((a[0].stock??0)-(pq[a[0].id]||0))-((b[0].stock??0)-(pq[b[0].id]||0)));
+  const cnt=k=>rows.filter(r=>r[1]===k).length, kpi=(k,z,e)=>`<div class="kpi"><span class="muted">${B(z,e)}</span><b${k!=="ok"&&cnt(k)?' style="color:var(--red)"':""}>${cnt(k)}</b></div>`;
+  return `<p class="muted">${B("只列在售的实物商品（不含预购和代组服务）。「待审核」是还没审核订单里的数量，审核通过时才会从库存扣掉；「可卖」＝库存减待审核。改了数字按「保存」就生效。","Listed physical items only. Pending = quantity in orders not yet approved (stock is deducted on approval). Available = stock minus pending.")}</p>
+  <div class="kpis">${kpi("short","不够发","Short")}${kpi("out","已售完","Sold out")}${kpi("low","快没了（≤2）","Low (≤2)")}${kpi("tbd","未录入","Not entered")}${kpi("ok","充足","OK")}</div>
+  ${rows.length?`<div class="tw"><table class="sktab"><thead><tr><th>${B("商品","Item")}</th><th>${B("状态","Status")}</th><th class="n">${B("库存","Stock")}</th><th class="n">${B("待审核","Pending")}</th><th class="n">${B("可卖","Available")}</th><th>${B("改库存","Set stock")}</th></tr></thead><tbody>${rows.map(([p,lv])=>{ const pd=pq[p.id]||0, av=p.stock==null?"—":p.stock-pd;
+    return `<tr class="sk-${lv}"><td><b>${esc(PN(p))}</b><div class="muted" style="font-size:12px">${esc(p.s||"")}</div></td><td><i class="skt ${LV[lv][1]}">${LV[lv][0]}</i>${LV[lv][2]?`<div class="muted" style="font-size:11px">${LV[lv][2]}</div>`:""}</td><td class="n">${p.stock==null?"—":p.stock}</td><td class="n">${pd||""}</td><td class="n"><b>${av}</b></td><td><span class="skin"><input id="sk-${p.id}" type="number" min="0" step="1" inputmode="numeric" value="${p.stock==null?"":p.stock}" aria-label="${esc(PN(p))} 库存"><button class="sm" data-skset="${p.id}">${B("保存","Save")}</button></span></td></tr>` }).join("")}</tbody></table></div>`:`<p class="muted">${B("没有符合的商品。","No matching items.")}</p>`}` }
+const AST=[["chk","库存检测"],["all","全部"],["live","在售中"],["out","已售完"],["off","已下架"],["pre","预购"],["tbd","库存未录入"],["ch","改过的"],["new","自己新增"]];
+const astOk=(p,f)=>f==="chk"?listed(p)&&!p.svc&&!isPre(p)&&skLevel(p,ui._pq||{})!=="ok":f==="all"?true:f==="live"?listed(p)&&(p.stock!==0||!!isPre(p)):f==="off"?!listed(p):f==="out"?listed(p)&&p.stock===0&&!isPre(p):f==="pre"?!!isPre(p):f==="tbd"?p.stock==null:f==="ch"?own(CAT.items,p.id):f==="new"?!!p.added:true;
 function admCard(p){ const tags=[], on=listed(p), sel=!!(ui.asel&&ui.asel[p.id]);
   if(!on) tags.push(["已下架","off"]); if(isPre(p)) tags.push(["预购 "+isPre(p),"ok"]); else if(p.stock===0) tags.push(["缺货","bad"]); else if(p.stock>0) tags.push(["库存 "+p.stock,"ok"]);  { const wn=Object.values(MEALL).filter(m=>m.wish.includes(p.id)).length; if(wn) tags.push(["♥ "+wn+" 人收藏","ok"]) }
   return `<div class="prod acard${on?"":" off"}${sel?" sel":""}"><label class="asel" title="选择"><input type="checkbox" data-asel="${p.id}" ${sel?"checked":""} aria-label="选择 ${esc(p.n||"新商品")}"></label><div class="pic"><img loading="lazy" src="${simg(p)}" alt=""><span class="atags">${tags.map(t=>`<i class="${t[1]}">${t[0]}</i>`).join("")}</span></div>
@@ -2328,11 +2345,12 @@ function admProducts(){
 
   <div class="serstrip" role="group" aria-label="选择系列"><button class="all${ser===""?" on":""}" data-aser="">全部系列</button>${series.map(x=>`<button data-aser="${esc(x)}" class="${ser===x?"on":""}" title="${esc(x)}">${slogo(x,"")}<span>${esc(x)}</span></button>`).join("")}</div>
   <div class="row"><input id="apq" type="search" placeholder="搜索名字、系列、编号" value="${esc(ui.apq||"")}" style="flex:1 1 220px"><select id="apc" aria-label="类别"><option value="all">${isEN()?"All categories":"全部类别"}</option>${Object.entries(CATS).map(([k,v])=>`<option value="${k}" ${c===k?"selected":""}>${isEN()?v[1]+" ("+byQ.filter(p=>p.c===k).length+")":v[0]+"（"+byQ.filter(p=>p.c===k).length+"）"}</option>`).join("")}</select><button class="pri" data-anew="1">＋ 新增商品</button></div>
-  <div class="fbar">${AST.map(([k,t])=>chip(k,t,inC.filter(p=>astOk(p,k)).length,f===k)).join("")}</div>
+  ${(ui._pq=pendQty(),"")}<div class="fbar">${AST.map(([k,t])=>chip(k,t,inC.filter(p=>astOk(p,k)).length,f===k)).join("")}</div>
+  ${f==="chk"?stockChk(inC):`
   <datalist id="setlist">${SETS.map(x=>`<option value="${esc(x)}">`).join("")}</datalist>
   ${(()=>{ const ids=l.slice(0,n).map(p=>p.id), k=Object.keys(ui.asel||{}).filter(id=>ui.asel[id]).length; return `<div class="abulk"><span>${k?`已选 <b>${k}</b> 件`:`共 ${l.length} 件`}</span><button class="sm" data-aselall="${esc(ids.join(","))}">全选这页（${ids.length}）</button>${k?`<button class="sm pri" data-abulk="1">批量上架</button><button class="sm" data-abulk="0">批量下架</button><button class="sm" data-aselnone="1">取消选择</button>`:`<span class="muted">勾选商品左上角的方框，可以一次上架或下架多件</span>`}</div>` })()}
   ${l.length?`<div class="grid">${l.slice(0,n).map(admCard).join("")}</div>`:`<p class="muted">没有符合的商品。</p>`}
-  ${l.length>n?`<div><button data-amore="1">再显示 24 件（还有 ${l.length-n} 件）</button></div>`:""}
+  ${l.length>n?`<div><button data-amore="1">再显示 24 件（还有 ${l.length-n} 件）</button></div>`:""}`}
   ${ed?`<div class="aedit-bg" data-aclose="1"><div class="aedit" role="dialog" aria-label="编辑商品"><div class="row" style="justify-content:space-between"><b>编辑商品</b><button data-aclose="1" aria-label="关闭">✕</button></div>${admRow(ed)}</div></div>`:""}` }
 function admMembers(){
   const R=rules(), us=Object.keys(all).map(u=>[u,member(u),arr(all[u].orders).length]).sort((a,b)=>b[1].spend-a[1].spend);
@@ -2658,6 +2676,7 @@ ATABS.splice(ATABS.length-1,0,["lucky","抽奖","Lucky draw"]);
   ATABS.splice(0,ATABS.length,["orders","订单","Orders"],["products","商品","Products"],["users","用户","Users"],["review","审核","Approve"],["settings","设置","Settings"]);
   adminTabs=()=>ATABS.filter(t=>admAllowed(t[0]));
   const OF=[["all","全部","All",()=>true],["unpaid","待付款","To pay",o=>o.status==="unpaid"],["review","待审核","To review",o=>o.status==="review"],["toship","待寄出","To ship",o=>o.status==="approved"&&!o.svcOnly],["shipped","运送中","In transit",o=>o.status==="shipped"],["done","已完成","Done",o=>o.status==="delivered"||o.status==="done"||(o.status==="approved"&&o.svcOnly)],["rejected","未通过","Rejected",o=>o.status==="rejected"]];
+  OF.forEach(f=>{ const fn=f[3]; f[3]=o=>!o.test&&fn(o) }); OF.push(["test","测试订单","Test",o=>o.test]);
   const seg=(attr,cur,list)=>`<div class="aseg" role="group">${list.map(x=>`<button ${attr}="${x[0]}" class="${cur===x[0]?"on":""}" aria-pressed="${cur===x[0]}">${B(x[1],x[2])}${x[3]!=null?` <b>${x[3]}</b>`:""}</button>`).join("")}</div>`;
   V.admin=()=>{ if(!owner) return V.home();
     if(!ATABS.some(t=>t[0]===ui.atab)) ui.atab=({ship:"orders",members:"users",reviews:"review",wall:"review",lucky:"settings",launch:"settings",staff:"settings"})[ui.atab]||"orders";
@@ -2676,16 +2695,16 @@ ATABS.splice(ATABS.length-1,0,["lucky","抽奖","Lucky draw"]);
 
   /* v75 本月营业额、热卖前 5、库存快没了；待寄出的一键打印地址 */
   const PAID=o=>o.status==="approved"||o.status==="shipped"||o.status==="delivered"||o.status==="done";
-  window.ordStats=rows=>{ const E=isEN(), mon=dayStr(Date.now()).slice(0,7), mo=rows.map(r=>r[1]).filter(o=>PAID(o)&&dayStr(o.at).slice(0,7)===mon);
+  window.ordStats=rows=>{ rows=rows.filter(r=>!r[1].test); const E=isEN(), mon=dayStr(Date.now()).slice(0,7), mo=rows.map(r=>r[1]).filter(o=>PAID(o)&&dayStr(o.at).slice(0,7)===mon);
     const rev=mo.reduce((t,o)=>t+o.total,0), cnt={}; mo.forEach(o=>o.items.forEach(c=>{ cnt[c.name]=(cnt[c.name]||0)+c.qty }));
     const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,5);
-    const low=P.filter(p=>listed(p)&&!isPre(p)&&p.stock>0&&p.stock<=2).slice(0,8);
+    const pq=pendQty(), low=ALLP.filter(p=>listed(p)&&!p.svc&&!isPre(p)&&["short","out","low"].includes(skLevel(p,pq))).length;
     const kpi=(n,z,e)=>`<div class="kpi"><span class="muted">${B(z,e)}</span><b>${n}</b></div>`;
     return `<div class="kpis">${kpi(rm(rev),"本月营业额（已收款）","Revenue this month (paid)")}${kpi(mo.length,"本月已收款订单","Paid orders this month")}${kpi(rows.filter(r=>r[1].status==="review").length,"等你审核","Waiting for you")}</div>
     ${top.length?`<p class="muted" style="margin:6px 0 0">${B("本月热卖","Top sellers this month")}：${top.map(t=>esc(t[0])+" ×"+t[1]).join("，")}</p>`:""}
-    ${low.length?`<p class="note" style="margin:6px 0 0">${B("库存快没了","Low stock")}：${low.map(p=>esc(PN(p))+" "+p.stock).join("，")}</p>`:""}` };
+    ${low?`<p class="note" style="margin:6px 0 0"><button type="button" class="linkbtn" data-skgo="1">${B("库存有 "+low+" 件要注意，去库存检测 →",low+" items need a stock check →")}</button></p>`:""}` };
   document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-plabel]"); if(!b||!owner) return;
-    const rows=[]; Object.entries(all).forEach(([u,d])=>arr(d.orders).forEach(o=>{ const x=eff(u,o); if(x.status==="approved"&&!x.svcOnly) rows.push(x) })); rows.sort((a,b)=>a.at-b.at);
+    const rows=[]; Object.entries(all).forEach(([u,d])=>arr(d.orders).forEach(o=>{ const x=eff(u,o); if(x.status==="approved"&&!x.svcOnly&&!x.test) rows.push(x) })); rows.sort((a,b)=>a.at-b.at);
     const w=window.open("","_blank"); if(!w) return toast("浏览器挡住了新窗口，请允许弹出窗口 Please allow pop-ups");
     w.document.write(`<!doctype html><meta charset="utf-8"><title>Holofen labels</title><style>body{font-family:sans-serif;margin:0}.l{box-sizing:border-box;width:100mm;min-height:60mm;border:1px dashed #999;padding:5mm;margin:4mm;display:inline-block;vertical-align:top;page-break-inside:avoid;font-size:12pt;line-height:1.45}.l b{font-size:14pt}.l small{display:block;color:#555;font-size:9pt;margin-top:3mm}</style>`+rows.map(o=>`<div class="l"><b>${esc(o.name)}</b><br>${esc(o.phone)}<br>${esc(o.addr)}<br>${esc(o.post)} ${esc(o.state)}<small>${esc(o.id)} · ${esc(o.shipName)}<br>${o.items.map(c=>esc(c.name)+" ×"+c.qty).join("<br>")}</small></div>`).join("")+`<script>onload=()=>print()<\/script>`); w.document.close() });
   /* v73 导出 CSV：订单和用户都可以按时间段、指定的人导出。Excel 打开中文不乱码（加 BOM）。 */
@@ -2862,6 +2881,8 @@ document.addEventListener("click",async e=>{
   if(ds.aphotorm){ if(!owner) return; const k=ds.aphotorm, x={...(CAT.items[k]||{})}; delete x.photo; CAT.items={...CAT.items,[k]:x}; return saveCat() }
   if(ds.anew){ if(!owner) return; const id="n"+Date.now().toString(36); CAT.added=arr(CAT.added).concat({id}); CAT.items={...CAT.items,[id]:{price:0,s:SETS[0]||"",c:"single"}}; applyCatalog(); ui.apc="all"; ui.aps="all"; ui.aser=""; ui.apq=""; ui.aedit=id; render(); return toast("填好名字和售价再按保存") }
   if(ds.apc){ ui.apc=ds.apc; ui.ashown=24; return render() }
+  if(ds.skgo){ e.preventDefault(); ui.atab="products"; ui.aps="chk"; ui.apc="all"; ui.aser=""; ui.apq=""; return render() }
+  if(ds.skset){ if(!owner) return; const id=ds.skset, v=(document.getElementById("sk-"+id)||{}).value, n=num(v); if(v===""||!isFinite(n)||n<0) return toast("库存要填 0 或以上的整数"); const it={...CAT.items}; it[id]={...(own(it,id)?it[id]:{}),stock:Math.round(n)}; CAT.items=it; return saveCat() }
   if(ds.aps){ ui.aps=ds.aps; ui.ashown=24; return render() }
   if(ds.aser!=null&&route==="admin"){ ui.aser=ds.aser; ui.ashown=24; return render() }
   if(ds.alist){ return setListed([ds.alist],ds.on==="1") }
@@ -2873,7 +2894,7 @@ document.addEventListener("click",async e=>{
   if(ds.amore){ ui.ashown=(ui.ashown||24)+24; return render() }
   if(ds.rsave){ if(!owner) return; const r={}; for(const k of Object.keys(RULES0)){ const v=num(val("r-"+k)); if(!isFinite(v)||v<0) return toast("规则要填 0 或以上的数字"); r[k]=v } if(r.redeemPts<1) return toast("「多少分起换」至少 1 分"); CAT.rules=r; return saveCat() }
   if(ds.adm){ if(!owner) return; const u=ds.u,oid=ds.o,[,raw]=findOrder(u,oid); if(!raw) return; const o=eff(u,raw);
-    if(ds.adm==="approve") return saveAdm(u,oid,{status:"approved",approvedAt:Date.now(),stockOut:1,snap:Object.fromEntries(o.items.map(c=>[c.id,c.price]))}).then(async()=>{ const low=[]; let ch=0; const it={...CAT.items}; o.items.forEach(c=>{ const p=item(c.id); if(!p||p.svc||isPre(p)||!(p.stock>0)) return; const n=Math.max(0,p.stock-c.qty); it[c.id]={...(own(it,c.id)?it[c.id]:{}),stock:n}; ch=1; if(n<=2) low.push(PN(p)+"："+n) }); if(ch){ CAT.items=it; await saveCat() } toast("已通过审核"+(ch?"，库存已扣":"")+(low.length?"。库存快没了："+low.join("、"):"")) });
+    if(ds.adm==="approve") return saveAdm(u,oid,{status:"approved",approvedAt:Date.now(),stockOut:o.test?0:1,snap:Object.fromEntries(o.items.map(c=>[c.id,c.price]))}).then(async()=>{ const low=[]; let ch=0; const it={...CAT.items}; o.items.forEach(c=>{ const p=item(c.id); if(o.test||!p||p.svc||isPre(p)||!(p.stock>0)) return; const n=Math.max(0,p.stock-c.qty); it[c.id]={...(own(it,c.id)?it[c.id]:{}),stock:n}; ch=1; if(n<=2) low.push(PN(p)+"："+n) }); if(ch){ CAT.items=it; await saveCat() } toast("已通过审核"+(ch?"，库存已扣":"")+(low.length?"。库存快没了："+low.join("、"):"")) });
     if(ds.adm==="quote"){ const q=Math.round(num(val("qt-"+oid))); if(!(q>0)) return toast("请填报价"); if(q<130||q>250) toast("提醒：报价不在 RM130–250 之间"); return saveAdm(u,oid,{quote:q,snap:{"svc-deck":q}}).then(()=>toast("报价已发给顾客")) }
     if(ds.adm==="reject") return saveAdm(u,oid,{status:"rejected",reason:val("rej-"+oid)});
     if(ds.adm==="ship"){ const tn=val("tn-"+oid); if(!val("cr-"+oid)) return toast("请选快递公司"); if(!tn) return toast("请填运单号"); return saveAdm(u,oid,{status:"shipped",courier:val("cr-"+oid),tracking:tn,shippedAt:Date.now()}).then(()=>toast("已标记寄出")) }
