@@ -165,7 +165,7 @@ td.th img{width:40px;height:56px;object-fit:contain;background:var(--tile);borde
 .buddy{display:flex;gap:10px;align-items:center;background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:8px 12px}
 .buddy svg{flex:none}
 .two{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px;align-items:start}
-@media (max-width:820px){.two{grid-template-columns:1fr}}
+@media (max-width:820px){.two{grid-template-columns:minmax(0,1fr)}}
 .sum{display:grid;grid-template-columns:1fr auto;gap:4px 16px}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:99px;font-size:13px;z-index:30;max-width:90vw}
 pre.list{font-family:var(--mono);font-size:12.5px;white-space:pre-wrap;margin:0}
@@ -1127,7 +1127,7 @@ header.bar::after{margin-top:8px}
   <div class="or">或者 <span class="en">or</span></div>
   <form data-lgemail novalidate><label>电子邮件 <span class="en">Email</span><input type="email" name="em" autocomplete="email" inputmode="email" placeholder="you@example.com" required></label></form>
   <button class="go" type="button" data-lgsend>寄登录链接到邮箱 <span class="en">Email me a sign-in link</span></button>
-  <div class="lgin" id="lgin" hidden><p class="msg" id="lgwho"></p><div id="lgprof"></div><div class="row" style="gap:8px;margin:10px 0"><a class="go" href="#orders" data-lgclose style="flex:1;margin:0;text-decoration:none">我的订单 <span class="en">My orders</span></a><a class="go" href="#member" data-lgclose style="flex:1;margin:0;text-decoration:none">会员中心 <span class="en">Membership</span></a></div><button class="lgoutb" type="button" data-lgout>登出 <span class="en">Sign out</span></button><p style="text-align:center;margin:10px 0 0;font-size:13px"><a href="#privacy" data-lgclose>隐私声明 <span class="en">Privacy</span></a> · <button type="button" class="linkbtn" data-delme>删除我的资料 <span class="en">Delete my data</span></button></p></div>
+  <div class="lgin" id="lgin" hidden><p class="msg" id="lgwho"></p><div class="row" style="gap:8px;margin:4px 0 14px"><a class="go" href="#orders" data-lgclose style="flex:1;margin:0;text-decoration:none">我的订单 <span class="en">My orders</span></a><a class="go" href="#member" data-lgclose style="flex:1;margin:0;text-decoration:none">会员中心 <span class="en">Membership</span></a></div><div id="lgprof"></div><button class="lgoutb" type="button" data-lgout>登出 <span class="en">Sign out</span></button><p style="text-align:center;margin:10px 0 0;font-size:13px"><a href="#privacy" data-lgclose>隐私声明 <span class="en">Privacy</span></a> · <button type="button" class="linkbtn" data-delme>删除我的资料 <span class="en">Delete my data</span></button></p></div>
   <p class="msg" id="lgmsg" aria-live="polite">不用设密码：我们会寄一封邮件给你，按里面的链接就登录了。</p>
 </div></div>
 
@@ -1216,7 +1216,8 @@ window.HOLO_AUTH=(function(){
       throw new Error("unknown") } };
   }
   async function listUsers(){ if(!sb) return null; try{ var r=await sb.rpc("list_users"); return r.error?null:(r.data||[]) }catch(e){ return null } }
-  return { anon:anon, isAnon:function(){ return !!(user&&user.is_anonymous) }, signOut:out, isOwnerEmail:function(em){ return sha(String(em||"").trim().toLowerCase()).then(function(h){ return OWNER_HASH.indexOf(h)>=0 }).catch(function(){ return false }) }, listUsers:listUsers, isOwner:function(){ return isOwn }, role:function(){ return myRole }, staffList:function(){ return staff }, perms:function(){ return myRole==="owner"?null:myPerms }, setPerms:setPerms, user:function(){ return user }, paint:paint, open:open, removeStaff:removeStaff, saveStaff:saveStaff };
+  async function mail(body){ if(!sb) return {error:"offline"}; try{ var r=await sb.functions.invoke("send-mail",{body:Object.assign({site:location.origin+location.pathname},body)}); if(r.error){ var m="send"; try{ var j=await r.error.context.json(); m=j.error||m }catch(_){ } return {error:m} } return r.data||{ok:true} }catch(e){ return {error:"send"} } }
+  return { mail:mail, anon:anon, isAnon:function(){ return !!(user&&user.is_anonymous) }, signOut:out, isOwnerEmail:function(em){ return sha(String(em||"").trim().toLowerCase()).then(function(h){ return OWNER_HASH.indexOf(h)>=0 }).catch(function(){ return false }) }, listUsers:listUsers, isOwner:function(){ return isOwn }, role:function(){ return myRole }, staffList:function(){ return staff }, perms:function(){ return myRole==="owner"?null:myPerms }, setPerms:setPerms, user:function(){ return user }, paint:paint, open:open, removeStaff:removeStaff, saveStaff:saveStaff };
 })();
 </script>
 <script src="data.js"></script>
@@ -1362,7 +1363,8 @@ function contents(p){
 let db=null, assets=null, uid="local", owner=false, mode="local";
 let mine={orders:[]}, all={}, reviews=[], admS={}, myReviews={}, pubRev=[];
 let cart=[], cartWait=[]; try{const c0=(x=>Array.isArray(x)?x:[])(JSON.parse(localStorage.getItem("cart")||"[]")).filter(c=>c&&typeof c.id==="string"); cart=c0.filter(c=>item(c.id)); cartWait=c0.filter(c=>!item(c.id)&&/^n[a-z0-9]+$/.test(c.id)).slice(0,50)}catch(e){}
-const saveCart=()=>{try{localStorage.setItem("cart",JSON.stringify(cart))}catch(e){} $("#cartbtn").innerHTML=CARTICON+`<span class="ct">购物车 <span class="en">Cart </span></span>`+cart.reduce((a,c)=>a+c.qty,0)};
+let cartSync=0; const saveCart=()=>{try{localStorage.setItem("cart",JSON.stringify(cart))}catch(e){}
+  clearTimeout(cartSync); cartSync=setTimeout(()=>{ try{ if(typeof signedIn!=="function"||!signedIn()||!MELOADED) return; const c=cart.filter(x=>!x.brief).map(x=>({id:x.id,qty:x.qty})); if(JSON.stringify(c)===JSON.stringify(ME.cart)) return; ME.cart=c; ME.cartAt=c.length?Date.now():0; saveMe() }catch(e){} },3000); $("#cartbtn").innerHTML=CARTICON+`<span class="ct">购物车 <span class="en">Cart </span></span>`+cart.reduce((a,c)=>a+c.qty,0)};
 function lsGet(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}}
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 async function initStore(){
@@ -2176,9 +2178,11 @@ V.cart=()=>{
   <div class="tw"><table><thead><tr><th></th>${TH("商品","Item")}${TH("单价","Price",1)}${TH("数量","Qty")}${TH("小计","Subtotal",1)}<th></th></tr></thead><tbody>${cart.map((c,i)=>{const p=item(c.id);return `<tr><td class="th">${p.svc?buddy(30):`<img src="${simg(p)}" alt="">`}</td><td>${esc(p.svc?(lang==="en"?p.en:p.n):PN(p))}<div class="muted">${esc(p.svc?(c.brief?`${c.brief.format} · ${c.brief.budget} · ${c.brief.want}`:""):(PNs(p)?PNs(p)+" · ":"")+p.s)}${!p.svc&&isPre(p)?`<div class="up">${B(`预购，预计 ${preTxt(p)}到货`,`Pre-order, expected ${isPre(p)}`)}</div>`:""}</div></td><td class="n">${p.quote?`<span class="muted">${B("待报价","To be quoted")}</span>`:rm(p.price)}</td><td>${p.svc?"1":`<span class="row" style="gap:4px;flex-wrap:nowrap"><button data-qty="${i}" data-d="-1" aria-label="减少">−</button><span class="price">${c.qty}</span><button data-qty="${i}" data-d="1" aria-label="增加">+</button></span>`}</td><td class="n">${rm(p.price*c.qty)}</td><td><button data-rm="${i}">移除</button></td></tr>`}).join("")}</tbody></table></div>
   <form class="panel stack" id="checkout">${H2("收件资料","Delivery details")}${signedIn()?`<p class="muted" style="margin:0">${myEmail()?`${B("登录账号","Signed in as")}：${esc(myEmail())}。`:""}${profOK()?B("已带入你保存的资料，可以直接改；这次填的会更新到「我的资料」。","Filled in from your saved details. Changes here update your saved details."):B("这次填的会保存到「我的资料」，下次不用重填。","What you enter here is saved to your details for next time.")}</p>`:""}
    <div class="row"><label class="f">${B("姓名","Name")}<input id="c-name" required value="${esc(ui.cname||"")}"></label><label class="f">${B("手机号码","Phone")}<input id="c-phone" required inputmode="tel" placeholder="${(SHIP.find(x=>x.k===(ui.ship||"wm"))||{}).cc==="sg"?"+65 xxxx xxxx":(SHIP.find(x=>x.k===(ui.ship||"wm"))||{}).cc==="cn"?"+86 1xx xxxx xxxx":"01x-xxxxxxx"}" value="${esc(ui.cphone||"")}"></label></div>
+   ${`<label class="f">${B("电子邮件","Email")}<input id="c-email" type="email" required autocomplete="email" value="${esc(ui.cemail||ME.email||myEmail()||"")}"><small class="muted">${B("订单进度会寄到这个邮箱。","We'll email your order updates here.")}</small></label>`}
    ${t.onlySvc?`<p class="muted">只买组牌服务不需要寄送。 No shipping needed for the deck service.</p>`:`<label class="f">${B("地址","Address")}<input id="c-addr" required value="${esc(ui.caddr||"")}"></label>
    ${(()=>{ const cc=(SHIP.find(x=>x.k===(ui.ship||"wm"))||{}).cc; return `<div class="row"><label class="f">${B("邮编","Postcode")}<input id="c-post" required inputmode="numeric" pattern="${cc?"[0-9]{6}":"[0-9]{5}"}" value="${esc(ui.cpost||"")}"></label>${cc==="sg"?`<label class="f">${B("国家","Country")}<input id="c-state" value="Singapore 新加坡" readonly></label>`:cc==="cn"?`<label class="f">${B("省份和城市","Province & city")}<input id="c-state" required placeholder="例如 广东省 深圳市" value="${esc(STATES.includes(ui.cstate)?"":ui.cstate||"")}"></label>`:`<label class="f">${B("州属","State")}<select id="c-state">${STATES.map(s=>`<option ${ui.cstate===s?"selected":""}>${s}</option>`).join("")}</select></label>`}</div>${cc?`<p class="muted" style="margin:0">${B(cc==="sg"?"寄新加坡：一般 5 到 10 个工作天，进口税费（如有）由收件人支付。":"寄中国：一般 7 到 14 个工作天，进口税费（如有）由收件人支付。","International delivery; any import duties are paid by the recipient.")}</p>`:""}` })()}
    <label class="f"><span>${B("寄送方式","Shipping")} <span class="chip tbd">运费待定 <span class="en">TBD</span></span></span><select id="c-ship">${SHIP.map(s=>`<option value="${s.k}" ${(ui.ship||"wm")===s.k?"selected":""}>${esc(s.n)} ${esc(s.en)}　${s.fee?rm(s.fee)+(isEN()?" (provisional)":"（暂定）"):(isEN()?"No fee":"免运费")}</option>`).join("")}</select></label>${shipNote()}`}
+   <label class="row" style="gap:8px;font-size:14px"><input type="checkbox" id="c-mkt" ${ME.mkt?"checked":""}> ${B("有新优惠或新货时，用电邮通知我（随时可以取消）","Email me about new deals and arrivals (unsubscribe any time)")}</label>
    <label class="f">${B("付款方式","Payment method")}<select id="c-pay">${PAY.map(p=>`<option ${ui.pay===p?"selected":""}>${esc(p)}</option>`).join("")}</select></label>
    ${cps.length?`<label class="f">${B("回购优惠码","Return coupon")}<select id="c-coupon"><option value="">不使用</option>${cps.map(c=>`<option value="${c.code}" ${ui.coupon===c.code?"selected":""}>${c.code}　满 ${rm(c.min)} 减 ${rm(c.amount)}</option>`).join("")}</select></label>`:""}
    ${t.maxU>0?`<label class="f">${B("使用积分","Use points")} <small class="muted">${B("你有","You have")} ${t.mb.left} ${B("分","pts")}</small><select id="c-pts"><option value="0">${B("不使用","Don't use")}</option>${Array.from({length:Math.min(t.maxU,50)},(_,i)=>(i+1)*t.mb.R.redeemPts).map(n=>`<option value="${n}" ${t.pts===n?"selected":""}>${n} ${B("分抵","pts = ")} ${rm(n/t.mb.R.redeemPts*t.mb.R.redeemRM)}</option>`).join("")}</select></label>`:""}
@@ -2419,7 +2423,7 @@ document.addEventListener("submit",e=>{ const id=e.target.id; if(id!=="profform"
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-profskip]"); if(!b) return; ui.profSkip=true; const m=document.getElementById("profm"); if(m) m.hidden=true; toast("可以随时点右上角的名字填资料 You can add your details any time from your name at the top") });
 const normMe=d=>{ d=d&&typeof d==="object"?d:{}; const seen={}; const s0=d.seen&&typeof d.seen==="object"?d.seen:{};
   Object.keys(s0).slice(0,300).forEach(k=>{ const v=s0[k]; if(v&&typeof v==="object") seen[cleanId(k)]={st:v.st==="on"?"on":"off",pr:num(v.pr)||0} });
-  return {wish:arr(d.wish).map(cleanId).filter(Boolean).slice(0,200),seen,bm:clampN(d.bm,0,12),bmAt:num(d.bmAt)||0,follow:d.follow===true,sets:arr(d.sets).filter(x=>typeof x==="string").slice(0,80),draws:arr(d.draws).map(normDraw).filter(Boolean).slice(-300),ci:[...new Set(arr(d.ci).filter(x=>typeof x==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(x)))].sort().slice(-400),prof:normProf(d.prof),act:normAct(d.act)} };
+  return {wish:arr(d.wish).map(cleanId).filter(Boolean).slice(0,200),seen,bm:clampN(d.bm,0,12),bmAt:num(d.bmAt)||0,follow:d.follow===true,sets:arr(d.sets).filter(x=>typeof x==="string").slice(0,80),draws:arr(d.draws).map(normDraw).filter(Boolean).slice(-300),ci:[...new Set(arr(d.ci).filter(x=>typeof x==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(x)))].sort().slice(-400),prof:normProf(d.prof),act:normAct(d.act),mkt:d.mkt===true,mktAt:num(d.mktAt)||0,email:cleanTxt(d.email,120),cart:arr(d.cart).filter(c=>c&&typeof c.id==="string").slice(0,50).map(c=>({id:cleanId(c.id),qty:clampN(c.qty,1,99)})),cartAt:num(d.cartAt)||0} };
 ME=normMe(null);
 async function initExtra(){
   try{ if(window.claude&&window.claude.use){ XDB=await window.claude.use("db"); const us=await window.claude.use("user");
@@ -2447,7 +2451,7 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   const mx=+el.max||99, n=clampN(el.value||1,1,mx);
   if(b.dataset.lstep){ el.value=clampN(n+(+b.dataset.d),1,mx); return lqUpd(k) }
   if(!(+el.value>=1)) return toast(BT("请填要几包","Enter how many packs")); add(k,null,n); el.value=1; lqUpd(k) },true);
-document.addEventListener("input",e=>{ const id=e.target.id||""; if(id.startsWith("lq-")) lqUpd(id.slice(3)); const k={"c-name":"cname","c-phone":"cphone","c-addr":"caddr","c-post":"cpost","c-note":"cnote"}[id]; if(k) ui[k]=e.target.value; if(id==="c-state"&&e.target.tagName==="INPUT"&&!e.target.readOnly) ui.cstate=e.target.value },true);
+document.addEventListener("input",e=>{ const id=e.target.id||""; if(id.startsWith("lq-")) lqUpd(id.slice(3)); const k={"c-name":"cname","c-phone":"cphone","c-addr":"caddr","c-post":"cpost","c-note":"cnote","c-email":"cemail"}[id]; if(k) ui[k]=e.target.value; if(id==="c-state"&&e.target.tagName==="INPUT"&&!e.target.readOnly) ui.cstate=e.target.value },true);
 function isPre(p){ const x=p&&own(CAT.items,p.id)?CAT.items[p.id]:null; return x&&typeof x.pre==="string"&&/^\d{4}-\d{2}$/.test(x.pre)?x.pre:"" }
 const preTxt=p=>{ const v=isPre(p); if(!v) return ""; const [y,m]=v.split("-"); return `${y} 年 ${+m} 月` };
 const stK=p=>p&&listed(p)&&(p.stock!==0||isPre(p))?"on":"off";
@@ -2477,7 +2481,8 @@ V.wish=()=>{ const al=alerts(), wl=ME.wish.map(id=>PM[id]).filter(Boolean);
   return `${H1("收藏和提醒","Saved & alerts")}
   <section class="stack" style="gap:10px">${al.length?`<div class="panel stack" style="gap:8px"><b>${B(`${al.length} 条新提醒`,`${al.length} new alerts`)}</b>${al.map(a=>a.k==="set"?`<div class="alrow">${slogo(a.s)}<b>${esc(a.s)}</b><span class="up">${B("新系列上架","New set in shop")}</span><a href="#set/${esc(a.s)}">${B("去看看","Have a look")} ›</a></div>`:`<div class="alrow"><img src="${simg(a.p)}" alt=""><b>${esc(a.p.n)}</b><span class="up">${a.t}</span><a href="#p/${a.p.id}">${B("去看看","Have a look")} ›</a></div>`).join("")}<div><button data-wclear="1">${B("都看过了","Mark all as seen")}</button></div></div>`:`<p class="muted">${B("暂时没有新提醒。收藏的商品到货、降价，或者有新系列上架时，会显示在这里，右上角的会员按钮也会出现红点。","No new alerts. When a saved item is back in stock or cheaper, or a new set arrives, it shows here.")}</p>`}
    <label class="row" style="gap:8px"><input type="checkbox" id="me-follow" ${ME.follow?"checked":""}> ${B("有新系列上架时提醒我","Tell me when a new set arrives")}</label>
-   <p class="muted" style="font-size:12px">${B("提醒在你打开网站时显示。WhatsApp 或电邮通知要等正式上线、接上通知服务后才有。","Alerts show when you open the site. WhatsApp or email alerts will come after launch.")}</p></section>
+   <label class="row" style="gap:8px"><input type="checkbox" id="me-mkt" ${ME.mkt?"checked":""}> ${B("有新优惠或新货时，用电邮通知我","Email me about new deals and arrivals")}</label>
+   <p class="muted" style="font-size:12px">${B("提醒在你打开网站时显示；勾了电邮通知的，店主发优惠时也会寄到你的邮箱。","Alerts show when you open the site. If you tick email, deals are also sent to your inbox.")}</p></section>
   <section class="stack" style="gap:10px">${H2(`我的收藏（${wl.length}）`,"Saved items")}${wl.length?`<div class="grid">${wl.map(prodCard).join("")}</div>`:`<p class="muted">${B("在商品图右上角按爱心就能收藏。","Tap the heart on a product to save it.")}</p>`}</section>`;
 };
 /* 晒卡墙 */
@@ -2560,6 +2565,36 @@ function admStaff(){
 let AUSERS=null, AULOAD=false;
 function loadUsers(force){ if(AULOAD&&!force) return; AULOAD=true; const H=window.HOLO_AUTH; if(!H||!H.listUsers||!window.HOLO_SB){ AUSERS=[]; return } H.listUsers().then(async r=>{ AUSERS=r||[]; if(H.isOwnerEmail) await Promise.all(AUSERS.map(async u=>{ u.own=await H.isOwnerEmail(u.email) })); render() }) }
 const RB=r=>{ const E=isEN(), m={owner:["店主","Owner","#7a3e00","#ffe2b8"],staff:["员工","Staff","#3b4fb8","#e4e8ff"],cust:["客户","Customer","#1e7a46","#e9f7ef"]}[r]; return `<span class="rbdg" style="color:${m[2]};background:${m[3]}">${E?m[1]:m[0]}</span>` };
+/* v87 优惠电邮：只寄给自己勾了「用电邮通知我」的人（马来西亚个人资料保护法要求事先同意）。 */
+function mailAud(rows){ const now=Date.now(), em=r=>((MEALL[r.u]||{}).email||r.email||"").trim().toLowerCase(), ok=r=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em(r));
+  const mk=rows.filter(r=>r.role==="cust"&&(MEALL[r.u]||{}).mkt&&ok(r)), cartAll=rows.filter(r=>r.role==="cust"&&arr((MEALL[r.u]||{}).cart).length&&now-((MEALL[r.u]||{}).cartAt||0)>36e5);
+  return {em,mk,cart:cartAll.filter(r=>mk.includes(r)),cartNo:cartAll.filter(r=>!mk.includes(r)).length} }
+function mailPanel(rows){ const A=mailAud(rows), aud=ui.maud==="cart"?A.cart:A.mk, list=[...new Set(aud.map(A.em))];
+  const cartTxt=r=>arr((MEALL[r.u]||{}).cart).map(c=>{ const p=item(c.id); return p?PN(p)+" ×"+c.qty:"" }).filter(Boolean).join("，");
+  return `<details class="panel mailp"${ui.mopen?" open":""}><summary><b>${B("发优惠电邮","Email customers")}</b> <span class="muted">${B(`愿意收电邮的 ${A.mk.length} 人，其中 ${A.cart.length} 人购物车有东西没结账`,`${A.mk.length} opted in, ${A.cart.length} with an unpaid cart`)}</span></summary>
+  <p class="muted">${B("只列出自己勾了「有新优惠时用电邮通知我」的顾客。购物车超过 1 小时没结账才算"+(A.cartNo?`；另外有 ${A.cartNo} 人购物车有东西但没同意收电邮，不能寄。`:"。"),"Only customers who opted in are listed. Carts count after 1 hour without checkout.")}</p>
+  <div class="aseg" role="group"><button data-maud="mk" class="${ui.maud!=="cart"?"on":""}">${B("所有愿意收的会员","All opted-in")} <b>${A.mk.length}</b></button><button data-maud="cart" class="${ui.maud==="cart"?"on":""}">${B("购物车没结账","Unpaid carts")} <b>${A.cart.length}</b></button></div>
+  ${aud.length?`<div class="tw"><table><tbody>${aud.map(r=>`<tr><td>${esc(r.name||"—")}</td><td>${esc(A.em(r))}</td>${ui.maud==="cart"?`<td class="muted">${esc(cartTxt(r))}</td>`:""}</tr>`).join("")}</tbody></table></div>
+  <label class="f">${B("标题","Subject")}<input id="m-sub" value="${esc(ui.msub||"")}" placeholder="${ui.maud==="cart"?"你的购物车还在等你":"Holofen 新优惠"}"></label>
+  <label class="f">${B("内容","Message")}<textarea id="m-body" rows="5" placeholder="${BT("写优惠内容。会自动在最后加上网店链接和取消订阅的说明。","Write your offer. The shop link and unsubscribe note are added at the end.")}">${esc(ui.mbody||"")}</textarea></label>
+  <div class="row"><button class="pri" data-msend="1">${B(`寄出给 ${list.length} 人`,`Send to ${list.length}`)}</button><button data-mcopy="1">${B("复制邮箱名单","Copy email list")}</button></div>
+  <p class="muted" style="font-size:12px">${B("经 Brevo 一人一封寄出，顾客看不到彼此的邮箱。免费版每天最多 300 封。","Sent one by one through Brevo. Free plan: 300 a day.")}</p>`:`<p class="muted">${B("这一组暂时没有人。","Nobody in this group yet.")}</p>`}</details>` }
+const mailFoot=()=>"\n\n— Holofen\n"+location.origin+location.pathname+"\n\n"+"不想再收到优惠电邮？登录网站，在「收藏和提醒」取消勾选就可以。 To stop these emails, untick email alerts under Saved & alerts.";
+document.addEventListener("input",e=>{ if(e.target.id==="m-sub") ui.msub=e.target.value; if(e.target.id==="m-body") ui.mbody=e.target.value });
+document.addEventListener("toggle",e=>{ if(e.target.classList&&e.target.classList.contains("mailp")) ui.mopen=e.target.open },true);
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-maud],[data-msend],[data-mcopy]"); if(!b||!owner) return; const ds=b.dataset;
+  if(ds.maud){ ui.maud=ds.maud; return render() }
+  const A=mailAud(window.UROWS||[]), list=[...new Set((ui.maud==="cart"?A.cart:A.mk).map(A.em))].join(",");
+  if(ds.mcopy){ return navigator.clipboard.writeText(list).then(()=>toast("已复制 "+list.split(",").length+" 个邮箱"),()=>toast("复制不了，请手动选取")) }
+  const sub=(ui.msub||"").trim(), body=(ui.mbody||"").trim(); if(!sub||!body) return toast("先写标题和内容");
+  if(!b.dataset.arm){ b.dataset.arm=1; b.textContent="再按一次确认寄出"; return setTimeout(()=>{ delete b.dataset.arm; render() },4000) }
+  b.disabled=true; b.textContent="寄出中…"; HOLO_AUTH.mail({kind:"bulk",to:list.split(","),subject:sub,text:body+mailFoot()}).then(r=>{ b.disabled=false; if(r&&r.ok){ ui.msub=""; ui.mbody=""; render(); toast("已寄出 "+r.sent+" 封") } else toast(mailErr(r)) }) });
+const mailErr=r=>r&&r.error==="not_configured"?"发信服务还没设定好：要先在 Supabase 填 BREVO_KEY 和 SENDER_EMAIL":"没有寄出去（"+(r&&r.error||"")+"），请稍后再试";
+/* 订单进度电邮：店主每按一步就寄给顾客（下单时填的邮箱）。 */
+const OMAIL={approved:["付款已确认，正在打包","Payment confirmed, we're packing your cards"],shipped:["包裹已寄出","Your parcel is on its way"],delivered:["包裹已送达","Your parcel was delivered"],rejected:["订单没有通过审核","Your order couldn't be approved"]};
+function orderMail(u,oid){ const raw=arr((all[u]||{}).orders).find(x=>cleanId(x.id)===oid); if(!raw) return; const o=eff(u,raw), m=OMAIL[o.status]; if(!m||!o.email||o.test) return;
+  const site=location.origin+location.pathname, trk=o.status==="shipped"&&o.tracking?`\n快递 Courier：${o.courier||""}\n运单号 Tracking：${o.tracking}${trackUrl(o)?"\n"+trackUrl(o):""}`:"", why=o.status==="rejected"&&o.reason?"\n原因 Reason："+o.reason:"";
+  HOLO_AUTH.mail({kind:"order",to:[o.email],subject:`Holofen 订单 ${o.id}：${m[0]}`,text:`${o.name||""} 你好，\n\n你的订单 ${o.id}：${m[0]}。\nYour order ${o.id}: ${m[1]}.${trk}${why}\n\n查看订单进度 Track your order：${site}#orders`}).then(r=>{ if(r&&r.ok) toast("已寄电邮通知顾客"); else if(r&&r.error!=="not_configured") toast("电邮通知没寄出去") }) }
 function admUsers(){ loadUsers(); const E=isEN(), now=Date.now(), dago=n=>myDay(now-n*864e5);
   const ids=new Set(Object.keys(MEALL||{}).filter(u=>u!=="local"&&u!=="guest")); arr(AUSERS).forEach(u=>ids.add(u.id)); Object.keys(all||{}).forEach(u=>{ if(u!=="local"&&u!=="guest") ids.add(u) });
   const au=Object.fromEntries(arr(AUSERS).map(u=>[u.id,u]));
@@ -2577,7 +2612,7 @@ function admUsers(){ loadUsers(); const E=isEN(), now=Date.now(), dago=n=>myDay(
   const kpi=(n,z,e)=>`<div class="kpi"><span class="muted">${B(z,e)}</span><b>${n}</b></div>`;
   return `${H1("用户","Users")}<p class="muted">${BL("所有登录过网站的人。资料是顾客自己填的，地址要等对方下过单才会有。活跃度按对方登录后打开网站的日子算。只有你和管理员看得到这一页。","Everyone who has signed in. Details are entered by the customer, and an address only appears after they order. Activity counts the days they opened the site while signed in. Only you and admins can see this page.")}</p>
   <div class="kpis">${kpi(tot,"登录过的用户","Signed-in users")}${kpi(ncu+" / "+nst,"客户 / 店主和员工","Customers / owner & staff")}${kpi(a7,"近 7 天来过","Active in 7 days")}${kpi(fil,"已填资料","Details filled in")}${kpi(buy,"下过单","Have ordered")}</div>
-  ${typeof expBar==="function"?expBar("users"):""}${AUSERS===null?`<p class="muted">${BL("读取中…","Loading…")}</p>`:""}
+  ${mailPanel(window.UROWS||[])}${typeof expBar==="function"?expBar("users"):""}${AUSERS===null?`<p class="muted">${BL("读取中…","Loading…")}</p>`:""}
   <div class="row"><input id="uq" type="search" value="${esc(ui.uq||"")}" placeholder="${E?"Search name, email or phone":"搜索名字、邮箱、手机"}" aria-label="${E?"Search users":"搜索用户"}" style="flex:1;min-width:180px"><select id="usort" aria-label="${E?"Sort":"排序"}">${[["last","最近来过","Last active"],["new","最新注册","Newest"],["act","最活跃","Most active"],["spend","消费最多","Top spend"]].map(o=>`<option value="${o[0]}" ${srt===o[0]?"selected":""}>${E?o[2]:o[1]}</option>`).join("")}</select><button data-urefresh="1">${B("刷新","Refresh")}</button></div>
   ${rows.length?`<div class="tw"><table class="utab"><thead><tr><th>${B("用户","User")}</th><th>${B("手机","Phone")}</th><th>${B("收件地址","Address")}</th><th>${B("注册","Joined")}</th><th>${B("最近来过","Last active")}</th><th>${B("活跃度","Activity")}</th><th class="n">${B("来访","Visits")}</th><th class="n">${B("签到","Check-ins")}</th><th class="n">${B("订单","Orders")}</th><th class="n">${B("累计消费","Spent")}</th><th class="n">${B("可用积分","Points")}</th><th>${B("等级","Tier")}</th></tr></thead><tbody>${rows.slice(0,ui.ushown||50).map(r=>{ const L=lvl(r); return `<tr><td><b>${esc(r.name||(E?"(no name yet)":"（还没填名字）"))}</b> ${RB(r.role)}<div class="muted">${esc(r.email||"—")}${r.prov==="google"?" · Google":""}</div></td><td>${esc(r.phone||"—")}</td><td>${esc(r.addr||"—")}</td><td>${fd(r.first)}</td><td>${ago(r.last)}</td><td><span class="chip" style="color:${L[1]};background:${L[2]};border-color:transparent">${L[0]}</span><div class="muted">${E?`${r.d7} of 7 days · ${r.d30} of 30`:`近 7 天 ${r.d7} 天 · 近 30 天 ${r.d30} 天`}</div></td><td class="n">${r.visits}</td><td class="n">${r.ci}</td><td class="n">${r.orders}</td><td class="n">${rm(r.life)}</td><td class="n">${r.pts}</td><td>${r.tier?(E&&r.tier[1]?r.tier[1]:r.tier[0]):"—"}</td></tr>` }).join("")}</tbody></table></div>${rows.length>(ui.ushown||50)?`<div><button data-umore="1">${B("再显示 50 位","Show 50 more")}</button></div>`:""}`:`<p class="muted">${AUSERS===null?"":BL(q?"没有符合的用户。":"还没有人登录过。","No users "+(q?"match.":"have signed in yet."))}</p>`}` }
 ATABS.splice(3,0,["users","用户","Users"]);
@@ -2593,7 +2628,7 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   if(ds.wpub||ds.wunpub){ if(!owner) return; const key=ds.wpub||ds.wunpub; if(ds.wunpub) return setWall(WALL.filter(w=>w.key!==key));
     const u=key.slice(0,key.lastIndexOf(":")), id=key.slice(key.lastIndexOf(":")+1), w=arr(PULLALL[u]).find(x=>cleanId(x.id)===id); if(!w) return;
     return setWall([{key,img:aid(w.img),name:cleanTxt(w.name,60),set:cleanTxt(w.set,60),nick:cleanTxt(w.nick,20),text:cleanTxt(w.text,120),at:num(w.at)||Date.now()}].concat(WALL.filter(x=>x.key!==key))) } },true);
-document.addEventListener("change",e=>{ if(e.target.id==="me-follow"){ ME.follow=e.target.checked; if(ME.follow) ME.sets=liveSets(); saveMe() } });
+document.addEventListener("change",e=>{ if(e.target.id==="me-mkt"){ ME.mkt=e.target.checked; ME.mktAt=Date.now(); if(!ME.email&&myEmail()) ME.email=myEmail(); return saveMe().then(()=>toast(ME.mkt?"好，有新优惠会寄电邮给你":"已取消优惠电邮")) } if(e.target.id==="me-follow"){ ME.follow=e.target.checked; if(ME.follow) ME.sets=liveSets(); saveMe() } });
 document.addEventListener("submit",e=>{ if(e.target.id==="wallform"){ e.preventDefault(); submitPull() } });
 
 /* ---------- v36 组牌报价、积分抽奖 ---------- */
@@ -2894,11 +2929,11 @@ document.addEventListener("click",async e=>{
   if(ds.amore){ ui.ashown=(ui.ashown||24)+24; return render() }
   if(ds.rsave){ if(!owner) return; const r={}; for(const k of Object.keys(RULES0)){ const v=num(val("r-"+k)); if(!isFinite(v)||v<0) return toast("规则要填 0 或以上的数字"); r[k]=v } if(r.redeemPts<1) return toast("「多少分起换」至少 1 分"); CAT.rules=r; return saveCat() }
   if(ds.adm){ if(!owner) return; const u=ds.u,oid=ds.o,[,raw]=findOrder(u,oid); if(!raw) return; const o=eff(u,raw);
-    if(ds.adm==="approve") return saveAdm(u,oid,{status:"approved",approvedAt:Date.now(),stockOut:o.test?0:1,snap:Object.fromEntries(o.items.map(c=>[c.id,c.price]))}).then(async()=>{ const low=[]; let ch=0; const it={...CAT.items}; o.items.forEach(c=>{ const p=item(c.id); if(o.test||!p||p.svc||isPre(p)||!(p.stock>0)) return; const n=Math.max(0,p.stock-c.qty); it[c.id]={...(own(it,c.id)?it[c.id]:{}),stock:n}; ch=1; if(n<=2) low.push(PN(p)+"："+n) }); if(ch){ CAT.items=it; await saveCat() } toast("已通过审核"+(ch?"，库存已扣":"")+(low.length?"。库存快没了："+low.join("、"):"")) });
+    if(ds.adm==="approve") return saveAdm(u,oid,{status:"approved",approvedAt:Date.now(),stockOut:o.test?0:1,snap:Object.fromEntries(o.items.map(c=>[c.id,c.price]))}).then(async()=>{ const low=[]; let ch=0; const it={...CAT.items}; o.items.forEach(c=>{ const p=item(c.id); if(o.test||!p||p.svc||isPre(p)||!(p.stock>0)) return; const n=Math.max(0,p.stock-c.qty); it[c.id]={...(own(it,c.id)?it[c.id]:{}),stock:n}; ch=1; if(n<=2) low.push(PN(p)+"："+n) }); if(ch){ CAT.items=it; await saveCat() } toast("已通过审核"+(ch?"，库存已扣":"")+(low.length?"。库存快没了："+low.join("、"):"")); orderMail(u,oid) });
     if(ds.adm==="quote"){ const q=Math.round(num(val("qt-"+oid))); if(!(q>0)) return toast("请填报价"); if(q<130||q>250) toast("提醒：报价不在 RM130–250 之间"); return saveAdm(u,oid,{quote:q,snap:{"svc-deck":q}}).then(()=>toast("报价已发给顾客")) }
-    if(ds.adm==="reject") return saveAdm(u,oid,{status:"rejected",reason:val("rej-"+oid)});
-    if(ds.adm==="ship"){ const tn=val("tn-"+oid); if(!val("cr-"+oid)) return toast("请选快递公司"); if(!tn) return toast("请填运单号"); return saveAdm(u,oid,{status:"shipped",courier:val("cr-"+oid),tracking:tn,shippedAt:Date.now()}).then(()=>toast("已标记寄出")) }
-    if(ds.adm==="delivered") return saveAdm(u,oid,{status:"delivered",deliveredAt:Date.now()});
+    if(ds.adm==="reject") return saveAdm(u,oid,{status:"rejected",reason:val("rej-"+oid)}).then(()=>orderMail(u,oid));
+    if(ds.adm==="ship"){ const tn=val("tn-"+oid); if(!val("cr-"+oid)) return toast("请选快递公司"); if(!tn) return toast("请填运单号"); return saveAdm(u,oid,{status:"shipped",courier:val("cr-"+oid),tracking:tn,shippedAt:Date.now()}).then(()=>{ toast("已标记寄出"); orderMail(u,oid) }) }
+    if(ds.adm==="delivered") return saveAdm(u,oid,{status:"delivered",deliveredAt:Date.now()}).then(()=>orderMail(u,oid));
     if(ds.adm==="undo"){ const key=u+"/"+oid; if(undoArm!==key){ undoArm=key; setTimeout(()=>{ if(undoArm===key) undoArm="" },4000); return toast(isEN()?"Tap again to undo":"再按一次确认退回") } undoArm="";
       const a=((admS[u]||{}).o||{})[oid]||{}, st=o.status;
       if(st==="approved"||st==="rejected"){ await saveAdm(u,oid,{status:null,approvedAt:null,reason:"",stockOut:0});
@@ -2962,11 +2997,12 @@ document.addEventListener("submit",e=>{
     const t=cartTotals(); const now=new Date();
     const id="KP"+String(now.getFullYear()).slice(2)+String(now.getMonth()+1).padStart(2,"0")+String(now.getDate()).padStart(2,"0")+"-"+Math.random().toString(36).slice(2,6).toUpperCase();
     const o={id,at:Date.now(),name:val("c-name"),phone:val("c-phone"),addr:val("c-addr"),post:val("c-post"),state:t.onlySvc?"":val("c-state"),note:val("c-note"),pay:val("c-pay"),
-      email:myEmail(),shipKey:t.onlySvc?"none":t.sh.k,couponCode:t.cp?t.cp.code:null,pointsUsed:t.pts||0,total:t.total,
+      email:cleanTxt(val("c-email"),120)||myEmail(),shipKey:t.onlySvc?"none":t.sh.k,couponCode:t.cp?t.cp.code:null,pointsUsed:t.pts||0,total:t.total,
       items:cart.map(c=>{const r={id:c.id,qty:c.qty}; if(c.brief) r.brief=c.brief; return r})};
     if(signedIn()){ const pf=normProf({name:o.name,phone:o.phone,ship:t.onlySvc?ME.prof.ship:(t.sh.k==="pickup"?ME.prof.ship:t.sh.k),addr:o.addr||ME.prof.addr,post:o.post||ME.prof.post,state:t.onlySvc?ME.prof.state:(o.state||ME.prof.state),at:Date.now()}); ME.prof=pf; saveMe() }
+    { const mk=!!(document.getElementById("c-mkt")||{}).checked; if(mk!==ME.mkt||(o.email&&o.email!==ME.email)){ ME.mkt=mk; ME.mktAt=Date.now(); if(o.email) ME.email=o.email } }
     cart=[]; ui.coupon=""; ui.pts=0; saveCart();
-    saveDoc(uid,{orders:arr(mine.orders).concat(o)}).then(()=>{ toast(isEN()?"Order "+id+" placed":"订单 "+id+" 已提交"); go("orders") });
+    saveDoc(uid,{orders:arr(mine.orders).concat(o)}).then(()=>{ toast(isEN()?"Order "+id+" placed":"订单 "+id+" 已提交"); go("orders"); if(o.email&&window.HOLO_SB&&HOLO_AUTH.mail) HOLO_AUTH.mail({kind:"placed",orderId:id}) });
   }
 });
 document.addEventListener("pointermove",e=>{
