@@ -1,10 +1,23 @@
-# Holofen 店务后台。免费方案：Cloudflare Pages + D1 + Cloudflare Access。
-# 还没有创建线上资源。database_id 是占位，Eldro 按 README 换掉后再部署。
-name = "holofen"
+# 这个仓库已经接到 Cloudflare Worker「holofen-shop」。
+# main 分支的构建跑 `npx wrangler deploy`，其他分支跑 `npx wrangler preview`。
+# 不要再另建一个 Pages 项目。
+name = "holofen-shop"
+main = "worker/index.js"
 compatibility_date = "2026-11-18"
-pages_build_output_dir = "."
 
-# preview_database_id 让 `wrangler pages dev` 使用本地库，不要改成线上 id。
+[assets]
+directory = "."
+binding = "ASSETS"
+run_worker_first = [ "/api/*", "/admin", "/admin/*" ]
+
+[observability]
+enabled = true
+
+[observability.traces]
+enabled = true
+
+# database_id 仍是占位。`npx wrangler d1 create holofen` 之后换成真的 id。
+# preview_database_id 只给本机 `wrangler dev` 用。
 [[d1_databases]]
 binding = "DB"
 database_name = "holofen"
@@ -12,8 +25,11 @@ database_id = "00000000-0000-0000-0000-000000000000"
 preview_database_id = "local-holofen"
 migrations_dir = "migrations"
 
-[observability]
-enabled = true
-
-[observability.traces]
-enabled = true
+# `wrangler preview` 不读上面的绑定，没有这个块就会构建失败。
+# 线上还没有 D1，所以预览先不绑数据库。建好库之后，把同一个 id 加到这里：
+# [[previews.d1_databases]]
+# binding = "DB"
+# database_name = "holofen"
+# database_id = "换成 wrangler d1 create 印出的 id"
+[previews.vars]
+APP_ENV = "preview"
