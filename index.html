@@ -1072,6 +1072,52 @@ header.bar::after{margin-top:8px}
 @media (prefers-reduced-motion:reduce){.trk *,.trk *::before,.trk-ic::after{animation:none!important;opacity:1!important}.tdot{transform:none}.tseg.f::before{transform:scaleX(1)}.tseg.go::before{transform:scaleX(.5)}}
 .undorow{border-top:1px dashed var(--line);padding-top:8px;margin-top:4px}.undorow .linkbtn{font-size:13px;color:var(--muted)}
 .trk-ic img{right:-26px}
+.totopw{cursor:pointer}
+/* v94 快速查看（取代商品页） */
+.modal .qvbox{position:relative;max-width:820px;grid-template-columns:minmax(0,260px) minmax(0,1fr);padding-top:20px}
+.qvx{position:sticky;top:0;grid-column:1/-1;justify-self:end;z-index:3;width:42px;height:42px;padding:0;margin-bottom:-58px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:1.5px solid var(--line);box-shadow:0 2px 8px rgba(16,22,43,.12)}
+.qvart img{display:block;width:100%;background:var(--tile);border-radius:12px}
+.qvbox h2 small{display:block;font-size:13px;font-weight:600;color:var(--muted)}
+.qvbox .loose{padding:10px 12px;gap:10px}.qvbox .loose img{width:34px}.qvbox .loose.none{background:var(--tile)}
+.loose .lgsel .chip.on{outline:2px solid var(--ink)}
+@media (max-width:600px){.modal .qvbox{grid-template-columns:1fr}.qvart img{max-width:220px;margin:0 auto}.qvart .imgcap{text-align:center}}
+/* v94 首页：Logo 居中，欢迎语在下面 */
+.hero .hero-in{grid-template-columns:1fr!important;justify-items:center;text-align:center}
+.hero .hlogo{grid-column:1!important;justify-self:center;height:clamp(170px,22vw,260px)}
+.hero .hero-in h1{grid-row:auto!important;grid-column:1!important;max-width:30ch;margin-inline:auto}
+.hero .hero-in h1 small{display:block;margin-top:8px;font-size:.62em;font-weight:600;opacity:.8}
+.hero .hero-cta4{justify-self:stretch;text-align:left}
+/* v94 头像入口：头像、名字、等级、订单更新数字合在一起 */
+.loginbtn .av{position:relative;flex:none}
+.loginbtn .ubdg{position:absolute;top:-7px;right:-9px;min-width:18px;height:18px;padding:0 4px;border-radius:99px;background:#e0583a;color:#fff;font:800 11px/18px var(--body);text-align:center;box-shadow:0 0 0 2px var(--surface)}
+.loginbtn.in .lt{display:inline-flex!important;flex-direction:column;align-items:flex-start;line-height:1.1;font-size:13px}
+.loginbtn.in .lt small.utier{font-size:10.5px;font-weight:600;color:var(--muted)}
+.loginbtn.in{padding:3px 12px 3px 4px!important;gap:8px}
+@media (max-width:760px){.loginbtn.in .lt{display:none!important}.loginbtn.in{padding:0!important;width:40px;height:40px;justify-content:center}}
+.umenu a{display:flex!important;align-items:center;gap:6px}.umenu .umc{margin-left:auto;min-width:20px;height:20px;padding:0 6px;border-radius:99px;background:#e0583a;color:#fff;font-size:11.5px;display:grid;place-items:center}.umenu .umt{margin-left:auto;font-size:11.5px;color:var(--muted)}
+.panel.order.upd{outline:2.5px solid #e1bf78;box-shadow:0 0 0 6px rgba(225,191,120,.22)}
+.updchip{display:inline-block;vertical-align:middle;margin-left:6px;padding:2px 8px;border-radius:99px;background:#e0583a;color:#fff;font:700 11.5px/1.4 var(--body)}
+.qlink{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 14px;border-radius:99px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font-weight:700;text-decoration:none}.qlink:hover{border-color:var(--ink)}
+.qlink .umc{min-width:20px;height:20px;padding:0 6px;border-radius:99px;background:#e0583a;color:#fff;font-size:11.5px;display:grid;place-items:center}
+/* v94 会员中心：上面是头像、名字、等级，下面是订单状态入口 */
+.mtop{display:flex;align-items:center;gap:14px;background:linear-gradient(120deg,#0e7c86,#2f8f7c);color:#fff;border:0}
+.mtop .mav{width:56px;height:56px;border-radius:50%;background:#fff;color:#0e7c86;display:grid;place-items:center;font:800 24px/1 var(--display);flex:none}
+.mtop .mwho{display:flex;flex-direction:column;gap:4px;min-width:0}.mtop .mwho b{font-size:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mtop .mtier{align-self:flex-start;padding:2px 10px;border-radius:99px;background:#e1bf78;color:#3d2c05;font-size:12px;font-weight:800}
+.mtop .mpts{margin-left:auto;text-align:right;display:flex;flex-direction:column}.mtop .mpts b{font-size:24px}.mtop .mpts small{opacity:.85}
+.mords{display:flex;flex-direction:column;gap:12px}
+.mgrp{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+.mgrp a{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 2px;border-radius:12px;color:var(--ink);text-decoration:none;font-size:13px;text-align:center}
+.mgrp a:hover{background:var(--tile)}
+.mgrp .mi{position:relative;color:#0e7c86}.mgrp .mi b{position:absolute;top:-6px;right:-12px;min-width:18px;height:18px;padding:0 4px;border-radius:99px;background:#0e7c86;color:#fff;font-size:11px;display:grid;place-items:center}.mgrp .mi b.u{background:#e0583a}
+@media (max-width:420px){.mgrp a{font-size:11.5px}}
+/* v94 加购反馈 */
+.flyimg{position:fixed;z-index:60;border-radius:8px;object-fit:contain;pointer-events:none;box-shadow:0 8px 20px rgba(16,22,43,.25);background:#fff}
+#addok{position:fixed;inset:0;z-index:55;display:grid;place-items:center;pointer-events:none}#addok[hidden]{display:none}
+#addok .aok{pointer-events:auto;display:flex;flex-direction:column;align-items:center;gap:4px;max-width:min(300px,86vw);padding:18px 22px;border-radius:20px;background:var(--surface);border:2px solid var(--ink);box-shadow:0 5px 0 var(--ink),0 18px 40px rgba(16,22,43,.2);text-align:center;animation:aokIn .32s cubic-bezier(.34,1.56,.64,1) both}
+#addok .aok b{font-size:17px}#addok .aok span{font-size:13px;color:var(--muted);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}#addok .aok a{margin-top:6px;font-weight:700}
+@keyframes aokIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+#addok.rm .aok{animation:none}
 </style>
 
 <div class="bgfx" aria-hidden="true"></div>
@@ -1155,7 +1201,7 @@ window.HOLO_AUTH=(function(){
     if(isOwn) myRole="owner"; if(myRole==="owner") loadStaff(); else staff=null;
     if(typeof owner!=="undefined"&&mode!=="db"){ owner=(myRole==="owner"||myRole==="admin"); if(!owner&&typeof route!=="undefined"&&route==="admin"){ location.hash="home" } }
     paint(); if(typeof render==="function") try{ render() }catch(e){} }
-  function paint(){ var b=el("loginbtn"); if(!b) return; if(user){ var n=(user.user_metadata&&(user.user_metadata.name||user.user_metadata.full_name))||(user.email||"").split("@")[0]; b.classList.add("in"); b.innerHTML='<span class="av">'+(n[0]||"?").toUpperCase()+'</span><span class="lt"></span>'; b.querySelector(".lt").textContent=n.length>12?n.slice(0,11)+"…":n; b.title=(user.email||"") } else { b.classList.remove("in"); b.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg><span class="lt">登录 <span class="en">Sign in</span></span>'; b.title="" } }
+  function paint(){ var b=el("loginbtn"); if(!b) return; if(user){ var n=(user.user_metadata&&(user.user_metadata.name||user.user_metadata.full_name))||(user.email||"").split("@")[0]; var hi=(typeof window.hdrInfo==="function"&&window.hdrInfo())||{}; b.classList.add("in"); b.innerHTML='<span class="av">'+(user.is_anonymous?'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>':(n[0]||"?").toUpperCase())+(hi.unread?'<b class="ubdg" aria-hidden="true">'+hi.unread+'</b>':"")+'</span><span class="lt"><span class="nm"></span>'+(hi.tier&&!user.is_anonymous?'<small class="utier">'+hi.tier+'</small>':"")+'</span>'; b.querySelector(".nm").textContent=user.is_anonymous?((window.trT||String)("访客")):(n.length>12?n.slice(0,11)+"…":n); b.title=(user.email||""); b.setAttribute("aria-label",(hi.unread?hi.unread+" 笔订单有更新，":"")+"我的账户 My account") } else { b.classList.remove("in"); b.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg><span class="lt">登录 <span class="en">Sign in</span></span>'; b.title=""; b.setAttribute("aria-label","登录 Sign in") } }
   function view(){ var on=!!user, n=el("lgin"); if(!n) return; n.hidden=!on; var lm=el("lgm"); if(lm) lm.classList.toggle("on",on); el("lgwho").textContent=on?(window.trT?window.trT("已登录："+(user.email||"")):"已登录："+(user.email||"")):""; var f=document.querySelector("#lgm form[data-lgemail]"), g=document.querySelector("#lgm .gbtn"), o=document.querySelector("#lgm .or"), h=el("lgmh"); if(f) f.hidden=on; if(g) g.hidden=on; if(o) o.hidden=on; if(h) h.firstChild.textContent=(window.trT||String)(on?"我的资料 ":"登录 Holofen "); if(h){ var sm=h.querySelector("small"); if(sm) sm.textContent=on?"My details":"Sign in" } var lp=el("lgprof"); if(lp){ lp.innerHTML=on&&typeof profPanel==="function"?profPanel(1):""; if(on&&typeof lang!=="undefined"&&lang==="en"&&window.langPass) try{ langPass() }catch(e){} } msg(on?"":"不用设密码：我们会寄一封邮件给你，按里面的链接就登录了。") }
   function open(){ var m=el("lgm"); view(); m.hidden=false; document.documentElement.style.overflow="hidden"; if(!sb&&!user) msg("登录功能还在接通中，很快就能用。","err"); setTimeout(function(){ var i=m.querySelector("input"); if(i&&matchMedia("(pointer:fine)").matches) i.focus() },50) }
   function close(){ el("lgm").hidden=true; document.documentElement.style.overflow="" }
@@ -1180,8 +1226,9 @@ window.HOLO_AUTH=(function(){
         m.hidden=true; if(k==="prof"){ e.preventDefault(); open() } });
       document.addEventListener("click",function(e){ if(!m.hidden&&!e.target.closest("#umenu,#loginbtn")) m.hidden=true },true);
       document.addEventListener("keydown",function(e){ if(e.key==="Escape") m.hidden=true }); addEventListener("hashchange",function(){ m.hidden=true }); addEventListener("resize",function(){ m.hidden=true }) }
-    var it=[["#orders","orders","我的订单","My orders"],["#member","member","会员中心","Membership"],["#wish","wish","收藏和提醒","Saved & alerts"],["#","prof","个人资料","My details"],["#","out","登出","Sign out"]];
-    m.innerHTML=(user.email?'<div class="umw">'+user.email.replace(/[&<>"]/g,"")+'</div>':"")+it.map(function(x){ return '<a role="menuitem" href="'+x[0]+'" data-um="'+x[1]+'"'+(x[1]==="out"?' class="umo"':"")+'>'+x[2]+' <span class="en">'+x[3]+'</span></a>' }).join("");
+    var hi=(typeof window.hdrInfo==="function"&&window.hdrInfo())||{};
+    var it=[["#orders","orders","我的订单","My orders",hi.unread],["#member","member","会员中心","Membership",0,hi.tier],["#wish","wish","收藏和提醒","Saved & alerts",hi.alerts],["#","prof","个人资料","My details"],["#","out","登出","Sign out"]];
+    m.innerHTML=(user.email?'<div class="umw">'+user.email.replace(/[&<>"]/g,"")+'</div>':"")+it.map(function(x){ return '<a role="menuitem" href="'+x[0]+'" data-um="'+x[1]+'"'+(x[1]==="out"?' class="umo"':"")+'>'+x[2]+' <span class="en">'+x[3]+'</span>'+(x[4]?'<b class="umc" aria-label="'+x[4]+' 条更新">'+x[4]+'</b>':x[5]?'<small class="umt">'+x[5]+'</small>':"")+'</a>' }).join("");
     var r=btn.getBoundingClientRect(); m.style.top=(r.bottom+8)+"px"; m.style.right=Math.max(8,innerWidth-r.right)+"px"; m.hidden=false; btn.setAttribute("aria-expanded","true"); if(typeof applyLang==="function") applyLang() }
   var pendingOut=0; function confirmOut(){ if(Date.now()-pendingOut<4000) return true; pendingOut=Date.now(); if(typeof toast==="function") toast("再按一次就登出"); return false }
   async function anon(){ try{ if(!sb||!sb.auth.signInAnonymously) return false; var r=await sb.auth.signInAnonymously(); return !r.error }catch(e){ return false } }
@@ -1278,9 +1325,13 @@ function applyCatalog(){
   if(typeof SINGLES!=="undefined") SINGLES.splice(0,SINGLES.length,...P.filter(p=>p.c==="single"));
   if(typeof cartWait!=="undefined"&&cartWait.length){ const ok=cartWait.filter(c=>sellable(PM[c.id])&&PM[c.id].price>0&&!cart.some(x=>x.id===c.id)); if(ok.length){ cart=cart.concat(ok.map(c=>({id:c.id,qty:clampN(c.qty,1,99)}))); cartWait=cartWait.filter(c=>!ok.includes(c)) } }
 }
-const simg = p => p.photo?BLOB(p.photo):p.img?"img/"+p.img+".jpg":p.tmpimg?p.tmpimg:p.loose&&window.SETINFO&&window.SETINFO[p.s]?window.SETINFO[p.s].logo:NOIMG;
+const simg = p => p.photo?BLOB(p.photo):p.img?"img/"+p.img+".jpg":p.tmpimg?p.tmpimg:p.loose&&window.SETINFO&&window.SETINFO[p.s]?window.SETINFO[p.s].logo:noImg(p);
 const bimg = p => p.photo?BLOB(p.photo):p.img?(p.big?"big":"img")+"/"+p.img+".jpg":simg(p);
 const bigF = p => p.photo?BLOB(p.photo):p.img?"big/"+p.img+".jpg":p.tmpimg||NOIMG;
+/* v94 缺图：带系列名的「图片待补」占位，店主在库存检测看补拍清单 */
+const _noimg={}; function noImg(p){ const en=typeof isEN==="function"&&isEN(), k=((p&&p.s)||"")+(en?"|en":""); if(_noimg[k]) return _noimg[k]; const e=t=>String(t).replace(/[&<>"']/g,"");
+  const w=e((p&&p.s)||"").match(/.{1,14}(\s|$)|.{1,14}/g)||[""];
+  return _noimg[k]="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 126 176"><rect width="126" height="176" rx="8" fill="#eef4ee"/><rect x="5" y="5" width="116" height="166" rx="6" fill="none" stroke="#c9dccd" stroke-dasharray="4 3"/><path d="M48 70h30l-2 18H50z" fill="none" stroke="#7aa58a" stroke-width="2.4" stroke-linejoin="round"/><circle cx="63" cy="79" r="4" fill="none" stroke="#7aa58a" stroke-width="2.2"/><text x="63" y="108" font-size="12" font-weight="700" text-anchor="middle" fill="#3f6b55" font-family="sans-serif">'+(en?"Photo coming":"图片待补")+'</text>'+w.slice(0,2).map((l,i)=>'<text x="63" y="'+(126+i*13)+'" font-size="9.5" text-anchor="middle" fill="#6f8a7a" font-family="sans-serif">'+l.trim()+'</text>').join("")+'</svg>') }
 const NOIMG = "data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 63 88"><rect width="63" height="88" rx="4" fill="#eef1f7"/><text x="31.5" y="47" font-size="7" text-anchor="middle" fill="#8a93ad" font-family="sans-serif">No photo</text></svg>');
 const sellable = p => p&&!p.hidden&&(p.stock!==0||!!isPre(p))&&listed(p);
 const INTL = (window.INTL||[]).filter(c=>c.h>c.w);
@@ -1500,7 +1551,7 @@ const ATABS=[["orders","订单","Orders"],["products","商品管理","Products"]
 let route="home", ui={mser:"",mq:"",mrar:"",msort:"hot",mid:null,sc:0,q:"",series:"",cat:"",sort:"rec",pq:"",stars:{},shown:24,ncat:"all",tdir:"all",gtab:"us",mtab:"move",atab:"orders",open:{},pid:null,files:[]};
 function toast(t){ const el=$("#toast"); t=String(t); if(lang==="en"&&window.trT) t=trT(t); else { const m=t.match(/^(.*?[\u3400-\u9fff）」。！？])\s+[A-Z][\x20-\x7e\u2019\u2014\u2013\u00e9：:]*$/); if(m) t=m[1] } el.textContent=t; el.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(()=>el.hidden=true,2800) }
 function go(r){ if(location.hash!=="#"+r) location.hash=r; else {route=r;render()} }
-function readHash(){ ui.msheet=false; let h=location.hash.replace("#",""); try{ h=decodeURIComponent(h) }catch(e){ h="" } ui.pid=null; ui.mid=null; if(h.startsWith("p/")&&own(PM,h.slice(2))){ ui.item=h.slice(2); route="item"; render(); return window.scrollTo(0,0) } if(h.startsWith("card/")){ let k=h.slice(5); if(own(PM,k)&&PM[k].ck) k=PM[k].ck; if(own(CARDS,k)){ ui.card=k; ui.cid=null; route="card"; render(); window.scrollTo(0,0); if(ui.toPrice){ ui.toPrice=false; const el=document.getElementById("pricearea"); if(el) el.scrollIntoView({block:"start"}) } return } }
+function readHash(){ ui.msheet=false; if(location.hash!=="#orders") ui.hl=[]; let h=location.hash.replace("#",""); try{ h=decodeURIComponent(h) }catch(e){ h="" } ui.pid=null; ui.mid=null; if(h.startsWith("p/")&&own(PM,h.slice(2))){ const it=PM[h.slice(2)]; if(it.c==="single"&&it.ck&&!listed(it)){ location.replace("#card/"+it.ck); return } try{ history.replaceState(null,"",location.pathname+location.search+"#shop") }catch(e){} route="shop"; ui.pid=it.id; render(); return window.scrollTo(0,0) } if(h.startsWith("card/")){ let k=h.slice(5); if(own(PM,k)&&PM[k].ck) k=PM[k].ck; if(own(CARDS,k)){ ui.card=k; ui.cid=null; route="card"; render(); window.scrollTo(0,0); if(ui.toPrice){ ui.toPrice=false; const el=document.getElementById("pricearea"); if(el) el.scrollIntoView({block:"start"}) } return } }
   if(h.startsWith("p/")&&own(PM,h.slice(2))&&PM[h.slice(2)].c==="single"&&PM[h.slice(2)].ck){ location.replace("#card/"+PM[h.slice(2)].ck); return }
   if(h.startsWith("set/")&&own(SI,h.slice(4))){ if(ui.set!==h.slice(4)){ ui.crar=""; ui.ckind="" } ui.set=h.slice(4); route="set"; render(); return window.scrollTo(0,0) } route=ROUTES.has(h)?h:({prices:"market",trends:"market",gallery:"market"}[h]||"home"); if(h==="prices") ui.mtab="price"; if(h==="gallery") ui.mtab="gal"; if(route==="admin"&&!owner) route="home"; render(); window.scrollTo(0,0) }
 
@@ -1519,7 +1570,7 @@ function render(){
   $("#btm").hidden=adm; { const cur=PARENT[route]||route, inMore=BTM_MORE.some(t=>t[0]===cur||t[0]===route);
   $("#btm").innerHTML=adm?"":BTM.map(t=>t[0]==="more"?`<a href="#" data-msheet="1" class="${inMore||ui.msheet?"on":""}" aria-expanded="${!!ui.msheet}">${t[2]}<span>${t[1]}</span></a>`:`<a href="#${t[0]}" class="${cur===t[0]?"on":""}">${t[2]}<span>${t[1]}</span>${t[0]==="cart"&&cq?`<b>${cq}</b>`:""}</a>`).join("")+(ui.msheet?`<div class="msheet" role="menu">${BTM_MORE.map(t=>`<a href="#${t[0]}" role="menuitem" class="${cur===t[0]||route===t[0]?"on":""}">${t[2]}<span>${t[1]}</span></a>`).join("")}</div>`:""); }
   applyLang();
-  $("#cartbtn").hidden=adm; { const bb=$("#backbtn"); if(bb) bb.hidden=!adm } { const ob=$("#ownbtn"); if(ob) ob.hidden=adm||!owner } { const lb=$("#loginbtn"); if(lb){ lb.hidden=adm; if(window.HOLO_AUTH) HOLO_AUTH.paint() } } { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm||!CONTACT.some(c=>c[3]) } { const mb=$("#mebtn"); if(mb){ mb.hidden=adm||(typeof isGuest==="function"&&isGuest()); if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
+  $("#cartbtn").hidden=adm; { const bb=$("#backbtn"); if(bb) bb.hidden=!adm } { const ob=$("#ownbtn"); if(ob) ob.hidden=adm||!owner } { const lb=$("#loginbtn"); if(lb){ lb.hidden=adm; if(window.HOLO_AUTH) HOLO_AUTH.paint() } } { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm||!CONTACT.some(c=>c[3]) } { const mb=$("#mebtn"); if(mb){ mb.hidden=true; if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
   setHTML("#band",adm?"":band());
   $("#foot").innerHTML=adm?`<a href="#home">${BL("回到顾客前台","Back to storefront")}</a>`:`${DOTS}<span>${B("中文、英文和日文版宝可梦卡牌，马来西亚发货，也寄新加坡和中国","Chinese, English &amp; Japanese Pokémon cards, shipped from Malaysia to MY, SG &amp; China")}</span>`;
   const keep=document.activeElement&&document.activeElement.id, pos=keep&&document.activeElement.selectionStart;
@@ -1530,6 +1581,7 @@ function render(){
   if(lang==="en") langPass();
   if(vch&&route==="home"&&window.fitHero) requestAnimationFrame(window.fitHero);
   if(keep){ const el=document.getElementById(keep); if(el){ el.focus(); try{el.setSelectionRange(pos,pos)}catch(e){} } }
+  if(ui.hlScroll&&route==="orders"){ const k=ui.hlScroll; ui.hlScroll=null; setTimeout(()=>{ const el=document.getElementById("ord-"+k); if(el) el.scrollIntoView({block:"start",behavior:"auto"}) },60) }
 }
 function subnav(){ const g=GROUPS[PARENT[route]]; if(!g) return ""; return `<nav class="sub" aria-label="分页">${g.map(t=>`<a href="#${t[0]}" class="${route===t[0]?"on":""}">${t[1]} <span class="en">${t[2]}</span></a>`).join("")}</nav>` }
 const banner=()=>"";
@@ -1539,22 +1591,31 @@ function svcCard(){ return `<div class="prod svcc"><div class="pic"><a href="#bu
   <div class="bigp" style="font-size:18px">${B("按牌表报价","Quoted per list")}</div><div class="foot"><button class="sun" data-go="build">${B("填需求","Start")}</button></div></div></div>` }
 function prodCard(p){
   const c=CI[p.id], tc=c&&TYPEC[c.type];
-  return `<div class="prod" data-goitem="${p.id}"${tc?` style="--glow:${tc[0]}99"`:""}><div class="pic"><a href="#p/${p.id}" aria-label="${esc(pname(p))} 商品页"><img loading="lazy" src="${simg(p)}" alt=""></a><button class="qv" data-open="${p.id}">快速查看 <span class="en">Quick view</span></button>${wishBtn(p)}${isPre(p)?`<span class="prebdg">${B("预购","Pre-order")} · ${preTxt(p)}</span>`:""}</div>
+  return `<div class="prod" data-goitem="${p.id}"${tc?` style="--glow:${tc[0]}99"`:""}><div class="pic"><a href="#p/${p.id}" aria-label="${esc(pname(p))} ${BT("快速查看","Quick view")}"><img loading="lazy" src="${simg(p)}" alt=""></a><button class="qv" data-open="${p.id}">快速查看 <span class="en">Quick view</span></button>${wishBtn(p)}${isPre(p)?`<span class="prebdg">${B("预购","Pre-order")} · ${preTxt(p)}</span>`:""}</div>
   <div class="info">${p.no?`<div class="cno">${esc(numTxt(p))}</div>`:""}<a class="nm" href="#p/${p.id}">${esc(PZ(p))}</a><div class="muted set">${slogo(p.s)}<span>${esc(p.s)}</span></div>
   <div class="bigp">${rm(p.price)}</div>
-  <div class="foot">${p.stock===0&&!isPre(p)?`<button disabled>缺货 <span class="en">Sold out</span></button>`:isPre(p)?`<button class="sun" data-add="${p.id}">预购 <span class="en">Pre-order</span></button>`:`<button class="sun" data-add="${p.id}">加入购物车 <span class="en">Add</span></button>`}</div></div></div>`;
+  <div class="foot">${p.c==="single"&&!listed(p)?(p.ck?`<a class="btnl" href="#card/${esc(p.ck)}">${B("看卡价","Card prices")} ›</a>`:""):p.stock===0&&!isPre(p)?`<button disabled>缺货 <span class="en">Sold out</span></button>`:isPre(p)?`<button class="sun" data-add="${p.id}">预购 <span class="en">Pre-order</span></button>`:`<button class="sun" data-add="${p.id}">加入购物车 <span class="en">Add</span></button>`}</div></div></div>`;
 }
+/* v94 没有独立商品页：点商品就开这个快速查看面板，关掉后留在原来的列表、筛选和位置 */
+function buyRow(p){ return `<div class="row">${!listed(p)?(p.c==="single"&&p.ck?`<a class="btnl" href="#card/${esc(p.ck)}" data-close="1">${B("看这张卡的价格","See card prices")} ›</a>`:`<button disabled>已下架 <span class="en">Not for sale</span></button>`):isPre(p)?`<button class="pri" data-add="${p.id}">预购 <span class="en">Pre-order</span></button>`:p.stock===0?`<button disabled>缺货 <span class="en">Out of stock</span></button>`:p.loose?(()=>{ const k=p.id, cap=p.stock>0?Math.min(99,p.stock):99; return `<div class="lq lcus"><span class="row" style="gap:4px;flex-wrap:nowrap"><button type="button" data-lstep="${k}" data-d="-1" aria-label="${BT("少一包","One less")}">−</button><input id="lq-${k}" type="number" min="1" max="${cap}" step="1" inputmode="numeric" value="1" aria-label="${BT("要几包","Number of packs")}" data-lprice="${p.price||0}"><button type="button" data-lstep="${k}" data-d="1" aria-label="${BT("多一包","One more")}">+</button></span><button class="pri" data-addq="${k}">${B("加入购物车","Add to cart")}<small id="lqt-${k}">${p.price>0?`1 ${B("包","pack")} · ${rm(p.price)}`:B("价格待定","Price TBD")}</small></button></div>` })():`<button class="pri" data-add="${p.id}">加入购物车 <span class="en">Add to cart</span></button>`}${listed(p)?wishBtn(p,1):""}<span class="muted">${isPre(p)||!listed(p)?"":p.stock>0?`${B("现货","In stock")} ${p.stock}`:p.stock===0?"":B("库存待店主录入","Stock TBD")}</span></div>` }
 function detail(p){
-  const c=contents(p);
-  return `<div class="modal"><div class="box" role="dialog" aria-label="${esc(pname(p))}"><img src="${bimg(p)}" alt="${esc(pname(p))}">
-  <div class="stack" style="gap:12px"><div><div class="row" style="justify-content:space-between;flex-wrap:nowrap;align-items:flex-start"><h2>${esc(PN(p))}</h2><button data-close="1" aria-label="关闭 Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="muted">${esc(p.zh)} · ${CATS[p.c][0]} ${CATS[p.c][1]}</div></div>
-  <div><div class="bigp" style="font-size:30px">${rm(p.price)}</div><span class="muted">马来西亚发货，运费在结账时列出 <span class="en">Ships from Malaysia; shipping shown at checkout</span></span></div>
-    ${payNote(1)}
-  ${p.c==="single"&&CI[p.id]?cardInfo(p,1):`<div><h3>${B("内容","What's inside")}</h3><p>${esc(c[0])}</p><p class="en">${esc(c[1])}</p>${c[2]?`<span class="chip tbd">待核对 <span class="en">Unverified</span></span>`:""}</div>`}
-  <div class="row" style="gap:8px">${slogo(p.s)}<span class="muted">${esc(p.s)}${p.no?" · "+esc(numTxt(p)):""}</span></div>
-  <p class="muted">图片为参考图，实物以实拍为准。<span class="en"> Reference photo; real photos to follow.</span></p>
-  <div class="row"><button class="pri" data-add="${p.id}">${isPre(p)?`预购 <span class="en">Pre-order</span>`:`加入购物车 <span class="en">Add to cart</span>`}</button><a href="#p/${p.id}">查看完整商品页 <span class="en">Full details</span> ›</a></div></div></div></div>`;
+  const c=CI[p.id], cc=contents(p), st=SI[p.s];
+  return `<div class="modal"><div class="box qvbox" role="dialog" aria-modal="true" aria-label="${esc(pname(p))}"><button class="qvx" data-close="1" aria-label="关闭 Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <div class="qvart"><img src="${bimg(p)}" alt="${esc(pname(p))}"><p class="imgcap">${p.photo?B("本店实拍","Our own photo"):B("示意图，不是本店实拍；收到的语言版和包装以商品名称为准。","Illustrative image, not our own photo. The language and packaging follow the item name.")}</p></div>
+  <div class="stack" style="gap:12px">
+    <div>${st?`<div class="row" style="gap:8px">${slogo(p.s,"slogo")}<span class="muted">${esc(p.s)}</span></div>`:""}
+      <h2 style="margin:4px 0 2px">${esc(PZ(p))}${isEN()||!p.zh?"":`<small>${esc(p.n)}</small>`}</h2>
+      <div class="muted">${p.no?esc(numTxt(p))+" · ":""}${c&&c.rarity?esc(RAR[c.rarity]||c.rarity)+" · ":""}${CATS[p.c][0]} <span class="en">${CATS[p.c][1]}</span></div></div>
+    ${listed(p)?`<div><div class="bigp" style="font-size:30px">${rm(p.price)}</div><span class="muted">马来西亚发货，运费在结账时列出 <span class="en">Ships from Malaysia; shipping shown at checkout</span></span></div>${payNote(1)}`:""}
+    ${buyRow(p)}
+    ${isPre(p)&&listed(p)?`<div class="note">${B(`预购：预计 ${preTxt(p)}到货。到货时间以官方和代理商为准。付款时间和寄出顺序待店主确认。`,`Pre-order: expected ${isPre(p)}. Arrival depends on the official release. Payment timing and shipping order are to be confirmed by the shop.`)}</div>`:""}
+    ${p.lng||p.cond?`<div class="row" style="gap:6px">${p.lng?`<span class="chip">${esc(p.lng)}</span>`:""}${p.cond?`<span class="chip">${B("卡况","Condition")} ${esc(p.cond)}</span>`:""}</div>`:""}
+    ${p.desc?`<div class="note" style="white-space:pre-line">${esc(p.desc)}</div>`:""}
+    ${p.c==="single"&&c?cardInfo(p,1):p.desc?"":`<div><h3>${B("内容","What's inside")}</h3><p>${esc(cc[0])}</p><p class="en">${esc(cc[1])}</p>${cc[2]?`<span class="chip tbd">待核对 <span class="en">Unverified</span></span>`:""}</div>`}
+    ${!p.loose&&p.c!=="single"&&p.s?looseBox(p.s,p.id,1):""}
+  </div></div></div>`;
 }
+function openItem(id){ const p=PM[id]; if(!p) return; if(p.c==="single"&&p.ck&&!listed(p)){ location.hash="card/"+p.ck; return } ui.mid=null; ui.cid=null; ui.kf=false; ui.pid=id; render() }
 /* 上线清单：[中文, 英文, 是否完成]。只有店主和管理员在后台看得到。 */
 const LAUNCH=[
  ["网站","Website",[["网站已上线：holofen-shop.vercel.app，顾客可以打开。","The site is live at holofen-shop.vercel.app and open to customers.",1],["品牌名 Holofen 和小白鹿 logo 已定。","Brand name Holofen and the white deer logo are final.",1],["顾客可以用电邮或 Google 登录。","Customers can sign in with email or Google.",1],["订单、会员、评价存在数据库，顾客只能看自己的。","Orders, members and reviews are in the database; customers only see their own.",1],["后台和前台分开，可以加管理员。","Admin is separate from the storefront, and you can add admins.",1],["中英文切换。","Chinese and English switch.",1],["自己的域名（例如 holofen.com）。现在用的是 Vercel 的免费网址。","Your own domain (for example holofen.com). The site uses the free Vercel address for now.",0],["网站和代码转到 holofenn 账号。","Move the site and code to the holofenn account.",0],["联系方式链接：IG、小红书、Facebook、WhatsApp。前台现在标「待开通」。","Contact links: IG, Xiaohongshu, Facebook, WhatsApp. They show as pending on the storefront.",0]]],
@@ -1761,29 +1822,7 @@ function band(){
   <div class="wrap">${CONTACT.some(c=>c[3])?`<div class="ctc" id="contact">${CONTACT.filter(c=>c[3]).map(c=>`<a href="${c[3]||"#"}" ${c[3]?'target="_blank" rel="noopener"':`data-tbd="${c[1]}"`}><span class="ic" style="background:${c[2]}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${c[4]}</svg></span>${c[1]}${c[3]?"":`<span class="tbd">${B("待开通","Soon")}</span>`}</a>`).join("")}</div>`:""}
   <nav class="flinks" aria-label="${isEN()?"More":"更多"}"><a href="#wall">${B("晒卡墙","Pull wall")}</a><a href="#lucky">${B("签到和抽奖","Check-in & draw")}</a><a href="#fake">${B("防伪指南","Spot fakes")}</a><a href="#privacy">${B("隐私声明","Privacy")}</a></nav><p class="disc">${B("Holofen 是独立卡牌店，不是 The Pokémon Company 的官方商店。Pokémon 及相关名称和图片的商标归各自权利人所有。","Holofen is an independent card shop, not an official store of The Pokémon Company. Pokémon and related names and images are trademarks of their respective owners.")}</p></div>`;
 }
-V.item=()=>{
-  const p=PM[ui.item]; if(!p) return V.shop();
-  const c=CI[p.id], cc=contents(p), st=SI[p.s];
-  const same=P.filter(x=>x.s===p.s&&x.id!==p.id).sort((a,b)=>b.price-a.price).slice(0,4);
-  return `<div class="crumb"><a href="#shop">${B("商店","Shop")}</a> › <a href="#shop" data-ser="${esc(p.s)}">${esc(p.s)}</a> › ${esc(PZ(p))}</div>
-  <div class="pp"><div class="art"><img src="${bimg(p)}" alt="${esc(pname(p))}">${p.photo?`<p class="imgcap">${B("本店实拍","Our own photo")}</p>`:`<p class="imgcap">${B("示意图（官方或公开商品图），不是本店实拍；收到的语言版和包装以商品名称为准。","Illustrative image (official or public product photo), not our own photo. The language and packaging you receive follow the item name.")}</p>`}</div>
-  <div class="stack" style="gap:14px">
-    <div>${st?`<div class="row" style="gap:8px">${slogo(p.s,"slogo")}<span class="muted">${esc(p.s)}</span></div>`:""}
-      <h1 style="margin:6px 0 2px">${esc(PZ(p))}${isEN()||!p.zh?"":`<small>${esc(p.n)}</small>`}</h1>
-      <div class="muted">${p.no?esc(numTxt(p))+" · ":""}${c&&c.rarity?esc(RAR[c.rarity]||c.rarity)+" · ":""}${CATS[p.c][0]} <span class="en">${CATS[p.c][1]}</span></div></div>
-    <div><div class="bigp" style="font-size:34px">${rm(p.price)}</div><span class="muted">马来西亚发货，运费在结账时列出 <span class="en">Ships from Malaysia; shipping shown at checkout</span></span></div>
-    ${payNote(1)}
-    <div class="row">${!listed(p)?`<button disabled>已下架 <span class="en">Not for sale</span></button>`:isPre(p)?`<button class="pri" data-add="${p.id}">预购 <span class="en">Pre-order</span></button>`:p.stock===0?`<button disabled>缺货 <span class="en">Out of stock</span></button>`:p.loose?(()=>{ const k=p.id, cap=p.stock>0?Math.min(99,p.stock):99; return `<div class="lq lcus"><span class="row" style="gap:4px;flex-wrap:nowrap"><button type="button" data-lstep="${k}" data-d="-1" aria-label="${BT("少一包","One less")}">−</button><input id="lq-${k}" type="number" min="1" max="${cap}" step="1" inputmode="numeric" value="1" aria-label="${BT("要几包","Number of packs")}" data-lprice="${p.price||0}"><button type="button" data-lstep="${k}" data-d="1" aria-label="${BT("多一包","One more")}">+</button></span><button class="pri" data-addq="${k}">${B("加入购物车","Add to cart")}<small id="lqt-${k}">${p.price>0?`1 ${B("包","pack")} · ${rm(p.price)}`:B("价格待定","Price TBD")}</small></button></div><span class="muted" style="flex-basis:100%">${B("要几包自己填，1 到 "+cap+" 包都可以。","Enter any number of packs, from 1 to "+cap+".")}</span>` })():`<button class="pri" data-add="${p.id}">加入购物车 <span class="en">Add to cart</span></button>`}${wishBtn(p,1)}<span class="muted">${isPre(p)?"":p.stock>0?`${B("现货","In stock")} ${p.stock}`:p.stock===0?"":B("库存待店主录入","Stock TBD")}</span></div>
-    ${isPre(p)&&listed(p)?`<div class="note">${B(`预购：预计 ${preTxt(p)}到货。到货时间以官方和代理商为准。付款时间和寄出顺序待店主确认。`,`Pre-order: expected ${isPre(p)}. Arrival depends on the official release. Payment timing and shipping order are to be confirmed by the shop.`)}</div>`:""}
-    ${p.lng||p.cond?`<div class="row" style="gap:6px">${p.lng?`<span class="chip">${esc(p.lng)}</span>`:""}${p.cond?`<span class="chip">${B("卡况","Condition")} ${esc(p.cond)}</span>`:""}</div>`:""}
-    ${p.desc?`<div class="note" style="white-space:pre-line">${esc(p.desc)}</div>`:""}
-    ${p.c==="single"?`${H2("卡牌资料","Card details")}${cardInfo(p)}`:p.desc?"":`<div><h3>${B("内容","What's inside")}</h3><p>${esc(cc[0])}</p><p class="en">${esc(cc[1])}</p>${cc[2]?`<span class="chip tbd">待核对 <span class="en">Unverified</span></span>`:""}</div>`}
-    ${p.c==="single"&&!p.desc?`<p class="muted">${esc(isEN()?cc[1]:cc[0])}</p>`:""}
-    ${!p.loose&&p.c!=="single"&&p.s&&typeof looseBox==="function"?looseBox(p.s,p.id):""}
-    <p class="muted">图片为参考图，实物以实拍为准。<span class="en"> Reference photo; real photos to follow.</span></p>
-  </div></div>
-  ${same.length?`<section class="stack sec">${H2("同系列商品","More from this set")}<div class="grid g4">${same.map(prodCard).join("")}</div></section>`:""}`;
-};
+V.item=()=>V.shop();
 
 /* ---------- v30：改善方面 3 ---------- */
 const HERO_GO=[
@@ -2028,7 +2067,7 @@ V.home=()=>{
   <div class="hero-shell">${[0,1].map(r=>cbkStrip("l",r)+cbkStrip("r",r)).join("")}<section class="hero" aria-label="首页主视觉"><div class="aur" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="leaves" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="spot" aria-hidden="true"></div>
   <div class="stack hero-in" style="gap:14px">
     <img class="hlogo" src="intro/holofen-logo.webp" width="756" height="900" alt="Holofen">
-    <h1 class="tag">中文、英文和日文版宝可梦卡，马来西亚发货<small>Chinese, English &amp; Japanese Pokémon cards, shipped from Malaysia to MY, SG &amp; China</small></h1>
+    <h1 class="tag">${B("欢迎来到 Holofen，和我们一起探索卡牌世界。","Welcome to Holofen. Explore the world of trading cards with us.")}<small>${B("从马来西亚发货，选购中文、英文和日文版宝可梦卡牌。","Chinese, English and Japanese Pokémon cards, shipped from Malaysia.")}</small></h1>
     <div class="hero-cta4">${HERO_GO.map((g,k)=>`<a class="hgo${k?"":" main"}" href="#${g[0]}" style="--hc:${g[5]}"><span class="hi" aria-hidden="true">${g[6]}</span><span class="ht"><b>${B(g[1],g[2])}</b><small>${B(g[3],g[4])}</small></span><span class="ha" aria-hidden="true">›</span></a>`).join("")}</div></div>
   <div class="hero-mq" aria-label="名卡展览 Famous cards"><div class="hm1"><div class="mqlab">${B("涨幅前 5 · 跌幅前 5","Top 5 up · top 5 down")} <span>${B("PriceCharting 最近一次价格变动，"+PC_DATE,"PriceCharting latest move, "+PC_DATE)}</span></div>${marquee(row1)}</div><div class="hm2"><div class="mqlab">${B("名卡巡礼","Grail cards")} <span>${B("全球最贵、最受追捧的宝可梦卡，只供欣赏","The most wanted Pokémon cards in the world, just for looking")}</span></div>${marquee(row2,1)}</div></div></section></div>
   <section class="sec" aria-label="卡牌系列 Card sets">${serCarousel()}</section>
@@ -2196,10 +2235,11 @@ const ROAD=[
  ["阶段一","线上起步","Online launch","以 Instagram 等社交平台引流到自营网店，先做中文、英文和日文版的原盒、补充包和礼盒，建立定价清楚、正品可靠的口碑。","Grow from Instagram and other social platforms into our own web shop, starting with Chinese, English and Japanese sealed product."],
  ["阶段二","线下门店与赛事","Store and events","开设实体门店，定期举办比赛和新手教学，让线上的顾客在线下相聚。","Open a physical store with regular tournaments and beginner sessions."],
  ["阶段三","区域拓展","Regional growth","把服务带到东南亚更多地区，并引入更多热门集换式卡牌。","Serve players across Southeast Asia and add more popular trading card games."]];
+const cartLinks=()=>{ const n=unreadOrders().length; return `<a class="qlink" href="#orders">${B("我的订单","My orders")}${n?`<b class="umc">${n}</b>`:""}</a><a class="qlink" href="#member">${B("会员中心","Membership")}</a>` };
 V.cart=()=>{
-  if(!cart.length) return `${H1("购物车","Cart")}<div class="buddy">${buddy(44,"zzz")}<div>购物车是空的。<br><span class="en">Your cart is empty.</span></div></div><div><button class="pri" data-go="shop">去逛商店 <span class="en">Go to shop</span></button></div>`;
+  if(!cart.length) return `${H1("购物车","Cart")}<div class="buddy">${buddy(44,"zzz")}<div>购物车是空的。<br><span class="en">Your cart is empty.</span></div></div><div class="row" style="gap:10px"><button class="pri" data-go="shop">去逛商店 <span class="en">Go to shop</span></button>${cartLinks()}</div>`;
   const t=cartTotals(), cps=couponsOf(uid).filter(c=>!c.used);
-  return `${H1("购物车和结账","Cart & checkout")}<div class="two"><div class="stack">
+  return `${H1("购物车和结账","Cart & checkout")}<div class="row" style="gap:10px;margin-top:-6px">${cartLinks()}</div><div class="two"><div class="stack">
   <div class="tw"><table><thead><tr><th></th>${TH("商品","Item")}${TH("单价","Price",1)}${TH("数量","Qty")}${TH("小计","Subtotal",1)}<th></th></tr></thead><tbody>${cart.map((c,i)=>{const p=item(c.id);return `<tr><td class="th">${p.svc?buddy(30):`<img src="${simg(p)}" alt="">`}</td><td>${esc(p.svc?(lang==="en"?p.en:p.n):PN(p))}<div class="muted">${esc(p.svc?(c.brief?`${c.brief.format} · ${c.brief.budget} · ${c.brief.want}`:""):(PNs(p)?PNs(p)+" · ":"")+p.s)}${!p.svc&&isPre(p)?`<div class="up">${B(`预购，预计 ${preTxt(p)}到货`,`Pre-order, expected ${isPre(p)}`)}</div>`:""}</div></td><td class="n">${p.quote?`<span class="muted">${B("待报价","To be quoted")}</span>`:rm(p.price)}</td><td>${p.svc?"1":`<span class="row" style="gap:4px;flex-wrap:nowrap"><button data-qty="${i}" data-d="-1" aria-label="减少">−</button><span class="price">${c.qty}</span><button data-qty="${i}" data-d="1" aria-label="增加">+</button></span>`}</td><td class="n">${rm(p.price*c.qty)}</td><td><button data-rm="${i}">移除</button></td></tr>`}).join("")}</tbody></table></div>
   <form class="panel stack" id="checkout">${H2("收件资料","Delivery details")}${signedIn()?`<p class="muted" style="margin:0">${myEmail()?`${B("登录账号","Signed in as")}：${esc(myEmail())}。`:""}${profOK()?B("已带入你保存的资料，可以直接改；这次填的会更新到「我的资料」。","Filled in from your saved details. Changes here update your saved details."):B("这次填的会保存到「我的资料」，下次不用重填。","What you enter here is saved to your details for next time.")}</p>`:""}
    <div class="row"><label class="f">${B("姓名","Name")}<input id="c-name" required value="${esc(ui.cname||"")}"></label><label class="f">${B("手机号码","Phone")}<input id="c-phone" required inputmode="tel" placeholder="${(SHIP.find(x=>x.k===(ui.ship||"wm"))||{}).cc==="sg"?"+65 xxxx xxxx":(SHIP.find(x=>x.k===(ui.ship||"wm"))||{}).cc==="cn"?"+86 1xx xxxx xxxx":"01x-xxxxxxx"}" value="${esc(ui.cphone||"")}"></label></div>
@@ -2271,10 +2311,13 @@ function stepBar(o){
 }
 function orderLines(o){ return `<div class="olist">${o.items.map(c=>{const p=PM[c.id];return `<div class="oi">${p?`<img src="${simg(p)}" alt="" loading="lazy">`:buddy(34)}<span>${esc(c.name)} <b>× ${c.qty}</b>${p&&isPre(p)?` <span class="chip">${B("预购","Pre-order")} ${preTxt(p)}</span>`:""}</span></div>`}).join("")}</div>
   <div class="sum" style="max-width:340px"><span>${B("小计","Subtotal")}</span><span class="price">${rm(o.sub)}</span><span>${B("运费","Shipping")}（${esc(o.shipName)}）</span><span class="price">${rm(o.fee)}</span>${o.off-o.ptsOff>0?`<span>${B("回购优惠","Coupon")}</span><span class="price">−${rm(o.off-o.ptsOff)}</span>`:""}${o.ptsOff?`<span>${B("积分抵扣","Points")} (${o.pts})</span><span class="price">−${rm(o.ptsOff)}</span>`:""}<b>${B("合计","Total")}</b><b class="price">${rm(o.total)}</b></div>` }
+const OFL={unpaid:["待付款","To pay"],review:["待审核","In review"],approved:["备货中","Packing"],shipped:["已寄出","Shipped"],delivered:["待评价","To review"]};
 V.orders=()=>{
-  const os=arr(mine.orders).map(o=>eff(uid,o)).sort((a,b)=>b.at-a.at);
+  const os0=arr(mine.orders).map(o=>eff(uid,o)).sort((a,b)=>b.at-a.at), fl=OFL[ui.ofl]?ui.ofl:"", os=fl?os0.filter(o=>o.status===fl):os0;
+  if(fl&&!os.length) return `${H1("我的订单","My orders")}<div class="row" style="gap:8px"><span class="chip">${B("只看："+OFL[fl][0],"Showing: "+OFL[fl][1])}</span><a href="#orders" data-ofl="">${B("看全部订单","All orders")} ›</a></div><p class="muted">${B("这个状态下没有订单。","No orders in this status.")}</p>`;
   if(!os.length) return `${H1("我的订单","My orders")}<div class="buddy">${buddy(52,"zzz")}<div>你还没有订单。下单后可以在这里付款、看审核和寄送进度、写评价。<br><span class="en">No orders yet. After you order, you can pay, follow progress and leave a review here.</span></div></div><div><button class="pri" data-go="shop">去逛商店 <span class="en">Go to shop</span></button></div>`;
-  return `${H1("我的订单","My orders")}${os.map(o=>{const m=MOOD[o.status]||MOOD.review;return `<div class="panel order"><div class="row" style="justify-content:space-between"><h3 class="price">${o.id}</h3><span class="muted">${new Date(o.at).toLocaleString(isEN()?"en-MY":"zh-CN")} ${rcptBtn(uid,o)}</span></div>
+  { const un=unreadOrders(); if(un.length){ const ids=un.map(x=>x[0]); ui.hl=[...new Set((ui.hl||[]).concat(ids))]; ui.hlScroll=ids[0]; setTimeout(markSeen,0) } }
+  return `${H1("我的订单","My orders")}${fl?`<div class="row" style="gap:8px"><span class="chip">${B("只看："+OFL[fl][0],"Showing: "+OFL[fl][1])}</span><a href="#orders" data-ofl="">${B("看全部订单","All orders")} ›</a></div>`:""}${os.map(o=>{const m=MOOD[o.status]||MOOD.review, hl=(ui.hl||[]).includes(o.id);return `<div class="panel order${hl?" upd":""}" id="ord-${o.id}"><div class="row" style="justify-content:space-between"><h3 class="price">${o.id}${hl?` <span class="updchip">${B("有更新","Updated")}</span>`:""}</h3><span class="muted">${new Date(o.at).toLocaleString(isEN()?"en-MY":"zh-CN")} ${rcptBtn(uid,o)}</span></div>
   ${tracker(o)}<div class="note" style="margin:0"><b>${B("收件资料","Delivery details")}</b>${isEN()?": ":"："}${esc(o.name)} · ${esc(o.phone)}${o.svcOnly?"":` · ${esc(o.addr)}${isEN()?", ":"，"}${esc(o.post)} ${esc(o.state)}`}</div>${orderLines(o)}
   ${o.status==="unpaid"&&needQuote(uid,o)?`<div class="note">${B("店主正在看你的需求，1 天内会把报价显示在这里，你同意再付款。不想做了可以取消订单。","We are preparing your quote. It will show here within 1 day; pay only if you agree.")}</div><div><button data-cancel="${o.id}">取消订单 <span class="en">Cancel</span></button></div>`:o.status==="unpaid"?`<div class="note">${quoted(uid,o)?`${B("店主报价","Our quote")}：<b>${rm(quoted(uid,o))}</b>。`:""}${BL(`订单已收到，应付 <b>${rm(o.total)}</b>（${esc(o.pay)}）。线上付款还在接通中，现在不用付款，店主会用你留的手机号码联系你确认订单和付款方式。付款后把参考号填在下面，或上传付款截图。`,`We have your order. Total <b>${rm(o.total)}</b> (${esc(o.pay)}). Online payment is still being set up, so don't pay yet: we will contact you on the phone number you gave to confirm the order and how to pay. After paying, enter the reference or upload a screenshot below.`)}</div>
    <div class="row"><input id="ref-${o.id}" aria-label="付款参考号" placeholder="付款参考号 Payment reference" style="flex:1 1 200px"><label class="upshot">${(ui.pshot||{})[o.id]?`<img src="${esc(BLOB(ui.pshot[o.id]))}" alt="">${BL("换一张截图","Change")}`:`📎 ${BL("上传付款截图","Upload receipt")}`}<input type="file" accept="image/*" data-payshot="${o.id}" hidden></label><button class="pri" data-paid="${o.id}">我已付款 <span class="en">I've paid</span></button><button data-cancel="${o.id}">取消订单 <span class="en">Cancel</span></button></div>`:""}
@@ -2354,7 +2397,7 @@ function stockChk(inC){ const [all0,pq]=skList(), ids=new Set(inC.map(p=>p.id)),
   return `<p class="muted">${B("只列在售的实物商品（不含预购和代组服务）。「待审核」是还没审核订单里的数量，审核通过时才会从库存扣掉；「可卖」＝库存减待审核。改了数字按「保存」就生效。","Listed physical items only. Pending = quantity in orders not yet approved (stock is deducted on approval). Available = stock minus pending.")}</p>
   <div class="kpis">${kpi("short","不够发","Short")}${kpi("out","已售完","Sold out")}${kpi("low","快没了（≤2）","Low (≤2)")}${kpi("tbd","未录入","Not entered")}${kpi("ok","充足","OK")}</div>
   ${rows.length?`<div class="tw"><table class="sktab"><thead><tr><th>${B("商品","Item")}</th><th>${B("状态","Status")}</th><th class="n">${B("库存","Stock")}</th><th class="n">${B("待审核","Pending")}</th><th class="n">${B("可卖","Available")}</th><th>${B("改库存","Set stock")}</th></tr></thead><tbody>${rows.map(([p,lv])=>{ const pd=pq[p.id]||0, av=p.stock==null?"—":p.stock-pd;
-    return `<tr class="sk-${lv}"><td><div class="skp"><img loading="lazy" src="${simg(p)}" alt=""><div><b>${esc(PN(p))}</b><div class="muted" style="font-size:12px">${esc(p.s||"")}</div></div></div></td><td><i class="skt ${LV[lv][1]}">${LV[lv][0]}</i>${LV[lv][2]?`<div class="muted" style="font-size:11px">${LV[lv][2]}</div>`:""}</td><td class="n">${p.stock==null?"—":p.stock}</td><td class="n">${pd||""}</td><td class="n"><b>${av}</b></td><td><span class="skin"><input id="sk-${p.id}" type="number" min="0" step="1" inputmode="numeric" value="${p.stock==null?"":p.stock}" aria-label="${esc(PN(p))} 库存"><button class="sm" data-skset="${p.id}">${B("保存","Save")}</button></span></td></tr>` }).join("")}</tbody></table></div>`:`<p class="muted">${B("没有符合的商品。","No matching items.")}</p>`}` }
+    return `<tr class="sk-${lv}"><td><div class="skp"><img loading="lazy" src="${simg(p)}" alt=""><div><b>${esc(PN(p))}</b><div class="muted" style="font-size:12px">${esc(p.s||"")}</div></div></div></td><td><i class="skt ${LV[lv][1]}">${LV[lv][0]}</i>${LV[lv][2]?`<div class="muted" style="font-size:11px">${LV[lv][2]}</div>`:""}</td><td class="n">${p.stock==null?"—":p.stock}</td><td class="n">${pd||""}</td><td class="n"><b>${av}</b></td><td><span class="skin"><input id="sk-${p.id}" type="number" min="0" step="1" inputmode="numeric" value="${p.stock==null?"":p.stock}" aria-label="${esc(PN(p))} 库存"><button class="sm" data-skset="${p.id}">${B("保存","Save")}</button></span></td></tr>` }).join("")}</tbody></table></div>`:`<p class="muted">${B("没有符合的商品。","No matching items.")}</p>`}${(()=>{ const miss=P.filter(p=>listed(p)&&!p.svc&&!p.photo&&!p.img&&!p.tmpimg&&!p.loose); return miss.length?`<div class="note"><b>${B(`缺图，请店主补拍（${miss.length}）`,`Missing photos, please shoot (${miss.length})`)}</b><ul style="margin:6px 0 0;padding-left:18px">${miss.map(p=>`<li>${esc(PN(p))} · ${esc(p.s||"")} <span class="muted">${p.id}</span></li>`).join("")}</ul><p class="muted" style="margin:6px 0 0">${B("在「商品管理」点该商品上传实拍照片后，这里会自动消失。","Upload a photo in Products and it drops off this list.")}</p></div>`:"" })()}` }
 const AST=[["chk","库存检测"],["all","全部"],["live","在售中"],["out","已售完"],["off","已下架"],["pre","预购"],["tbd","库存未录入"],["ch","改过的"],["new","自己新增"]];
 const astOk=(p,f)=>f==="chk"?listed(p)&&!p.svc&&!isPre(p)&&skLevel(p,ui._pq||{})!=="ok":f==="all"?true:f==="live"?listed(p)&&(p.stock!==0||!!isPre(p)):f==="off"?!listed(p):f==="out"?listed(p)&&p.stock===0&&!isPre(p):f==="pre"?!!isPre(p):f==="tbd"?p.stock==null:f==="ch"?own(CAT.items,p.id):f==="new"?!!p.added:true;
 function admCard(p){ const tags=[], on=listed(p), sel=!!(ui.asel&&ui.asel[p.id]);
@@ -2448,7 +2491,7 @@ document.addEventListener("submit",e=>{ const id=e.target.id; if(id!=="profform"
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-profskip]"); if(!b) return; ui.profSkip=true; const m=document.getElementById("profm"); if(m) m.hidden=true; toast("可以随时点右上角的名字填资料 You can add your details any time from your name at the top") });
 const normMe=d=>{ d=d&&typeof d==="object"?d:{}; const seen={}; const s0=d.seen&&typeof d.seen==="object"?d.seen:{};
   Object.keys(s0).slice(0,300).forEach(k=>{ const v=s0[k]; if(v&&typeof v==="object") seen[cleanId(k)]={st:v.st==="on"?"on":"off",pr:num(v.pr)||0} });
-  return {wish:arr(d.wish).map(cleanId).filter(Boolean).slice(0,200),seen,bm:clampN(d.bm,0,12),bmAt:num(d.bmAt)||0,follow:d.follow===true,sets:arr(d.sets).filter(x=>typeof x==="string").slice(0,80),draws:arr(d.draws).map(normDraw).filter(Boolean).slice(-300),ci:[...new Set(arr(d.ci).filter(x=>typeof x==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(x)))].sort().slice(-400),prof:normProf(d.prof),act:normAct(d.act),mkt:d.mkt===true,mktAt:num(d.mktAt)||0,email:cleanTxt(d.email,120),cart:arr(d.cart).filter(c=>c&&typeof c.id==="string").slice(0,50).map(c=>({id:cleanId(c.id),qty:clampN(c.qty,1,99)})),cartAt:num(d.cartAt)||0} };
+  return {wish:arr(d.wish).map(cleanId).filter(Boolean).slice(0,200),seen,bm:clampN(d.bm,0,12),bmAt:num(d.bmAt)||0,follow:d.follow===true,sets:arr(d.sets).filter(x=>typeof x==="string").slice(0,80),draws:arr(d.draws).map(normDraw).filter(Boolean).slice(-300),ci:[...new Set(arr(d.ci).filter(x=>typeof x==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(x)))].sort().slice(-400),prof:normProf(d.prof),act:normAct(d.act),mkt:d.mkt===true,mktAt:num(d.mktAt)||0,email:cleanTxt(d.email,120),cart:arr(d.cart).filter(c=>c&&typeof c.id==="string").slice(0,50).map(c=>({id:cleanId(c.id),qty:clampN(c.qty,1,99)})),cartAt:num(d.cartAt)||0,oseen:(()=>{ const o={}, s1=d.oseen&&typeof d.oseen==="object"?d.oseen:{}; Object.keys(s1).slice(-200).forEach(k=>{ if(typeof s1[k]==="string") o[cleanId(k)]=s1[k].slice(0,12) }); return o })()} };
 ME=normMe(null);
 async function initExtra(){
   try{ if(window.claude&&window.claude.use){ XDB=await window.claude.use("db"); const us=await window.claude.use("user");
@@ -2463,12 +2506,16 @@ async function initExtra(){
 }
 function saveMe(){ const d=JSON.parse(JSON.stringify(ME)); MEALL[XU]=ME; render();
   meQ=meQ.then(()=>XDB?XDB.doc("me/"+XU).set(d):lsSet("me",d)).catch(e=>toast(e&&e.message==="login"?"请先登录，签到和积分才会记在你的账号":"没有保存成功，请再试一次 Could not save")); return meQ }
-function looseFor(s){ return P.concat(ALLP).find(p=>p.loose&&p.s===s) }
+function looseAll(s){ const seen={}; return P.concat(ALLP).filter(p=>p.loose&&p.s===s&&!seen[p.id]&&(seen[p.id]=1)) }
+function looseFor(s){ const L=looseAll(s), on=L.filter(listed), pool=on.length?on:L, lg=(ui.llng||{})[s]; return (lg!=null&&pool.find(p=>(p.lng||"")===lg))||pool[0] }
 const BT=(zh,en)=>isEN()?en:zh;
 function boxFor(s){ return P.concat(ALLP).find(p=>p.c==="box"&&p.s===s&&/^booster box$/i.test(p.n||"")) }
-function looseBox(s,skip){ const p=PM[(looseFor(s)||{}).id], b0=PM[(boxFor(s)||{}).id], bx=b0&&b0.id!==skip?b0:null; if(!p&&!bx) return "";
+function looseBox(s,skip,qv){ const p=PM[(looseFor(s)||{}).id], b0=PM[(boxFor(s)||{}).id], bx=b0&&b0.id!==skip&&!qv?b0:null;
+  if(qv&&!(p&&listed(p))) return `<div class="loose none"><span class="muted">${B("本系列散包暂未上架","Loose packs from this set are not listed yet")}</span></div>`;
+  if(!p&&!bx) return "";
+  const lgs=[...new Set(looseAll(s).filter(listed).map(x=>x.lng||""))], lsel=lgs.length>1?`<div class="row lgsel" style="gap:6px;flex-basis:100%">${lgs.map(l=>`<button type="button" class="chip${(p.lng||"")===l?" on":""}" data-llng="${esc(l)}" data-lset="${esc(s)}" aria-pressed="${(p.lng||"")===l}">${esc(l||B("未注明语言","Language TBD"))}</button>`).join("")}</div>`:"";
   const ok=p&&listed(p)&&(p.stock!==0||isPre(p)), bok=bx&&listed(bx)&&(bx.stock!==0||isPre(bx)), cap=p&&p.stock>0&&!isPre(p)?Math.min(99,p.stock):99, k=p?p.id:"";
-  return `<div class="loose"><img src="${simg(p||bx)}" alt="" loading="lazy"><div class="lt"><b>${B("整盒或散包","Box or loose packs")}</b><span class="muted">${B(esc(s)+"：可以买整盒，也可以自己选要几包","Buy a full "+esc(s)+" box, or choose how many packs")}</span></div>
+  return `<div class="loose">${lsel}<img src="${simg(p||bx)}" alt="" loading="lazy"><div class="lt"><b>${qv?B("本系列散包","Loose packs from this set"):B("整盒或散包","Box or loose packs")}</b><span class="muted">${qv?`${esc(s)}${p.lng?" · "+esc(p.lng):""} · ${p.price>0?rm(p.price)+" / "+BT("包","pack"):BT("价格待定","Price TBD")}`:B(esc(s)+"：可以买整盒，也可以自己选要几包","Buy a full "+esc(s)+" box, or choose how many packs")}</span></div>
   ${bx?`<div class="lq"><button ${bok?"":"disabled"} class="sun" data-add="${bx.id}" data-q="1">${B("买整盒","Full box")}<small>${bx.price>0?rm(bx.price):B("价格待定","Price TBD")}</small></button></div>`:""}
   ${p?`<div class="lq lcus"><span class="row" style="gap:4px;flex-wrap:nowrap"><button type="button" data-lstep="${k}" data-d="-1" aria-label="${BT("少一包","One less")}" ${ok?"":"disabled"}>−</button><input id="lq-${k}" type="number" min="1" max="${cap}" step="1" inputmode="numeric" value="1" aria-label="${BT("要几包","Number of packs")}" data-lprice="${p.price||0}" ${ok?"":"disabled"}><button type="button" data-lstep="${k}" data-d="1" aria-label="${BT("多一包","One more")}" ${ok?"":"disabled"}>+</button></span><button class="pri" data-addq="${k}" ${ok?"":"disabled"}>${B("加入散包","Add packs")}<small id="lqt-${k}">${p.price>0?`1 ${B("包","pack")} · ${rm(p.price)}`:B("价格待定","Price TBD")}</small></button></div>`:""}</div>` }
 function lqUpd(k){ const el=document.getElementById("lq-"+k), t=document.getElementById("lqt-"+k); if(!el||!t) return; const pr=+el.dataset.lprice||0, n=clampN(el.value||1,1,+el.max||99); if(pr>0) t.textContent=n+" "+BT("包","packs")+" · "+rm(pr*n) }
@@ -2495,9 +2542,14 @@ const wishBtn=(p,big)=>`<button class="wbtn${wished(p.id)?" on":""}${big?" big":
 function winStart(t){ const d=new Date(t); return new Date(d.getFullYear(),d.getMonth()-11,1).getTime() }
 function meBtn(){ const m=member(uid), al=alerts().length+(ciDone()?0:1);
   return `${al?`<b class="dot">${al}</b>`:""}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span class="tn">${B(m.tier[0],m.tier[1])}</span>${m.next?`<small>${B(`再买 ${rm(m.next[1])} 升${m.next[0]}`,`${rm(m.next[1])} to ${m.next[0]==="银卡"?"Silver":"Gold"}`)}</small>`:""}` }
+/* v94 订单更新未读：店主改了状态（通过、退回、寄出、送达）就在头像和「我的订单」显示数字，看过那张订单才清掉 */
+const UPD_ST=["approved","rejected","shipped","delivered"];
+function unreadOrders(){ try{ if(typeof mine==="undefined"||!mine||!MELOADED) return []; return arr(mine.orders).map(o=>[cleanId(o.id),rawStatus(uid,o)[0]]).filter(([id,st])=>UPD_ST.includes(st)&&(ME.oseen||{})[id]!==st) }catch(e){ return [] } }
+function markSeen(){ const un=unreadOrders(); if(!un.length) return; ME.oseen=Object.assign({},ME.oseen); un.forEach(([id,st])=>ME.oseen[id]=st); saveMe() }
+window.hdrInfo=()=>{ try{ const m=member(uid); return {unread:unreadOrders().length,tier:BT(m.tier[0],m.tier[1]),alerts:alerts().length} }catch(e){ return {} } };
 const MONTHS=["1 月","2 月","3 月","4 月","5 月","6 月","7 月","8 月","9 月","10 月","11 月","12 月"];
-function memberCard(){ const m=member(uid), R=m.R, nm=new Date(), nx=new Date(nm.getFullYear(),nm.getMonth()+1,1), out=new Date(nm.getFullYear(),nm.getMonth()-11,1);
-  return `<div class="panel mcardx stack" style="gap:10px"><div class="row" style="justify-content:space-between"><div><span class="lbl">${B("我的会员","My membership")}</span><h3 style="margin:2px 0">${B(m.tier[0],m.tier[1])}</h3></div><div style="text-align:right"><b class="price" style="font-size:26px">${m.left}</b><div class="muted">${B("可用积分","Points available")}</div></div></div>
+function memberCard(slim){ const m=member(uid), R=m.R, nm=new Date(), nx=new Date(nm.getFullYear(),nm.getMonth()+1,1), out=new Date(nm.getFullYear(),nm.getMonth()-11,1);
+  return `<div class="panel mcardx stack" style="gap:10px">${slim?`<span class="lbl">${B("等级和积分","Tier and points")}</span>`:`<div class="row" style="justify-content:space-between"><div><span class="lbl">${B("我的会员","My membership")}</span><h3 style="margin:2px 0">${B(m.tier[0],m.tier[1])}</h3></div><div style="text-align:right"><b class="price" style="font-size:26px">${m.left}</b><div class="muted">${B("可用积分","Points available")}</div></div></div>`}
   ${m.next?`<div class="bar2"><i style="width:${Math.min(100,m.spend/(m.next[0]==="银卡"?R.silver:R.gold)*100).toFixed(0)}%"></i></div><p><b>${B(`再消费 ${rm(m.next[1])} 升${m.next[0]}`,`${rm(m.next[1])} more to reach ${m.next[0]==="银卡"?"Silver":"Gold"}`)}</b></p>`:`<p><b>${B("你已经是最高等级","You're at the top tier")}</b></p>`}
   <p class="muted">${B(`等级看近 12 个月的消费，现在是 ${rm(m.spend)}。每月 1 日重新计算：${nx.getMonth()+1} 月 1 日起，${out.getFullYear()} 年 ${out.getMonth()+1} 月的消费不再算进去。近 12 个月满 ${rm(R.silver)} 是银卡（积分 ×${R.silverX}），满 ${rm(R.gold)} 是金卡（×${R.goldX}）。每消费 RM1 得 ${R.earn} 分，每 ${R.redeemPts} 分结账时抵 ${rm(R.redeemRM)}。订单送达后积分才入账，已得的积分不会因为降级而扣掉。`,`Your tier uses the last 12 months of spending (${rm(m.spend)}) and is recalculated on the 1st of each month. ${rm(R.silver)} = Silver (×${R.silverX} pts), ${rm(R.gold)} = Gold (×${R.goldX}). ${R.earn} pt per RM1; ${R.redeemPts} pts = ${rm(R.redeemRM)} off. Points are added on delivery and are kept if your tier drops.`)}</p>
   ${LUCKY.on&&curRound()?`<p style="margin:0"><a href="#lucky">${B(`积分也可以拿来抽奖，每次 ${curRound().cost} 分`,`Use points in the lucky draw`)} ›</a></p>`:""}
@@ -2845,7 +2897,11 @@ V.member=()=>{ const E=isEN();
    [B("线下比赛和新手教学","Tournaments and beginner sessions"),B("开实体店后定期举办。日期和地点：","Planned once our store opens. Dates and venue:"),OWNER_TBD(),0]];
   const os=arr(mine.orders).map(o=>eff(uid,o)).sort((a,b)=>b.at-a.at), bought=os.filter(o=>PAID.includes(o.status));
   const histSec=bought.length?`<section class="panel stack" style="gap:8px">${H2("购买记录","Purchase history")}<div class="tw"><table><thead><tr><th>${B("日期","Date")}</th><th>${B("订单","Order")}</th><th>${B("商品","Items")}</th><th class="n">${B("金额","Total")}</th><th></th></tr></thead><tbody>${bought.map(o=>`<tr><td>${new Date(o.at).toLocaleDateString(isEN()?"en-MY":"zh-CN")}</td><td class="price">${o.id}</td><td>${o.items.map(c=>esc(c.name)+" ×"+c.qty).join("<br>")}</td><td class="n">${rm(o.total)}</td><td>${rcptBtn(uid,o)}</td></tr>`).join("")}</tbody></table></div><p class="muted" style="margin:0">${B(`共 ${bought.length} 张已付款订单，合计 ${rm(bought.reduce((t,o)=>t+o.total,0))}。`,`${bought.length} paid orders, ${rm(bought.reduce((t,o)=>t+o.total,0))} in total.`)}</p></section>`:"";
-  return `${H1("会员中心","Membership")}${memberCard()}${histSec}
+  const nm=(()=>{ const u=window.HOLO_AUTH&&HOLO_AUTH.user&&HOLO_AUTH.user(); const md=(u&&u.user_metadata)||{}; return (ME.prof&&ME.prof.name)||md.name||md.full_name||((u&&u.email)||myEmail()||"").split("@")[0]||B("会员","Member") })();
+  const unr=new Set(unreadOrders().map(x=>x[0])), GR=[["unpaid","待付款","To pay","M3 7h18v12H3zM3 11h18M7 15h3"],["review","待审核","In review","M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7zM8.5 12l2.5 2.5 4.5-5"],["approved","备货中","Packing","M4 8l8-4 8 4v8l-8 4-8-4zM4 8l8 4 8-4M12 12v8"],["shipped","已寄出","Shipped","M2 6h12v10H2zM14 10h4l3 3v3h-7zM6 19a2 2 0 1 0 0-.1M17 19a2 2 0 1 0 0-.1"],["delivered","待评价","To review","M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"]];
+  const top=`<section class="panel mtop"><div class="mav" aria-hidden="true">${esc(String(nm)[0]||"?").toUpperCase()}</div><div class="mwho"><b>${esc(nm)}</b><span class="mtier">${B(m.tier[0],m.tier[1])}</span></div><div class="mpts"><b>${m.left}</b><small>${B("可用积分","Points")}</small></div></section>
+  <section class="panel mords"><div class="row" style="justify-content:space-between"><h2 style="margin:0;font-size:17px">${B("我的订单","My orders")}</h2><a href="#orders" data-ofl="">${B("查看全部","View all")} ›</a></div><div class="mgrp">${GR.map(g=>{ const n=os.filter(o=>o.status===g[0]).length, u=os.some(o=>o.status===g[0]&&unr.has(o.id)); return `<a href="#orders" data-ofl="${g[0]}"><span class="mi"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${g[3]}"/></svg>${n?`<b class="${u?"u":""}">${n}</b>`:""}</span>${B(g[1],g[2])}</a>` }).join("")}</div></section>`;
+  return `${H1("会员中心","Membership")}${top}${memberCard(1)}${histSec}
   <section class="panel stack" style="gap:10px">${H2("活动计划","What's on")}<ul class="evl">${ev.map(e=>`<li class="${e[3]?"on":""}"><i aria-hidden="true"></i><div><b>${e[0]}</b><p class="muted">${e[1]}</p></div><span>${e[2]}</span></li>`).join("")}</ul></section>
 ` };
 /* v83 访客下单：不用登录也能买。按提交时自动建一个访客身份（Supabase 匿名登录），页面重载后自动填回表单再提交 */
@@ -2872,7 +2928,20 @@ function add(id,brief,q){ const p=item(id); if(!p) return; if(!p.svc&&!sellable(
   q=clampN(q||1,1,99);
   if(p.svc){ cart=cart.filter(c=>!item(c.id).svc); cart.push({id,qty:1,brief}) }
   else { const c=cart.find(c=>c.id===id), cap=p.stock>0&&!isPre(p)?p.stock:99, cur=c?c.qty:0, nq=Math.min(cap,cur+q); if(nq<=cur) return toast("库存只有 "+cap+" 件 Only "+cap+" in stock"); c?c.qty=nq:cart.push({id,qty:nq}); if(nq<cur+q) toast("库存只有 "+cap+" 件，已帮你加到上限") }
-  saveCart(); toast(isEN()?"Added: "+(p.svc?p.en:(p.loose?p.s+" loose packs × "+q:pname(p))):"已加入购物车："+(p.svc?p.n:(p.loose?p.s+" 散包 × "+q:PN(p)))); }
+  saveCart(); addFx(p,q,isEN()?(p.svc?p.en:(p.loose?p.s+" loose packs × "+q:pname(p))):(p.svc?p.n:(p.loose?p.s+" 散包 × "+q:PN(p)))); }
+/* v94 加购反馈：商品小图飞进购物车，中间出现小鹿确认；系统设了减少动态就只显示确认 */
+let lastTap=null; document.addEventListener("pointerdown",e=>{ lastTap=e.target },true); document.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" ") lastTap=e.target },true);
+function addFx(p,q,name){ const rmo=matchMedia("(prefers-reduced-motion:reduce)").matches;
+  const vis=el=>el&&el.offsetParent!==null&&el.getBoundingClientRect().width>0, tgt=[$("#cartbtn"),document.querySelector('#btm a[href="#cart"]')].find(vis);
+  const host=lastTap&&lastTap.closest&&lastTap.closest(".prod,.qvbox,.loose,.panel,.modal .box"), im=host&&host.querySelector("img");
+  if(!rmo&&tgt&&im&&vis(im)){ const a=im.getBoundingClientRect(), b=tgt.getBoundingClientRect(), f=document.createElement("img"); f.src=im.currentSrc||im.src; f.alt=""; f.className="flyimg";
+    const w=Math.min(90,a.width), h=w*(a.height/a.width||1.4); f.style.cssText=`left:${a.left+a.width/2-w/2}px;top:${a.top+a.height/2-h/2}px;width:${w}px;height:${h}px`; document.body.appendChild(f);
+    const dx=b.left+b.width/2-(a.left+a.width/2), dy=b.top+b.height/2-(a.top+a.height/2);
+    const an=f.animate([{transform:"translate(0,0) scale(1)",opacity:1},{transform:`translate(${dx*.5}px,${dy*.5-60}px) scale(.7)`,opacity:1,offset:.55},{transform:`translate(${dx}px,${dy}px) scale(.18)`,opacity:.4}],{duration:650,easing:"cubic-bezier(.5,0,.4,1)"});
+    an.onfinish=()=>{ f.remove(); tgt.animate([{transform:"scale(1)"},{transform:"scale(1.15)"},{transform:"scale(1)"}],{duration:260,easing:"ease-out"}) } }
+  let c=document.getElementById("addok"); if(!c){ c=document.createElement("div"); c.id="addok"; c.setAttribute("role","status"); c.setAttribute("aria-live","polite"); document.body.appendChild(c) }
+  c.innerHTML=`<div class="aok">${buddy(54,"wow")}<b>${BT("已加入购物车","Added to cart")}</b><span>${esc(name)}</span><a href="#cart">${BT("去结账","Check out")} ›</a></div>`; c.hidden=false; c.className=rmo?"rm":"";
+  clearTimeout(addFx.t); addFx.t=setTimeout(()=>{ c.hidden=true },1900) }
 function findOrder(u,oid){ const d=all[u]||{orders:[]}; return [d,arr(d.orders).find(o=>cleanId(o.id)===oid)] }
 function patch(u,oid,ch){ const [d,o]=findOrder(u,oid); if(!o) return Promise.resolve(); Object.assign(o,ch); return saveDoc(u,{orders:d.orders}) }
 const stOf=oid=>{ const [,o]=findOrder(uid,oid); return o?rawStatus(uid,o)[0]:"" };
@@ -2881,6 +2950,8 @@ const rad=name=>{const el=document.querySelector(`input[name="${name}"]:checked`
 function copy(t,ok){ (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast(ok),()=>toast("复制不了，请手动选中复制 Copy failed")) }
 
 document.addEventListener("click",async e=>{
+  { const of=e.target.closest&&e.target.closest("a[data-ofl]"); if(of){ ui.ofl=of.dataset.ofl; if(route==="orders"){ e.preventDefault(); render() } } }
+  { const pl=e.target.closest&&e.target.closest('a[href^="#p/"]'); if(pl&&!e.metaKey&&!e.ctrlKey&&!e.shiftKey){ const id=decodeURIComponent(pl.getAttribute("href").slice(3)); if(own(PM,id)){ e.preventDefault(); return openItem(id) } } }
   { const bb=e.target.closest&&e.target.closest("[data-mallsets],[data-mmore]"); if(bb){ if(bb.dataset.mallsets) ui.mallsets=true; else ui.mshown=(ui.mshown||24)+24; return render() } }
   const ms=e.target.closest&&e.target.closest("[data-msheet]"); if(ms){ e.preventDefault(); ui.msheet=!ui.msheet; return render() }
   if(ui.msheet&&!(e.target.closest&&e.target.closest(".msheet"))){ ui.msheet=false; render() }
@@ -2888,7 +2959,7 @@ document.addEventListener("click",async e=>{
   if(e.target.classList&&e.target.classList.contains("modal")){ ui.pid=null; ui.mid=null; return render() }
   const a=e.target.closest("a[data-atab]"); if(a){ ui.atab=a.dataset.atab; if(route==="admin"){ e.preventDefault(); render() } return }
   const b=e.target.closest("button,[data-go],a[data-tbd],a[data-ser],a[data-mser],.ctl[data-cid]");
-  if(!b){ const pc=e.target.closest(".prod[data-goitem]"); if(pc&&!e.target.closest("a")) location.hash="p/"+pc.dataset.goitem; return }
+  if(!b){ if(e.target.closest(".totopw")) return window.scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"}); const pc=e.target.closest(".prod[data-goitem]"); if(pc&&!e.target.closest("a")) openItem(pc.dataset.goitem); return }
   const ds=b.dataset;
   if(ds.close){ ui.pid=null; ui.mid=null; ui.kf=false; ui.cid=null; return render() }
   if(ds.mid){ const pp=PM[ds.mid]; if(pp&&pp.ck){ ui.cid=pp.ck; return render() } ui.mid=ds.mid; return render() }
@@ -2912,7 +2983,8 @@ document.addEventListener("click",async e=>{
   if(b.id==="langbtn"){ lang=lang==="zh"?"en":"zh"; try{localStorage.setItem("lang",lang)}catch(e){} return render() }
   if(ds.mtab){ ui.mtab=ds.mtab; return render() }
   if(ds.gocat){ ui.cat=ds.gocat; ui.series=""; ui.q=""; ui.shown=24; return go("shop") }
-  if(ds.open){ ui.pid=ds.open; return render() }
+  if(ds.open){ return openItem(ds.open) }
+  if(ds.lset!=null){ ui.llng=Object.assign({},ui.llng,{[ds.lset]:ds.llng}); return render() }
   if(ds.add){ add(ds.add,null,+ds.q||1); if(ui.pid){ ui.pid=null; render() } return }
   if(ds.gocard){ ui.toPrice=true; location.hash="card/"+ds.gocard; return }
   if(ds.more){ ui.shown+=24; return render() }
