@@ -738,6 +738,7 @@ html[data-lang="en"] .lgg .en2{display:none}
 .pqimg img,.pqimg .spr{width:100%;border-radius:10px;box-shadow:0 8px 22px rgba(20,37,74,.22)}
 .pqcode{display:inline-block;margin-top:6px;font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-radius:99px;padding:2px 10px}
 .pqprice{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.pqprice b{font-family:var(--num);font-size:30px;color:#14855a}.pqprice>span{font-size:12px;color:var(--muted);font-weight:700}
+.slang{margin:4px 0;align-self:flex-start}.slang a{text-decoration:none;border-radius:8px;padding:6px 14px;font-size:14px;color:var(--ink)}.slang a.on{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:700}
 .seg2{display:inline-flex;background:#eef1f5;border-radius:10px;padding:3px;gap:2px}.seg2 button{border:0;background:transparent;border-radius:8px;padding:5px 12px;font-size:13px;min-height:0}.seg2 button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:700}.seg2 button:disabled{opacity:.45}
 .gtab{width:100%;border-collapse:collapse;border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:14px}.gtab th,.gtab td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--line)}.gtab th{background:#f6f7fa;font-weight:600;color:var(--muted)}
 .pqh{margin:0;font-size:16px;letter-spacing:.06em;border-left:4px solid #2ec4a0;padding-left:8px}
@@ -1357,6 +1358,7 @@ window.HOLO_AUTH=(function(){
 <script src="data.js"></script>
 <script src="cards.js"></script>
 <script src="setcards.js"></script>
+<script src="jaset.js"></script>
 <script src="cardzh.js"></script>
 <script src="hdmap.js"></script>
 <script src="hist.js"></script>
@@ -1365,8 +1367,9 @@ window.HOLO_AUTH=(function(){
 "use strict";
 /* 散包：每个系列一件「单包补充包」，顾客自己填要几包（1 到 99）。已经有 Booster Pack 商品的系列直接用；没有的先建一件价格待定的，店主在后台填价格后才上架。 */
 (function(){ const L=window.PRODUCTS||(window.PRODUCTS=[]), SIx=window.SETINFO||{};
+  Object.keys(SIx).filter(s=>SIx[s].ja).forEach(s=>{ const id="jb-"+SIx[s].code.toLowerCase(); if(!L.some(p=>p.id===id)) L.push({id,s,n:"Booster Box",zh:"补充包盒（日文版）",t:"B",no:"",usd:0,myr:0,loc:null,price:0,img:null,src:"",c:"box",lang:"jp"}) });
   Object.keys(SIx).forEach(s=>{ const ex=L.find(p=>p.s===s&&p.n==="Booster Pack"); if(ex){ ex.loose=1; return }
-    L.push({id:"lp-"+s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""),s,n:"Booster Pack",zh:"散包（单包补充包）",t:"B",no:"",usd:0,myr:0,loc:null,price:0,img:null,src:"",c:"pack",loose:1}) }) })();
+    L.push({id:SIx[s].ja?"jp-"+SIx[s].code.toLowerCase():"lp-"+s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""),s,n:"Booster Pack",zh:SIx[s].ja?"散包（日文版）":"散包（单包补充包）",lang:SIx[s].ja?"jp":undefined,t:"B",no:"",usd:0,myr:0,loc:null,price:0,img:null,src:"",c:"pack",loose:1}) }) })();
 /* 暂用商品图（TCGplayer 目录图），之后换成实拍。Keldeo 单包吊卡还没有公开图，保留占位。 */
 (function(){ const T={"Knock Out Collection|30th Celebration":"prod/knockout-30th.webp","Booster Pack|Journey Together":"prod/jtg-booster.webp","Booster Pack|Surging Sparks":"prod/ssp-booster.webp"};
   (window.PRODUCTS||[]).forEach(p=>{ const u=T[p.n+"|"+p.s]; if(u&&!p.img) p.tmpimg=u }) })();
@@ -1402,7 +1405,7 @@ function applyCatalog(){
   if(typeof SINGLES!=="undefined") SINGLES.splice(0,SINGLES.length,...P.filter(p=>p.c==="single"));
   if(typeof cartWait!=="undefined"&&cartWait.length){ const ok=cartWait.filter(c=>sellable(PM[c.id])&&PM[c.id].price>0&&!cart.some(x=>x.id===c.id)); if(ok.length){ cart=cart.concat(ok.map(c=>({id:c.id,qty:clampN(c.qty,1,99)}))); cartWait=cartWait.filter(c=>!ok.includes(c)) } }
 }
-const simg = p => p.photo?BLOB(p.photo):p.img?"img/"+p.img+".jpg":p.tmpimg?p.tmpimg:p.loose&&window.SETINFO&&window.SETINFO[p.s]?window.SETINFO[p.s].logo:noImg(p);
+const simg = p => p.photo?BLOB(p.photo):p.img?"img/"+p.img+".jpg":p.tmpimg?p.tmpimg:p.loose&&window.SETINFO&&window.SETINFO[p.s]&&window.SETINFO[p.s].logo?window.SETINFO[p.s].logo:noImg(p);
 const bimg = p => p.photo?BLOB(p.photo):p.img?(p.big?"big":"img")+"/"+p.img+".jpg":simg(p);
 const bigF = p => p.photo?BLOB(p.photo):p.img?"big/"+p.img+".jpg":p.tmpimg||NOIMG;
 /* v94 缺图：带系列名的「图片待补」占位，店主在库存检测看补拍清单 */
@@ -1729,7 +1732,9 @@ const CI=window.CARDINFO||{}, SI=window.SETINFO||{};
 const SINGLES=P.filter(p=>p.c==="single");
 const MV=Object.fromEntries(MOVES.filter(m=>m.p).map(m=>[m.p.id,m]));
 const RANKR={"Secret Rare":5,"Special Art Rare":4,"Ultra Rare":3,"Art Rare":2}, rkR=p=>RANKR[(CI[p.id]||{}).rarity]||1;
-const SETS=Object.keys(SI).sort((a,b)=>SI[b].date.localeCompare(SI[a].date));
+const SETS=Object.keys(SI).filter(s=>!SI[s].ja).sort((a,b)=>SI[b].date.localeCompare(SI[a].date));
+/* 2026-11-19 日文版系列（jaset.js）：不混进英文系列列表，在系列页用「英文版 / 日文版」切换 */
+const JSETS=Object.keys(SI).filter(s=>SI[s].ja).sort((a,b)=>SI[b].date.localeCompare(SI[a].date));
 const SETC={"Delta Reign":"#2fae6b","30th Celebration":"#d4a017","Pitch Black":"#8a4fd0","Chaos Rising":"#2a8fd6","Perfect Order":"#d0453a","Ascended Heroes":"#e67e22","Phantasmal Flames":"#e0407a","Mega Evolution":"#4a6fd6","White Flare":"#9fb4cc","Black Bolt":"#e3b505","Destined Rivals":"#c0392b","Prismatic Evolutions":"#b05ad6","Journey Together":"#2e8b57","Surging Sparks":"#f2b705","151":"#0e7c86"};
 const setUrl=s=>"#set/"+encodeURIComponent(s);
 const mp=p=>p.myr||p.usd*FX;
@@ -1865,7 +1870,7 @@ const RAR={"Special Art Rare":"特别插画稀有 SAR","Secret Rare":"秘密稀�
 const KIND={"Pokémon":"宝可梦","Trainer - Supporter":"训练家 · 支援者","Trainer - Item":"训练家 · 物品","Trainer - Stadium":"训练家 · 竞技场"};
 const STAGE={"Basic":"基础","Stage 1":"1 阶进化","Stage 2":"2 阶进化"};
 const numTxt=p=>{ if(!p.no) return ""; const t=SI[p.s]&&/^\d+$/.test(p.no)?"/"+String(SI[p.s].total).padStart(3,"0"):""; return "#"+(/^\d+$/.test(p.no)?p.no.padStart(3,"0"):p.no)+t };
-const slogo=(s,cls="slogo")=>SI[s]?`<img class="${cls}" src="${SI[s].logo}" alt="${esc(s)} logo" loading="lazy">`:"";
+const slogo=(s,cls="slogo")=>SI[s]&&SI[s].logo?`<img class="${cls}" src="${SI[s].logo}" alt="${esc(s)} logo" loading="lazy">`:"";
 const ecIcon=t=>{ const c=TYPEC[t]||["#999","?","?"]; return `<span class="ec" style="background:${c[0]}" title="${esc(t)}">${c[2]}</span>` };
 const eText=t=>esc(t).replace(/\[([RWGLPFDMNC])\]/g,(m,k)=>{const e=Object.entries(TYPEC).find(x=>x[1][2]===k);return e?ecIcon(e[0]):m});
 const isEN=()=>lang==="en";
@@ -2060,11 +2065,11 @@ const FAKE=[
 /* ---------- v30：完整卡表、单卡行情页 ---------- */
 const SC=window.SETCARDS||{}, HIST=window.HIST||{};
 const RARX={C:["普通","Common","●","#6b7280"],U:["非普通","Uncommon","◆","#6b7280"],R:["稀有","Rare","★","#14254a"],RR:["双星稀有","Double Rare","★★","#14254a"],AR:["插画稀有","Illustration Rare","★","#d4a017"],SR:["超稀有（全图）","Ultra Rare","★★","#8a95a8"],SAR:["特别插画稀有","Special Illustration Rare","★★","#d4a017"],UR:["超级稀有（金卡）","Hyper Rare","★★★","#d4a017"],MUR:["超级进化至高稀有","Mega Hyper Rare","★★★","#0e7c86"],ACE:["ACE SPEC 稀有","ACE SPEC Rare","ACE","#c0392b"],PR:["皮卡丘稀有","Pikachu Rare","ϟ","#e8b400"],FR:["未来稀有","Futuristic Rare","★","#16a39a"],BWR:["黑白稀有","Black White Rare","★","#14254a"],MA:["MEGA 招式稀有","Mega Attack Rare","M★","#7a3fd0"],CC:["经典典藏","Classic Collection","★C","#14254a"]};
-RARX.RGB=["RGB 稀有","RGB Rare","RGB","#0e7c86"];
-const RORD=["C","U","R","RR","ACE","PR","FR","RGB","BWR","MA","AR","SR","SAR","UR","MUR","CC"];
+RARX.RGB=["RGB 稀有","RGB Rare","RGB","#0e7c86"]; RARX.S=["色违稀有","Shiny Rare","S","#c2410c"]; RARX.SSR=["色违超稀有","Shiny Ultra Rare","SSR","#c2410c"]; RARX.X=["稀有度待核对","Rarity unconfirmed","?","#9aa3b2"];
+const RORD=["C","U","R","RR","ACE","PR","FR","RGB","BWR","MA","AR","S","SR","SSR","SAR","UR","MUR","CC","X"];
 const TD=window.TCGDEX||{p:{},cc:[]};
 const CARDS={}, CBYSET={};
-Object.entries(SC).forEach(([s,d])=>{ CBYSET[s]=d.cards.map((a,i)=>{ const c={k:d.id+"-"+a[0],s,sid:d.id,i,key:a[0],num:a[1],n:a[2],r:a[3],st:a[4],sub:a[5],ty:a[6],hp:a[7],usd:a[8],art:a[9]}; CARDS[c.k]=c; return c }) });
+Object.entries(SC).forEach(([s,d])=>{ CBYSET[s]=d.cards.map((a,i)=>{ const c={k:d.id+"-"+a[0],s,sid:d.id,i,key:a[0],num:a[1],n:a[2],r:a[3],st:a[4],sub:a[5],ty:a[6],hp:a[7],usd:a[8],art:a[9]}; if(d.ja){ c.ja=1; c.jn=a[11]; c.im=a[12]; if(a[10]) c.zh=a[10] } CARDS[c.k]=c; return c }) });
 /* 30th Celebration 的 Classic Collection（30 张，卡表来自 TCGdex，卡图见 CCIMG） */
 if(CBYSET["30th Celebration"]) (TD.cc||[]).forEach((a,j)=>{ const d=SC["30th Celebration"]; const c={k:d.id+"-C"+a[0],s:"30th Celebration",sid:d.id,i:-1,key:"C"+a[0],num:"C"+a[1],n:a[2],r:"CC",st:a[3]==="P"?"P":"T",sub:a[3]==="P"?String(a[4]||"").replace(/^Stage(\d)/,"Stage $1"):(a[2]==="N"?"Supporter":""),ty:a[5],hp:a[6],usd:0,art:a[7],noimg:1,ccn:+a[0]}; CARDS[c.k]=c; CBYSET[c.s].push(c) });
 { const Z=window.CARDZH||{}; Object.values(CARDS).forEach(c=>{ const z=(Z[c.s]||{})[c.key]; if(z) c.zh=z }) }
@@ -2081,8 +2086,10 @@ Object.entries(TD.p||{}).forEach(([s,m])=>{ (CBYSET[s==="30th Classic Collection
 const cKey=c=>c.k;
 const cRM=c=>c.p?mp(c.p):c.td>0&&!c.tde?c.td*FX:c.usd>0?c.usd*FX:null;
 const cNum=c=>{ const d=SC[c.s]; return /^\d+$/.test(c.num)?String(c.num).padStart(3,"0")+"/"+String(d.printed).padStart(3,"0"):c.num };
-const rarB=r=>{ const x=RARX[r]; return x?`<span class="rb" style="--rc:${x[3]}" title="${x[1]}">${x[2]}<i>${r}</i></span>`:"" };
-function spr(c,cls){ const d=SC[c.s]; const col=c.i%d.cols, row=Math.floor(c.i/d.cols);
+const rarB=r=>{ const x=RARX[r]; return x?`<span class="rb" style="--rc:${x[3]}" title="${x[1]}">${x[2]}${r==="X"?"":`<i>${r}</i>`}</span>`:"" };
+function spr(c,cls){ const d=SC[c.s];
+  if(d.ja) return c.im?`<img class="cim ${cls||""}" loading="lazy" src="https://assets.tcgdex.net/${d.img}/${c.key}/${/big/.test(cls||"")?"high":"low"}.webp" alt="${esc(cN(c))}">`:`<span class="spr noimg ${cls||""}" role="img" aria-label="${esc(cN(c))}"><b>${esc(d.code)}</b><span>${esc(c.jn||c.n)}</span><small>${B("卡图待收录","No image yet")}</small></span>`;
+  const col=c.i%d.cols, row=Math.floor(c.i/d.cols);
   const HM=(window.HDMAP||{})[d.id]; if(HM&&c.i>=0&&!HM.m.includes(c.key)&&HM.u[Math.floor(c.i/24)]){ const pg=Math.floor(c.i/24), j=c.i%24;
     return `<span class="spr ${cls||""}" role="img" aria-label="${esc(cN(c))}" style="background-image:url(${HM.u[pg]});background-size:600% 400%;background-position:${(j%6)/5*100}% ${Math.floor(j/6)/3*100}%"></span>` }
   return `<span class="spr ${cls||""}" role="img" aria-label="${esc(cN(c))}" style="background-image:url(sprite/${d.id}.webp);background-size:${d.cols*100}% ${d.rows*100}%;background-position:${d.cols>1?col/(d.cols-1)*100:0}% ${d.rows>1?row/(d.rows-1)*100:0}%"></span>` }
@@ -2108,7 +2115,7 @@ function ctile(c){ const v=cRM(c);
   return `<div class="ctl" data-cid="${c.k}" tabindex="0" role="button" aria-label="${esc(cN(c))} ${cNum(c)}"><div class="ctop"><span class="cn">${cNum(c)}</span>${rarB(c.r)}</div><div class="cpic">${cImg(c)}</div><b class="nm">${esc(cN(c))}</b>${kChip(c)}
   <div class="cpr">${cPriceTxt(c)}${c.p&&MV[c.p.id]?chgPill(c.p):trPill(c)}<a class="trend" href="#card/${c.k}" title="看价格走势 Price trend" aria-label="${esc(cN(c))} 价格走势">${ic("up",15)}</a></div>
   <div class="cpop" aria-hidden="true"><div class="cpi">${cImg(c)}</div><div class="cpb"><div class="mm">${esc((SI[c.s]&&CI_CODE(c))||"")} · #${esc(c.num)} · ${esc(c.r)}</div><b>${esc(cN(c))}</b><div class="ss">${slogo(c.s)}<span>${esc(c.s)}</span></div><div class="pp">${cPriceTxt(c)}</div><div class="muted">${cSrcTxt(c)}</div></div></div></div>` }
-function CI_CODE(c){ if(c.r==="CC") return "30C-CC"; const d=SC[c.s]; return ({me55:"30C",me5:"PBL",me4:"CRI",me3:"POR",me2pt5:"ASC",me2:"PFL",me1:"MEG",rsv10pt5:"WHT",zsv10pt5:"BLK",sv10:"DRI",sv8pt5:"PRE",sv9:"JTG",sv8:"SSP",sv3pt5:"MEW"}[d.id])||"" }
+function CI_CODE(c){ const d=SC[c.s]; if(d&&d.ja) return d.code; if(c.r==="CC") return "30C-CC"; return ({me55:"30C",me5:"PBL",me4:"CRI",me3:"POR",me2pt5:"ASC",me2:"PFL",me1:"MEG",rsv10pt5:"WHT",zsv10pt5:"BLK",sv10:"DRI",sv8pt5:"PRE",sv9:"JTG",sv8:"SSP",sv3pt5:"MEW"}[d.id])||"" }
 function cardModal(k){ const c=CARDS[k]; if(!c) return ""; const p=c.p;
   return `<div class="modal"><div class="box cm" role="dialog" aria-label="${esc(cN(c))}"><div class="cmimg">${cImg(c,1)}</div>
   <div class="stack" style="gap:12px"><div class="row" style="justify-content:space-between;flex-wrap:nowrap;align-items:flex-start"><div><div class="muted" style="font-family:var(--mono);font-size:12px">${cNum(c)} · ${esc(c.r)}</div><h2>${esc(cN(c))}</h2><div class="row" style="gap:6px">${slogo(c.s)}<span class="muted">${esc(c.s)}</span></div></div><button data-close="1" aria-label="关闭 Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
@@ -2146,7 +2153,7 @@ V.card=()=>{ const c=CARDS[ui.card]; if(!c) return V.market(); const p=c.p, h=HI
   return `<div class="row" style="gap:10px">${backBtn(setUrl(c.s))}<div class="crumb"><a href="#market">${B("卡价雷达","Card market")}</a> › <a href="${setUrl(c.s)}">${esc(c.s)}</a> › ${esc(cN(c))}</div></div>
   <div class="pq">
    <div class="pqL"><div class="pqimg">${cImg(c,1)}</div>
-    <div class="stack" style="gap:10px;min-width:0"><div><h1 style="margin:0">${esc(cN(c))}</h1>${!isEN()&&c.zh?`<div class="muted">${esc(c.n)}</div>`:p&&p.zh&&!isEN()?`<div class="muted">${esc(p.zh)}</div>`:""}<span class="pqcode">${esc(CI_CODE(c)||c.sid)} · ${esc(c.num)}</span><div class="row" style="gap:6px;margin-top:6px">${slogo(c.s)}<span class="muted">${esc(c.s)}</span>${rarB(c.r)}</div></div>
+    <div class="stack" style="gap:10px;min-width:0"><div><h1 style="margin:0">${esc(cN(c))}</h1>${c.ja?`<div class="muted">${esc([c.jn,isEN()?"":c.n].filter((x,i,l)=>x&&x!==cN(c)&&l.indexOf(x)===i).join(" · "))}</div>`:!isEN()&&c.zh?`<div class="muted">${esc(c.n)}</div>`:p&&p.zh&&!isEN()?`<div class="muted">${esc(p.zh)}</div>`:""}<span class="pqcode">${esc(CI_CODE(c)||c.sid)} · ${esc(c.num)}</span><div class="row" style="gap:6px;margin-top:6px">${slogo(c.s)}<span class="muted">${esc(c.s)}</span>${rarB(c.r)}</div></div>
      <div class="pqprice"><b>${cPriceTxt(c)}</b><span>RAW</span>${p&&MV[p.id]?chgPill(p):trPill(c)}</div>
      <p class="muted" style="margin:0;font-size:12px">${cSrcTxt(c)}</p>
      <div class="seg2" role="group" aria-label="鉴定公司">${[["psa","PSA"],["oth",isEN()?"Other graders":"其他鉴定"]].map(g=>`<button data-cgt="${g[0]}" class="${gt===g[0]?"on":""}">${g[1]}</button>`).join("")}</div>
@@ -2172,19 +2179,20 @@ V.set=()=>{
   const promo=PROMOS[s]||[];
   return `<div class="crumb">${B("系列和卡牌","Sets & cards")} › ${esc(s)}</div>
   <div class="row sethead"><h1 style="margin:0"><span>${esc(s)}</span> ${B("卡牌列表","card list")}</h1></div><p class="muted" style="margin:0">${B(st.date+" 发售","Released "+st.date)} · ${setCnt(s)}</p>
-  <nav class="serstrip setsw" aria-label="切换系列 Other sets">${SETS.map(x=>`<a href="${setUrl(x)}" class="${x===s?"on":""}" ${x===s?'aria-current="page"':""} style="--sc:${SETC[x]||"#1c8fc4"}">${slogo(x,"")}<span>${esc(x)}</span></a>`).join("")}</nav>
+  <div class="seg2 slang" role="group" aria-label="版本 Edition">${[["",B("英文版","English"),SETS[0]],["ja",B("日文版","Japanese"),JSETS[0]]].filter(x=>x[2]).map(x=>`<a href="${setUrl(x[2])}" class="${(st.ja?"ja":"")===x[0]?"on":""}">${x[1]} <small class="muted">${(x[0]?JSETS:SETS).length}</small></a>`).join("")}</div>
+  <nav class="serstrip setsw" aria-label="切换系列 Other sets">${(st.ja?JSETS:SETS).map(x=>`<a href="${setUrl(x)}" class="${x===s?"on":""}" ${x===s?'aria-current="page"':""} style="--sc:${SETC[x]||"#1c8fc4"}">${slogo(x,"")}<span>${esc(x)}</span></a>`).join("")}</nav>
   ${prods.length?`<section class="stack" style="gap:10px"><div class="row" style="justify-content:space-between">${H2("本店的 "+s+" 商品","Our "+s+" products")}<a href="#shop" data-ser="${esc(s)}">${B("全部 "+prods.length+" 件","All "+prods.length)} ›</a></div>${marquee(prods.map(p=>({id:p.id,href:"#p/"+p.id,n:PN(p),s:rm(p.price),src:simg(p)})))}</section>`:""}
   <a class="svcstrip" href="#build">${buddy(44,"wow")}<span><b>${B("想要一副用 "+s+" 卡牌组成的卡组？","Want a deck with "+s+" cards?")}</b><small>${B("代组服务：说预算和打法，我们帮你配好 60 张，1 天内报价","Deck building: tell us your budget and style, we build the 60 cards and quote within 1 day")}</small></span><span class="go">${B("填需求","Start")} ›</span></a>
   <div class="legend chk"><div class="lgh"><b>${B("稀有度标志","Rarity symbols")}</b><span class="muted">${B("点一下只看这种稀有度，再点一下取消","Tap a symbol to filter; tap again to clear")}</span></div>
    <div class="lgg">${rset.map(r=>`<button data-crar="${fr===r?"":r}" class="${fr===r?"on":""}" aria-pressed="${fr===r}"><span class="sym" style="color:${RARX[r][3]}">${RARX[r][2]}</span><span class="eq">=</span><span class="nm">${B(RARX[r][0],RARX[r][1])}<small class="en2">${RARX[r][1]}</small></span><span class="cnt">${all.filter(c=>c.r===r).length}</span></button>`).join("")}</div>
    <div class="row" style="gap:6px">${[["","全部","All"]].concat(Object.entries(KCAT).map(([k,v])=>[k,v[0],v[1]])).map(k=>{ const n=k[0]?all.filter(c=>kindKey(c)===k[0]).length:all.length; return n?`<button data-ckind="${k[0]}" class="${fk===k[0]?"on":""}">${B(k[1],k[2])} <small class="muted">${n}</small></button>`:"" }).join("")}${fr||fk?`<button data-crar="" data-ckind="">${B("清除筛选","Clear")}</button>`:""}</div>
-   <p class="muted" style="margin:0">${B("编号超过 "+d.printed+" 的是隐藏稀有卡（Secret Rare），卡面编号会写成像 "+(d.printed+5)+"/"+d.printed+" 这样。卡表按两个来源核对过（Pokémon TCG API 和 TCGdex），张数一致。把鼠标移到卡上看大图和价格，点卡片看完整资料。","Numbers above "+d.printed+" are secret rares. Card list checked against two sources (Pokémon TCG API and TCGdex). Hover for a preview; tap for details.")}</p></div>
+   <p class="muted" style="margin:0">${st.ja?B("日文版卡表，"+all.length+" 张。编号超过 "+d.printed+" 的是隐藏稀有卡。卡名先显示中文（繁体官方卡名转简体），没有中文的保留日文原名；稀有度标「?」的是资料库还没写，待核对。","Japanese card list, "+all.length+" cards. Numbers above "+d.printed+" are secret rares. Names show Chinese where an official name exists, otherwise the Japanese original; rarity \"?\" means not yet listed in the source.")+(all.some(c=>!c.im)?" "+B("这个系列的卡图资料库还没收录，先显示卡名。","Card images for this set aren't in the source yet, so names are shown."):""):B("编号超过 "+d.printed+" 的是隐藏稀有卡（Secret Rare），卡面编号会写成像 "+(d.printed+5)+"/"+d.printed+" 这样。卡表按两个来源核对过（Pokémon TCG API 和 TCGdex），张数一致。把鼠标移到卡上看大图和价格，点卡片看完整资料。","Numbers above "+d.printed+" are secret rares. Card list checked against two sources (Pokémon TCG API and TCGdex). Hover for a preview; tap for details.")}</p></div>
   ${main.length?`<section class="stack" style="gap:10px">${H2(B2("主系列","Main set")+` <span class="muted" style="font-size:15px">${main.length}</span>`,"")}<div class="cgrid">${main.map(ctile).join("")}</div></section>`:""}
   ${sec.length?`<section class="stack" style="gap:10px">${H2(B2("隐藏稀有","Secret rares")+` <span class="muted" style="font-size:15px">${sec.length}</span>`,"")}<div class="cgrid">${sec.map(ctile).join("")}</div></section>`:""}
   ${ccl.length?`<section class="stack" style="gap:10px">${H2(B2("经典典藏 Classic Collection","")+` <span class="muted" style="font-size:15px">${ccl.length}</span>`,"")}<p class="muted">${B("30 张重印的历代名卡，编号 001 到 030，卡面印有 ★C。卡表和价格来自 TCGdex，卡图还没收录。","30 reprinted classic cards (001–030), marked ★C. List and prices from TCGdex; images not yet added.")}</p><div class="cgrid">${ccl.map(ctile).join("")}</div></section>`:""}
   ${!main.length&&!sec.length&&!ccl.length?`<p class="muted">${B("没有符合筛选的卡。","No cards match.")}</p>`:""}
   ${promo.length?`<section class="stack sec" style="gap:10px">${H2("促销卡在哪里拿","Where to get the promo cards")}<p class="muted">${B("这些是和这个系列一起推出的黑星促销卡（Black Star Promo），不在补充包里，要买指定的礼盒才拿得到。资料来自官方系列卡表小册子。","Black Star Promos released alongside this set. They aren't in booster packs; each comes in a specific product. From the official set checklist booklet.")}</p><div class="promos">${promo.map(x=>`<div class="pm"><b>${esc(x[0])}</b><span>${B(x[1],x[2])}</span></div>`).join("")}</div></section>`:""}
-  <p class="muted" style="font-size:12px">${B("卡表和图片来自 Pokémon TCG API（pokemontcg.io），2026-11-14 下载；价格来自 TCGdex，"+TD.date+"。","Card list and images from the Pokémon TCG API (2026-11-14); prices from TCGdex, "+TD.date+".")}</p>`;
+  <p class="muted" style="font-size:12px">${st.ja?B("日文卡表和卡图来自 TCGdex 日文资料库，2026-11-19 下载；中文、英文卡名对照 PokeAPI。日文卡暂时没有价格。","Japanese list and images from the TCGdex database (2026-11-19); name lookups via PokeAPI. No prices for Japanese cards yet."):B("卡表和图片来自 Pokémon TCG API（pokemontcg.io），2026-11-14 下载；价格来自 TCGdex，"+TD.date+"。","Card list and images from the Pokémon TCG API (2026-11-14); prices from TCGdex, "+TD.date+".")}</p>`;
 };
 const backBtn=fb=>`<button type="button" class="backbtn" data-back="${esc(fb)}" aria-label="${BT("返回","Back")}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>${B("返回","Back")}</button>`;
 let navN=0; window.addEventListener("hashchange",()=>{ navN++ });
