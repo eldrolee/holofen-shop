@@ -1193,6 +1193,29 @@ html.forest .fbadge a{color:#10251F}
 .ck,.lgm .ck,.box .ck{display:flex!important;flex-direction:row!important;gap:8px;align-items:flex-start;font-size:14px;line-height:1.45;font-weight:400;color:var(--ink)}.ck input{margin-top:3px;flex:none;width:18px;height:18px}
 .ck input:disabled+span{opacity:.55}
 .consopt{border:1px solid var(--line);border-radius:12px;padding:8px 12px;display:grid;gap:6px;margin:4px 0}.consopt legend{font-size:12.5px;color:var(--muted);padding:0 4px}
+
+/* v96 夹娃娃机 */
+.clawpick{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 8px}
+.clawpick button{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 16px;border-radius:14px;min-width:130px}
+.clawpick button small{color:var(--muted);font-size:12px}
+.clawpick button.on{border-color:var(--teal,#0b6672);box-shadow:0 0 0 2px var(--teal,#0b6672);background:#e8f3ee}
+.clawwrap{align-items:start}
+.claw{width:min(100%,340px);border-radius:22px;padding:10px;background:linear-gradient(180deg,#f6cf63,#e9b949);box-shadow:0 10px 24px rgba(16,38,55,.18),inset 0 -6px 0 rgba(0,0,0,.08)}
+.clawtop{display:flex;justify-content:space-between;align-items:center;padding:4px 8px 8px;color:#102637;font-weight:800}
+.clawtop span{background:#102637;color:#fff;border-radius:99px;padding:2px 10px;font-size:12.5px}
+.clawglass{position:relative;height:300px;border-radius:14px;overflow:hidden;background:linear-gradient(180deg,#dff1fb 0%,#eef8f3 70%,#e6dcc6 70%);border:3px solid #102637}
+.clawrail{position:absolute;left:0;right:0;top:0;height:10px;background:#102637}
+.clawarm{position:absolute;top:6px;left:var(--x);width:44px;margin-left:-22px;height:66px;color:#102637;z-index:4}
+.clawarm .rope{position:absolute;left:50%;top:0;width:3px;height:40px;margin-left:-1.5px;background:#102637}
+.clawsvg{position:absolute;left:2px;top:36px;width:40px;height:30px;transition:transform .25s}
+.clawarm.grab .clawsvg{transform:scaleX(.62)}
+.dolls{position:absolute;left:58px;right:8px;bottom:6px;height:120px;display:flex;flex-wrap:wrap-reverse;gap:2px;align-content:flex-start;justify-content:center}
+.doll{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 18%,transparent 19%),linear-gradient(180deg,var(--c) 0 50%,#fffaf0 50%);border:2px solid rgba(16,38,55,.55);display:grid;place-items:center;position:relative;box-shadow:0 3px 0 rgba(16,38,55,.2)}
+.doll img{width:28px;height:28px;object-fit:contain}
+.chute{position:absolute;left:6px;bottom:6px;width:46px;height:70px;border-radius:8px;background:rgba(16,38,55,.12);border:2px dashed rgba(16,38,55,.35)}
+.pdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:0}
+.lkm legend{padding:0 6px}
+@media (prefers-reduced-motion:reduce){.clawsvg{transition:none}}
 /* v96 页头防重叠：放不下就把导航移到第二行（fitBar 量真实宽度决定）；提示气泡放在彩色线下面，触屏不显示 */
 @media (min-width:641px){
  .bar.stack .wrap{flex-wrap:wrap;row-gap:0}
@@ -2660,7 +2683,7 @@ function memberCard(slim){ const m=member(uid), R=m.R, nm=new Date(), nx=new Dat
   return `<div class="panel mcardx stack" style="gap:10px">${slim?`<span class="lbl">${B("等级和积分","Tier and points")}</span>`:`<div class="row" style="justify-content:space-between"><div><span class="lbl">${B("我的会员","My membership")}</span><h3 style="margin:2px 0">${B(m.tier[0],m.tier[1])}</h3></div><div style="text-align:right"><b class="price" style="font-size:26px">${m.left}</b><div class="muted">${B("可用积分","Points available")}</div></div></div>`}
   ${m.next?`<div class="bar2"><i style="width:${Math.min(100,m.spend/(m.next[0]==="银卡"?R.silver:R.gold)*100).toFixed(0)}%"></i></div><p><b>${B(`再消费 ${rm(m.next[1])} 升${m.next[0]}`,`${rm(m.next[1])} more to reach ${m.next[0]==="银卡"?"Silver":"Gold"}`)}</b></p>`:`<p><b>${B("你已经是最高等级","You're at the top tier")}</b></p>`}
   <p class="muted">${B(`等级看近 12 个月的消费，现在是 ${rm(m.spend)}。每月 1 日重新计算：${nx.getMonth()+1} 月 1 日起，${out.getFullYear()} 年 ${out.getMonth()+1} 月的消费不再算进去。近 12 个月满 ${rm(R.silver)} 是银卡（积分 ×${R.silverX}），满 ${rm(R.gold)} 是金卡（×${R.goldX}）。每消费 RM1 得 ${R.earn} 分，每 ${R.redeemPts} 分结账时抵 ${rm(R.redeemRM)}。订单送达后积分才入账，已得的积分不会因为降级而扣掉。`,`Your tier uses the last 12 months of spending (${rm(m.spend)}) and is recalculated on the 1st of each month. ${rm(R.silver)} = Silver (×${R.silverX} pts), ${rm(R.gold)} = Gold (×${R.goldX}). ${R.earn} pt per RM1; ${R.redeemPts} pts = ${rm(R.redeemRM)} off. Points are added on delivery and are kept if your tier drops.`)}</p>
-  ${LUCKY.on&&curRound()?`<p style="margin:0"><a href="#lucky">${B(`积分也可以拿来抽奖，每次 ${curRound().cost} 分`,`Use points in the lucky draw`)} ›</a></p>`:""}
+  ${LUCKY.on&&curRound()?`<p style="margin:0"><a href="#lucky">${B("积分也可以拿去玩夹娃娃机","Use points on the claw machines")} ›</a></p>`:""}
   <div class="row" style="gap:8px">${ME.bd?`<span class="chip">${B("生日","Birthday")}：${ME.bd}</span><span class="muted">${B(`${+ME.bd.slice(5,7)} 月下的单积分 ×${R.bdayX}。要改请联系客服。`,`Orders in ${MONTHS[+ME.bd.slice(5,7)-1]} earn ×${R.bdayX} points.`)}</span>`:`<label class="f" style="flex:0 1 200px">${B(`生日（生日那个月下单积分 ×${R.bdayX}）`,`Birthday (×${R.bdayX} points that month)`)}<input type="date" id="me-bd" min="1920-01-01" max="${new Date().toISOString().slice(0,10)}"></label><button data-bmsave="1">${B("保存","Save")}</button><span class="muted" style="font-size:12px">${m.bm?B(`已登记 ${m.bm} 月，请填同一个月的日期。`,`Month on file: ${MONTHS[m.bm-1]}. Use a date in that month.`):B("填年、月、日。保存后从下一张订单开始算，自己不能再改。","Year, month and day. Applies from your next order and can't be changed later.")}</span>`}</div></div>` }
 V.wish=()=>{ const al=alerts(), wl=ME.wish.map(id=>PM[id]).filter(Boolean);
   return `${H1("收藏和提醒","Saved & alerts")}
@@ -2924,21 +2947,27 @@ function needQuote(u,o){ return arr(o.items).some(c=>(item(c.id)||{}).quote)&&!q
    店主后台打开时会把看到的抽奖记录抄一份到 site/lucky，顾客事后删掉记录也照样扣分。 */
 let LUCKY={on:false,rounds:[],log:{},sent:{},ci:{}}, luckyQ=Promise.resolve(), luckyT=null;
 function normLucky(d){ d=d&&typeof d==="object"?d:{};
-  const rounds=arr(d.rounds).filter(r=>r&&typeof r==="object").slice(-20).map(r=>({id:cleanId(r.id),at:num(r.at)||0,cost:clampN(r.cost,1,1e6),seed:cleanId(r.seed),miss:Math.max(0,num(r.miss)||0),prizes:arr(r.prizes).slice(0,20).map(p=>({id:cleanId(p.id),name:cleanTxt(p.name,60),w:Math.max(0,num(p.w)||0)})).filter(p=>p.id&&p.name)})).filter(r=>r.id&&r.seed);
+  const nP=l=>arr(l).slice(0,20).map(p=>({id:cleanId(p.id),name:cleanTxt(p.name,60),w:Math.max(0,num(p.w)||0)})).filter(p=>p.id&&p.name);
+  const rounds=arr(d.rounds).filter(r=>r&&typeof r==="object").slice(-20).map(r=>{ const x={id:cleanId(r.id),at:num(r.at)||0,cost:clampN(r.cost,1,1e6),seed:cleanId(r.seed),miss:Math.max(0,num(r.miss)||0),prizes:nP(r.prizes)};
+    /* v96 夹娃娃机：一期里有几台机，每台自己的积分、奖品和中奖率；旧的一期当成一台机 */
+    x.machines=arr(r.machines).slice(0,6).map(m=>({id:cleanId(m.id),name:cleanTxt(m.name,30),cost:clampN(m.cost,1,1e6),miss:Math.max(0,num(m.miss)||0),prizes:nP(m.prizes)})).filter(m=>m.id&&m.name&&m.prizes.length);
+    if(!x.machines.length&&x.prizes.length) x.machines=[{id:"",name:"",cost:x.cost,miss:x.miss,prizes:x.prizes,legacy:1}];
+    return x }).filter(r=>r.id&&r.seed);
   const log={}; const l0=d.log&&typeof d.log==="object"?d.log:{}; Object.keys(l0).slice(0,2000).forEach(u=>{ log[u]=arr(l0[u]).slice(-300).map(normDraw).filter(Boolean) });
   const sent={}; const s0=d.sent&&typeof d.sent==="object"?d.sent:{}; Object.keys(s0).slice(0,5000).forEach(k=>{ if(s0[k]===true) sent[k]=true });
   const ci={}; const c0=d.ci&&typeof d.ci==="object"?d.ci:{}; Object.keys(c0).slice(0,5000).forEach(u=>{ const x=c0[u]; if(x&&typeof x==="object") ci[u]={seen:arr(x.seen).filter(v=>typeof v==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(v)).slice(-400),at:num(x.at)||0} });
   return {on:d.on===true,rounds,log,sent,ci} }
-function normDraw(x){ if(!x||typeof x!=="object") return null; const n=clampN(x.n,0,1e6); if(!n) return null; return {n,r:cleanId(x.r),cost:clampN(x.cost,0,1e6),at:num(x.at)||0} }
+function normDraw(x){ if(!x||typeof x!=="object") return null; const n=clampN(x.n,0,1e6); if(!n) return null; return {n,r:cleanId(x.r),m:cleanId(x.m||""),cost:clampN(x.cost,0,1e6),at:num(x.at)||0} }
 function h01(str){ let h=2166136261>>>0; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619)>>>0 }
   h^=h>>>16; h=Math.imul(h,0x85ebca6b)>>>0; h^=h>>>13; h=Math.imul(h,0xc2b2ae35)>>>0; h^=h>>>16; return (h>>>0)/4294967296 }
-function drawRes(u,n,r){ const tot=r.prizes.reduce((a,p)=>a+p.w,0)+r.miss; if(!(tot>0)) return ""; let t=h01(u+":"+n+":"+r.seed)*tot; for(const p of r.prizes){ if(t<p.w) return p.id; t-=p.w } return "" }
+function drawRes(u,n,r,m){ m=m||r; const tot=m.prizes.reduce((a,p)=>a+p.w,0)+m.miss; if(!(tot>0)) return ""; let t=h01(u+":"+n+":"+r.seed+(m.id?":"+m.id:""))*tot; for(const p of m.prizes){ if(t<p.w) return p.id; t-=p.w } return "" }
+const machOf=(r,mid)=>r?(r.machines||[]).find(m=>m.id===(mid||""))||null:null;
 const curRound=()=>LUCKY.rounds.length?LUCKY.rounds[LUCKY.rounds.length-1]:null;
 /* 某位顾客的有效抽奖：同一个 n 以店主抄下的为准；只认当期，或者店主已经抄下的旧期 */
 function luckyDraws(u){ const me=(typeof MEALL!=="undefined"&&MEALL[u])||{}, logged=arr(LUCKY.log[u]), by={}, cur=curRound();
   arr(me.draws).forEach(d=>{ by[d.n]={...d,logged:false} }); logged.forEach(d=>{ by[d.n]={...d,logged:true} });
-  return Object.values(by).sort((a,b)=>a.n-b.n).map(d=>{ const r=LUCKY.rounds.find(x=>x.id===d.r); const ok=!!r&&d.cost===r.cost&&(d.logged||(cur&&r.id===cur.id)); const win=ok?drawRes(u,d.n,r):""; const pz=win?r.prizes.find(p=>p.id===win):null;
-    return {...d,ok,round:r,win,prize:pz?pz.name:"",key:u+":"+d.n} }) }
+  return Object.values(by).sort((a,b)=>a.n-b.n).map(d=>{ const r=LUCKY.rounds.find(x=>x.id===d.r), mc=machOf(r,d.m); const ok=!!r&&!!mc&&d.cost===mc.cost&&(d.logged||(cur&&r.id===cur.id)); const win=ok?drawRes(u,d.n,r,mc):""; const pz=win?mc.prizes.find(p=>p.id===win):null;
+    return {...d,ok,round:r,mach:mc,win,prize:pz?pz.name:"",key:u+":"+d.n} }) }
 function saveLucky(){ if(!owner) return Promise.resolve(); const d=JSON.parse(JSON.stringify(LUCKY));
   luckyQ=luckyQ.then(()=>XDB?XDB.doc("site/lucky").set(d):lsSet("lucky",d)).catch(()=>toast("抽奖设定没有保存成功")); return luckyQ }
 /* 店主端：把看到的抽奖记录抄进 site/lucky（有变化才写，合并 2 秒内的变化） */
@@ -2950,10 +2979,11 @@ async function initLucky(){
   try{ if(window.claude&&window.claude.use){ const d=await window.claude.use("db"), us=await window.claude.use("user");
     if(d&&us){ d.doc("site/lucky").onSnapshot(s=>{ LUCKY=normLucky(s.exists?s.data():null); syncLog(); render() },()=>{}); return } } }catch(e){}
   LUCKY=normLucky(lsGet("lucky",null)); render() }
-function doDraw(){ if(needLogin("要先登录或注册才能抽奖","Please sign in or register to join the lucky draw")) return; const r=curRound(); if(!LUCKY.on||!r) return toast("抽奖还没开始"); const m=member(uid);
-  if(m.left<r.cost) return toast(`积分不够，抽一次要 ${r.cost} 分`);
+function doDraw(mid){ if(needLogin("要先登录或注册才能玩夹娃娃机","Please sign in or register to play the claw machine")) return; if(ui.clawBusy) return; const r=curRound(); if(!LUCKY.on||!r) return toast("夹娃娃机还没开放");
+  const mc=machOf(r,mid==null?(ui.clawM||(r.machines[0]||{}).id||""):mid); if(!mc) return toast("请先选一台机"); const m=member(uid);
+  if(m.left<mc.cost) return toast(`积分不够，这台机要 ${mc.cost} 分`);
   const n=Math.max(0,...arr(ME.draws).map(d=>d.n),...arr(LUCKY.log[XU]).map(d=>d.n))+1;
-  ME.draws=arr(ME.draws).concat({n,r:r.id,cost:r.cost,at:Date.now()}).slice(-300); ui.lastDraw=n; saveMe() }
+  ME.draws=arr(ME.draws).concat({n,r:r.id,m:mc.id,cost:mc.cost,at:Date.now()}).slice(-300); ui.lastDraw=0; ui.clawBusy=n; saveMe(); setTimeout(()=>clawPlay(n),30) }
 V.lucky=()=>`${H1("签到和抽奖","Check-in & lucky draw")}${ciPanel()}${ptsRules()}${luckyBody()}`;
 function ptsRules(){ const R=rules(); return `<details class="panel wrules"><summary><b>${B("积分规则","Points rules")}</b></summary><ul>
  <li>${B(`已定：每天签到 ${R.ciPts} 分；从你签到的第一天算，连续 7 天，第 7 天再加 ${R.ci7} 分；断一天从第 1 天重来。`,`Confirmed: ${R.ciPts} pts per daily check-in; 7 days in a row from your first check-in gives +${R.ci7} on day 7; miss a day and you restart at day 1.`)}</li>
@@ -2963,27 +2993,58 @@ function ptsRules(){ const R=rules(); return `<details class="panel wrules"><sum
  <li>${B("能不能和回购优惠码一起用：","Can be combined with return coupons: ")}${OWNER_TBD()}</li>
  <li>${B("抽奖规则和中奖怎么公布：","Draw rules and how winners are announced: ")}${OWNER_TBD()}</li>
  <li>${B("签到和抽奖不保证一定得到奖品或折扣。","Checking in or drawing does not guarantee a prize or discount.")}</li></ul></details>` }
+const CLAWC=["#0b6672","#e0a526","#d9644a","#3f86c4","#7a5bb5","#3f9b62"];
+function dollSet(mc){ const ps=mc.prizes.slice(0,8), out=[]; for(let i=0;i<9;i++){ const p=ps[i%ps.length]; out.push({p,c:CLAWC[mc.prizes.indexOf(p)%CLAWC.length]}) } return out }
+function clawBox(mc,big){ const ds=dollSet(mc);
+  return `<div class="claw${big?" big":""}" data-cm="${esc(mc.id)}"><div class="clawtop"><b>${esc(mc.name||BT("夹娃娃机","Claw machine"))}</b><span>${mc.cost} ${B("分","pts")}</span></div>
+  <div class="clawglass"><div class="clawrail"></div><div class="clawarm" style="--x:50%"><i class="rope"></i><svg class="clawsvg" viewBox="0 0 40 30" aria-hidden="true"><path d="M20 0v8M8 10h24M8 10L4 22l5 6M32 10l4 12-5 6M20 10v6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="dolls">${ds.map((d,i)=>`<span class="doll" data-pi="${esc(d.p.id)}" data-i="${i}" style="--c:${d.c}"><img src="intro/holofen-mark.webp" alt=""></span>`).join("")}</div><div class="chute"></div></div></div>` }
+async function clawPlay(n){ const d=luckyDraws(XU).find(x=>x.n===n), box=document.querySelector(".claw.big"); const done=()=>{ ui.clawBusy=0; ui.lastDraw=n; render() };
+  if(!d||!box||matchMedia("(prefers-reduced-motion:reduce)").matches) return done();
+  try{ const arm=box.querySelector(".clawarm"), glass=box.querySelector(".clawglass"), G=glass.getBoundingClientRect(), dolls=[...box.querySelectorAll(".doll")];
+    const pick=d.win?(dolls.filter(x=>x.dataset.pi===d.win)[Math.floor(h01("p"+n)*9)%Math.max(1,dolls.filter(x=>x.dataset.pi===d.win).length)]||dolls[0]):dolls[Math.floor(h01("q"+n)*dolls.length)];
+    const P=pick.getBoundingClientRect(), x=P.left+P.width/2-G.left, x0=arm.offsetLeft+arm.offsetWidth/2, drop=P.top-G.top-arm.offsetHeight+P.height*0.45, ease="cubic-bezier(.45,0,.25,1)";
+    const go=(kf,ms,el)=>(el||arm).animate(kf,{duration:ms,easing:ease,fill:"forwards"}).finished;
+    box.classList.add("on");
+    await go([{transform:"translateX(0)"},{transform:`translateX(${x-x0}px)`}],800);
+    await go([{transform:`translateX(${x-x0}px)`},{transform:`translateX(${x-x0}px) translateY(${drop}px)`}],750);
+    arm.classList.add("grab"); await new Promise(r=>setTimeout(r,320));
+    const lift=[{transform:"translate(0,0)"},{transform:`translate(0,${-drop}px)`}];
+    pick.style.zIndex=3; const up=go([{transform:`translateX(${x-x0}px) translateY(${drop}px)`},{transform:`translateX(${x-x0}px)`}],800);
+    if(d.win){ go(lift,800,pick); await up;
+      const ch=glass.querySelector(".chute"), cx=ch.offsetLeft+ch.offsetWidth/2-x0; await Promise.all([go([{transform:`translateX(${x-x0}px)`},{transform:`translateX(${cx}px)`}],800),go([{transform:`translate(0,${-drop}px)`},{transform:`translate(${cx-(x-x0)}px,${-drop}px)`}],800,pick)]);
+      arm.classList.remove("grab"); await go([{transform:`translate(${cx-(x-x0)}px,${-drop}px)`},{transform:`translate(${cx-(x-x0)}px,${G.height}px)`,opacity:0}],450,pick) }
+    else { const half=go([{transform:"translate(0,0)"},{transform:`translate(0,${-drop*0.45}px)`}],380,pick); await half; arm.classList.remove("grab");
+      await Promise.all([go([{transform:`translate(0,${-drop*0.45}px)`},{transform:"translate(0,0)"}],380,pick),up]) }
+    await new Promise(r=>setTimeout(r,250)) }catch(e){}
+  done() }
 function luckyBody(){ const r=curRound(), m=member(uid), mine=luckyDraws(XU).slice().reverse(), last=ui.lastDraw?mine.find(d=>d.n===ui.lastDraw):null;
-  const tot=r?r.prizes.reduce((a,p)=>a+p.w,0)+r.miss:0, pct=w=>tot?(w/tot*100).toFixed(w/tot<0.01?2:1)+"%":"—";
-  return `${H2("积分抽奖","Points lucky draw")}
-  ${!LUCKY.on||!r?`<p class="muted">${B("抽奖还没开始，开始后会在这里公布奖品和每次要几分。","The lucky draw hasn't started yet.")}</p>`:`
-  <div class="two"><div class="panel stack" style="gap:12px">
-    <div class="row" style="justify-content:space-between"><div><span class="lbl">${B("你的可用积分","Your points")}</span><div class="bigp" style="font-size:30px">${m.left}</div></div><div style="text-align:right"><span class="lbl">${B("抽一次","Per draw")}</span><div class="bigp" style="font-size:30px">${r.cost} ${B("分","pts")}</div></div></div>
-    ${last?`<div class="lres${last.win?" win":""}"><b>${last.win?B("抽中了！","You won!"):B("这次没中","Not this time")}</b>${last.win?`<span>${esc(last.prize)}</span><small>${B("店主会联系你安排，或跟你下一张订单一起寄出。","We'll arrange delivery or send it with your next order.")}</small>`:`<small>${B("积分已扣，下次好运。","Better luck next time.")}</small>`}</div>`:""}
-    <div><button class="pri" data-ldraw="1" ${m.left<r.cost?"disabled":""}>${B(`用 ${r.cost} 分抽一次`,`Draw for ${r.cost} pts`)}</button> ${m.left<r.cost?`<span class="muted">${B("积分不够，下单送达后会入账。","Not enough points yet.")}</span>`:""}</div>
-    <p class="muted" style="font-size:12px">${B("每次的结果由系统按公开的中奖率算出，店主也改不了。抽中的奖品要等店主确认后安排；积分一经使用不退。","Results come from the published odds and can't be changed by anyone. Points used are not refunded.")}</p></div>
-  <div class="panel stack" style="gap:8px"><h3>${B("奖品和中奖率","Prizes & odds")}</h3><table class="tight"><tbody>${r.prizes.map(p=>`<tr><td>${esc(p.name)}</td><td class="n">${pct(p.w)}</td></tr>`).join("")}<tr><td class="muted">${B("没中","No prize")}</td><td class="n">${pct(r.miss)}</td></tr></tbody></table><p class="muted" style="font-size:12px">${B("这一期从","This round started")} ${new Date(r.at).toLocaleDateString("zh-CN")} ${B("开始。奖品送完前店主会更新这里。","")}</p></div></div>`}
-  ${mine.length?`<section class="stack" style="gap:8px">${H2("我的抽奖记录","My draws")}<div class="panel stack" style="gap:6px">${mine.slice(0,30).map(d=>`<div class="alrow"><span class="muted">${new Date(d.at).toLocaleString(isEN()?"en-MY":"zh-CN")}</span><b>${d.ok?(d.win?esc(d.prize):B("没中","No prize")):B("无效记录","Invalid")}</b><span class="muted">−${d.cost} ${B("分","pts")}</span>${d.win?`<span class="chip">${LUCKY.sent[d.key]?B("已安排","Arranged"):B("等店主安排","Pending")}</span>`:""}</div>`).join("")}</div></section>`:""}`;
+  if(!LUCKY.on||!r||!r.machines.length) return `${H2("夹娃娃机","Claw machines")}<p class="muted">${B("夹娃娃机还没开放，开放后会在这里公布每台机的奖品、中奖率和要几分。","The claw machines aren't open yet.")}</p>`;
+  const sel=machOf(r,ui.clawM)||r.machines[0], tot=sel.prizes.reduce((a,p)=>a+p.w,0)+sel.miss, pct=w=>tot?(w/tot*100).toFixed(w/tot<0.01?2:1)+"%":"—", busy=!!ui.clawBusy;
+  return `${H2("夹娃娃机","Claw machines")}
+  <p class="muted" style="margin:0">${B("选一台机，用积分投币，爪子会随机夹一个出来。每台机的奖品和中奖率都公开在旁边。","Pick a machine, insert points and the claw grabs one at random. Each machine's prizes and odds are shown.")}</p>
+  ${r.machines.length>1?`<div class="clawpick" role="group" aria-label="${BT("选机台","Choose a machine")}">${r.machines.map(mc=>`<button data-clawm="${esc(mc.id)}" class="${mc===sel?"on":""}" aria-pressed="${mc===sel}" ${busy?"disabled":""}><b>${esc(mc.name||BT("夹娃娃机","Claw machine"))}</b><small>${mc.cost} ${B("分一次","pts a go")}</small></button>`).join("")}</div>`:""}
+  <div class="two clawwrap"><div class="stack" style="gap:12px;align-items:center">${clawBox(sel,1)}
+    ${last&&!busy?`<div class="lres${last.win?" win":""}"><b>${last.win?B("夹到了！","Got one!"):B("差一点，没夹到","So close, it slipped")}</b>${last.win?`<span>${esc(last.prize)}</span><small>${B("店主会联系你安排，或跟你下一张订单一起寄出。","We'll arrange delivery or send it with your next order.")}</small>`:`<small>${B("积分已扣，下次好运。","Better luck next time.")}</small>`}</div>`:""}
+    <div class="row" style="justify-content:center"><span class="muted">${B("你的积分","Your points")} <b>${m.left}</b></span><button class="pri" data-ldraw="1" data-m="${esc(sel.id)}" ${m.left<sel.cost||busy?"disabled":""}>${busy?B("夹取中…","Grabbing…"):B(`投 ${sel.cost} 分，夹一次`,`Insert ${sel.cost} pts`)}</button></div>
+    ${m.left<sel.cost?`<p class="muted" style="margin:0">${B("积分不够。每天签到、订单送达后都会加分。","Not enough points. Check in daily or complete an order to earn more.")}</p>`:""}</div>
+  <div class="panel stack" style="gap:8px"><h3>${B("这台机的奖品和中奖率","Prizes & odds")}</h3><table class="tight"><tbody>${sel.prizes.map((p,i)=>`<tr><td><i class="pdot" style="background:${CLAWC[i%CLAWC.length]}"></i>${esc(p.name)}</td><td class="n">${pct(p.w)}</td></tr>`).join("")}<tr><td class="muted">${B("没夹到","Nothing")}</td><td class="n">${pct(sel.miss)}</td></tr></tbody></table>
+  <p class="muted" style="font-size:12px">${B("结果在投币那一刻由系统按公开的中奖率算出，动画只是把结果演出来，店主也改不了。积分一经使用不退。这一期从","The result is fixed by the published odds the moment you insert points; the animation just shows it. Points used are not refunded. This round started")} ${new Date(r.at).toLocaleDateString("zh-CN")}${B(" 开始。","")}</p></div></div>
+  ${mine.some(d=>d.n!==ui.clawBusy)?`<section class="stack" style="gap:8px">${H2("我的夹取记录","My plays")}<div class="panel stack" style="gap:6px">${mine.filter(d=>d.n!==ui.clawBusy).slice(0,30).map(d=>`<div class="alrow"><span class="muted">${new Date(d.at).toLocaleString(isEN()?"en-MY":"zh-CN")}</span>${d.mach&&d.mach.name?`<span class="chip">${esc(d.mach.name)}</span>`:""}<b>${d.ok?(d.win?esc(d.prize):B("没夹到","Nothing")):B("无效记录","Invalid")}</b><span class="muted">−${d.cost} ${B("分","pts")}</span>${d.win?`<span class="chip">${LUCKY.sent[d.key]?B("已安排","Arranged"):B("等店主安排","Pending")}</span>`:""}</div>`).join("")}</div></section>`:""}`;
 }
 function admLucky(){ const r=curRound(); const rows=[]; const us=new Set(Object.keys(MEALL).concat(Object.keys(LUCKY.log)));
   us.forEach(u=>luckyDraws(u).forEach(d=>rows.push({u,d}))); rows.sort((a,b)=>b.d.at-a.d.at);
   const wins=rows.filter(x=>x.d.win), nm=u=>esc(arr((all[u]||{}).orders).map(o=>cleanTxt(o.name,40)).filter(Boolean).pop()||String(u).slice(0,8));
-  return `${H1("店主后台","Admin")}${H2("积分抽奖","Lucky draw")}
-  <div class="note">上线前请先确认：在马来西亚办需要消费才能参加的幸运抽奖，可能要向政府申请准证。这一点我没有核对，建议问一下会计师或 SSM 秘书。</div>
-  <div class="panel stack"><label class="row" style="gap:8px"><input type="checkbox" id="lk-on" ${LUCKY.on?"checked":""}> 开放抽奖（顾客看得到、能抽）</label>
-   <div class="row"><label class="f" style="flex:0 1 180px">抽一次要几分<input id="lk-cost" type="number" min="1" step="1" value="${r?r.cost:100}"></label><label class="f" style="flex:0 1 180px">「没中」的权重<input id="lk-miss" type="number" min="0" step="1" value="${r?r.miss:80}"></label></div>
-   <label class="f">奖品，一行一个：名字, 权重（权重越大越容易抽中；中奖率 = 权重 ÷ 全部权重加起来）<textarea id="lk-prizes" rows="5" placeholder="${isEN()?"For example:&#10;1 booster pack, 15&#10;Card sleeves, 4&#10;ETB box, 1":"例如：&#10;单包补充包 1 包, 15&#10;卡套一组, 4&#10;ETB 一盒, 1"}">${r?esc(r.prizes.map(p=>p.name+", "+p.w).join("\n")):""}</textarea></label>
-   <p class="muted">按「保存」会开新的一期：之后的抽奖用新的奖品和中奖率，已经抽过的结果不会变。</p>
+  return `${H1("店主后台","Admin")}${H2("夹娃娃机","Claw machines")}
+  <div class="note">上线前请先确认：在马来西亚办需要消费才能参加的抽奖（包括夹娃娃机），可能要向政府申请准证。这一点我没有核对，请问律师。积分不要卖钱，只能靠签到和订单赚，风险会小一些。</div>
+  <div class="panel stack"><label class="row" style="gap:8px"><input type="checkbox" id="lk-on" ${LUCKY.on?"checked":""}> 开放夹娃娃机（顾客看得到、能玩）</label>
+   <p class="muted">每台机自己设名字、投一次几分、奖品和权重。中奖率 = 权重 ÷（全部奖品权重 + 没夹到的权重）。最多 6 台。</p>
+   ${(ui.lkM||(r&&r.machines.length?r.machines:[{id:"m1",name:"新手机",cost:20,miss:80,prizes:[]}])).map((mc,i)=>`<fieldset class="panel stack lkm" data-lki="${i}" style="gap:8px"><legend><b>第 ${i+1} 台</b></legend>
+    <div class="row"><label class="f" style="flex:1 1 160px">机台名字<input class="lk-name" maxlength="30" value="${esc(mc.name||"")}" placeholder="例如：新手机、补充包机、稀有机"></label><label class="f" style="flex:0 1 130px">投一次几分<input class="lk-cost" type="number" min="1" step="1" value="${mc.cost||20}"></label><label class="f" style="flex:0 1 130px">「没夹到」的权重<input class="lk-miss" type="number" min="0" step="1" value="${mc.miss!=null?mc.miss:80}"></label></div>
+    <label class="f">奖品，一行一个：名字, 权重<textarea class="lk-prizes" rows="4" placeholder="例如：&#10;单包补充包 1 包, 15&#10;卡套一组, 4&#10;ETB 一盒, 1">${esc(arr(mc.prizes).map(p=>p.name+", "+p.w).join("\n"))}</textarea></label>
+    ${i>0?`<div><button class="linkbtn" data-lkdel="${i}">删除这台机</button></div>`:""}</fieldset>`).join("")}
+   <div class="row"><button data-lkadd="1">＋ 加一台机</button></div>
+   <p class="muted">按「保存」会开新的一期：之后的夹取用新的设定，已经夹过的结果不会变。</p>
    <div><button class="pri" data-lsave="1">保存</button></div></div>
   ${H2(`中奖名单（${wins.length}）`,"Winners")}${wins.length?`<div class="tw"><table><thead><tr><th>顾客</th><th>奖品</th><th>时间</th><th></th></tr></thead><tbody>${wins.map(x=>`<tr><td>${nm(x.u)}</td><td>${esc(x.d.prize)}</td><td>${new Date(x.d.at).toLocaleString(isEN()?"en-MY":"zh-CN")}</td><td>${LUCKY.sent[x.d.key]?`<button class="sm" data-lsent="${esc(x.d.key)}" data-v="0">已安排 ✓</button>`:`<button class="sm pri" data-lsent="${esc(x.d.key)}" data-v="1">标记已安排</button>`}</td></tr>`).join("")}</tbody></table></div>`:`<p class="muted">还没有人抽中。</p>`}
   <p class="muted">${BL(`全部抽奖 ${rows.length} 次，其中无效 ${rows.filter(x=>!x.d.ok).length} 次（顾客端记录对不上，不发奖、不扣分）。`,`${rows.length} draws in total, ${rows.filter(x=>!x.d.ok).length} invalid (customer record didn't match: no prize, no points taken).`)}</p>` }
@@ -3005,7 +3066,7 @@ ATABS.splice(ATABS.length-1,0,["lucky","抽奖","Lucky draw"]);
     if(ui.atab==="products") return H1("商品","Products")+off+admProducts();
     if(ui.atab==="users") return off+admUsers();
     if(ui.atab==="review") return H1("审核","Approve")+off+part("reviews")+part("wall",1);
-    if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=[["rules","积分规则","Points rules"],["lucky","抽奖","Lucky draw"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"]]);
+    if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=[["rules","积分规则","Points rules"],["lucky","夹娃娃机","Claw machines"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"]]);
       const st=tabs.some(t=>t[0]===ui.stab)?ui.stab:"rules";
       const body=st==="rules"?admMembers().split("<h2>")[0]+"<h2>"+admMembers().split("<h2>")[1]:st==="lucky"?part("lucky",1):st==="staff"?admStaff().replace(/^\s*<h1>[\s\S]*?<\/h1>/,""):part("launch");
       return H1("设置","Settings")+off+seg("data-stab",st,tabs)+body }
@@ -3062,16 +3123,25 @@ ATABS.splice(ATABS.length-1,0,["lucky","抽奖","Lucky draw"]);
     toast(`已导出 ${U.length} 位用户 Exported ${U.length} users`) });
   document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ofil],[data-stab]"); if(!b) return; if(b.dataset.ofil) ui.ofil=b.dataset.ofil; else ui.stab=b.dataset.stab; render() }); }
 
+/* 后台夹娃娃机：读表单（每台机一个 fieldset） */
+function lkRead(){ const out=[]; for(const f of document.querySelectorAll(".lkm")){ const q=c=>f.querySelector(c), name=cleanTxt(q(".lk-name").value.trim(),30)||("第 "+(out.length+1)+" 台"), cost=clampN(q(".lk-cost").value,1,1e6), miss=Math.max(0,num(q(".lk-miss").value)||0), prizes=[];
+    for(const line of (q(".lk-prizes").value||"").split("\n")){ const t=line.trim(); if(!t) continue; const m=t.match(/^(.*?)[,，]\s*([0-9.]+)\s*$/); if(!m||!m[1].trim()) return "这一行看不懂："+t.slice(0,20); prizes.push({id:"p"+prizes.length,name:cleanTxt(m[1].trim(),60),w:Math.max(0,num(m[2])||0)}) }
+    if(!prizes.length) return name+"：请至少写一个奖品"; if(!(prizes.reduce((a,p)=>a+p.w,0)>0)) return name+"：奖品的权重不能全是 0";
+    out.push({id:"m"+(out.length+1),name,cost,miss,prizes}) } return out }
+function lkDraft(){ return [...document.querySelectorAll(".lkm")].map(f=>{ const q=c=>f.querySelector(c); return {name:q(".lk-name").value,cost:num(q(".lk-cost").value)||20,miss:num(q(".lk-miss").value),prizes:(q(".lk-prizes").value||"").split("\n").filter(x=>x.trim()).map(t=>{ const m=t.match(/^(.*?)[,，]\s*([0-9.]+)\s*$/); return m?{name:m[1].trim(),w:num(m[2])}:{name:t.trim(),w:""} })} }) }
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-clawm],[data-lkadd],[data-lkdel]"); if(!b) return; const ds=b.dataset;
+  if(ds.clawm!=null){ if(ui.clawBusy) return; ui.clawM=ds.clawm; ui.lastDraw=0; return render() }
+  if(!owner) return; const d=lkDraft();
+  if(ds.lkadd){ if(d.length>=6) return toast("最多 6 台"); d.push({name:"",cost:50,miss:80,prizes:[]}); ui.lkM=d; return render() }
+  if(ds.lkdel!=null){ d.splice(+ds.lkdel,1); ui.lkM=d; return render() } });
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ldraw],[data-lsave],[data-lsent]"); if(!b) return; const ds=b.dataset;
-  if(ds.ldraw) return doDraw();
+  if(ds.ldraw) return doDraw(ds.m);
   if(ds.lsent){ if(!owner) return; const s={...LUCKY.sent}; if(ds.v==="1") s[ds.lsent]=true; else delete s[ds.lsent]; LUCKY.sent=s; render(); return saveLucky() }
-  if(ds.lsave){ if(!owner) return; const cost=clampN(val("lk-cost"),1,1e6), miss=Math.max(0,num(val("lk-miss"))||0); const prizes=[];
-    for(const line of (document.getElementById("lk-prizes").value||"").split("\n")){ const t=line.trim(); if(!t) continue; const m=t.match(/^(.*?)[,，]\s*([0-9.]+)\s*$/); if(!m||!m[1].trim()) return toast("这一行看不懂："+t.slice(0,20)); prizes.push({id:"p"+prizes.length,name:cleanTxt(m[1].trim(),60),w:Math.max(0,num(m[2])||0)}) }
-    if(!prizes.length) return toast("请至少写一个奖品"); if(!(prizes.reduce((a,p)=>a+p.w,0)>0)) return toast("奖品的权重不能全是 0");
-    const c=curRound(), same=c&&c.cost===cost&&c.miss===miss&&JSON.stringify(c.prizes.map(p=>[p.name,p.w]))===JSON.stringify(prizes.map(p=>[p.name,p.w]));
+  if(ds.lsave){ if(!owner) return; const ms=lkRead(); if(typeof ms==="string") return toast(ms); if(!ms.length) return toast("请至少设一台机");
+    const c=curRound(), sig=x=>JSON.stringify(x.map(m=>[m.name,m.cost,m.miss,m.prizes.map(p=>[p.name,p.w])])), same=c&&!c.machines.some(m=>m.legacy)&&sig(c.machines)===sig(ms);
     const on=document.getElementById("lk-on").checked;
-    if(!same){ const rb=new Uint8Array(8); crypto.getRandomValues(rb); LUCKY.rounds=LUCKY.rounds.concat({id:"r"+Date.now().toString(36),at:Date.now(),cost,miss,seed:[...rb].map(x=>x.toString(16).padStart(2,"0")).join(""),prizes}).slice(-20) }
-    LUCKY.on=on; render(); return saveLucky().then(()=>toast("已保存 Saved")) } },true);
+    if(!same){ const rb=new Uint8Array(8); crypto.getRandomValues(rb); LUCKY.rounds=LUCKY.rounds.concat({id:"r"+Date.now().toString(36),at:Date.now(),cost:ms[0].cost,miss:ms[0].miss,seed:[...rb].map(x=>x.toString(16).padStart(2,"0")).join(""),prizes:ms[0].prizes,machines:ms}).slice(-20) }
+    ui.lkM=null; LUCKY.on=on; render(); return saveLucky().then(()=>toast("已保存 Saved")) } },true);
 
 /* ---------- v36 每日签到 ----------
    顾客每天按一次「签到」得 rules.ciPts 分；从第一次签到那天算第 1 天，连续 7 天在第 7 天加 rules.ci7 分，然后重新开始；断一天从第 1 天重来。日期按马来西亚时间。
