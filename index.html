@@ -1006,6 +1006,7 @@ header.bar::after{margin-top:8px}
 .backbtn .bs{display:none}
 .loginbtn.wait{opacity:.35;pointer-events:none}
 .umenu{position:fixed;z-index:40;background:#fff;border:1px solid #e6e9f0;border-radius:14px;box-shadow:0 12px 32px rgba(16,22,43,.16);min-width:190px;padding:6px;display:grid;animation:umIn .16s ease-out}.umenu[hidden]{display:none}.umenu a{display:block;padding:11px 14px;border-radius:9px;color:var(--ink);text-decoration:none;font-size:15px}.umenu a:hover,.umenu a:focus-visible{background:#f2f6f7}.umenu .umo{color:var(--muted);border-top:1px solid #eef0f4;border-radius:0 0 9px 9px;margin-top:4px}.umw{padding:8px 14px 6px;font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:240px}@keyframes umIn{from{opacity:0;transform:translateY(-4px)}}
+.stamps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.stamps span{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;min-width:0}.stamps i{width:40px;height:40px;border-radius:99px;display:grid;place-items:center;border:2px dashed var(--line,#d6dbe6);font-style:normal;font-weight:800;color:var(--muted)}.stamps .on i{border:0;background:linear-gradient(135deg,var(--sun,#f6b93b),var(--red,#0e7c86));color:#fff}.stamps .gl:not(.on) i{border-color:var(--sun,#f6b93b)}.stamps small{font-size:11px;color:var(--muted);line-height:1.3;overflow-wrap:anywhere}
 .rvup{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.rvth{position:relative;width:64px;height:64px;border-radius:10px;overflow:hidden;background:#eef1f7;flex:none}.rvth img,.rvth video{width:100%;height:100%;object-fit:cover;display:block}.rvth button{position:absolute;top:2px;right:2px;width:22px;height:22px;min-height:0;padding:0;border-radius:99px;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:14px;line-height:1}
 .rvmed{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}.rvmed img{width:84px;height:84px;object-fit:cover;border-radius:10px;display:block}.rvmed video{width:min(240px,100%);max-height:240px;border-radius:10px;background:#000}
 .upshot{display:inline-flex;align-items:center;gap:6px;border:1px dashed var(--line,#d6dbe6);border-radius:12px;padding:8px 12px;cursor:pointer;font-size:14px;background:#fff}.upshot img,.shotlink img{width:34px;height:34px;object-fit:cover;border-radius:6px}.shotlink{display:inline-flex;align-items:center;gap:6px;margin-left:8px;vertical-align:middle}
@@ -1122,66 +1123,6 @@ header.bar::after{margin-top:8px}
 @keyframes aokIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
 #addok.rm .aok{animation:none}
 
-/* ---------- 深色森林样板（执行稿图 01–08）。只在 ?forest=1 的行情页生效，正式页面不受影响 ---------- */
-html.forest{--bg:#10251F;--surface:#1D372F;--tile:#183029;--soft:#183029;--ink:#EDF3E9;--muted:#B7C8BB;--line:#2E4A40;--gold:#E1BF78;--note:#24402F;--note-ink:#EDF3E9;--mint:#183029;--skyb:#183029;--cream:#1D372F;--teal:#E1BF78;--accent:#9FD3B5;--blue:#9FD3B5;--up:#7FD8A0;--down:#FF9A85;color-scheme:dark}
-html.forest body{background:var(--bg);color:var(--ink)}
-html.forest a{color:#9FD3B5}
-html.forest header.bar{background:#0E201B;color:var(--ink);box-shadow:0 1px 0 var(--line)}
-html.forest header.bar::after{background:linear-gradient(90deg,#2E4A40,#E1BF78 50%,#2E4A40)}
-html.forest header.bar a,html.forest header.bar button{color:var(--ink)}
-html.forest nav.tabs a.on{color:var(--gold)}
-html.forest button{background:var(--surface);color:var(--ink);border-color:var(--line)}
-html.forest #view>section.sec{background:var(--surface);border-color:var(--line)}
-html.forest .mhero{background:radial-gradient(80% 120% at 100% 0%,rgba(225,191,120,.16),transparent 60%),linear-gradient(160deg,#1D372F,#10251F);border:1px solid var(--line);color:var(--ink)}
-html.forest .mhero p{color:var(--muted)}
-html.forest .mhero .tag.live,html.forest .board .tag.live{border-color:var(--gold);color:var(--gold)}
-html.forest .msearch{background:#0E201B;border:1.5px solid #3C5D50;box-shadow:none;color:var(--ink)}
-html.forest .msearch input{color:var(--ink)}html.forest .msearch input::placeholder{color:#8FA597}
-html.forest .mkpi>div,html.forest .kstrip div{background:#183029;border:1px solid var(--line)}
-html.forest .mkpi small,html.forest .kstrip small{color:var(--muted)}
-html.forest .mkpi .up,html.forest .kstrip b.up{color:var(--up)}html.forest .mkpi .down,html.forest .kstrip b.down{color:var(--down)}
-html.forest .tape{background:#0E201B;color:var(--ink);border:1px solid var(--line)}
-html.forest .serstrip button,html.forest .serstrip button[style*="--sc"]{background:var(--surface);border-color:var(--line);color:var(--muted)}
-html.forest .serstrip button.on,html.forest .serstrip button[style*="--sc"].on{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold);color:var(--ink)}
-html.forest .serstrip button.all{color:var(--ink)}
-html.forest .board{background:var(--surface);color:var(--ink);border-color:var(--line)}
-html.forest .board .bh,html.forest .board .ch,html.forest .board .col,html.forest .kstrip,html.forest .kstrip div{border-color:var(--line)}
-html.forest .board .ch{background:#183029;color:var(--ink)}
-html.forest .board .bh b{color:var(--ink)}
-html.forest .board .tag{border-color:#3C5D50;color:var(--muted)}
-html.forest .brow{border-bottom-color:#264137;color:var(--ink)}
-html.forest .brow:hover{background:#244238}
-html.forest .brow .no,html.forest .brow .sb,html.forest .brow .mk{color:var(--muted)}
-html.forest .brow img{background:#0E201B}
-html.forest .chg.up{color:var(--up);background:rgba(127,216,160,.12);border-color:rgba(127,216,160,.45)}html.forest .chg.down{color:var(--down);background:rgba(255,154,133,.12);border-color:rgba(255,154,133,.45)}html.forest .chg.flat{background:transparent;color:var(--muted);border-color:var(--line)}
-html.forest .note{background:#183029;color:var(--muted);border-color:var(--line)}
-html.forest .seg{border-color:var(--line)}
-html.forest .seg button{background:var(--surface);color:var(--muted)}
-html.forest .seg button.on{background:#0E201B;color:var(--gold);box-shadow:inset 0 0 0 1.5px var(--gold);font-weight:700}
-html.forest .seg[aria-label="稀有度"] button.on::before{content:"✓ ";}
-html.forest .ctl{background:var(--surface);border-color:var(--line)}
-html.forest .ctl:hover{box-shadow:0 10px 22px rgba(0,0,0,.35)}
-html.forest .ctl .rk{background:var(--gold);color:#10251F}
-html.forest .chip{background:#183029;border-color:var(--line);color:var(--muted)}
-html.forest .muted{color:var(--muted)}
-html.forest h1,html.forest h2,html.forest h3{color:var(--ink)}
-html.forest footer{background:#0A1814;color:var(--muted)}
-html.forest footer a{color:var(--muted)}
-html.forest #btm{background:#0E201B;border-color:var(--line)}
-html.forest #btm a{color:var(--muted)}html.forest #btm a.on{color:var(--gold)}
-html.forest .tag{background:transparent}
-html.forest .pill.up{background:rgba(127,216,160,.16);color:var(--up);box-shadow:inset 0 0 0 1px rgba(127,216,160,.45)}
-html.forest .pill.down{background:rgba(255,154,133,.14);color:var(--down);box-shadow:inset 0 0 0 1px rgba(255,154,133,.45)}
-html.forest .pill.flat{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 1px var(--line)}
-html.forest .kt{background:color-mix(in srgb,var(--kc) 18%,#10251F);color:color-mix(in srgb,var(--kc) 45%,#fff);border-color:color-mix(in srgb,var(--kc) 40%,#10251F)}
-html.forest .trend{background:#14302A;color:#9FD3B5}html.forest .trend:hover{background:var(--gold);color:#10251F}
-html.forest .totopw{background:linear-gradient(90deg,#0E201B,#16302A 50%,#0E201B)}
-html.forest .totopw::before{opacity:.25}
-html.forest .ctc a{background:#14302A;border-color:var(--line);color:var(--ink)}
-html.forest .fbadge a{color:#10251F}
-.fbadge{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;gap:10px;align-items:center;background:#E1BF78;color:#10251F;font-size:12.5px;font-weight:700;padding:6px 8px 6px 14px;border-radius:99px;box-shadow:0 6px 20px rgba(0,0,0,.35);white-space:nowrap}
-.fbadge a{color:#10251F;background:rgba(16,37,31,.12);padding:3px 10px;border-radius:99px;text-decoration:none}
-@media (min-width:641px){.fbadge{bottom:20px}}
 
 /* v96 首页轮播：盒子图不越过文字栏；手机上箭头移到图片那一段，不压按钮 */
 .sld .pics .c2{max-width:54%;object-fit:contain}
@@ -1638,6 +1579,7 @@ function member(u){ const R=rules(), os=arr((all[u]||{}).orders), me=(typeof MEA
   const win=(t,before)=>del.filter(d=>d.at>=winStart(t)&&(before?d.at<t:true)).reduce((a,d)=>a+d.sub,0);
   let earned=0; del.forEach(d=>{ const bd=bm&&d.at>=bmAt&&new Date(d.at).getMonth()+1===bm?R.bdayX:1; earned+=Math.floor(d.sub*R.earn*tierOf(win(d.at,1))[2]*bd) });
   if(typeof ciPoints==="function"&&typeof LUCKY!=="undefined") earned+=ciPoints(u,R);
+  if(typeof stampGot==="function"&&typeof LUCKY!=="undefined") earned+=stampGot(u).filter(g=>g.k==="pts").reduce((a,g)=>a+g.n,0);
   const spend=win(Date.now()), life=del.reduce((a,d)=>a+d.sub,0), tier=tierOf(spend);
   let left=earned; const ok={};
   /* 结账抵扣和积分抽奖按时间先后一起扣；超出余额的不算 */
@@ -1678,10 +1620,10 @@ let lang="zh"; try{ if(localStorage.getItem("lang")==="en") lang="en" }catch(e){
 function applyLang(){ document.documentElement.dataset.lang=lang; document.documentElement.lang=lang==="en"?"en":"zh"; const b=$("#langbtn"); if(b){ b.innerHTML=`<span class="${lang==="zh"?"on":""}">中</span><span class="${lang==="en"?"on":""}">EN</span>`; b.setAttribute("aria-label",lang==="zh"?"Switch to English":"切换到中文") } if(lang==="en") langPass() }
 function adminTabs(){ return ATABS.concat(window.HOLO_AUTH&&HOLO_AUTH.role()==="owner"?[["staff","员工权限","Staff"]]:[]) }
 const _html={}; function setHTML(sel,h){ const k=sel+"|"+lang; if(_html[sel]===k+h) return false; _html[sel]=k+h; $(sel).innerHTML=h; return true }
-const FOREST=(()=>{ try{ const q=new URLSearchParams(location.search).get("forest"); if(q!=null) sessionStorage.setItem("forest",q==="1"?"1":"0"); return sessionStorage.getItem("forest")==="1" }catch(e){ return /[?&]forest=1/.test(location.search) } })();
+const FOREST=false; /* 2026-11-19 用户看过深色森林样板，不要，已拿掉 */
 function render(){
   const adm=route==="admin"&&owner;
-  { const on=FOREST&&route==="market"; document.documentElement.classList.toggle("forest",on); let fb=document.getElementById("fbadge"); if(on&&!fb){ fb=document.createElement("div"); fb.id="fbadge"; fb.className="fbadge"; fb.innerHTML=`<span>${B("深色森林样板预览","Dark forest preview")}</span><a href="?forest=0#market">${B("看原版","See current")}</a>`; document.body.appendChild(fb) } if(fb) fb.hidden=!on }
+  { const fb=document.getElementById("fbadge"); if(fb) fb.remove(); document.documentElement.classList.remove("forest") }
   $("#bar").className="bar"+(adm?" adm":"");
   $("#brand").innerHTML=buddy(26)+(adm?`店主后台<small>Admin</small>`:`Holofen`);
   $("#tabs").innerHTML=adm?adminTabs().map(t=>`<a href="#admin" data-atab="${t[0]}" class="${ui.atab===t[0]?"on":""}">${t[1]}<i>${t[2]}</i></a>`).join("")
@@ -2406,6 +2348,7 @@ V.cart=()=>{
    <label class="row ck" style="gap:8px;font-size:14px;align-items:flex-start"><input type="checkbox" id="c-agree" required> <span>${B("我已阅读并同意","I have read and agree to the")} <a href="#terms" target="_blank" rel="noopener">${B("条款与细则","Terms & conditions")}</a> ${B("和","and")} <a href="#privacy" target="_blank" rel="noopener">${B("隐私声明","Privacy notice")}</a>${B("，并已满 18 岁或已得到父母或监护人同意。",", and I am 18 or over or have a parent's or guardian's consent.")}</span></label>
    ${payNote()}<div><button class="pri" type="submit">提交订单（不会扣款） <span class="en">Place order (no charge)</span></button></div></form></div>
   <div class="panel stack">${H2("账单","Bill")}<div class="sum"><span>${B("商品小计","Subtotal")}</span><span class="price">${rm(t.sub)}</span><span>${B("运费","Shipping")}</span><span class="price">${t.fee?rm(t.fee):"免运费"}</span>${t.cp?`<span>${B("回购优惠","Coupon")}</span><span class="price up">−${rm(t.cp.amount)}</span>`:""}${t.ptsOff?`<span>${B("积分抵扣","Points")} (${t.pts})</span><span class="price up">−${rm(t.ptsOff)}</span>`:""}${ui.coupon&&!t.cp?`<span class="muted" style="grid-column:1/-1">这张优惠码要满 ${rm((couponsOf(uid).find(c=>c.code===ui.coupon)||{}).min||0)} 才能用。</span>`:""}<b>${B("应付","Total")}</b><b class="price" style="color:var(--red);font-size:18px">${rm(t.total)}</b></div>
+  ${STM().on&&STM().goals.length?`<p class="note" style="margin:0">${t.sub>=STM().min?B("这一单可以盖 1 个集章。","This order earns 1 stamp."):B(`商品再买 ${rm(STM().min-t.sub)} 就能盖 1 个集章。`,`Add ${rm(STM().min-t.sub)} more to earn a stamp.`)}</p>`:""}
   <p class="muted">${B("店主确认收到款、确认有货后才会寄出。","We ship only after payment and stock are confirmed.")}</p></div></div>`;
 };
 /* v76 付款还没接通：商品页、购物车、订单页都用同一段说明。联系渠道、时限、未确认怎么处理都待店主确认，不写成承诺 */
@@ -2702,6 +2645,12 @@ function openOrders(){ try{ if(typeof mine==="undefined"||!mine) return []; retu
 function markSeen(){ const un=unreadOrders(); if(!un.length) return; ME.oseen=Object.assign({},ME.oseen); un.forEach(([id,st])=>ME.oseen[id]=st); saveMe() }
 window.hdrInfo=()=>{ try{ const m=member(uid); return {unread:openOrders().length,tier:BT(m.tier[0],m.tier[1]),alerts:alerts().length} }catch(e){ return {} } };
 const MONTHS=["1 月","2 月","3 月","4 月","5 月","6 月","7 月","8 月","9 月","10 月","11 月","12 月"];
+const stampName=g=>g.k==="draw"?B(`免费夹取 ${g.n} 次`,`${g.n} free claw play${g.n>1?"s":""}`):g.k==="pts"?B(`${g.n} 积分`,`${g.n} points`):esc(g.txt);
+function stampCard(){ const S=STM(); if(!S.on||!S.goals.length||isGuest()) return ""; const n=stampOrders(uid).length, sz=stampSize(), cur=n%sz, card=Math.floor(n/sz)+1, got=stampGot(uid), gift=got.filter(g=>g.k==="gift");
+  return `<section class="panel stack stampc" style="gap:10px"><div class="row" style="justify-content:space-between"><div><span class="lbl">${B("集章卡","Stamp card")}${card>1?B(` · 第 ${card} 张`,` · card ${card}`):""}</span><h3 style="margin:2px 0">${B(`${cur} / ${sz} 个章`,`${cur} of ${sz} stamps`)}</h3></div></div>
+  <div class="stamps">${Array.from({length:sz},(_,i)=>{ const g=S.goals.find(x=>x.at===i+1); return `<span class="${i<cur?"on":""}${g?" gl":""}"><i>${i<cur?"✓":g?"🎁":i+1}</i>${g?`<small>${stampName(g)}</small>`:""}</span>` }).join("")}</div>
+  <p class="muted" style="margin:0">${B(`每一单商品金额满 ${rm(S.min)}（不算运费），店主确认付款后盖 1 个章。`,`Every order with ${rm(S.min)}+ in goods (excluding shipping) earns 1 stamp once payment is confirmed.`)}${S.goals.map(g=>B(`集到 ${g.at} 个送${stampName(g)}。`,` ${g.at} stamps: ${stampName(g)}.`)).join("")}${B(`集满 ${sz} 个换新卡。`,` A new card starts after ${sz}.`)}</p>
+  ${gift.length?`<div class="stack" style="gap:4px">${gift.map(g=>`<div class="row" style="gap:8px"><span class="chip">${(LUCKY.sent||{})[g.key]?B("已寄出","Sent"):B("待寄出","To send")}</span>${B(`第 ${g.card} 张卡 · ${g.at} 个章：`,`Card ${g.card}, ${g.at} stamps: `)}${esc(g.txt)}</div>`).join("")}<small class="muted">${B("礼物会跟你下一张订单一起寄，或店主联系你。","Gifts ship with your next order, or we'll contact you.")}</small></div>`:""}</section>` }
 function memberCard(slim){ const m=member(uid), R=m.R, nm=new Date(), nx=new Date(nm.getFullYear(),nm.getMonth()+1,1), out=new Date(nm.getFullYear(),nm.getMonth()-11,1);
   return `<div class="panel mcardx stack" style="gap:10px">${slim?`<span class="lbl">${B("等级和积分","Tier and points")}</span>`:`<div class="row" style="justify-content:space-between"><div><span class="lbl">${B("我的会员","My membership")}</span><h3 style="margin:2px 0">${B(m.tier[0],m.tier[1])}</h3></div><div style="text-align:right"><b class="price" style="font-size:26px">${m.left}</b><div class="muted">${B("可用积分","Points available")}</div></div></div>`}
   ${m.next?`<div class="bar2"><i style="width:${Math.min(100,m.spend/(m.next[0]==="银卡"?R.silver:R.gold)*100).toFixed(0)}%"></i></div><p><b>${B(`再消费 ${rm(m.next[1])} 升${m.next[0]}`,`${rm(m.next[1])} more to reach ${m.next[0]==="银卡"?"Silver":"Gold"}`)}</b></p>`:`<p><b>${B("你已经是最高等级","You're at the top tier")}</b></p>`}
@@ -2981,7 +2930,10 @@ function normLucky(d){ d=d&&typeof d==="object"?d:{};
   const ci={}; const c0=d.ci&&typeof d.ci==="object"?d.ci:{}; Object.keys(c0).slice(0,5000).forEach(u=>{ const x=c0[u]; if(x&&typeof x==="object") ci[u]={seen:arr(x.seen).filter(v=>typeof v==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(v)).slice(-400),at:num(x.at)||0} });
   /* 2026-11-19 用户要：第几次购买送免费夹取次数。free.at = 第几张已付款订单（如 1,3,5），free.n = 每次送几次 */
   const f0=d.free&&typeof d.free==="object"?d.free:{}, free={at:[...new Set(arr(f0.at).map(x=>clampN(x,1,999)).filter(x=>x>=1))].sort((a,b)=>a-b).slice(0,20),n:clampN(f0.n,0,20)};
-  return {on:d.on===true,rounds,log,sent,ci,free} }
+  /* 2026-11-19 用户要：集章卡。单笔商品金额满 stamp.min 得 1 个章；集到 goals[].at 个送奖励（k: draw 免费夹取 / pts 积分 / gift 礼物文字），集满最大那格换新卡 */
+  const st0=d.stamp&&typeof d.stamp==="object"?d.stamp:{}, goals=arr(st0.goals).map(g=>({at:clampN(g&&g.at,1,50),k:["draw","pts","gift"].includes(g&&g.k)?g.k:"gift",n:clampN(g&&g.n,0,100000),txt:cleanTxt(g&&g.txt,60)})).filter(g=>g.at>=1&&(g.k==="gift"?g.txt:g.n>0)).sort((a,b)=>a.at-b.at).slice(0,6);
+  const stamp={on:st0.on===true,min:Math.max(1,num(st0.min)||150),goals};
+  return {on:d.on===true,rounds,log,sent,ci,free,stamp} }
 function normDraw(x){ if(!x||typeof x!=="object") return null; const n=clampN(x.n,0,1e6); if(!n) return null; return {n,r:cleanId(x.r),m:cleanId(x.m||""),cost:clampN(x.cost,0,1e6),free:x.free===1?1:0,at:num(x.at)||0} }
 function h01(str){ let h=2166136261>>>0; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619)>>>0 }
   h^=h>>>16; h=Math.imul(h,0x85ebca6b)>>>0; h^=h>>>13; h=Math.imul(h,0xc2b2ae35)>>>0; h^=h>>>16; return (h>>>0)/4294967296 }
@@ -2990,8 +2942,14 @@ function drawRes(u,n,r,m){ m=m||r; const tot=m.prizes.reduce((a,p)=>a+p.w,0)+m.m
 const machOf=(r,mid)=>r?(r.machines||[]).find(m=>m.id===(mid||""))||null:null;
 const curRound=()=>LUCKY.rounds.length?LUCKY.rounds[LUCKY.rounds.length-1]:null;
 /* 某位顾客的有效抽奖：同一个 n 以店主抄下的为准；只认当期，或者店主已经抄下的旧期 */
+const STM=()=>(typeof LUCKY!=="undefined"&&LUCKY.stamp)||{on:false,min:150,goals:[]};
+function stampOrders(u){ const S=STM(); if(!S.on) return []; try{ return arr(((typeof all!=="undefined"&&all[u])||{}).orders).map(o=>{ const [st,a]=rawStatus(u,o); return {o,st,a} }).filter(x=>["approved","shipped","delivered","done"].includes(x.st)&&!x.a.test&&!x.a.del&&lines(x.o,x.a)[1]>=S.min).map(x=>({id:cleanId(x.o.id),at:num(x.o.at)||0})).sort((a,b)=>a.at-b.at) }catch(e){ return [] } }
+const stampSize=()=>Math.max(1,...STM().goals.map(g=>g.at));
+/* 已经拿到的集章奖励：第 card 张卡的第 at 格 */
+function stampGot(u){ const S=STM(); if(!S.on||!S.goals.length) return []; const n=stampOrders(u).length, sz=stampSize(), out=[];
+  for(let c=0;c*sz<n;c++) S.goals.forEach(g=>{ if(c*sz+g.at<=n) out.push({...g,card:c+1,key:"st:"+u+":"+(c+1)+":"+g.at}) }); return out }
 function paidCount(u){ try{ return arr(((typeof all!=="undefined"&&all[u])||{}).orders).filter(o=>["approved","shipped","delivered","done"].includes(rawStatus(u,o)[0])).length }catch(e){ return 0 } }
-function freeEarned(u){ const F=LUCKY.free||{at:[],n:0}, k=paidCount(u); return F.n?F.at.filter(x=>x<=k).length*F.n:0 }
+function freeEarned(u){ const F=LUCKY.free||{at:[],n:0}, k=paidCount(u); return (F.n?F.at.filter(x=>x<=k).length*F.n:0)+stampGot(u).filter(g=>g.k==="draw").reduce((a,g)=>a+g.n,0) }
 const freeLeft=u=>Math.max(0,freeEarned(u)-arr(Object.values(Object.fromEntries(arr(((typeof MEALL!=="undefined"&&MEALL[u])||{}).draws).concat(arr(LUCKY.log[u])).map(d=>[d.n,d])))).filter(d=>d.free===1).length);
 function luckyDraws(u){ const me=(typeof MEALL!=="undefined"&&MEALL[u])||{}, logged=arr(LUCKY.log[u]), by={}, cur=curRound();
   arr(me.draws).forEach(d=>{ by[d.n]={...d,logged:false} }); logged.forEach(d=>{ by[d.n]={...d,logged:true} });
@@ -3064,6 +3022,22 @@ function luckyBody(){ const r=curRound(), m=member(uid), mine=luckyDraws(XU).sli
   <p class="muted" style="font-size:12px">${B("结果在投币那一刻由系统按公开的中奖率算出，动画只是把结果演出来，店主也改不了。积分一经使用不退。这一期从","The result is fixed by the published odds the moment you insert points; the animation just shows it. Points used are not refunded. This round started")} ${new Date(r.at).toLocaleDateString("zh-CN")}${B(" 开始。","")}</p></div></div>
   ${mine.some(d=>d.n!==ui.clawBusy)?`<section class="stack" style="gap:8px">${H2("我的夹取记录","My plays")}<div class="panel stack" style="gap:6px">${mine.filter(d=>d.n!==ui.clawBusy).slice(0,30).map(d=>`<div class="alrow"><span class="muted">${new Date(d.at).toLocaleString(isEN()?"en-MY":"zh-CN")}</span>${d.mach&&d.mach.name?`<span class="chip">${esc(d.mach.name)}</span>`:""}<b>${d.ok?(d.win?esc(d.prize):B("没夹到","Nothing")):B("无效记录","Invalid")}</b><span class="muted">−${d.cost} ${B("分","pts")}</span>${d.win?`<span class="chip">${LUCKY.sent[d.key]?B("已安排","Arranged"):B("等店主安排","Pending")}</span>`:""}</div>`).join("")}</div></section>`:""}`;
 }
+function admStamp(){ const S=STM(), gs=S.goals.length?S.goals:[{at:5,k:"draw",n:1,txt:""},{at:10,k:"gift",n:0,txt:""}];
+  const rows=[...gs,{at:"",k:"gift",n:"",txt:""}].slice(0,6).map((g,i)=>`<div class="row stg" style="gap:8px;align-items:flex-end"><label class="f" style="flex:0 1 110px">集到几个章<input class="st-at" type="number" min="1" max="50" value="${g.at}"></label><label class="f" style="flex:0 1 150px">送什么<select class="st-k">${[["draw","免费夹取"],["pts","积分"],["gift","礼物或商品"]].map(o=>`<option value="${o[0]}" ${g.k===o[0]?"selected":""}>${o[1]}</option>`).join("")}</select></label><label class="f" style="flex:1 1 180px">次数 / 分数 / 礼物名字<input class="st-v" value="${esc(g.k==="gift"?g.txt:String(g.n||""))}" placeholder="例如：2，或：卡套一组"></label></div>`).join("");
+  const us=Object.keys(typeof all!=="undefined"?all:{}), gifts=[]; us.forEach(u=>stampGot(u).filter(g=>g.k==="gift").forEach(g=>gifts.push({u,g})));
+  const nm=u=>esc(arr((all[u]||{}).orders).map(o=>cleanTxt(o.name,40)).filter(Boolean).pop()||String(u).slice(0,8));
+  return `${H2("集章卡","Stamp card")}<p class="muted">顾客每一单商品金额满设定金额（不算运费），你在订单按「通过」后就盖 1 个章。集到设定的格数送奖励；集满最大那格就换新卡重新集。最多 6 个奖励格，留空的一行不算。</p>
+  <div class="panel stack"><label class="row" style="gap:8px"><input type="checkbox" id="st-on" ${S.on?"checked":""}> 开启集章卡（顾客在会员中心看得到）</label>
+  <label class="f" style="max-width:220px">单笔满多少 RM 得 1 个章<input id="st-min" type="number" min="1" step="1" value="${S.min}"></label>
+  ${rows}<div><button class="pri" data-stsave="1">保存</button></div></div>
+  ${H2(`要寄的集章礼物（${gifts.length}）`,"Stamp gifts")}${gifts.length?`<div class="tw"><table><thead><tr><th>顾客</th><th>礼物</th><th>第几张卡</th><th></th></tr></thead><tbody>${gifts.map(x=>{ const sent=!!(LUCKY.sent||{})[x.g.key]; return `<tr><td>${nm(x.u)}</td><td>${esc(x.g.txt)}</td><td>${x.g.card}（${x.g.at} 个章）</td><td><button data-lsent="${esc(x.g.key)}" data-v="${sent?0:1}">${sent?"改回未寄":"标记已寄出"}</button></td></tr>` }).join("")}</tbody></table></div>`:`<p class="muted">还没有人集到礼物格。</p>`}` }
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-stsave]"); if(!b||!owner) return;
+  const goals=[]; for(const r of document.querySelectorAll(".stg")){ const at=parseInt(r.querySelector(".st-at").value,10), k=r.querySelector(".st-k").value, v=r.querySelector(".st-v").value.trim(); if(!at&&!v) continue;
+    if(!(at>=1&&at<=50)) return toast("集到几个章要填 1 到 50"); if(!v) return toast(`第 ${at} 个章的奖励还没填`);
+    if(k==="gift") goals.push({at,k,n:0,txt:cleanTxt(v,60)}); else { const n=parseInt(v,10); if(!(n>0)) return toast(`第 ${at} 个章：${k==="draw"?"免费夹取次数":"积分"}要填正整数`); goals.push({at,k,n,txt:""}) } }
+  if(new Set(goals.map(g=>g.at)).size<goals.length) return toast("同一格不能设两个奖励");
+  LUCKY.stamp={on:document.getElementById("st-on").checked,min:Math.max(1,num(document.getElementById("st-min").value)||150),goals:goals.sort((a,b)=>a.at-b.at)};
+  render(); saveLucky().then(()=>toast("已保存 Saved")) });
 function admLucky(){ const r=curRound(); const rows=[]; const us=new Set(Object.keys(MEALL).concat(Object.keys(LUCKY.log)));
   us.forEach(u=>luckyDraws(u).forEach(d=>rows.push({u,d}))); rows.sort((a,b)=>b.d.at-a.d.at);
   const wins=rows.filter(x=>x.d.win), nm=u=>esc(arr((all[u]||{}).orders).map(o=>cleanTxt(o.name,40)).filter(Boolean).pop()||String(u).slice(0,8));
@@ -3100,9 +3074,9 @@ ATABS.splice(ATABS.length-1,0,["lucky","抽奖","Lucky draw"]);
     if(ui.atab==="products") return H1("商品","Products")+off+admProducts();
     if(ui.atab==="users") return off+admUsers();
     if(ui.atab==="review") return H1("审核","Approve")+off+part("reviews")+part("wall",1);
-    if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=[["rules","积分规则","Points rules"],["lucky","夹娃娃机","Claw machines"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"]]);
+    if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=[["rules","积分规则","Points rules"],["stamp","集章卡","Stamp card"],["lucky","夹娃娃机","Claw machines"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"]]);
       const st=tabs.some(t=>t[0]===ui.stab)?ui.stab:"rules";
-      const body=st==="rules"?admMembers().split("<h2>")[0]+"<h2>"+admMembers().split("<h2>")[1]:st==="lucky"?part("lucky",1):st==="staff"?admStaff().replace(/^\s*<h1>[\s\S]*?<\/h1>/,""):part("launch");
+      const body=st==="rules"?admMembers().split("<h2>")[0]+"<h2>"+admMembers().split("<h2>")[1]:st==="stamp"?admStamp():st==="lucky"?part("lucky",1):st==="staff"?admStaff().replace(/^\s*<h1>[\s\S]*?<\/h1>/,""):part("launch");
       return H1("设置","Settings")+off+seg("data-stab",st,tabs)+body }
     const rows=[]; Object.entries(all).forEach(([u,d])=>liveO(u,d.orders).forEach(o=>rows.push([u,eff(u,o)]))); rows.sort((a,b)=>b[1].at-a[1].at);
     const f=OF.find(x=>x[0]===ui.ofil)||OF[0], list=rows.filter(r=>f[3](r[1]));
@@ -3218,7 +3192,7 @@ V.member=()=>{ const E=isEN();
   const unr=new Set(openOrders().map(x=>x[0])), GR=[["unpaid","待付款","To pay","M3 7h18v12H3zM3 11h18M7 15h3"],["review","待审核","In review","M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7zM8.5 12l2.5 2.5 4.5-5"],["approved","备货中","Packing","M4 8l8-4 8 4v8l-8 4-8-4zM4 8l8 4 8-4M12 12v8"],["shipped","已寄出","Shipped","M2 6h12v10H2zM14 10h4l3 3v3h-7zM6 19a2 2 0 1 0 0-.1M17 19a2 2 0 1 0 0-.1"],["delivered","待评价","To review","M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"]];
   const top=`<section class="panel mtop"><div class="mav" aria-hidden="true">${esc(String(nm)[0]||"?").toUpperCase()}</div><div class="mwho"><b>${esc(nm)}</b><span class="mtier">${B(m.tier[0],m.tier[1])}</span></div><div class="mpts"><b>${m.left}</b><small>${B("可用积分","Points")}</small></div></section>
   <section class="panel mords"><div class="row" style="justify-content:space-between"><h2 style="margin:0;font-size:17px">${B("我的订单","My orders")}</h2><a href="#orders" data-ofl="">${B("查看全部","View all")} ›</a></div><div class="mgrp">${GR.map(g=>{ const n=os.filter(o=>o.status===g[0]).length, u=os.some(o=>o.status===g[0]&&unr.has(o.id)); return `<a href="#orders" data-ofl="${g[0]}"><span class="mi"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${g[3]}"/></svg>${n?`<b class="${u?"u":""}">${n}</b>`:""}</span>${B(g[1],g[2])}</a>` }).join("")}</div></section>`;
-  return `${H1("会员中心","Membership")}${top}${memberCard(1)}${histSec}
+  return `${H1("会员中心","Membership")}${top}${memberCard(1)}${stampCard()}${histSec}
   <section class="panel stack" style="gap:10px">${H2("活动计划","What's on")}<ul class="evl">${ev.map(e=>`<li class="${e[3]?"on":""}"><i aria-hidden="true"></i><div><b>${e[0]}</b><p class="muted">${e[1]}</p></div><span>${e[2]}</span></li>`).join("")}</ul></section>
 ` };
 /* v83 访客下单：不用登录也能买。按提交时自动建一个访客身份（Supabase 匿名登录），页面重载后自动填回表单再提交 */
