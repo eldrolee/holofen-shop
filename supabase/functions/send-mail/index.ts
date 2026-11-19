@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
   const { data: u } = await user.auth.getUser();
   if (!u?.user) return J({ error: "login" }, 401);
   let b: any; try { b = await req.json() } catch { return J({ error: "bad_json" }, 400) }
-  const site = typeof b.site === "string" && /^https:\/\/[\w.-]+(\/[\w./-]*)?$/.test(b.site) ? b.site : "https://holofen-shop.vercel.app/";
+  const site = typeof b.site === "string" && /^https:\/\/[\w.-]+(\/[\w./-]*)?$/.test(b.site) ? b.site : "https://holofen-shop.eldrolee.workers.dev/";
   try {
     if (b.kind === "placed") {
       const admin = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
