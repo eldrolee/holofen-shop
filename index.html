@@ -1369,8 +1369,8 @@ window.HOLO_AUTH=(function(){
 "use strict";
 /* 散包：每个系列一件「单包补充包」，顾客自己填要几包（1 到 99）。已经有 Booster Pack 商品的系列直接用；没有的先建一件价格待定的，店主在后台填价格后才上架。 */
 (function(){ const L=window.PRODUCTS||(window.PRODUCTS=[]), SIx=window.SETINFO||{};
-  Object.keys(SIx).filter(s=>SIx[s].ja).forEach(s=>{ const id="jb-"+SIx[s].code.toLowerCase(); if(!L.some(p=>p.id===id)) L.push({id,s,n:"Booster Box",zh:"补充包盒（日文版 · 20 包）",packs:20,t:"B",no:"",usd:0,myr:0,loc:null,price:0,img:null,src:"",c:"box",lang:"jp"}) });
-  Object.keys(SIx).forEach(s=>{ const ex=L.find(p=>p.s===s&&p.n==="Booster Pack"); if(ex){ ex.loose=1; return }
+  /* 日文版商品不再自动生成：2026-11-20 起按日文版价格表放在 data.js 的 JP_PRODUCTS，归到对应的英文系列 */
+  Object.keys(SIx).filter(s=>!SIx[s].ja).forEach(s=>{ const ex=L.find(p=>p.s===s&&p.n==="Booster Pack"); if(ex){ ex.loose=1; return }
     L.push({id:SIx[s].ja?"jp-"+SIx[s].code.toLowerCase():"lp-"+s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""),s,n:"Booster Pack",zh:SIx[s].ja?"散包（日文版）":"散包（单包补充包）",lang:SIx[s].ja?"jp":undefined,t:"B",no:"",usd:0,myr:0,loc:null,price:0,img:null,src:"",c:"pack",loose:1}) }) })();
 /* 暂用商品图（TCGplayer 目录图），之后换成实拍。Keldeo 单包吊卡还没有公开图，保留占位。 */
 (function(){ const T={"Knock Out Collection|30th Celebration":"prod/knockout-30th.webp","Booster Pack|Journey Together":"prod/jtg-booster.webp","Booster Pack|Surging Sparks":"prod/ssp-booster.webp"};
@@ -2328,7 +2328,7 @@ V.decks=()=>`${H1("比赛卡组","Tournament decks")}
   ${top3Decks()}
   ${H2("谁在哪场比赛用什么拿了第几名","Who placed where, with what")}
   <p class="muted">比赛页上卡组只显示图标，卡组名是按 Limitless 的卡组编号对应的。有「牌表」按钮的可以直接展开 60 张；其余的点「原页」看。<span class="en"> Rows with a "List" button expand the full 60 cards.</span></p>
-  ${TOURS.map(t=>`<div class="stack" style="gap:8px"><h3>${isEN()?esc(t.n):`${esc(t.zh)} <span class="muted" style="font-weight:500">${esc(t.n)}</span>`} · ${t.d} · ${t.pl.toLocaleString()} ${isEN()?"players":"人"} · ${src("比赛页","https://limitlesstcg.com/tournaments/"+t.id)}</h3>
+  ${TOURS.map(t=>`<div class="stack" style="gap:8px"><h3>${isEN()?esc(t.n):`${esc(t.zh)} <span class="muted" style="font-weight:500;display:inline-block">${esc(t.n)}</span>`} · ${t.d} · ${t.pl.toLocaleString()} ${isEN()?"players":"人"} · ${src("比赛页","https://limitlesstcg.com/tournaments/"+t.id)}</h3>
   <div class="tw"><table class="tight"><thead><tr>${TH("名次","Place",1)}${TH("选手","Player")}${TH("国家","Country")}${TH("套牌","Deck")}${TH("牌表","List")}</tr></thead><tbody>${t.top.map((r,i)=>{const k=t.id+"-"+i,has=LISTS[r[3]];return `<tr><td class="n">${i+1}</td><td>${esc(r[0])}</td><td>${r[1]}</td><td><span class="dn">${deckImg(r[2])?`<img src="${deckImg(r[2])}" alt="" loading="lazy">`:""}<span>${esc(r[2])}</span></span></td><td>${has?`<button data-list="${k}">${ui.open[k]?"收起 Hide":"牌表 List"}</button>`:src("原页 Source","https://limitlesstcg.com/decks/list/"+r[3])}</td></tr>${has&&ui.open[k]?`<tr><td colspan="5">${listBox(r[3])}</td></tr>`:""}`}).join("")}</tbody></table></div></div>`).join("")}
   <div><button class="pri" data-go="build">让店主帮我组一套 <span class="en">Build one for me</span></button></div>`;
 const radio=(name,opts,def)=>`<div class="opts">${opts.map((o,i)=>`<label><input type="radio" name="${name}" id="${name}-${i}" value="${esc(o[0])}" ${(def==null?i===0:def===i)?"checked":""}>${esc(o[0])} <span class="en">${esc(o[1])}</span></label>`).join("")}</div>`;
@@ -2694,8 +2694,8 @@ function saveMe(){ const d=JSON.parse(JSON.stringify(ME)); MEALL[XU]=ME; render(
 function looseAll(s){ const seen={}; return P.concat(ALLP).filter(p=>p.loose&&p.s===s&&!seen[p.id]&&(seen[p.id]=1)) }
 function looseFor(s){ const L=looseAll(s), on=L.filter(listed), pool=on.length?on:L, lg=(ui.llng||{})[s]; return (lg!=null&&pool.find(p=>(p.lng||"")===lg))||pool[0] }
 const BT=(zh,en)=>isEN()?en:zh;
-function boxFor(s){ return P.concat(ALLP).find(p=>p.c==="box"&&p.s===s&&/^booster box$/i.test(p.n||"")) }
-function looseBox(s,skip,qv){ const p=PM[(looseFor(s)||{}).id], b0=PM[(boxFor(s)||{}).id], bx=b0&&b0.id!==skip&&!qv?b0:null;
+function boxFor(s,lg){ const L=P.concat(ALLP).filter(p=>p.c==="box"&&p.s===s&&(/^booster box$/i.test(p.n||"")||p.lang==="jp")); return (lg&&(L.find(p=>listed(p)&&p.lng===lg)||L.find(p=>p.lng===lg)))||L.find(p=>p.lang!=="jp")||L[0] }
+function looseBox(s,skip,qv){ const p=PM[(looseFor(s)||{}).id], b0=PM[(boxFor(s,(looseFor(s)||{}).lng)||{}).id], bx=b0&&b0.id!==skip&&!qv?b0:null;
   if(qv&&!(p&&listed(p))) return `<div class="loose none"><span class="muted">${B("本系列散包暂未上架","Loose packs from this set are not listed yet")}</span></div>`;
   if(!p&&!bx) return "";
   const lgs=[...new Set(looseAll(s).filter(listed).map(x=>x.lng||""))], lsel=lgs.length>1?`<div class="row lgsel" style="gap:6px;flex-basis:100%">${lgs.map(l=>`<button type="button" class="chip${(p.lng||"")===l?" on":""}" data-llng="${esc(l)}" data-lset="${esc(s)}" aria-pressed="${(p.lng||"")===l}">${esc(l||B("未注明语言","Language TBD"))}</button>`).join("")}</div>`:"";
@@ -2709,7 +2709,7 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   if(b.dataset.lstep){ el.value=clampN(n+(+b.dataset.d),1,mx); return lqUpd(k) }
   if(!(+el.value>=1)) return toast(BT("请填要几包","Enter how many packs")); add(k,null,n); el.value=1; lqUpd(k) },true);
 document.addEventListener("input",e=>{ const id=e.target.id||""; if(id.startsWith("lq-")) lqUpd(id.slice(3)); const k={"c-name":"cname","c-phone":"cphone","c-addr":"caddr","c-post":"cpost","c-note":"cnote","c-email":"cemail"}[id]; if(k) ui[k]=e.target.value; if(id==="c-state"&&e.target.tagName==="INPUT"&&!e.target.readOnly) ui.cstate=e.target.value },true);
-function isPre(p){ const x=p&&own(CAT.items,p.id)?CAT.items[p.id]:null; return x&&typeof x.pre==="string"&&/^\d{4}-\d{2}$/.test(x.pre)?x.pre:"" }
+function isPre(p){ const x=p&&own(CAT.items,p.id)?CAT.items[p.id]:null, v=x&&typeof x.pre==="string"?x.pre:p&&p.pre0||""; return /^\d{4}-\d{2}$/.test(v)?v:"" }
 const preTxt=p=>{ const v=isPre(p); if(!v) return ""; const [y,m]=v.split("-"); return `${y} 年 ${+m} 月` };
 const stK=p=>p&&listed(p)&&(p.stock!==0||isPre(p))?"on":"off";
 const wished=id=>ME.wish.includes(id);
