@@ -185,6 +185,8 @@ nav.sub a{padding:6px 14px;border-radius:99px;text-decoration:none;color:var(--i
 nav.sub a .en{font-size:11px}
 nav.sub a.on{background:var(--surface);color:var(--red);font-weight:700;box-shadow:0 1px 4px rgba(20,37,74,.15)}
 .cartbtn.here{box-shadow:0 0 0 3px var(--sun)}
+/* 2026-11-19 用户要：购物车有东西时变红色，比较吸睛 */
+.cartbtn.has{background:#e0583a!important;border-color:#b8401f!important;color:#fff!important}.cartbtn.has .cn{background:#fff;color:#e0583a;border-radius:99px;min-width:20px;padding:0 6px;line-height:20px;text-align:center;font-weight:800}.cartbtn .cn{font:inherit}
 @keyframes fade{from{opacity:0}}
 @keyframes pop{from{opacity:0;transform:scale(.96) translateY(6px)}}
 @keyframes rise{from{opacity:0;transform:translate(-50%,8px)}}
@@ -1498,7 +1500,7 @@ let db=null, assets=null, uid="local", owner=false, mode="local";
 let mine={orders:[]}, all={}, reviews=[], admS={}, myReviews={}, pubRev=[];
 let cart=[], cartWait=[]; try{const c0=(x=>Array.isArray(x)?x:[])(JSON.parse(localStorage.getItem("cart")||"[]")).filter(c=>c&&typeof c.id==="string"); cart=c0.filter(c=>item(c.id)); cartWait=c0.filter(c=>!item(c.id)&&/^n[a-z0-9]+$/.test(c.id)).slice(0,50)}catch(e){}
 let cartSync=0; const saveCart=()=>{try{localStorage.setItem("cart",JSON.stringify(cart))}catch(e){}
-  clearTimeout(cartSync); cartSync=setTimeout(()=>{ try{ if(typeof signedIn!=="function"||!signedIn()||!MELOADED) return; const c=cart.filter(x=>!x.brief).map(x=>({id:x.id,qty:x.qty})); if(JSON.stringify(c)===JSON.stringify(ME.cart)) return; ME.cart=c; ME.cartAt=c.length?Date.now():0; saveMe() }catch(e){} },3000); $("#cartbtn").innerHTML=CARTICON+`<span class="ct">购物车 <span class="en">Cart </span></span>`+cart.reduce((a,c)=>a+c.qty,0)};
+  clearTimeout(cartSync); cartSync=setTimeout(()=>{ try{ if(typeof signedIn!=="function"||!signedIn()||!MELOADED) return; const c=cart.filter(x=>!x.brief).map(x=>({id:x.id,qty:x.qty})); if(JSON.stringify(c)===JSON.stringify(ME.cart)) return; ME.cart=c; ME.cartAt=c.length?Date.now():0; saveMe() }catch(e){} },3000); { const n=cart.reduce((a,c)=>a+c.qty,0), cb=$("#cartbtn"); cb.innerHTML=CARTICON+`<span class="ct">购物车 <span class="en">Cart </span></span><b class="cn">${n}</b>`; cb.classList.toggle("has",n>0); cb.setAttribute("aria-label",(n?n+" 件商品在购物车 · ":"")+"购物车 Cart") } };
 function lsGet(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}}
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 async function initStore(){
