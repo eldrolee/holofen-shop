@@ -609,7 +609,15 @@ textarea{font:inherit;width:100%;box-sizing:border-box;border:1px solid var(--li
 .sarr:active{transform:scale(.92)}.sarr:hover{background:var(--sun);opacity:1}
 .sarr.l{left:calc(11% - 26px)}.sarr.r{right:calc(11% - 26px)}
 @media (max-width:640px){.sarr{width:40px;height:40px;top:calc(50% - 20px)}.sarr.l{left:4px}.sarr.r{right:4px}}
-.modal .box.kf{display:block;max-width:520px}
+.modal .box.kf{display:flex;flex-direction:column;max-width:520px;max-height:min(86vh,720px)}
+.kflog{flex:1 1 auto;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin:12px 0 10px;padding:2px}
+.kfm{display:flex;gap:8px;align-items:flex-end}.kfm.me{justify-content:flex-end}.kfm .bud{flex:none;border-radius:50%}
+.kfb{max-width:86%;padding:9px 12px;border-radius:14px;background:var(--card,#fff);border:1px solid var(--line);font-size:14px;line-height:1.55;overflow-wrap:anywhere}
+.kfm.me .kfb{background:var(--ink,#14254a);color:#fff;border-color:transparent}.kfm.me .kfb .en{color:rgba(255,255,255,.75)}
+.kfq{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.kfq button{font-size:13px;padding:6px 10px;border-radius:999px;text-align:left;line-height:1.35}
+.kfok{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px;font-size:13px}.kfok button{font-size:12.5px;padding:4px 10px;border-radius:999px}
+.kfin{display:flex;gap:8px;flex:none}.kfin input{flex:1 1 auto;min-width:0}.kfin button{flex:none}
+.kfb a{font-weight:600}
 .kfl{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
 .kfl a{display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none}
 .kfl a .chip{margin-left:auto;font-size:11px}.kfl .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none}
@@ -1969,8 +1977,59 @@ function cbkStrip(side,row){ const n=8; return `<div class="cbks ${side}" data-r
   /* v76 左右箭头：每按一次移动约 2 张，停 2.5 秒再继续自动滚 */
   document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-mq]"); if(!b) return; const t=b.parentElement.querySelector(".track"); if(!t) return; const o=st(t), f=t.querySelector("figure"), w=f?f.getBoundingClientRect().width+12:180; const base=o.tgt!=null?o.tgt:o.x; o.tgt=base+(+b.dataset.mq)*w*2; o.hold=performance.now()+2500 });
 })();
-function kfModal(){ return `<div class="modal"><div class="box kf" role="dialog" aria-label="联系客服 Customer service"><div class="row" style="justify-content:space-between;flex-wrap:nowrap;align-items:flex-start"><div><h2>${B("联系客服","Talk to us")}</h2><p class="muted">${B("问库存、问卡况、问运费、售后，都可以直接找我们。","Stock, condition, shipping or after-sales: message us directly.")}</p></div><button data-close="1" aria-label="关闭 Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-  <div class="kfl">${kfLinks()}</div></div></div>` }
+/* 2026-11-19 用户要：网站里的自助客服。顾客先点常见问题或打字问，答案按网站现在的设定生成；还没解决才去 IG（用户说暂时引去 IG）。
+   这是按关键词配对的问答，不是联网的大模型，不会乱编。店主可以在后台「设置 › 客服问答」加自己的问题。 */
+let FAQX={list:[]};
+const normFaq=d=>({list:arr(d&&d.list).slice(0,40).map(x=>({q:cleanTxt(x&&x.q,120).trim(),a:cleanTxt(x&&x.a,1200).trim(),k:cleanTxt(x&&x.k,200).trim()})).filter(x=>x.q&&x.a)});
+async function initFaq(){ try{ if(window.claude&&window.claude.use){ const d=await window.claude.use("db"); if(d){ d.doc("site/faq").onSnapshot(s=>{ FAQX=normFaq(s.exists?s.data():null); if(ui.kf||ui.stab==="faq") render() },()=>{}); return } } }catch(e){}
+  FAQX=normFaq(lsGet("faq",null)) }
+const kfA=(h,zh,en)=>`<a href="#${h}" data-kfgo="1">${B(zh,en)} ›</a>`;
+function FAQ(){ const R=rules(), shp=SHIP.map(x=>`${x.n} ${x.fee?rm(x.fee):B("免运费","free")}`).join("、");
+  const L=[
+  ["order","怎么下单？要先注册吗？","How do I order? Do I need an account?","下单 买 购买 注册 登录 账号 访客 结账 order buy account checkout",
+   ()=>`${B("不用注册也能下单。把商品加进购物车，结账时再填名字、电话和地址就可以。注册会员的话可以累积积分、签到、玩夹娃娃机。","You can order without an account. Add items to the cart and fill in your name, phone and address at checkout. Members also earn points and can check in and play the claw machine.")}<br>${kfA("shop","去商店","Shop")}`],
+  ["pay","怎么付款？","How do I pay?","付款 付钱 支付 转账 银行 tng boost grab duitnow 电子钱包 pay payment bank",
+   ()=>`${B("线上付款还在接通，下单时不会扣钱。店主确认订单后会联系你付款。付完在「我的订单」选你用的付款平台并上传截图。","Online payment is still being set up, so ordering doesn't charge you. Once we confirm your order we'll contact you about payment. After paying, choose the platform in My orders and upload a screenshot.")}<br><small class="muted">${esc(PAYVIA.map(g=>g[2].join("、")).join("、"))}</small><br>${kfA("orders","我的订单","My orders")}`],
+  ["ship","运费多少？寄哪里？","Shipping cost and destinations?","运费 寄 快递 邮费 新加坡 中国 东马 西马 自取 面交 ship shipping delivery singapore china",
+   ()=>`${B("马来西亚、新加坡、中国都寄：","We ship within Malaysia and to Singapore and China: ")}${shp}${B("。","." )} ${B("这些运费是暂定值，店主确认订单时会告诉你实际运费。","These are provisional; we confirm the actual fee with your order.")} ${OWNER_TBD()}`],
+  ["track","多久收到？怎么查订单？","How long until it arrives? Tracking?","多久 几天 什么时候 到 追踪 运单 物流 订单状态 track tracking status arrive",
+   ()=>`${B("订单进度在「我的订单」看，寄出后会给你运单号。","Track progress in My orders; you get a tracking number once it ships.")} ${B("送达大约要几天：","Delivery time: ")}${OWNER_TBD()}<br>${kfA("orders","我的订单","My orders")}`],
+  ["single","卖单卡吗？可以买一包吗？","Do you sell single cards or single packs?","单卡 一张 单包 散包 一包 整盒 盒 box pack single",
+   ()=>`${B("我们卖未拆封的商品：补充包盒、ETB、礼盒和散包。散包可以买整盒，也可以自己填 1 到 99 包。单卡不卖，卡牌页只给你看行情。","We sell sealed product: booster boxes, ETBs, collections and loose packs. Packs can be bought by the box or 1 to 99 at a time. We don't sell single cards; card pages are for price reference.")}<br>${kfA("shop","去商店","Shop")}`],
+  ["lang","有哪些语言版本？","Which languages?","中文 英文 日文 中文版 英文版 日文版 日版 语言 版本 简体 繁体 japanese chinese english language",
+   ()=>B("中文版、英文版、日文版都有，每件商品页都写了是哪个版本。","Chinese, English and Japanese. Each product page says which version it is.")],
+  ["real","是正版吗？","Are the cards genuine?","正版 假 盗版 真 假货 fake genuine authentic",
+   ()=>`${B("保证正版。如果你认为收到假货，请保留原样联系我们，核实后全额退款并负担来回运费。","All genuine. If you think an item is fake, keep it as received and contact us; if confirmed we refund in full and cover shipping both ways.")}<br>${kfA("fake","怎么分辨盗版卡","Spotting fakes")}`],
+  ["refund","可以退货或换货吗？","Returns and exchanges?","退 换 退货 退款 换货 坏 破损 错 寄错 return refund exchange damaged",
+   ()=>`${B("已拆封的商品不能因为抽到的卡退货。寄错、有瑕疵或运送中损坏，请在收到后 7 天内联系我们并附照片，核实后 14 天内补寄或退款。","Opened products can't be returned because of the cards pulled. For a wrong, defective or damaged item, contact us within 7 days of receipt with photos; once verified we replace or refund within 14 days.")}<br>${kfA("terms","条款与细则","Terms")}`],
+  ["deck","可以帮我组卡组吗？","Can you build a deck for me?","组牌 组卡 卡组 代组 牌表 订制 deck build",
+   ()=>`${B("可以。回答几题预算和打法，店主 1 天内在「我的订单」报价，你同意了才付款，不满意可以直接取消。","Yes. Answer a few questions about budget and play style; we quote in My orders within 1 day, and you only pay if you agree.")}<br>${kfA("build","代组服务","Deck building")}`],
+  ["pts","积分和会员等级怎么算？","How do points and tiers work?","积分 会员 等级 银卡 金卡 福利 优惠 折扣 生日 points tier member silver gold discount",
+   ()=>`${B(`每消费 RM1 得 ${R.earn} 分；近 12 个月消费满 ${rm(R.silver)} 升银卡（积分 ×${R.silverX}），满 ${rm(R.gold)} 升金卡（×${R.goldX}）；生日月下单积分 ×${R.bdayX}。`,`${R.earn} pt per RM1; ${rm(R.silver)} in 12 months for Silver (×${R.silverX}), ${rm(R.gold)} for Gold (×${R.goldX}); birthday-month orders ×${R.bdayX}.`)}<br>${kfA("perks","全部会员福利","All member perks")}`],
+  ["lucky","签到和夹娃娃机怎么玩？","Check-in and claw machine?","签到 抽奖 夹娃娃 娃娃机 奖品 集章 免费 lucky draw claw check-in",
+   ()=>`${B("登录会员后每天可以签到拿积分，用积分或免费次数玩夹娃娃机。奖品和中奖率在页面上都写清楚。","Sign in to check in daily for points, and use points or free plays on the claw machine. Prizes and odds are shown on the page.")}<br>${kfA("lucky","签到抽奖","Check-in & draw")}`],
+  ["review","怎么写评价？","How do I leave a review?","评价 评论 写 照片 视频 review",
+   ()=>`${B("订单送达后在「我的订单」写评价，可以附最多 4 张照片和 1 段 15 秒内的视频。","After delivery, review the order in My orders with up to 4 photos and one video of 15 s or less.")}<br>${kfA("orders","我的订单","My orders")}`]];
+  return L.map(x=>({id:x[0],q:B(x[1],x[2]),qz:x[1],k:(x[1]+" "+x[2]+" "+x[3]).toLowerCase(),a:x[4]})).concat(FAQX.list.map((x,i)=>({id:"x"+i,q:esc(x.q),qz:x.q,k:(x.q+" "+x.k).toLowerCase(),a:()=>esc(x.a).replace(/\n/g,"<br>")}))) }
+function kfMatch(t){ t=String(t||"").toLowerCase().trim(); if(!t) return []; const toks=t.split(/[\s,，。？?！!、]+/).filter(Boolean);
+  const grams=[]; toks.forEach(w=>{ if(/[一-鿿]/.test(w)){ for(let i=0;i<w.length-1;i++) grams.push(w.slice(i,i+2)); if(w.length===1) grams.push(w) } else if(w.length>1) grams.push(w) });
+  return FAQ().map(f=>({f,sc:grams.reduce((a,g)=>a+(f.k.includes(g)?(g.length>2?2:1):0),0)})).filter(x=>x.sc>0).sort((a,b)=>b.sc-a.sc).filter((x,i,l)=>x.sc*2>l[0].sc).slice(0,3).map(x=>x.f) }
+const IGURL=(CONTACT.find(c=>c[0]==="ig")||[])[3]||"";
+function kfModal(){ const F=FAQ(), log=ui.kfLog||[], FM=Object.fromEntries(F.map(f=>[f.id,f]));
+  const bot=h=>`<div class="kfm bot">${buddy(28)}<div class="kfb">${h}</div></div>`, me=h=>`<div class="kfm me"><div class="kfb">${h}</div></div>`;
+  const msgs=log.map(m=>m.t==="q"?me(m.h):m.t==="a"?bot(`${m.h}<div class="kfok"><span class="muted">${B("这样解决了吗？","Did this help?")}</span><button data-kfok="1">${B("解决了","Yes")}</button><button data-kfno="1">${B("还没","Not yet")}</button></div>`):m.t==="ok"?bot(B("太好了！还有别的问题可以继续问。","Great! Ask anything else below.")):m.t==="pick"?bot(`${B("你是想问这些吗？","Did you mean:")}<div class="kfq">${m.ids.map(id=>FM[id]?`<button data-kfq="${id}">${FM[id].q}</button>`:"").join("")}</div><div class="kfok"><button data-kfno="1">${B("都不是","None of these")}</button></div>`):m.t==="none"?bot(B("这个我答不了，请直接问店主。","I can't answer that one. Please ask us directly.")+kfHuman()):m.t==="human"?bot(B("抱歉没帮上。直接找店主问，会更快：","Sorry about that. Message us directly:")+kfHuman()):"").join("");
+  return `<div class="modal"><div class="box kf" role="dialog" aria-label="客服 Customer service"><div class="row" style="justify-content:space-between;flex-wrap:nowrap;align-items:flex-start"><div><h2>${B("小鹿客服","Help")}</h2><p class="muted" style="margin:0">${B("先点常见问题或打字问，还没解决再找店主。","Pick a common question or type yours. Still stuck? Message us.")}</p></div><button data-close="1" aria-label="关闭 Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="kflog" id="kflog">${bot(`${B("你好！想问什么？","Hi! What would you like to know?")}<div class="kfq">${F.map(f=>`<button data-kfq="${f.id}">${f.q}</button>`).join("")}</div>`)}${msgs}</div>
+  <form class="kfin" data-kfform="1"><input id="kfq" maxlength="200" autocomplete="off" placeholder="${isEN()?"Type your question…":"打字问问题，例如：寄新加坡多少钱"}" aria-label="${isEN()?"Your question":"你的问题"}"><button class="pri" type="submit">${B("问","Ask")}</button></form>
+  <p class="muted kfh" style="margin:6px 0 0;font-size:12.5px">${B("还是想直接问人？","Prefer a person?")} <a href="#" data-kfno="1">${B("找店主","Message us")}</a></p></div></div>` }
+function kfHuman(){ return `<div class="kfl" style="margin-top:8px">${IGURL?`<a href="${IGURL}" target="_blank" rel="noopener"><span class="ic" style="background:#d6249f"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.6"/><circle cx="16.8" cy="7.2" r="1" fill="#fff"/></svg></span><b>${B("IG 私信我们","DM us on Instagram")} @holofen</b></a>`:kfLinks()}</div>` }
+function kfPush(...m){ ui.kfLog=(ui.kfLog||[]).concat(m).slice(-30); render(); requestAnimationFrame(()=>{ const l=document.getElementById("kflog"); if(l) l.scrollTop=l.scrollHeight; const q=document.getElementById("kfq"); if(q&&matchMedia("(hover:hover)").matches) q.focus() }) }
+document.addEventListener("click",e=>{ const t=e.target.closest&&e.target.closest("[data-kfq],[data-kfok],[data-kfno],[data-kfgo]"); if(!t) return; const d=t.dataset;
+  if(d.kfgo){ ui.kf=false; return }
+  e.preventDefault(); if(d.kfq){ const f=FAQ().find(x=>x.id===d.kfq); if(f) kfPush({t:"q",h:f.q},{t:"a",h:f.a()}); return }
+  if(d.kfok) return kfPush({t:"ok"}); if(d.kfno) return kfPush({t:"human"}) });
+document.addEventListener("submit",e=>{ const f=e.target.closest&&e.target.closest("[data-kfform]"); if(!f) return; e.preventDefault(); const v=(document.getElementById("kfq").value||"").trim(); if(!v) return;
+  const m=kfMatch(v), q={t:"q",h:esc(v)}; if(!m.length) return kfPush(q,{t:"none"}); if(m.length===1) return kfPush(q,{t:"a",h:m[0].a()}); kfPush(q,{t:"pick",ids:m.map(x=>x.id)}) });
 function kfLinks(){ if(!CONTACT.some(c=>c[3])) return `<p class="note" style="margin:0">${B("客服账号正在开通，开通后会放在这里。","Our customer service accounts are being set up and will appear here.")}</p>`; return CONTACT.filter(c=>c[3]).map(c=>`<a href="${c[3]||"#"}" ${c[3]?'target="_blank" rel="noopener"':`data-tbd="${c[1]}"`}><span class="ic" style="background:${c[2]}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${c[4]}</svg></span><b>${c[1]}</b>${c[3]?"":`<span class="chip tbd">${B("待开通","pending")}</span>`}</a>`).join("") }
 /* 比赛卡组前 3 */
 const TOP3=[
@@ -3109,6 +3168,15 @@ function luckyBody(){ const r=curRound(), m=member(uid), mine=luckyDraws(XU).sli
   ${mine.some(d=>d.n!==ui.clawBusy)?`<section class="stack" style="gap:8px">${H2("我的夹取记录","My plays")}<div class="panel stack" style="gap:6px">${mine.filter(d=>d.n!==ui.clawBusy).slice(0,30).map(d=>`<div class="alrow"><span class="muted">${new Date(d.at).toLocaleString(isEN()?"en-MY":"zh-CN")}</span>${d.mach&&d.mach.name?`<span class="chip">${esc(d.mach.name)}</span>`:""}<b>${d.ok?(d.win?esc(d.prize):B("没夹到","Nothing")):B("无效记录","Invalid")}</b><span class="muted">−${d.cost} ${B("分","pts")}</span>${d.win?`<span class="chip">${LUCKY.sent[d.key]?B("已安排","Arranged"):B("等店主安排","Pending")}</span>`:""}</div>`).join("")}</div></section>`:""}`;
 }
 /* 2026-11-19 用户要：「第几张付款订单送免费夹取」是独立的设定，不和夹娃娃机设置放一起 */
+function admFaq(){ const rows=FAQX.list.concat([{q:"",a:"",k:""}]);
+  return `${H2("客服问答","Help Q&A")}<p class="muted">网站右上角的客服会先让顾客点常见问题或打字问，还没解决才引去 IG。下单、付款、运费、退换、正版、组牌、积分等 12 题已经按网站现在的设定自动回答，不用在这里写。这里加你自己的问题；「关键词」写顾客可能会打的字，用空格分开。</p>
+  <div class="panel stack" id="fq">${rows.map((x,i)=>`<div class="fqr stack" style="gap:6px;border-bottom:1px solid var(--line);padding-bottom:10px"><label class="f">问题 ${i+1}<input class="fq-q" maxlength="120" value="${esc(x.q)}" placeholder="例如：你们有实体店吗？"></label><label class="f">回答<textarea class="fq-a" rows="3" maxlength="1200" placeholder="例如：现在只做网店，实体店开了会在这里通知。">${esc(x.a)}</textarea></label><label class="f">关键词（可不填）<input class="fq-k" maxlength="200" value="${esc(x.k)}" placeholder="实体店 门店 店面 地址"></label></div>`).join("")}
+  <p class="muted" style="margin:0">要删一题，把问题清空再保存。保存后会多出一个空白格可以再加。</p><div><button class="pri" data-fqsave="1">保存</button></div></div>` }
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-fqsave]"); if(!b||!owner) return;
+  const list=[...document.querySelectorAll("#fq .fqr")].map(r=>({q:r.querySelector(".fq-q").value,a:r.querySelector(".fq-a").value,k:r.querySelector(".fq-k").value}));
+  if(list.find(x=>x.q.trim()&&!x.a.trim())) return toast("每个问题都要写回答");
+  FAQX=normFaq({list}); render(); const d=JSON.parse(JSON.stringify(FAQX));
+  (XDB?XDB.doc("site/faq").set(d):Promise.resolve(lsSet("faq",d))).then(()=>toast("已保存 Saved"),()=>toast("没有保存成功，请再试一次")) });
 function admTiers(){ const TP=LUCKY.tierPerks||{m:[],s:[],g:[]}, R=rules();
   return `${H2("等级福利","Tier perks")}<p class="muted">每个等级的专属福利，一行写一条（例如：免运费、新品优先预订、生日礼物）。会员福利页会按等级并排显示。升级金额和积分倍数在「积分规则」改。</p>
   <div class="panel stack">${[["m","会员（注册就是）"],["s",`银卡（近 12 个月满 ${rm(R.silver)}）`],["g",`金卡（近 12 个月满 ${rm(R.gold)}）`]].map(t=>`<label class="f">${t[1]}<textarea id="tp-${t[0]}" rows="3" placeholder="一行一条，留空就是没有">${esc((TP[t[0]]||[]).join("\n"))}</textarea></label>`).join("")}
@@ -3177,9 +3245,9 @@ ATABS.splice(ATABS.length-1,0,["lucky","抽奖","Lucky draw"]);
     if(ui.atab==="products") return H1("商品","Products")+off+admProducts();
     if(ui.atab==="users") return off+admUsers();
     if(ui.atab==="review") return H1("审核","Approve")+off+part("reviews")+part("wall",1);
-    if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=[["rules","积分规则","Points rules"],["tiers","等级福利","Tier perks"],["stamp","集章卡","Stamp card"],["freeplay","购物送夹取","Free plays"],["lucky","夹娃娃机","Claw machines"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"]]);
+    if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=[["rules","积分规则","Points rules"],["tiers","等级福利","Tier perks"],["stamp","集章卡","Stamp card"],["freeplay","购物送夹取","Free plays"],["lucky","夹娃娃机","Claw machines"],["faq","客服问答","Help Q&A"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"]]);
       const st=tabs.some(t=>t[0]===ui.stab)?ui.stab:"rules";
-      const body=st==="rules"?admMembers().split("<h2>")[0]+"<h2>"+admMembers().split("<h2>")[1]:st==="tiers"?admTiers():st==="stamp"?admStamp():st==="freeplay"?admFree():st==="lucky"?part("lucky",1):st==="staff"?admStaff().replace(/^\s*<h1>[\s\S]*?<\/h1>/,""):part("launch");
+      const body=st==="rules"?admMembers().split("<h2>")[0]+"<h2>"+admMembers().split("<h2>")[1]:st==="tiers"?admTiers():st==="faq"?admFaq():st==="stamp"?admStamp():st==="freeplay"?admFree():st==="lucky"?part("lucky",1):st==="staff"?admStaff().replace(/^\s*<h1>[\s\S]*?<\/h1>/,""):part("launch");
       return H1("设置","Settings")+off+seg("data-stab",st,tabs)+body }
     const rows=[]; Object.entries(all).forEach(([u,d])=>liveO(u,d.orders).forEach(o=>rows.push([u,eff(u,o)]))); rows.sort((a,b)=>b[1].at-a[1].at);
     const f=OF.find(x=>x[0]===ui.ofil)||OF[0], list=rows.filter(r=>f[3](r[1]));
@@ -3528,7 +3596,7 @@ window.addEventListener("hashchange",readHash);
 /* hero spotlight follows the pointer (fine pointers only, off for reduced motion) */
 if(matchMedia("(pointer:fine)").matches&&!matchMedia("(prefers-reduced-motion:reduce)").matches){document.addEventListener("pointermove",e=>{const h=document.querySelector(".hero");if(!h)return;const r=h.getBoundingClientRect();if(e.clientY<r.top||e.clientY>r.bottom)return;h.style.setProperty("--px",(e.clientX-r.left)+"px");h.style.setProperty("--py",(e.clientY-r.top)+"px")},{passive:true})}
 
-readHash(); initStore(); initExtra(); initLucky();
+readHash(); initStore(); initExtra(); initLucky(); initFaq();
 </script>
 <script>
 /* 滚动浮现和换页动画 */
