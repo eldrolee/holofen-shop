@@ -742,7 +742,8 @@ html[data-lang="en"] .lgg .en2{display:none}
 @media (max-width:640px){.mkpi{grid-template-columns:1fr 1fr}}
 button.lnk{border:0;background:none;padding:0;color:var(--blue,#2b6fd6);text-decoration:underline;min-height:0;font:inherit}
 .lres{display:flex;flex-direction:column;gap:2px;padding:14px 16px;border-radius:14px;background:#f3f5fa;border:1px solid var(--line)}.lres.win{background:linear-gradient(90deg,#fff8d6,#ffe9e2);border-color:#f2dc8a}.lres b{font-size:20px}.lres span{font-weight:700;color:var(--red)}
-.cidays .fu i{background:#f6f7fb;color:#b9c0d4}.cidays{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.cidays span{display:flex;flex-direction:column;align-items:center;gap:3px}.cidays i{width:34px;height:34px;border-radius:99px;display:grid;place-items:center;background:#eef1f7;color:#fff;font-style:normal;font-weight:800}.cidays .on i{background:linear-gradient(135deg,var(--sun,#f6b93b),var(--red,#0e7c86))}.cidays .td i{outline:2px solid var(--red);outline-offset:2px}.cidays small{font-size:11px;color:var(--muted)}
+.cidays .fu i{background:#f6f7fb;color:#b9c0d4}.cilong{display:grid;gap:8px}.cibar{display:block;height:6px;border-radius:99px;background:var(--line,#e5e5e5);overflow:hidden;margin-top:4px}.cibar i{display:block;height:100%;background:var(--accent,#5bb59a)}
+.cidays{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.cidays span{display:flex;flex-direction:column;align-items:center;gap:3px}.cidays i{width:34px;height:34px;border-radius:99px;display:grid;place-items:center;background:#eef1f7;color:#fff;font-style:normal;font-weight:800}.cidays .on i{background:linear-gradient(135deg,var(--sun,#f6b93b),var(--red,#0e7c86))}.cidays .td i{outline:2px solid var(--red);outline-offset:2px}.cidays small{font-size:11px;color:var(--muted)}
 .setsw a{flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:132px;height:86px;padding:8px;border-radius:14px;background:color-mix(in srgb,var(--sc) 10%,#fff);border:1px solid color-mix(in srgb,var(--sc) 28%,#fff);font-size:12px;line-height:1.2;color:var(--ink);text-decoration:none;text-align:center}
 .setsw a img{height:44px;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
 .setsw a:hover{border-color:var(--sc);transform:translateY(-2px)}.setsw a{transition:transform .16s var(--ease-out),border-color .16s}
@@ -1005,6 +1006,8 @@ header.bar::after{margin-top:8px}
 .backbtn .bs{display:none}
 .loginbtn.wait{opacity:.35;pointer-events:none}
 .umenu{position:fixed;z-index:40;background:#fff;border:1px solid #e6e9f0;border-radius:14px;box-shadow:0 12px 32px rgba(16,22,43,.16);min-width:190px;padding:6px;display:grid;animation:umIn .16s ease-out}.umenu[hidden]{display:none}.umenu a{display:block;padding:11px 14px;border-radius:9px;color:var(--ink);text-decoration:none;font-size:15px}.umenu a:hover,.umenu a:focus-visible{background:#f2f6f7}.umenu .umo{color:var(--muted);border-top:1px solid #eef0f4;border-radius:0 0 9px 9px;margin-top:4px}.umw{padding:8px 14px 6px;font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:240px}@keyframes umIn{from{opacity:0;transform:translateY(-4px)}}
+.rvup{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.rvth{position:relative;width:64px;height:64px;border-radius:10px;overflow:hidden;background:#eef1f7;flex:none}.rvth img,.rvth video{width:100%;height:100%;object-fit:cover;display:block}.rvth button{position:absolute;top:2px;right:2px;width:22px;height:22px;min-height:0;padding:0;border-radius:99px;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:14px;line-height:1}
+.rvmed{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}.rvmed img{width:84px;height:84px;object-fit:cover;border-radius:10px;display:block}.rvmed video{width:min(240px,100%);max-height:240px;border-radius:10px;background:#000}
 .upshot{display:inline-flex;align-items:center;gap:6px;border:1px dashed var(--line,#d6dbe6);border-radius:12px;padding:8px 12px;cursor:pointer;font-size:14px;background:#fff}.upshot img,.shotlink img{width:34px;height:34px;object-fit:cover;border-radius:6px}.shotlink{display:inline-flex;align-items:center;gap:6px;margin-left:8px;vertical-align:middle}
 .lgoutb{display:block;margin:14px auto 0;background:none;border:0;color:var(--muted);text-decoration:underline;font-size:13px;min-height:36px;cursor:pointer}
 .ownbtn{white-space:nowrap}@media (max-width:640px){.ownbtn{font-size:12px;padding:6px 9px}}
@@ -1410,14 +1413,17 @@ window.HOLO_AUTH=(function(){
 /* v91 付款截图：顾客在「我的订单」上传，店主在后台订单里点开看 */
 document.addEventListener("change",async e=>{ const t=e.target; if(!t||!t.dataset||!t.dataset.payshot) return; const oid=t.dataset.payshot, f=t.files&&t.files[0]; if(!f) return;
   if(!f.type.startsWith("image/")) return toast("请选图片文件 Please choose an image"); if(f.size>8e6) return toast("图片太大，请小于 8MB");
-  if(!assets) return toast("这里暂时收不了图片，请填参考号"); toast("上传中… Uploading");
+  if(!assets) return toast("这里暂时收不了图片，请联系客服"); toast("上传中… Uploading");
   try{ const r=await assets.upload(f); const id=aid(r&&r.id); if(!id) throw 0; ui.pshot={...(ui.pshot||{}),[oid]:id}; render(); toast("截图已上传，按「我已付款」提交 Uploaded") }catch(_){ toast("上传失败，请再试一次 Upload failed") } });
+/* 2026-11-19 用户要：「我已付款」不再填参考号，改成选付款平台（电子钱包或银行），再上传截图。选的平台存在订单的 ref 字段，旧订单照旧显示 */
+const PAYVIA=[["电子钱包","E-wallet",["Touch 'n Go eWallet","Boost","GrabPay","ShopeePay","MAE (Maybank)","DuitNow QR","BigPay"]],["银行转账","Bank transfer",["Maybank","Public Bank","CIMB Bank","RHB Bank","Hong Leong Bank","AmBank","Bank Islam","Bank Rakyat","BSN","Alliance Bank","Affin Bank","UOB","OCBC","HSBC","Standard Chartered","Agrobank","Bank Muamalat","MBSB Bank"]],["其他","Other",["其他 Other"]]];
+const payViaSel=oid=>`<select id="pv-${oid}" aria-label="${isEN()?"Paid via":"付款平台"}" style="flex:1 1 200px"><option value="">${isEN()?"Paid via…":"选付款平台…"}</option>${PAYVIA.map(g=>`<optgroup label="${isEN()?g[1]:g[0]}">${g[2].map(x=>`<option>${esc(x)}</option>`).join("")}</optgroup>`).join("")}</select>`;
 const BLOB=id=>window.HOLO_SB?window.HOLO_SB.url(id):"/_blob/"+id;
 const P = window.PRODUCTS || [], PM = Object.fromEntries(P.map(p=>[p.id,p]));
 /* 店主后台「商品管理」的改动存在 db 的 site/catalog（只有店主能写，所有人能读），载入时盖在原始商品资料上。 */
 const ALLP = P.slice(), ORIG = Object.fromEntries(P.map(p=>[p.id,{price:p.price,n:p.n,zh:p.zh}]));
 let CAT = {items:{},added:[],rules:{}};
-const RULES0 = {earn:1, redeemPts:100, redeemRM:5, silver:500, gold:2000, silverX:1.2, goldX:1.5, bdayX:2, ciPts:2, ci7:10};
+const RULES0 = {earn:1, redeemPts:100, redeemRM:5, silver:500, gold:2000, silverX:1.2, goldX:1.5, bdayX:2, ciPts:2, ci3:3, ci7:10, ciMonD:20, ciMon:30, ciYrD:200, ciYr:200};
 const rules = () => { const r={...RULES0}; const x=CAT.rules||{}; Object.keys(RULES0).forEach(k=>{ const v=num(x[k]); if(isFinite(v)&&v>=0) r[k]=v }); if(r.redeemPts<1) r.redeemPts=100; return r };
 function applyCatalog(){
   const items=(CAT.items&&typeof CAT.items==="object")?CAT.items:{};
@@ -2181,7 +2187,7 @@ const PROMOS={"30th Celebration":[
 function marquee(list,rev){ let l=list.slice(); while(l.length&&l.length<16) l=l.concat(list); const one=l.map(c=>`<figure>${c.id||c.href?`<a href="${c.href||"#card/"+((PM[c.id]&&PM[c.id].ck)||c.id)}" tabindex="-1">`:""}<img src="${c.src}" alt="${esc(c.n)}">${c.id?"</a>":""}${c.b||""}<figcaption>${esc(c.n)}<br>${esc(c.s)}</figcaption></figure>`).join(""); return `<div class="mqw"><button type="button" class="mqa l" data-mq="-1" aria-label="${isEN()?"Scroll left":"向左看"}">‹</button><div class="mq${rev?" rev":""}"><div class="track" style="animation-duration:${l.length*3.75}s">${one}${one}</div></div><button type="button" class="mqa r" data-mq="1" aria-label="${isEN()?"Scroll right":"向右看"}">›</button></div>` }
 function homeCi(){ const g=isGuest(), d=!g&&ciDone(), R=rules(), st=g?0:ciStreak(XU);
   if(d) return `<div class="hci ok"><span class="hci-t"><b>${B("✓ 今天已签到","✓ Checked in today")}</b><small>${B("已连续 "+st+" / 7 天，明天再来","Day "+st+" of 7. Come back tomorrow")}</small></span><a class="hci-b" href="#lucky">${B("去抽奖","Lucky draw")}</a></div>`;
-  return `<div class="hci"><span class="hci-t"><b>${B("每日签到领 "+R.ciPts+" 分","Check in daily for "+R.ciPts+" pts")}</b><small>${B("连续签满 7 天，第 7 天再送 "+R.ci7+" 分"+(g?"（要先登录）":""),"Check in 7 days in a row for +"+R.ci7+" pts on day 7"+(g?" (sign in first)":""))}</small></span><button class="hci-b" type="button" data-ci="1">${B("立即签到","Check in")}</button></div>` }
+  return `<div class="hci"><span class="hci-t"><b>${B("每日签到领 "+R.ciPts+" 分","Check in daily for "+R.ciPts+" pts")}</b><small>${B("连续第 3、7 天和月度、年度都有加送"+(g?"（要先登录）":""),"Extra points on day 3, day 7, monthly and yearly"+(g?" (sign in first)":""))}</small></span><button class="hci-b" type="button" data-ci="1">${B("立即签到","Check in")}</button></div>` }
 V.home=()=>{
   const mv=MOVES.filter(m=>m.p&&m.p.c==="single"), toM=(m,up)=>({id:m.p.id,n:m.p.n,s:m.p.s,src:"img/"+m.p.img+".jpg",b:`<span class="bdg ${up?"up":"down"}">${up?"▲":"▼"} ${Math.abs(m.pct).toFixed(1)}%</span>`});
   const gain=mv.filter(m=>m.ch>0).sort((a,b)=>b.pct-a.pct).slice(0,5).map(m=>toM(m,1)), lose=mv.filter(m=>m.ch<0).sort((a,b)=>a.pct-b.pct).slice(0,5).map(m=>toM(m,0));
@@ -2205,10 +2211,27 @@ V.home=()=>{
   <section class="stack sec"><div class="row" style="justify-content:space-between">${H2("最近的宝可梦新闻","Latest Pokémon news")}<a href="#news">全部 <span class="en">All</span></a></div>
     <div class="panel news">${NEWS.filter(n=>n.d&&n.d<=DATA_DATE&&!n.h).sort((a,b)=>b.d.localeCompare(a.d)).slice(0,3).map(newsItem).join("")}</div></section>`;
 };
+/* 2026-11-19 用户要：评价可以附照片和 15 秒以内的视频。最多 4 张照片 + 1 段视频；照片 8MB 内，视频 50MB 内、15 秒内。文件放 Supabase photos 桶 */
+const rvMed=l=>arr(l).slice(0,5).map(m=>({id:aid(m&&m.id),k:m&&m.k==="vid"?"vid":"img"})).filter(m=>m.id);
+function rvShow(l){ l=rvMed(l); if(!l.length) return ""; return `<div class="rvmed">${l.map(m=>m.k==="vid"?`<video src="${esc(BLOB(m.id))}" controls playsinline preload="metadata"></video>`:`<a href="${esc(BLOB(m.id))}" target="_blank" rel="noopener"><img src="${esc(BLOB(m.id))}" alt="${isEN()?"Customer photo":"顾客照片"}" loading="lazy"></a>`).join("")}</div>` }
+function rvUp(oid){ const l=rvMed((ui.rvm||{})[oid]), ni=l.filter(m=>m.k==="img").length, nv=l.filter(m=>m.k==="vid").length;
+  return `<div class="rvup">${l.map((m,i)=>`<span class="rvth">${m.k==="vid"?`<video src="${esc(BLOB(m.id))}" muted playsinline preload="metadata"></video>`:`<img src="${esc(BLOB(m.id))}" alt="">`}<button type="button" data-rvdel="${oid}" data-i="${i}" aria-label="${isEN()?"Remove":"删除"}">×</button></span>`).join("")}
+  ${ni<4||nv<1?`<label class="upshot">📷 ${BL("加照片或视频","Add photos or video")}<input type="file" accept="image/*,video/*" multiple data-rvmedia="${oid}" hidden></label>`:""}<small class="muted">${B("最多 4 张照片和 1 段 15 秒内的视频","Up to 4 photos and 1 video of 15 s or less")}</small></div>` }
+const vidLen=f=>new Promise(res=>{ const v=document.createElement("video"), u=URL.createObjectURL(f); v.preload="metadata"; v.onloadedmetadata=()=>{ URL.revokeObjectURL(u); res(v.duration) }; v.onerror=()=>{ URL.revokeObjectURL(u); res(NaN) }; v.src=u });
+document.addEventListener("change",async e=>{ const t=e.target; if(!t||!t.dataset||!t.dataset.rvmedia) return; const oid=t.dataset.rvmedia, fs=[...(t.files||[])]; t.value=""; if(!fs.length) return;
+  if(!assets) return toast("这里暂时收不了照片和视频"); const keep=val("rv-"+oid); ui.rvm=ui.rvm||{}; let l=rvMed(ui.rvm[oid]);
+  for(const f of fs){ const vid=f.type.startsWith("video/"), img=f.type.startsWith("image/");
+    if(!vid&&!img){ toast("只能上传照片或视频"); continue }
+    if(img&&l.filter(m=>m.k==="img").length>=4){ toast("照片最多 4 张"); continue } if(vid&&l.some(m=>m.k==="vid")){ toast("视频最多 1 段"); continue }
+    if(img&&f.size>8e6){ toast("照片太大，请小于 8MB"); continue } if(vid&&f.size>50e6){ toast("视频太大，请小于 50MB"); continue }
+    if(vid){ const d=await vidLen(f); if(!(d>0)){ toast("这个视频打不开，请换 MP4 或 MOV"); continue } if(d>15.5){ toast(`视频有 ${Math.round(d)} 秒，请剪到 15 秒以内`); continue } }
+    toast("上传中…"); try{ const r=await assets.upload(f); const id=aid(r&&r.id); if(!id) throw 0; l=l.concat({id,k:vid?"vid":"img"}) }catch(_){ toast("上传失败，请再试一次") } }
+  ui.rvm[oid]=l; render(); const el=document.getElementById("rv-"+oid); if(el) el.value=keep });
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-rvdel]"); if(!b) return; const oid=b.dataset.rvdel, keep=val("rv-"+oid); ui.rvm[oid]=rvMed(ui.rvm[oid]).filter((_,i)=>i!==+b.dataset.i); render(); const el=document.getElementById("rv-"+oid); if(el) el.value=keep });
 function reviewList(){
   const reviews=pubRev;
   if(!reviews.length) return `<p class="muted">还没有评价。顾客确认收货后写的评价会出现在这里，不会放编造的好评。<br><span class="en">No reviews yet. Only real reviews from delivered orders will show here.</span></p>`;
-  return `<div class="panel stack">${reviews.slice(0,8).map(r=>`<div><div><span style="color:var(--sun)">${"★".repeat(clampN(r.rating,1,5))}</span><span style="color:var(--line)">${"★".repeat(5-clampN(r.rating,1,5))}</span> <span class="muted">${new Date(num(r.at)||0).toLocaleDateString("zh-CN")} · ${esc(r.items||"")}</span></div><div>${esc(r.text||"（没有写文字）")}</div></div>`).join("")}</div>`;
+  return `<div class="panel stack">${reviews.slice(0,8).map(r=>`<div><div><span style="color:var(--sun)">${"★".repeat(clampN(r.rating,1,5))}</span><span style="color:var(--line)">${"★".repeat(5-clampN(r.rating,1,5))}</span> <span class="muted">${new Date(num(r.at)||0).toLocaleDateString("zh-CN")} · ${esc(r.items||"")}</span></div><div>${esc(r.text||"（没有写文字）")}</div>${rvShow(r.media)}</div>`).join("")}</div>`;
 }
 V.shop=()=>{
   const SP=P.filter(listed), series=[...new Set(SP.map(p=>p.s))], q=ui.q.trim().toLowerCase();
@@ -2417,7 +2440,7 @@ table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th,td{pad
 <p><b>${L("顾客","Customer")}</b><br>${esc(o.name)} · ${esc(o.phone)}${o.email?" · "+esc(o.email):""}${o.svcOnly?"":`<br>${esc(o.addr)}, ${esc(o.post)} ${esc(o.state)}`}</p>
 <table><thead><tr><th>${L("商品","Item")}</th><th class="n">${L("单价","Price")}</th><th class="n">${L("数量","Qty")}</th><th class="n">${L("小计","Amount")}</th></tr></thead><tbody>${o.items.map(c=>`<tr><td>${esc(c.name)}</td><td class="n">${m(c.price)}</td><td class="n">${c.qty}</td><td class="n">${m(c.price*c.qty)}</td></tr>`).join("")}</tbody></table>
 <table class="tot"><tr><td>${L("小计","Subtotal")}</td><td class="n">${m(o.sub)}</td></tr><tr><td>${L("运费","Shipping")} (${esc(o.shipName)})</td><td class="n">${m(o.fee)}</td></tr>${o.off?`<tr><td>${L("折扣（优惠码 / 积分）","Discount (coupon / points)")}</td><td class="n">−${m(o.off)}</td></tr>`:""}<tr><td>${L("合计","Total")}</td><td class="n">${m(o.total)}</td></tr></table>
-<p><span class="paid">✓ ${L("已付款","PAID")}</span> <span class="mut">${esc(o.pay)}${o.ref?`, ${L("参考号","ref")} ${esc(o.ref)}`:""}</span></p>
+<p><span class="paid">✓ ${L("已付款","PAID")}</span> <span class="mut">${esc(o.pay)}${o.ref?`, ${L("付款平台","paid via")} ${esc(o.ref)}`:""}</span></p>
 <p class="mut">${L("这是系统自动生成的电子收据，不需要签名。有问题请联系 holofenn@gmail.com 或 IG @holofen。","This receipt was generated automatically and needs no signature. Questions? Email holofenn@gmail.com or DM @holofen on Instagram.")}</p></div>
 <div class="bar"><button onclick="print()">${L("打印 / 另存为 PDF","Print / Save as PDF")}</button></div>` }
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-rcpt]"); if(!b) return; const u=b.dataset.ru, d=all[u]||(u===uid?mine:null); const raw=d&&arr(d.orders).find(x=>cleanId(x.id)===b.dataset.rcpt); if(!raw) return;
@@ -2448,13 +2471,13 @@ V.orders=()=>{
   { const un=unreadOrders(); if(un.length){ const ids=un.map(x=>x[0]); ui.hl=[...new Set((ui.hl||[]).concat(ids))]; ui.hlScroll=ids[0]; setTimeout(markSeen,0) } }
   return `${H1("我的订单","My orders")}${fl?`<div class="row" style="gap:8px"><span class="chip">${B("只看："+OFL[fl][0],"Showing: "+OFL[fl][1])}</span><a href="#orders" data-ofl="">${B("看全部订单","All orders")} ›</a></div>`:""}${os.map(o=>{const m=MOOD[o.status]||MOOD.review, hl=(ui.hl||[]).includes(o.id);return `<div class="panel order${hl?" upd":""}" id="ord-${o.id}"><div class="row" style="justify-content:space-between"><h3 class="price">${o.id}${hl?` <span class="updchip">${B("有更新","Updated")}</span>`:""}</h3><span class="muted">${new Date(o.at).toLocaleString(isEN()?"en-MY":"zh-CN")} ${rcptBtn(uid,o)}</span></div>
   ${tracker(o)}<div class="note" style="margin:0"><b>${B("收件资料","Delivery details")}</b>${isEN()?": ":"："}${esc(o.name)} · ${esc(o.phone)}${o.svcOnly?"":` · ${esc(o.addr)}${isEN()?", ":"，"}${esc(o.post)} ${esc(o.state)}`}</div>${orderLines(o)}
-  ${o.status==="unpaid"&&needQuote(uid,o)?`<div class="note">${B("店主正在看你的需求，1 天内会把报价显示在这里，你同意再付款。不想做了可以取消订单。","We are preparing your quote. It will show here within 1 day; pay only if you agree.")}</div><div><button data-cancel="${o.id}">取消订单 <span class="en">Cancel</span></button></div>`:o.status==="unpaid"?`<div class="note">${quoted(uid,o)?`${B("店主报价","Our quote")}：<b>${rm(quoted(uid,o))}</b>。`:""}${BL(`订单已收到，应付 <b>${rm(o.total)}</b>（${esc(o.pay)}）。线上付款还在接通中，现在不用付款，店主会用你留的手机号码联系你确认订单和付款方式。付款后把参考号填在下面，或上传付款截图。`,`We have your order. Total <b>${rm(o.total)}</b> (${esc(o.pay)}). Online payment is still being set up, so don't pay yet: we will contact you on the phone number you gave to confirm the order and how to pay. After paying, enter the reference or upload a screenshot below.`)}</div>
-   <div class="row"><input id="ref-${o.id}" aria-label="付款参考号" placeholder="付款参考号 Payment reference" style="flex:1 1 200px"><label class="upshot">${(ui.pshot||{})[o.id]?`<img src="${esc(BLOB(ui.pshot[o.id]))}" alt="">${BL("换一张截图","Change")}`:`📎 ${BL("上传付款截图","Upload receipt")}`}<input type="file" accept="image/*" data-payshot="${o.id}" hidden></label><button class="pri" data-paid="${o.id}">我已付款 <span class="en">I've paid</span></button><button data-cancel="${o.id}">取消订单 <span class="en">Cancel</span></button></div>`:""}
-  ${o.status==="review"?`<p>${BL("已收到你的付款参考号","We received your payment reference")} <span class="price">${esc(o.ref)}</span>${isEN()?".":"。"}</p>`:""}
+  ${o.status==="unpaid"&&needQuote(uid,o)?`<div class="note">${B("店主正在看你的需求，1 天内会把报价显示在这里，你同意再付款。不想做了可以取消订单。","We are preparing your quote. It will show here within 1 day; pay only if you agree.")}</div><div><button data-cancel="${o.id}">取消订单 <span class="en">Cancel</span></button></div>`:o.status==="unpaid"?`<div class="note">${quoted(uid,o)?`${B("店主报价","Our quote")}：<b>${rm(quoted(uid,o))}</b>。`:""}${BL(`订单已收到，应付 <b>${rm(o.total)}</b>（${esc(o.pay)}）。线上付款还在接通中，现在不用付款，店主会用你留的手机号码联系你确认订单和付款方式。付款后在下面选你用的付款平台，再上传付款截图。`,`We have your order. Total <b>${rm(o.total)}</b> (${esc(o.pay)}). Online payment is still being set up, so don't pay yet: we will contact you on the phone number you gave to confirm the order and how to pay. After paying, choose how you paid and upload a screenshot below.`)}</div>
+   <div class="row">${payViaSel(o.id)}<label class="upshot">${(ui.pshot||{})[o.id]?`<img src="${esc(BLOB(ui.pshot[o.id]))}" alt="">${BL("换一张截图","Change")}`:`📎 ${BL("上传付款截图","Upload receipt")}`}<input type="file" accept="image/*" data-payshot="${o.id}" hidden></label><button class="pri" data-paid="${o.id}">我已付款 <span class="en">I've paid</span></button><button data-cancel="${o.id}">取消订单 <span class="en">Cancel</span></button></div>`:""}
+  ${o.status==="review"?`<p>${BL("已收到你的付款，付款平台：","Payment received via")} <span class="price">${esc(o.ref)}</span>${isEN()?". We are checking it.":"。店主核对中。"}</p>`:""}
   ${o.tracking?`<p>${esc(o.courier||"快递")} ${B("运单号","Tracking no.")} <span class="price">${esc(o.tracking)}</span> <button data-copy="${esc(o.tracking)}">复制 <span class="en">Copy</span></button>${trackUrl(o)?` <a class="trkbtn" href="${esc(trackUrl(o))}" target="_blank" rel="noopener" data-trk="${esc(o.tracking)}">${B("去 "+esc(o.courier)+" 官网查件","Track on "+esc(o.courier))} ↗</a>`:""}${o.shippedAt?` <span class="muted">寄出于 ${new Date(o.shippedAt).toLocaleDateString("zh-CN")}</span>`:""}</p><p class="muted">${trackUrl(o)?B("按上面的按钮会打开快递官网，运单号也会帮你复制好。","The button opens the courier's site and copies your tracking number."):B("把运单号贴到快递公司官网可以查实时位置。","Paste it on the courier's site for live tracking.")}</p>`:""}
   ${o.delivery?`<div><h3>${B("你的牌表","Your deck list")}</h3><pre class="list">${esc(o.delivery)}</pre></div>`:""}
   ${o.status==="shipped"?`<div><button class="pri" data-recv="${o.id}">我收到了 <span class="en">I got it</span></button></div>`:""}
-  ${o.status==="delivered"?`<div class="stack" style="gap:8px"><h3>${B("东西还满意吗？","How was it?")}</h3><div class="stars" role="group" aria-label="评分">${[1,2,3,4,5].map(n=>`<button data-star="${o.id}" data-n="${n}" class="${(ui.stars[o.id]||0)>=n?"on":""}" aria-label="${n} 星">★</button>`).join("")}</div><textarea id="rv-${o.id}" aria-label="评价" placeholder="卡况、包装、寄送速度 Condition, packing, speed"></textarea><div><button class="pri" data-review="${o.id}">提交评价，领 RM10 回购码 <span class="en">Submit & get RM10 off</span></button></div></div>`:""}
+  ${o.status==="delivered"?`<div class="stack" style="gap:8px"><h3>${B("东西还满意吗？","How was it?")}</h3><div class="stars" role="group" aria-label="评分">${[1,2,3,4,5].map(n=>`<button data-star="${o.id}" data-n="${n}" class="${(ui.stars[o.id]||0)>=n?"on":""}" aria-label="${n} 星">★</button>`).join("")}</div><textarea id="rv-${o.id}" aria-label="评价" placeholder="卡况、包装、寄送速度 Condition, packing, speed"></textarea>${rvUp(o.id)}<div><button class="pri" data-review="${o.id}">提交评价，领 RM10 回购码 <span class="en">Submit & get RM10 off</span></button></div></div>`:""}
   ${o.status==="done"?`<p>回购码 <span class="en">Coupon </span><b class="price">${esc(o.coupon||"")}</b>：下次满 RM100 减 RM10。<span class="chip tbd">待定 <span class="en">TBD</span></span></p><div><button data-again="${o.id}">再买一次 <span class="en">Buy again</span></button></div>`:""}
   </div>`}).join("")}`;
 };
@@ -2465,7 +2488,7 @@ let undoArm="";
 function admOrder(u,o){ return `<div class="panel order${o.test?" istest":""}"><div class="row" style="justify-content:space-between"><h3 class="price">${o.id}${o.test?` <i class="tbadge">${BL("测试","Test")}</i>`:""}</h3><span class="muted"><label class="tchk"><input type="checkbox" data-atest="1" data-u="${u}" data-o="${o.id}" ${o.test?"checked":""}> ${BL("测试订单","Test order")}</label>${o.test?` <button type="button" class="linkbtn tdel" data-adm="del" data-u="${u}" data-o="${o.id}">${BL("删除","Delete")}</button>`:""} ${new Date(o.at).toLocaleString(isEN()?"en-MY":"zh-CN")} ${rcptBtn(u,o)}</span></div>${stepBar(o)}${o.badCoupon?`<div class="chip bad">优惠码无效，已不计入金额</div>`:""}${o.badPts?`<div class="chip bad">积分不够或无效，已不计入金额</div>`:""}${o.priceMismatch&&!quoted(u,o)?`<div class="chip bad">顾客端金额和目录价不符，以这里显示的为准</div>`:""}
    <div>${esc(o.name)} · ${esc(o.phone)}${o.email?` · ${esc(o.email)}`:""}${o.addr?` · ${esc(o.addr)}，${esc(o.post)} ${esc(o.state)}`:""}</div>${o.note?`<div class="muted">${isEN()?"Note: ":"留言："}${esc(o.note)}</div>`:""}${orderLines(o)}
    ${o.items.filter(c=>c.brief).map(c=>{const b=c.brief;return `<div class="note">${(()=>{const E=isEN(),L=(z,e)=>E?e:z;return `<b>${BL("组牌需求","Brief")}</b>${L("：",": ")}${esc(b.format)} · ${esc(b.use)} · ${esc(b.level)} · ${L("预算","Budget")} ${esc(b.budget)} · ${L("打法","Style")} ${esc(b.style)} · ${L("想用","Wants")} ${esc(b.want)}${b.must?" · "+L("必放","Must include")+" "+esc(b.must):""}<br>${L("联系","Contact")} ${esc(b.contact)}${L("：",": ")}${esc(b.handle)}${b.note?`<br>${L("已有的卡：","Cards owned: ")}${esc(b.note)}`:""}`})()}${b.list?`<details><summary>顾客贴的牌表 <span class="en">Pasted list</span></summary><pre class="list">${esc(b.list)}</pre></details>`:""}${(b.files||[]).map(f=>f.kind==="text"?`<details><summary>${esc(f.name)}</summary><pre class="list">${esc(f.text)}</pre></details>`:`<div><a href="${esc(BLOB(aid(f.id)))}" target="_blank" rel="noopener"><img src="${esc(BLOB(aid(f.id)))}" alt="${esc(f.name)}" style="max-height:160px;border-radius:8px"></a></div>`).join("")}</div>`}).join("")}
-   ${o.ref?`<div>${esc(o.pay)}${isEN()?", reference":"，参考号"} <span class="price">${esc(o.ref)}</span>${o.payShot?` <a class="shotlink" href="${esc(BLOB(o.payShot))}" target="_blank" rel="noopener"><img src="${esc(BLOB(o.payShot))}" alt="">${BL("付款截图","Payment screenshot")} ↗</a>`:""}</div>`:`<div class="muted">${isEN()?"Not paid yet ("+esc(o.pay)+")":"顾客还没付款（"+esc(o.pay)+"）"}</div>`}${o.status==="unpaid"&&o.items.some(c=>(item(c.id)||{}).quote)?`<div class="row"><label class="f" style="flex:0 1 220px">组牌报价 RM（建议 130–250）<input id="qt-${o.id}" type="number" min="1" step="1" value="${quoted(u,o)||""}"></label><button class="pri" data-adm="quote" data-u="${u}" data-o="${o.id}">${quoted(u,o)?"更新报价":"发报价给顾客"}</button><span class="muted">顾客看到报价后才会付款。</span></div>`:""}
+   ${o.ref?`<div>${esc(o.pay)}${isEN()?", paid via":"，付款平台"} <span class="price">${esc(o.ref)}</span>${o.payShot?` <a class="shotlink" href="${esc(BLOB(o.payShot))}" target="_blank" rel="noopener"><img src="${esc(BLOB(o.payShot))}" alt="">${BL("付款截图","Payment screenshot")} ↗</a>`:""}</div>`:`<div class="muted">${isEN()?"Not paid yet ("+esc(o.pay)+")":"顾客还没付款（"+esc(o.pay)+"）"}</div>`}${o.status==="unpaid"&&o.items.some(c=>(item(c.id)||{}).quote)?`<div class="row"><label class="f" style="flex:0 1 220px">组牌报价 RM（建议 130–250）<input id="qt-${o.id}" type="number" min="1" step="1" value="${quoted(u,o)||""}"></label><button class="pri" data-adm="quote" data-u="${u}" data-o="${o.id}">${quoted(u,o)?"更新报价":"发报价给顾客"}</button><span class="muted">顾客看到报价后才会付款。</span></div>`:""}
    ${o.status==="review"?`<div class="row"><button class="pri" data-adm="approve" data-u="${u}" data-o="${o.id}">款已到账，通过审核 <span class="en">Approve</span></button><input id="rej-${o.id}" aria-label="不通过的原因" placeholder="不通过的原因" style="flex:1 1 160px"><button data-adm="reject" data-u="${u}" data-o="${o.id}">不通过 <span class="en">Reject</span></button></div>`:""}
    ${o.items.some(c=>c.brief)&&["approved","shipped","delivered"].includes(o.status)?`<label class="f">交付牌表（顾客会在订单里看到）<textarea id="dl-${o.id}">${esc(o.delivery||"")}</textarea></label><div><button data-adm="deliver" data-u="${u}" data-o="${o.id}">${o.svcOnly?"发送牌表并完成":"保存牌表"}</button></div>`:""}
    ${o.status==="approved"&&!o.svcOnly?`<div class="row"><select id="cr-${o.id}" aria-label="快递公司" style="flex:1 1 160px"><option value="">${BL("选快递公司","Choose courier")}</option>${COURIERS.map(c=>`<option value="${esc(c[1])}">${esc(c[0]==="other"?BL("其他","Other"):c[1])}</option>`).join("")}</select><input id="tn-${o.id}" aria-label="运单号" placeholder="运单号" style="flex:1 1 140px"><button class="pri" data-adm="ship" data-u="${u}" data-o="${o.id}">标记已寄出 <span class="en">Mark shipped</span></button></div>`:""}
@@ -2479,7 +2502,7 @@ V.admin=()=>{
   if(ui.atab==="ship"){ const l=rows.filter(r=>["approved","shipped"].includes(r[1].status)&&!r[1].svcOnly);
     return `${head}${kp}${H2("寄送","Shipping")}${l.length?l.map(r=>admOrder(r[0],r[1])).join(""):`<p class="muted">没有等着寄出或运送中的订单。</p>`}` }
   if(ui.atab==="reviews"){ const rs=[]; Object.entries(myReviews).forEach(([u,l])=>arr(l).forEach(r=>{ const o=arr((all[u]||{}).orders).find(x=>cleanId(x.id)===cleanId(r.orderId)); rs.push({u,r,ok:!!o&&rawStatus(u,o)[0]==="done",pub:pubRev.some(p=>p.key===u+":"+cleanId(r.orderId))}) }));
-    return `${head}${H2("收到的评价","Reviews")}<p class="muted">顾客的评价要你按「公开」才会出现在首页，防止有人乱写。只有真正完成的订单才能公开。</p>${rs.length?`<div class="panel stack">${rs.map(x=>`<div class="row" style="justify-content:space-between"><div><span style="color:var(--sun)">${"★".repeat(clampN(x.r.rating,1,5))}</span> <span class="muted">${esc(cleanId(x.r.orderId))}${x.ok?"":" · 订单未完成"}</span><div>${esc(cleanTxt(x.r.text,500)||"（没有写文字）")}</div></div>${x.pub?`<button data-unpub="${esc(x.u)}:${esc(cleanId(x.r.orderId))}">取消公开</button>`:x.ok?`<button class="pri" data-pub="${esc(x.u)}:${esc(cleanId(x.r.orderId))}">公开</button>`:""}</div>`).join("")}</div>`:`<p class="muted">还没有评价。</p>`}${H2("首页显示的评价","Public reviews")}${reviewList()}` }
+    return `${head}${H2("收到的评价","Reviews")}<p class="muted">顾客的评价要你按「公开」才会出现在首页，防止有人乱写。只有真正完成的订单才能公开。</p>${rs.length?`<div class="panel stack">${rs.map(x=>`<div class="row" style="justify-content:space-between"><div><span style="color:var(--sun)">${"★".repeat(clampN(x.r.rating,1,5))}</span> <span class="muted">${esc(cleanId(x.r.orderId))}${x.ok?"":" · 订单未完成"}</span><div>${esc(cleanTxt(x.r.text,500)||"（没有写文字）")}</div>${rvShow(x.r.media)}</div>${x.pub?`<button data-unpub="${esc(x.u)}:${esc(cleanId(x.r.orderId))}">取消公开</button>`:x.ok?`<button class="pri" data-pub="${esc(x.u)}:${esc(cleanId(x.r.orderId))}">公开</button>`:""}</div>`).join("")}</div>`:`<p class="muted">还没有评价。</p>`}${H2("首页显示的评价","Public reviews")}${reviewList()}` }
   if(ui.atab==="products") return head+admProducts();
   if(ui.atab==="members") return head+admMembers();
   if(ui.atab==="launch") return `${head}${H2("上线清单","Launch list")}
@@ -2557,8 +2580,8 @@ function admMembers(){
   const R=rules(), us=Object.keys(all).map(u=>[u,member(u),arr(all[u].orders).length]).sort((a,b)=>b[1].spend-a[1].spend);
   const fld=(k,t,st)=>`<label class="f">${t}<input id="r-${k}" type="number" min="0" step="${st||1}" value="${R[k]}"></label>`;
   return `${H2("会员积分规则","Points rules")}<p class="muted">积分只按店主标记「已送达」的订单算，顾客自己改不了。下面的数字是建议的起步值，还没定案，你可以随时改。</p>
-  <div class="panel stack"><div class="agrid">${fld("earn","每消费 RM1 得几分",0.1)}${fld("redeemPts","多少分起换")}${fld("redeemRM","换多少令吉 RM",0.5)}${fld("silver","近 12 个月消费满多少升银卡 RM")}${fld("silverX","银卡积分倍数",0.1)}${fld("gold","近 12 个月消费满多少升金卡 RM")}${fld("goldX","金卡积分倍数",0.1)}${fld("bdayX","生日月下单积分倍数",0.1)}${fld("ciPts","每天签到得几分")}${fld("ci7","连续签满 7 天另外送几分")}</div>
-  <p class="muted"><span class="en">Current rules: ${R.earn} pt per RM1; ${R.redeemPts} pts = ${rm(R.redeemRM)} off (about ${(R.redeemRM/R.redeemPts*R.earn*100).toFixed(1)}% back). Spend ${rm(R.silver)} in 12 months for Silver (×${R.silverX} points), ${rm(R.gold)} for Gold (×${R.goldX}); tiers are recalculated on the 1st of each month. Birthday-month orders earn ×${R.bdayX}. Check-in gives ${R.ciPts} pts a day plus ${R.ci7} on every 7th day in a row.</span><span class="zh">现在的规则：每 RM1 得 ${R.earn} 分，每 ${R.redeemPts} 分抵 ${rm(R.redeemRM)}（约回馈 ${(R.redeemRM/R.redeemPts*R.earn*100).toFixed(1)}%）；近 12 个月消费满 ${rm(R.silver)} 是银卡（积分 ×${R.silverX}），满 ${rm(R.gold)} 是金卡（×${R.goldX}），每月 1 日按最新的 12 个月重新算等级；顾客生日月下的单积分 ×${R.bdayX}；每天签到 ${R.ciPts} 分，连续 7 天另送 ${R.ci7} 分（每月最多约 ${(R.ciPts*30+R.ci7*4)} 分，约 ${rm((R.ciPts*30+R.ci7*4)/R.redeemPts*R.redeemRM)}）。</span></p>
+  <div class="panel stack"><div class="agrid">${fld("earn","每消费 RM1 得几分",0.1)}${fld("redeemPts","多少分起换")}${fld("redeemRM","换多少令吉 RM",0.5)}${fld("silver","近 12 个月消费满多少升银卡 RM")}${fld("silverX","银卡积分倍数",0.1)}${fld("gold","近 12 个月消费满多少升金卡 RM")}${fld("goldX","金卡积分倍数",0.1)}${fld("bdayX","生日月下单积分倍数",0.1)}${fld("ciPts","每天签到得几分")}${fld("ci3","连续第 3 天另外送几分")}${fld("ci7","连续第 7 天另外送几分")}${fld("ciMonD","一个月签满几天有月度奖励")}${fld("ciMon","月度奖励送几分")}${fld("ciYrD","一年签满几天有年度奖励")}${fld("ciYr","年度奖励送几分")}</div>
+  <p class="muted"><span class="en">Current rules: ${R.earn} pt per RM1; ${R.redeemPts} pts = ${rm(R.redeemRM)} off (about ${(R.redeemRM/R.redeemPts*R.earn*100).toFixed(1)}% back). Spend ${rm(R.silver)} in 12 months for Silver (×${R.silverX} points), ${rm(R.gold)} for Gold (×${R.goldX}); tiers are recalculated on the 1st of each month. Birthday-month orders earn ×${R.bdayX}. Check-in gives ${R.ciPts} pts a day, +${R.ci3} on day 3 and +${R.ci7} on day 7 of each run, +${R.ciMon} for ${R.ciMonD} days in a month and +${R.ciYr} for ${R.ciYrD} days in a year (0 turns a bonus off).</span><span class="zh">现在的规则：每 RM1 得 ${R.earn} 分，每 ${R.redeemPts} 分抵 ${rm(R.redeemRM)}（约回馈 ${(R.redeemRM/R.redeemPts*R.earn*100).toFixed(1)}%）；近 12 个月消费满 ${rm(R.silver)} 是银卡（积分 ×${R.silverX}），满 ${rm(R.gold)} 是金卡（×${R.goldX}），每月 1 日按最新的 12 个月重新算等级；顾客生日月下的单积分 ×${R.bdayX}；每天签到 ${R.ciPts} 分，连续第 3 天加 ${R.ci3} 分、第 7 天加 ${R.ci7} 分，一个月签满 ${R.ciMonD} 天加 ${R.ciMon} 分，一年签满 ${R.ciYrD} 天加 ${R.ciYr} 分（填 0 就是不送；每月最多约 ${(R.ciPts*30+(R.ci3+R.ci7)*4+R.ciMon)} 分，约 ${rm((R.ciPts*30+(R.ci3+R.ci7)*4+R.ciMon)/R.redeemPts*R.redeemRM)}）。</span></p>
   <div><button class="pri" data-rsave="1">保存规则</button></div></div>
   ${H2("会员","Members")}${us.length?`<div class="tw"><table><thead><tr><th>顾客</th><th>等级</th><th class="n">近 12 个月消费</th><th class="n">累计消费</th><th>生日</th><th class="n">已得积分</th><th class="n">可用积分</th><th class="n">订单</th></tr></thead><tbody>${us.map(([u,m,c])=>`<tr><td>${esc(arr(all[u].orders).map(o=>cleanTxt(o.name,40)).filter(Boolean).pop()||u.slice(0,8))}</td><td>${m.tier[0]}</td><td class="n">${rm(m.spend)}</td><td class="n">${rm(m.life)}</td><td>${esc((typeof MEALL!=="undefined"&&MEALL[u]||{}).bd||"")||(m.bm?m.bm+" 月":"—")}</td><td class="n">${m.earned}</td><td class="n">${m.left}</td><td class="n">${c}</td></tr>`).join("")}</tbody></table></div>`:`<p class="muted">还没有顾客。</p>`}` }
 function admCollect(k,p){ const g=f=>val("a-"+f+"-"+k), x={};
@@ -2781,7 +2804,7 @@ const PRIV=[
  ["谁负责你的资料","Who is responsible",[
   ["Holofen（马来西亚）是你个人资料的资料使用者（data user）。资料保护联系人：holofenn@gmail.com。本声明按马来西亚《2010 年个人资料保护法》（PDPA）及其 2024 年修订编写，附马来文版本。","Holofen (Malaysia) is the data user for your personal data. Data protection contact: holofenn@gmail.com. This notice follows the Personal Data Protection Act 2010 (PDPA) as amended in 2024, and a Malay version is provided below."]]],
  ["我们收集什么","What we collect",[
-  ["登录用的电邮（用 Google 登录时还有 Google 账号名字）；你填的姓名、手机号码、生日；下单时的收件地址；订单、付款参考号和付款截图；评价和晒卡照片；签到、收藏、通知选择，以及你登录后打开网站的日期。我们不收集身份证号码，也不保存银行卡资料。","Your sign-in email (and Google account name if you use Google); the name, phone number and birthday you give; your delivery address when you order; orders, payment references and payment screenshots; reviews and pull photos; check-ins, saved items, notification choices and the days you open the site while signed in. We do not collect IC numbers or store bank card details."],
+  ["登录用的电邮（用 Google 登录时还有 Google 账号名字）；你填的姓名、手机号码、生日；下单时的收件地址；订单、付款平台和付款截图；评价和晒卡照片；签到、收藏、通知选择，以及你登录后打开网站的日期。我们不收集身份证号码，也不保存银行卡资料。","Your sign-in email (and Google account name if you use Google); the name, phone number and birthday you give; your delivery address when you order; orders, payment method and payment screenshots; reviews and pull photos; check-ins, saved items, notification choices and the days you open the site while signed in. We do not collect IC numbers or store bank card details."],
   ["填姓名、手机和地址是处理订单所必需的，不填就无法寄货。生日和通知选择可以不填。","Name, phone and address are needed to fulfil orders; without them we cannot ship. Birthday and notification choices are optional."]]],
  ["用来做什么","Why we use it",[
   ["处理、寄送订单和售后；联系你订单的事；计算会员等级、积分、签到和抽奖；防止欺诈和滥用；遵守法律（例如保存交易记录）；了解网站使用情况来改进网站。","To process, ship and support your orders; contact you about them; run membership tiers, points, check-ins and draws; prevent fraud and abuse; meet legal duties such as keeping transaction records; and improve the site."],
@@ -2804,7 +2827,7 @@ const PRIV=[
 ];
 const PRIV_MS=[
  ["Siapa kami","Holofen (Malaysia) ialah pengguna data bagi data peribadi anda. Hubungi: holofenn@gmail.com. Notis ini disediakan menurut Akta Perlindungan Data Peribadi 2010 (APDP) dan pindaan 2024."],
- ["Data yang dikumpul","E-mel log masuk (dan nama akaun Google jika digunakan); nama, nombor telefon dan tarikh lahir yang anda berikan; alamat penghantaran semasa membuat pesanan; pesanan, rujukan dan tangkapan layar pembayaran; ulasan dan foto; rekod daftar masuk harian, item simpanan dan pilihan notifikasi. Nama, telefon dan alamat diperlukan untuk memproses pesanan; tarikh lahir dan pilihan notifikasi adalah pilihan."],
+ ["Data yang dikumpul","E-mel log masuk (dan nama akaun Google jika digunakan); nama, nombor telefon dan tarikh lahir yang anda berikan; alamat penghantaran semasa membuat pesanan; pesanan, kaedah dan tangkapan layar pembayaran; ulasan dan foto; rekod daftar masuk harian, item simpanan dan pilihan notifikasi. Nama, telefon dan alamat diperlukan untuk memproses pesanan; tarikh lahir dan pilihan notifikasi adalah pilihan."],
  ["Tujuan","Memproses, menghantar dan menyokong pesanan; menghubungi anda; mengurus keahlian, mata ganjaran dan cabutan; mencegah penipuan; mematuhi undang-undang; dan menambah baik laman web. E-mel promosi hanya dihantar jika anda bersetuju dan anda boleh menarik balik persetujuan pada bila-bila masa."],
  ["Pendedahan","Hanya pemilik dan kakitangan yang diberi kuasa. Pembekal perkhidmatan: Supabase, Brevo, Vercel, Cloudflare dan Google (jika log masuk dengan Google); syarikat kurier menerima nama, telefon dan alamat penerima. Data mungkin disimpan di luar Malaysia mengikut seksyen 129 APDP. Kami tidak menjual data anda."],
  ["Tempoh simpanan","Rekod pesanan disimpan 7 tahun. Data ahli disimpan sehingga anda memadamnya atau selepas 2 tahun tidak log masuk."],
@@ -2948,7 +2971,7 @@ function needQuote(u,o){ return arr(o.items).some(c=>(item(c.id)||{}).quote)&&!q
 let LUCKY={on:false,rounds:[],log:{},sent:{},ci:{}}, luckyQ=Promise.resolve(), luckyT=null;
 function normLucky(d){ d=d&&typeof d==="object"?d:{};
   const nP=l=>arr(l).slice(0,20).map(p=>({id:cleanId(p.id),name:cleanTxt(p.name,60),w:Math.max(0,num(p.w)||0)})).filter(p=>p.id&&p.name);
-  const rounds=arr(d.rounds).filter(r=>r&&typeof r==="object").slice(-20).map(r=>{ const x={id:cleanId(r.id),at:num(r.at)||0,cost:clampN(r.cost,1,1e6),seed:cleanId(r.seed),miss:Math.max(0,num(r.miss)||0),prizes:nP(r.prizes)};
+  const rounds=arr(d.rounds).filter(r=>r&&typeof r==="object").slice(-20).map(r=>{ const x={id:cleanId(r.id),at:num(r.at)||0,cost:clampN(r.cost,1,1e6),seed:cleanId(r.seed),miss:Math.max(0,num(r.miss)||0),prizes:nP(r.prizes),pct:r.pct===1?1:0};
     /* v96 夹娃娃机：一期里有几台机，每台自己的积分、奖品和中奖率；旧的一期当成一台机 */
     x.machines=arr(r.machines).slice(0,6).map(m=>({id:cleanId(m.id),name:cleanTxt(m.name,30),cost:clampN(m.cost,1,1e6),miss:Math.max(0,num(m.miss)||0),prizes:nP(m.prizes)})).filter(m=>m.id&&m.name&&m.prizes.length);
     if(!x.machines.length&&x.prizes.length) x.machines=[{id:"",name:"",cost:x.cost,miss:x.miss,prizes:x.prizes,legacy:1}];
@@ -2956,17 +2979,24 @@ function normLucky(d){ d=d&&typeof d==="object"?d:{};
   const log={}; const l0=d.log&&typeof d.log==="object"?d.log:{}; Object.keys(l0).slice(0,2000).forEach(u=>{ log[u]=arr(l0[u]).slice(-300).map(normDraw).filter(Boolean) });
   const sent={}; const s0=d.sent&&typeof d.sent==="object"?d.sent:{}; Object.keys(s0).slice(0,5000).forEach(k=>{ if(s0[k]===true) sent[k]=true });
   const ci={}; const c0=d.ci&&typeof d.ci==="object"?d.ci:{}; Object.keys(c0).slice(0,5000).forEach(u=>{ const x=c0[u]; if(x&&typeof x==="object") ci[u]={seen:arr(x.seen).filter(v=>typeof v==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(v)).slice(-400),at:num(x.at)||0} });
-  return {on:d.on===true,rounds,log,sent,ci} }
-function normDraw(x){ if(!x||typeof x!=="object") return null; const n=clampN(x.n,0,1e6); if(!n) return null; return {n,r:cleanId(x.r),m:cleanId(x.m||""),cost:clampN(x.cost,0,1e6),at:num(x.at)||0} }
+  /* 2026-11-19 用户要：第几次购买送免费夹取次数。free.at = 第几张已付款订单（如 1,3,5），free.n = 每次送几次 */
+  const f0=d.free&&typeof d.free==="object"?d.free:{}, free={at:[...new Set(arr(f0.at).map(x=>clampN(x,1,999)).filter(x=>x>=1))].sort((a,b)=>a-b).slice(0,20),n:clampN(f0.n,0,20)};
+  return {on:d.on===true,rounds,log,sent,ci,free} }
+function normDraw(x){ if(!x||typeof x!=="object") return null; const n=clampN(x.n,0,1e6); if(!n) return null; return {n,r:cleanId(x.r),m:cleanId(x.m||""),cost:clampN(x.cost,0,1e6),free:x.free===1?1:0,at:num(x.at)||0} }
 function h01(str){ let h=2166136261>>>0; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619)>>>0 }
   h^=h>>>16; h=Math.imul(h,0x85ebca6b)>>>0; h^=h>>>13; h=Math.imul(h,0xc2b2ae35)>>>0; h^=h>>>16; return (h>>>0)/4294967296 }
-function drawRes(u,n,r,m){ m=m||r; const tot=m.prizes.reduce((a,p)=>a+p.w,0)+m.miss; if(!(tot>0)) return ""; let t=h01(u+":"+n+":"+r.seed+(m.id?":"+m.id:""))*tot; for(const p of m.prizes){ if(t<p.w) return p.id; t-=p.w } return "" }
+const fmtPct=v=>(v>=1?String(Math.round(v*100)/100):v>0?v.toFixed(12).replace(/0+$/,"").replace(/\.$/,""):"0")+"%";
+function drawRes(u,n,r,m){ m=m||r; const tot=m.prizes.reduce((a,p)=>a+p.w,0)+m.miss; if(!(tot>0)) return ""; const key=u+":"+n+":"+r.seed+(m.id?":"+m.id:""); /* 2026-11-19 中奖率可以小到 0.00000001%：新的一期用两段哈希拼成约 64 位的随机数；旧的一期照旧算，已夹过的结果不变 */ let t=(h01(key)+(r.pct?h01(key+"#")/4294967296:0))*tot; for(const p of m.prizes){ if(t<p.w) return p.id; t-=p.w } return "" }
 const machOf=(r,mid)=>r?(r.machines||[]).find(m=>m.id===(mid||""))||null:null;
 const curRound=()=>LUCKY.rounds.length?LUCKY.rounds[LUCKY.rounds.length-1]:null;
 /* 某位顾客的有效抽奖：同一个 n 以店主抄下的为准；只认当期，或者店主已经抄下的旧期 */
+function paidCount(u){ try{ return arr(((typeof all!=="undefined"&&all[u])||{}).orders).filter(o=>["approved","shipped","delivered","done"].includes(rawStatus(u,o)[0])).length }catch(e){ return 0 } }
+function freeEarned(u){ const F=LUCKY.free||{at:[],n:0}, k=paidCount(u); return F.n?F.at.filter(x=>x<=k).length*F.n:0 }
+const freeLeft=u=>Math.max(0,freeEarned(u)-arr(Object.values(Object.fromEntries(arr(((typeof MEALL!=="undefined"&&MEALL[u])||{}).draws).concat(arr(LUCKY.log[u])).map(d=>[d.n,d])))).filter(d=>d.free===1).length);
 function luckyDraws(u){ const me=(typeof MEALL!=="undefined"&&MEALL[u])||{}, logged=arr(LUCKY.log[u]), by={}, cur=curRound();
   arr(me.draws).forEach(d=>{ by[d.n]={...d,logged:false} }); logged.forEach(d=>{ by[d.n]={...d,logged:true} });
-  return Object.values(by).sort((a,b)=>a.n-b.n).map(d=>{ const r=LUCKY.rounds.find(x=>x.id===d.r), mc=machOf(r,d.m); const ok=!!r&&!!mc&&d.cost===mc.cost&&(d.logged||(cur&&r.id===cur.id)); const win=ok?drawRes(u,d.n,r,mc):""; const pz=win?mc.prizes.find(p=>p.id===win):null;
+  const fe=freeEarned(u); let fu=0;
+  return Object.values(by).sort((a,b)=>a.n-b.n).map(d=>{ const r=LUCKY.rounds.find(x=>x.id===d.r), mc=machOf(r,d.m); const fr=d.free===1&&d.cost===0&&fu<fe; if(fr) fu++; const ok=!!r&&!!mc&&(fr||(!d.free&&d.cost===mc.cost))&&(d.logged||(cur&&r.id===cur.id)); const win=ok?drawRes(u,d.n,r,mc):""; const pz=win?mc.prizes.find(p=>p.id===win):null;
     return {...d,ok,round:r,mach:mc,win,prize:pz?pz.name:"",key:u+":"+d.n} }) }
 function saveLucky(){ if(!owner) return Promise.resolve(); const d=JSON.parse(JSON.stringify(LUCKY));
   luckyQ=luckyQ.then(()=>XDB?XDB.doc("site/lucky").set(d):lsSet("lucky",d)).catch(()=>toast("抽奖设定没有保存成功")); return luckyQ }
@@ -2981,12 +3011,12 @@ async function initLucky(){
   LUCKY=normLucky(lsGet("lucky",null)); render() }
 function doDraw(mid){ if(needLogin("要先登录或注册才能玩夹娃娃机","Please sign in or register to play the claw machine")) return; if(ui.clawBusy) return; const r=curRound(); if(!LUCKY.on||!r) return toast("夹娃娃机还没开放");
   const mc=machOf(r,mid==null?(ui.clawM||(r.machines[0]||{}).id||""):mid); if(!mc) return toast("请先选一台机"); const m=member(uid);
-  if(m.left<mc.cost) return toast(`积分不够，这台机要 ${mc.cost} 分`);
+  const fr=freeLeft(XU)>0; if(!fr&&m.left<mc.cost) return toast(`积分不够，这台机要 ${mc.cost} 分`);
   const n=Math.max(0,...arr(ME.draws).map(d=>d.n),...arr(LUCKY.log[XU]).map(d=>d.n))+1;
-  ME.draws=arr(ME.draws).concat({n,r:r.id,m:mc.id,cost:mc.cost,at:Date.now()}).slice(-300); ui.lastDraw=0; ui.clawBusy=n; saveMe(); setTimeout(()=>clawPlay(n),30) }
+  ME.draws=arr(ME.draws).concat(fr?{n,r:r.id,m:mc.id,cost:0,free:1,at:Date.now()}:{n,r:r.id,m:mc.id,cost:mc.cost,at:Date.now()}).slice(-300); ui.lastDraw=0; ui.clawBusy=n; saveMe(); setTimeout(()=>clawPlay(n),30) }
 V.lucky=()=>`${H1("签到和抽奖","Check-in & lucky draw")}${ciPanel()}${ptsRules()}${luckyBody()}`;
 function ptsRules(){ const R=rules(); return `<details class="panel wrules"><summary><b>${B("积分规则","Points rules")}</b></summary><ul>
- <li>${B(`已定：每天签到 ${R.ciPts} 分；从你签到的第一天算，连续 7 天，第 7 天再加 ${R.ci7} 分；断一天从第 1 天重来。`,`Confirmed: ${R.ciPts} pts per daily check-in; 7 days in a row from your first check-in gives +${R.ci7} on day 7; miss a day and you restart at day 1.`)}</li>
+ <li>${B("已定：","Confirmed: ")}${ciRuleTxt(R)}</li>
  <li>${B(`积分换折扣：现在后台设定是 ${R.redeemPts} 分抵 ${rm(R.redeemRM)}。`,`Points to discount: currently set to ${R.redeemPts} pts = ${rm(R.redeemRM)} off.`)}${OWNER_TBD()}</li>
  <li>${B("每单最多抵多少：","Maximum discount per order: ")}${OWNER_TBD()}</li>
  <li>${B("积分有效期：","Points expiry: ")}${OWNER_TBD()}</li>
@@ -3018,15 +3048,17 @@ async function clawPlay(n){ const d=luckyDraws(XU).find(x=>x.n===n), box=documen
       await Promise.all([go([{transform:`translate(0,${-drop*0.45}px)`},{transform:"translate(0,0)"}],380,pick),up]) }
     await new Promise(r=>setTimeout(r,250)) }catch(e){}
   done() }
+function freeNote(){ const F=LUCKY.free||{}; if(!F.n||!F.at.length) return ""; const k=isGuest()?0:paidCount(XU), nx=F.at.find(x=>x>k);
+  return `<p class="muted" style="margin:0;text-align:center;font-size:13px">${B(`第 ${F.at.join("、")} 张付款订单各送 ${F.n} 次免费夹取，不用积分。`,`Your paid order no. ${F.at.join(", ")} each gives ${F.n} free play${F.n>1?"s":""}, no points needed.`)}${nx?B(` 你已付款 ${k} 张，再 ${nx-k} 张就送。`,` You have ${k}; ${nx-k} more to go.`):""}</p>` }
 function luckyBody(){ const r=curRound(), m=member(uid), mine=luckyDraws(XU).slice().reverse(), last=ui.lastDraw?mine.find(d=>d.n===ui.lastDraw):null;
   if(!LUCKY.on||!r||!r.machines.length) return `${H2("夹娃娃机","Claw machines")}<p class="muted">${B("夹娃娃机还没开放，开放后会在这里公布每台机的奖品、中奖率和要几分。","The claw machines aren't open yet.")}</p>`;
-  const sel=machOf(r,ui.clawM)||r.machines[0], tot=sel.prizes.reduce((a,p)=>a+p.w,0)+sel.miss, pct=w=>tot?(w/tot*100).toFixed(w/tot<0.01?2:1)+"%":"—", busy=!!ui.clawBusy;
+  const sel=machOf(r,ui.clawM)||r.machines[0], tot=sel.prizes.reduce((a,p)=>a+p.w,0)+sel.miss, pct=w=>tot?fmtPct(w/tot*100):"—", busy=!!ui.clawBusy;
   return `${H2("夹娃娃机","Claw machines")}
   <p class="muted" style="margin:0">${B("选一台机，用积分投币，爪子会随机夹一个出来。每台机的奖品和中奖率都公开在旁边。","Pick a machine, insert points and the claw grabs one at random. Each machine's prizes and odds are shown.")}</p>
   ${r.machines.length>1?`<div class="clawpick" role="group" aria-label="${BT("选机台","Choose a machine")}">${r.machines.map(mc=>`<button data-clawm="${esc(mc.id)}" class="${mc===sel?"on":""}" aria-pressed="${mc===sel}" ${busy?"disabled":""}><b>${esc(mc.name||BT("夹娃娃机","Claw machine"))}</b><small>${mc.cost} ${B("分一次","pts a go")}</small></button>`).join("")}</div>`:""}
   <div class="two clawwrap"><div class="stack" style="gap:12px;align-items:center">${clawBox(sel,1)}
-    ${last&&!busy?`<div class="lres${last.win?" win":""}"><b>${last.win?B("夹到了！","Got one!"):B("差一点，没夹到","So close, it slipped")}</b>${last.win?`<span>${esc(last.prize)}</span><small>${B("店主会联系你安排，或跟你下一张订单一起寄出。","We'll arrange delivery or send it with your next order.")}</small>`:`<small>${B("积分已扣，下次好运。","Better luck next time.")}</small>`}</div>`:""}
-    <div class="row" style="justify-content:center"><span class="muted">${B("你的积分","Your points")} <b>${m.left}</b></span><button class="pri" data-ldraw="1" data-m="${esc(sel.id)}" ${m.left<sel.cost||busy?"disabled":""}>${busy?B("夹取中…","Grabbing…"):B(`投 ${sel.cost} 分，夹一次`,`Insert ${sel.cost} pts`)}</button></div>
+    ${last&&!busy?`<div class="lres${last.win?" win":""}"><b>${last.win?B("夹到了！","Got one!"):B("差一点，没夹到","So close, it slipped")}</b>${last.win?`<span>${esc(last.prize)}</span><small>${B("店主会联系你安排，或跟你下一张订单一起寄出。","We'll arrange delivery or send it with your next order.")}</small>`:`<small>${last.free?B("这次是免费夹取，没扣积分。下次好运。","This was a free play. Better luck next time."):B("积分已扣，下次好运。","Better luck next time.")}</small>`}</div>`:""}
+    <div class="row" style="justify-content:center"><span class="muted">${B("你的积分","Your points")} <b>${m.left}</b></span><button class="pri" data-ldraw="1" data-m="${esc(sel.id)}" ${(m.left<sel.cost&&!freeLeft(XU))||busy?"disabled":""}>${busy?B("夹取中…","Grabbing…"):freeLeft(XU)?B(`免费夹一次（还有 ${freeLeft(XU)} 次）`,`Free play (${freeLeft(XU)} left)`):B(`投 ${sel.cost} 分，夹一次`,`Insert ${sel.cost} pts`)}</button></div>${freeNote()}
     ${m.left<sel.cost?`<p class="muted" style="margin:0">${B("积分不够。每天签到、订单送达后都会加分。","Not enough points. Check in daily or complete an order to earn more.")}</p>`:""}</div>
   <div class="panel stack" style="gap:8px"><h3>${B("这台机的奖品和中奖率","Prizes & odds")}</h3><table class="tight"><tbody>${sel.prizes.map((p,i)=>`<tr><td><i class="pdot" style="background:${CLAWC[i%CLAWC.length]}"></i>${esc(p.name)}</td><td class="n">${pct(p.w)}</td></tr>`).join("")}<tr><td class="muted">${B("没夹到","Nothing")}</td><td class="n">${pct(sel.miss)}</td></tr></tbody></table>
   <p class="muted" style="font-size:12px">${B("结果在投币那一刻由系统按公开的中奖率算出，动画只是把结果演出来，店主也改不了。积分一经使用不退。这一期从","The result is fixed by the published odds the moment you insert points; the animation just shows it. Points used are not refunded. This round started")} ${new Date(r.at).toLocaleDateString("zh-CN")}${B(" 开始。","")}</p></div></div>
@@ -3038,10 +3070,12 @@ function admLucky(){ const r=curRound(); const rows=[]; const us=new Set(Object.
   return `${H1("店主后台","Admin")}${H2("夹娃娃机","Claw machines")}
   <div class="note">上线前请先确认：在马来西亚办需要消费才能参加的抽奖（包括夹娃娃机），可能要向政府申请准证。这一点我没有核对，请问律师。积分不要卖钱，只能靠签到和订单赚，风险会小一些。</div>
   <div class="panel stack"><label class="row" style="gap:8px"><input type="checkbox" id="lk-on" ${LUCKY.on?"checked":""}> 开放夹娃娃机（顾客看得到、能玩）</label>
-   <p class="muted">每台机自己设名字、投一次几分、奖品和权重。中奖率 = 权重 ÷（全部奖品权重 + 没夹到的权重）。最多 6 台。</p>
+   <div class="row"><label class="f" style="flex:1 1 220px">第几张付款订单送免费夹取（用逗号分开，例如 1,3,5；留空就是不送）<input id="lk-fat" inputmode="numeric" value="${esc((LUCKY.free||{at:[]}).at.join(","))}" placeholder="例如：1,3,5"></label><label class="f" style="flex:0 1 150px">每次送几次<input id="lk-fn" type="number" min="0" max="20" step="1" value="${(LUCKY.free||{}).n||1}"></label></div>
+   <p class="muted" style="margin:0">订单要你在后台按「通过」后才算付款，免费夹取不扣积分，哪台机都能用。</p>
+   <p class="muted">每台机自己设名字、投一次几分、放哪些奖品和每样的中奖率（%）。中奖率可以小到 0.00000001%。全部奖品加起来不能超过 100%，剩下的就是「没夹到」。最多 6 台。</p>
    ${(ui.lkM||(r&&r.machines.length?r.machines:[{id:"m1",name:"新手机",cost:20,miss:80,prizes:[]}])).map((mc,i)=>`<fieldset class="panel stack lkm" data-lki="${i}" style="gap:8px"><legend><b>第 ${i+1} 台</b></legend>
-    <div class="row"><label class="f" style="flex:1 1 160px">机台名字<input class="lk-name" maxlength="30" value="${esc(mc.name||"")}" placeholder="例如：新手机、补充包机、稀有机"></label><label class="f" style="flex:0 1 130px">投一次几分<input class="lk-cost" type="number" min="1" step="1" value="${mc.cost||20}"></label><label class="f" style="flex:0 1 130px">「没夹到」的权重<input class="lk-miss" type="number" min="0" step="1" value="${mc.miss!=null?mc.miss:80}"></label></div>
-    <label class="f">奖品，一行一个：名字, 权重<textarea class="lk-prizes" rows="4" placeholder="例如：&#10;单包补充包 1 包, 15&#10;卡套一组, 4&#10;ETB 一盒, 1">${esc(arr(mc.prizes).map(p=>p.name+", "+p.w).join("\n"))}</textarea></label>
+    <div class="row"><label class="f" style="flex:1 1 160px">机台名字<input class="lk-name" maxlength="30" value="${esc(mc.name||"")}" placeholder="例如：新手机、补充包机、稀有机"></label><label class="f" style="flex:0 1 130px">投一次几分<input class="lk-cost" type="number" min="1" step="1" value="${mc.cost||20}"></label></div>
+    <label class="f">奖品，一行一个：名字, 中奖率%<textarea class="lk-prizes" rows="4" placeholder="例如：&#10;单包补充包 1 包, 15&#10;卡套一组, 4&#10;ETB 一盒, 0.5&#10;签名卡, 0.00000001">${esc(arr(mc.prizes).map(p=>p.name+", "+lkShow(mc,p.w)).join("\n"))}</textarea></label>
     ${i>0?`<div><button class="linkbtn" data-lkdel="${i}">删除这台机</button></div>`:""}</fieldset>`).join("")}
    <div class="row"><button data-lkadd="1">＋ 加一台机</button></div>
    <p class="muted">按「保存」会开新的一期：之后的夹取用新的设定，已经夹过的结果不会变。</p>
@@ -3112,7 +3146,7 @@ ATABS.splice(ATABS.length-1,0,["lucky","抽奖","Lucky draw"]);
     if(X.from&&X.to&&X.from>X.to) return toast("开始日期不能晚于结束日期 Start date is after end date");
     if(b.dataset.exp==="orders"){ const rows=[]; Object.entries(all||{}).forEach(([u,d])=>{ if(X.who&&u!==X.who) return; liveO(u,d.orders).forEach(o0=>{ const o=eff(u,o0); if(inR(o.at,X)) rows.push(o) }) }); rows.sort((a,b)=>a.at-b.at);
       if(!rows.length) return toast("这个范围里没有订单 No orders in this range");
-      dl(`holofen-orders_${tag}.csv`,E?["Order","Date (MYT)","Status","Name","Email","Phone","Address","Postcode","State","Shipping","Items","Subtotal RM","Shipping RM","Discount RM","Total RM","Payment","Reference","Courier","Tracking","Note"]:["订单号","下单时间（马来西亚）","状态","姓名","邮箱","手机","地址","邮编","州属","运送方式","商品","小计 RM","运费 RM","折扣 RM","总额 RM","付款方式","参考号","快递","运单号","备注"],
+      dl(`holofen-orders_${tag}.csv`,E?["Order","Date (MYT)","Status","Name","Email","Phone","Address","Postcode","State","Shipping","Items","Subtotal RM","Shipping RM","Discount RM","Total RM","Payment","Paid via","Courier","Tracking","Note"]:["订单号","下单时间（马来西亚）","状态","姓名","邮箱","手机","地址","邮编","州属","运送方式","商品","小计 RM","运费 RM","折扣 RM","总额 RM","付款方式","付款平台","快递","运单号","备注"],
         rows.map(o=>[o.id,fdt(o.at),stName(o),o.name,o.email,o.phone,o.addr,o.post,o.state,o.shipName,o.items.map(c=>c.name+" ×"+c.qty).join("; "),o.sub.toFixed(2),o.fee.toFixed(2),o.off.toFixed(2),o.total.toFixed(2),o.pay,o.ref,o.courier||"",o.tracking||"",o.note]));
       return toast(`已导出 ${rows.length} 张订单 Exported ${rows.length} orders`) }
     const U=arr(window.UROWS).filter(r=>(!X.who||r.u===X.who)&&inR(r.first,X));
@@ -3124,11 +3158,12 @@ ATABS.splice(ATABS.length-1,0,["lucky","抽奖","Lucky draw"]);
   document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ofil],[data-stab]"); if(!b) return; if(b.dataset.ofil) ui.ofil=b.dataset.ofil; else ui.stab=b.dataset.stab; render() }); }
 
 /* 后台夹娃娃机：读表单（每台机一个 fieldset） */
-function lkRead(){ const out=[]; for(const f of document.querySelectorAll(".lkm")){ const q=c=>f.querySelector(c), name=cleanTxt(q(".lk-name").value.trim(),30)||("第 "+(out.length+1)+" 台"), cost=clampN(q(".lk-cost").value,1,1e6), miss=Math.max(0,num(q(".lk-miss").value)||0), prizes=[];
-    for(const line of (q(".lk-prizes").value||"").split("\n")){ const t=line.trim(); if(!t) continue; const m=t.match(/^(.*?)[,，]\s*([0-9.]+)\s*$/); if(!m||!m[1].trim()) return "这一行看不懂："+t.slice(0,20); prizes.push({id:"p"+prizes.length,name:cleanTxt(m[1].trim(),60),w:Math.max(0,num(m[2])||0)}) }
-    if(!prizes.length) return name+"：请至少写一个奖品"; if(!(prizes.reduce((a,p)=>a+p.w,0)>0)) return name+"：奖品的权重不能全是 0";
-    out.push({id:"m"+(out.length+1),name,cost,miss,prizes}) } return out }
-function lkDraft(){ return [...document.querySelectorAll(".lkm")].map(f=>{ const q=c=>f.querySelector(c); return {name:q(".lk-name").value,cost:num(q(".lk-cost").value)||20,miss:num(q(".lk-miss").value),prizes:(q(".lk-prizes").value||"").split("\n").filter(x=>x.trim()).map(t=>{ const m=t.match(/^(.*?)[,，]\s*([0-9.]+)\s*$/); return m?{name:m[1].trim(),w:num(m[2])}:{name:t.trim(),w:""} })} }) }
+function lkShow(mc,w){ if(typeof w!=="number") return w; if(mc.pctIn) return fmtPct(w).slice(0,-1); const tot=arr(mc.prizes).reduce((a,p)=>a+(num(p.w)||0),0)+(num(mc.miss)||0); return tot?fmtPct(w/tot*100).slice(0,-1):w }
+function lkRead(){ const out=[]; for(const f of document.querySelectorAll(".lkm")){ const q=c=>f.querySelector(c), name=cleanTxt(q(".lk-name").value.trim(),30)||("第 "+(out.length+1)+" 台"), cost=clampN(q(".lk-cost").value,1,1e6), prizes=[];
+    for(const line of (q(".lk-prizes").value||"").split("\n")){ const t=line.trim(); if(!t) continue; const m=t.match(/^(.*?)[,，]\s*([0-9.]+)\s*%?\s*$/); if(!m||!m[1].trim()) return "这一行看不懂："+t.slice(0,20); prizes.push({id:"p"+prizes.length,name:cleanTxt(m[1].trim(),60),w:Math.max(0,num(m[2])||0)}) }
+    if(!prizes.length) return name+"：请至少写一个奖品"; const sum=prizes.reduce((a,p)=>a+p.w,0); if(!(sum>0)) return name+"：中奖率不能全是 0"; if(sum>100+1e-9) return name+"：奖品中奖率加起来是 "+fmtPct(sum)+"，不能超过 100%";
+    out.push({id:"m"+(out.length+1),name,cost,miss:Math.max(0,100-sum),prizes}) } return out }
+function lkDraft(){ return [...document.querySelectorAll(".lkm")].map(f=>{ const q=c=>f.querySelector(c); return {pctIn:1,name:q(".lk-name").value,cost:num(q(".lk-cost").value)||20,prizes:(q(".lk-prizes").value||"").split("\n").filter(x=>x.trim()).map(t=>{ const m=t.match(/^(.*?)[,，]\s*([0-9.]+)\s*%?\s*$/); return m?{name:m[1].trim(),w:m[2]}:{name:t.trim(),w:""} })} }) }
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-clawm],[data-lkadd],[data-lkdel]"); if(!b) return; const ds=b.dataset;
   if(ds.clawm!=null){ if(ui.clawBusy) return; ui.clawM=ds.clawm; ui.lastDraw=0; return render() }
   if(!owner) return; const d=lkDraft();
@@ -3138,9 +3173,10 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   if(ds.ldraw) return doDraw(ds.m);
   if(ds.lsent){ if(!owner) return; const s={...LUCKY.sent}; if(ds.v==="1") s[ds.lsent]=true; else delete s[ds.lsent]; LUCKY.sent=s; render(); return saveLucky() }
   if(ds.lsave){ if(!owner) return; const ms=lkRead(); if(typeof ms==="string") return toast(ms); if(!ms.length) return toast("请至少设一台机");
-    const c=curRound(), sig=x=>JSON.stringify(x.map(m=>[m.name,m.cost,m.miss,m.prizes.map(p=>[p.name,p.w])])), same=c&&!c.machines.some(m=>m.legacy)&&sig(c.machines)===sig(ms);
+    const c=curRound(), sig=x=>JSON.stringify(x.map(m=>[m.name,m.cost,m.miss,m.prizes.map(p=>[p.name,p.w])])), same=c&&c.pct&&!c.machines.some(m=>m.legacy)&&sig(c.machines)===sig(ms);
     const on=document.getElementById("lk-on").checked;
-    if(!same){ const rb=new Uint8Array(8); crypto.getRandomValues(rb); LUCKY.rounds=LUCKY.rounds.concat({id:"r"+Date.now().toString(36),at:Date.now(),cost:ms[0].cost,miss:ms[0].miss,seed:[...rb].map(x=>x.toString(16).padStart(2,"0")).join(""),prizes:ms[0].prizes,machines:ms}).slice(-20) }
+    if(!same){ const rb=new Uint8Array(8); crypto.getRandomValues(rb); LUCKY.rounds=LUCKY.rounds.concat({id:"r"+Date.now().toString(36),at:Date.now(),cost:ms[0].cost,miss:ms[0].miss,seed:[...rb].map(x=>x.toString(16).padStart(2,"0")).join(""),prizes:ms[0].prizes,machines:ms,pct:1}).slice(-20) }
+    const fat=(document.getElementById("lk-fat").value||"").split(/[,，、\s]+/).map(x=>parseInt(x,10)).filter(x=>x>=1&&x<=999); LUCKY.free={at:[...new Set(fat)].sort((a,b)=>a-b).slice(0,20),n:fat.length?clampN(document.getElementById("lk-fn").value,1,20):0};
     ui.lkM=null; LUCKY.on=on; render(); return saveLucky().then(()=>toast("已保存 Saved")) } },true);
 
 /* ---------- v36 每日签到 ----------
@@ -3153,7 +3189,14 @@ const monOf=d=>dayAdd(d,-((new Date(d+"T00:00:00Z").getUTCDay()+6)%7));
 function ciValid(u){ const me=(typeof MEALL!=="undefined"&&MEALL[u])||{}, rec=(LUCKY.ci||{})[u]||null, today=dayStr(Date.now());
   const seen=new Set(rec?rec.seen:[]), from=rec?dayAdd(dayStr(rec.at),-1):dayAdd(today,-7);
   return [...new Set(arr(me.ci).concat(rec?rec.seen:[]))].filter(d=>d<=today&&(seen.has(d)||d>=from)).sort() }
-function ciPoints(u,R){ const ds=ciValid(u); let pts=0, run=0, prev=""; ds.forEach(d=>{ run=prev&&dayAdd(prev,1)===d?run+1:1; prev=d; pts+=R.ciPts+(run%7===0?R.ci7:0) }); return pts }
+/* 2026-11-19 用户要：第 3 天、第 7 天、每月、每年都有签到奖励，数字由店主在后台设。
+   第 3 天和第 7 天按 7 天一轮算；每月奖励在当月签满 ciMonD 天那天给一次，每年奖励在当年签满 ciYrD 天那天给一次（马来西亚时间的自然月和自然年）。设成 0 就是不送。 */
+function ciDay(R,run,mc,yc){ const b=[]; if(run%7===3&&R.ci3>0) b.push(["3",R.ci3]); if(run%7===0&&R.ci7>0) b.push(["7",R.ci7]);
+  if(R.ciMonD>0&&R.ciMon>0&&mc===R.ciMonD) b.push(["m",R.ciMon]); if(R.ciYrD>0&&R.ciYr>0&&yc===R.ciYrD) b.push(["y",R.ciYr]);
+  return {pts:R.ciPts+b.reduce((t,x)=>t+x[1],0),b} }
+function ciWalk(ds,R,f){ let run=0, prev="", mc={}, yc={}; ds.forEach(d=>{ run=prev&&dayAdd(prev,1)===d?run+1:1; prev=d; const m=d.slice(0,7), y=d.slice(0,4); mc[m]=(mc[m]||0)+1; yc[y]=(yc[y]||0)+1; f(d,ciDay(R,run,mc[m],yc[y])) }) }
+function ciPoints(u,R){ let pts=0; ciWalk(ciValid(u),R,(d,x)=>{ pts+=x.pts }); return pts }
+function ciCount(ds,pre){ return ds.filter(d=>d.startsWith(pre)).length }
 /* 2026-11-17 用户改：第一次签到那天是第 1 天，连续 7 天拿奖励，然后从第 1 天重新开始；断一天也从第 1 天重来 */
 function ciRun(u){ const ds=ciValid(u), today=dayStr(Date.now()); let d=ds.includes(today)?today:dayAdd(today,-1), n=0; while(ds.includes(d)){ n++; d=dayAdd(d,-1) } return n }
 function ciCycle(u){ const today=dayStr(Date.now()), done=ciValid(u).includes(today), n=ciRun(u), p=done?((n-1)%7)+1:n%7; return {p,start:dayAdd(today,-(done?p-1:p))} }
@@ -3165,7 +3208,7 @@ ROUTES.add("member");
 V.member=()=>{ const E=isEN();
   if(isGuest()) return `${H1("会员中心","Membership")}<div class="buddy">${buddy(52)}<div>${B("登录后可以看会员等级、积分、抽奖和活动计划。","Sign in to see your tier, points, lucky draw and upcoming events.")}</div></div><div><button class="pri" data-needlogin="1">${B("登录或注册","Sign in or register")}</button></div>`;
   const m=member(uid), r=LUCKY.on?curRound():null, st=ciStreak(XU), done=ciDone();
-  const ev=[[B("连续 7 天签到","7-day check-in"),B(`连续签满 7 天，第 7 天另加奖励。现在是第 ${st} / 7 天${done?"，今天已签到":"，今天还没签"}。`,`Check in 7 days in a row for a bonus on day 7. Day ${st} of 7${done?", done today":", not yet today"}.`),'<a href="#lucky">'+B("去签到","Check in")+' ›</a>',1],
+  const ev=[[B("签到奖励","Check-in rewards"),B(`连续第 3、7 天，还有月度和年度都有加送。现在是第 ${st} / 7 天${done?"，今天已签到":"，今天还没签"}。`,`Check in 7 days in a row for a bonus on day 7. Day ${st} of 7${done?", done today":", not yet today"}.`),'<a href="#lucky">'+B("去签到","Check in")+' ›</a>',1],
    [B("积分抽奖","Points lucky draw"),r?B(`进行中，每次 ${r.cost} 分。你有 ${m.left} 分，可以抽 ${Math.floor(m.left/Math.max(1,r.cost))} 次。`,`Running now: ${r.cost} points per draw. You have ${m.left} points.`):B("还没开放。开放时间和奖品：","Not open yet. Dates and prizes:"),r?'<a href="#lucky">'+B("查看","View")+' ›</a>':OWNER_TBD(),!!r],
    [B("新系列到货提醒","New set alerts"),B("在收藏页打开提醒，新系列上架时通知你。","Turn on alerts in Saved to hear about new sets."),'<a href="#wish">'+B("设置","Set up")+' ›</a>',1],
    [B("线下比赛和新手教学","Tournaments and beginner sessions"),B("开实体店后定期举办。日期和地点：","Planned once our store opens. Dates and venue:"),OWNER_TBD(),0]];
@@ -3187,13 +3230,26 @@ V.member=()=>{ const E=isEN();
 function needLogin(zh,en){ if(!isGuest()) return false; if(window.HOLO_AUTH) HOLO_AUTH.open(); toast(isEN()?en:zh); return true }
 function doCheckin(){ if(needLogin("要先登录或注册才能签到","Please sign in or register to check in")) return; if(ciDone()) return toast("今天已经签到了"); const R=rules(), streak=ciRun(XU)+1;
   ME.ci=arr(ME.ci).concat(dayStr(Date.now())).slice(-400); ui.ciNow=1;
-  saveMe().then(()=>toast(`签到成功 +${R.ciPts+(streak%7===0?R.ci7:0)} 分`)) }
+  const ds=[...new Set(ciValid(XU).concat(dayStr(Date.now())))].sort(); let x=null; ciWalk(ds,R,(d,v)=>{ if(d===dayStr(Date.now())) x=v });
+  const NB={"3":"第 3 天奖励","7":"第 7 天奖励",m:"月度奖励",y:"年度奖励"};
+  saveMe().then(()=>toast(isEN()?`Checked in +${x?x.pts:R.ciPts} pts`:`签到成功 +${x?x.pts:R.ciPts} 分`+(x&&x.b.length?"（含"+x.b.map(b=>NB[b[0]]).join("、")+"）":""))) }
 function ciPanel(){ const R=rules(), done=ciDone(), st=ciStreak(XU), today=dayStr(Date.now()), ds=new Set(ciValid(XU));
   const m0=ciCycle(XU).start, week=Array.from({length:7},(_,i)=>dayAdd(m0,i));
   return `<div class="panel stack ci" style="gap:10px"><div class="row" style="justify-content:space-between"><div><span class="lbl">${B("每日签到","Daily check-in")}</span><h3 style="margin:2px 0">${B(`已连续 ${st} / 7 天`,`Day ${st} of 7`)}</h3></div>
    ${isGuest()?`<button class="pri" data-ci="1">${B("登录后签到","Sign in to check in")}</button>`:done?`<span class="chip">${B("今天已签到 ✓","Checked in today ✓")}</span>`:`<button class="pri" data-ci="1">${B(`签到 +${R.ciPts} 分`,`Check in +${R.ciPts}`)}</button>`}</div>
-   ${isGuest()?`<p class="note" style="margin:0">${B("访客不能签到。登录或注册后才能签到和累积积分。","Guests can't check in. Sign in or register to check in and collect points.")}</p>`:""}<div class="cidays">${week.map((d,i)=>`<span class="${ds.has(d)?"on":""}${d===today?" td":""}${d>today?" fu":""}"><i>${ds.has(d)?"✓":i===6?"🎁":""}</i><small>${d===today?B("今天","Today"):isEN()?"Day "+(i+1):"第 "+(i+1)+" 天"}</small></span>`).join("")}</div>
-   <p class="muted" style="margin:0">${B(`每天签到得 ${R.ciPts} 分。你签到的第一天就是第 1 天，连续签满 7 天，第 7 天再送 ${R.ci7} 分，然后从第 1 天重新算。中间断一天，就从第 1 天重来。`,`${R.ciPts} pts a day. Your first check-in is day 1. Check in 7 days in a row and get +${R.ci7} on day 7, then a new round starts. Miss a day and you start again from day 1.`)}</p></div>` }
+   ${isGuest()?`<p class="note" style="margin:0">${B("访客不能签到。登录或注册后才能签到和累积积分。","Guests can't check in. Sign in or register to check in and collect points.")}</p>`:""}<div class="cidays">${week.map((d,i)=>`<span class="${ds.has(d)?"on":""}${d===today?" td":""}${d>today?" fu":""}"><i>${ds.has(d)?"✓":(i===6&&R.ci7>0)||(i===2&&R.ci3>0)?"🎁":""}</i><small>${d===today?B("今天","Today"):isEN()?"Day "+(i+1):"第 "+(i+1)+" 天"}</small></span>`).join("")}</div>
+   ${ciLong(R,[...ds])}
+   <p class="muted" style="margin:0">${ciRuleTxt(R)}${B(" 你签到的第一天就是第 1 天，7 天一轮，然后从第 1 天重新算；中间断一天就从第 1 天重来。每月和每年按日历算，不用连续。"," Your first check-in is day 1; rounds are 7 days, and missing a day restarts from day 1. Monthly and yearly count calendar days and need not be in a row.")}</p></div>` }
+function ciRuleTxt(R){ const z=[`每天签到 ${R.ciPts} 分`], e=[`${R.ciPts} pts a day`];
+  if(R.ci3>0){ z.push(`连续第 3 天再送 ${R.ci3} 分`); e.push(`+${R.ci3} on day 3 in a row`) } if(R.ci7>0){ z.push(`连续第 7 天再送 ${R.ci7} 分`); e.push(`+${R.ci7} on day 7`) }
+  if(R.ciMonD>0&&R.ciMon>0){ z.push(`一个月里签满 ${R.ciMonD} 天再送 ${R.ciMon} 分`); e.push(`+${R.ciMon} for ${R.ciMonD} days in a month`) }
+  if(R.ciYrD>0&&R.ciYr>0){ z.push(`一年里签满 ${R.ciYrD} 天再送 ${R.ciYr} 分`); e.push(`+${R.ciYr} for ${R.ciYrD} days in a year`) }
+  return B(z.join("，")+"。",e.join("; ")+".") }
+function ciLong(R,ds){ const t=dayStr(Date.now()), out=[];
+  if(R.ciMonD>0&&R.ciMon>0){ const n=ciCount(ds,t.slice(0,7)); out.push([B("本月","This month"),n,R.ciMonD,R.ciMon]) }
+  if(R.ciYrD>0&&R.ciYr>0){ const n=ciCount(ds,t.slice(0,4)); out.push([B("今年","This year"),n,R.ciYrD,R.ciYr]) }
+  if(!out.length) return "";
+  return `<div class="cilong">${out.map(o=>`<div><div class="row" style="justify-content:space-between;gap:8px"><span>${o[0]} <b>${Math.min(o[1],o[2])} / ${o[2]}</b> ${B("天","days")}</span><small class="muted">${o[1]>=o[2]?B("已领 +"+o[3],"Got +"+o[3]):B("签满送 "+o[3]+" 分","+"+o[3]+" when full")}</small></div><span class="cibar"><i style="width:${Math.min(100,o[1]/o[2]*100).toFixed(1)}%"></i></span></div>`).join("")}</div>` }
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ci]"); if(!b) return; doCheckin() },true);
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-needlogin]"); if(b&&window.HOLO_AUTH) HOLO_AUTH.open() });
 
@@ -3273,18 +3329,18 @@ document.addEventListener("click",async e=>{
   if(ds.qty){ const c=cart[+ds.qty]; c.qty+=+ds.d; if(c.qty<1) cart.splice(+ds.qty,1); return render() }
   if(ds.rm){ cart.splice(+ds.rm,1); return render() }
   if(ds.copy) return copy(ds.copy,"运单号已复制 Copied");
-  if(ds.paid){ const ref=val("ref-"+ds.paid), shot=(ui.pshot||{})[ds.paid]||""; if(!ref&&!shot) return toast("请填付款参考号，或上传付款截图 Enter a reference or upload a screenshot"); if(stOf(ds.paid)!=="unpaid") return; return patch(uid,ds.paid,{ref:cleanTxt(ref,60)||"见付款截图",payShot:shot,paidAt:Date.now()}).then(()=>toast("已提交，等待店主审核 Submitted")) }
+  if(ds.paid){ const via=val("pv-"+ds.paid), shot=(ui.pshot||{})[ds.paid]||""; if(!PAYVIA.some(g=>g[2].includes(via))) return toast(isEN()?"Choose how you paid":"请选你用的付款平台"); if(!shot) return toast(isEN()?"Upload a payment screenshot":"请上传付款截图"); if(stOf(ds.paid)!=="unpaid") return; return patch(uid,ds.paid,{ref:cleanTxt(via,60),payShot:shot,paidAt:Date.now()}).then(()=>toast("已提交，等待店主审核 Submitted")) }
   if(ds.cancel){ if(stOf(ds.cancel)!=="unpaid") return toast("已付款的订单请联系店主取消"); return saveDoc(uid,{orders:mine.orders.filter(o=>cleanId(o.id)!==ds.cancel)}).then(()=>toast("订单已取消 Cancelled")) }
   if(ds.recv){ if(stOf(ds.recv)!=="shipped") return; return patch(uid,ds.recv,{receivedAt:Date.now()}) }
   if(ds.star){ ui.stars[ds.star]=+ds.n; const keep=val("rv-"+ds.star); render(); const el=document.getElementById("rv-"+ds.star); if(el) el.value=keep; return }
   if(ds.review){ if(needLogin("要先登录或注册才能评价","Please sign in or register to leave a review")) return; const n=ui.stars[ds.review]; if(!n) return toast("请先点星星打分 Pick a star rating first");
     if(stOf(ds.review)!=="delivered") return; const [,o]=findOrder(uid,ds.review); const text=cleanTxt(val("rv-"+ds.review),500); const e=eff(uid,o);
-    return addReview({orderId:e.id,rating:n,text,items:e.items.map(c=>c.name).join("，"),at:Date.now()}).then(()=>patch(uid,ds.review,{rated:n})).then(()=>toast("谢谢！回购码 "+couponCode(e.id)+" 已放进你的账户")) }
+    return addReview({orderId:e.id,rating:n,text,items:e.items.map(c=>c.name).join("，"),media:rvMed((ui.rvm||{})[ds.review]),at:Date.now()}).then(()=>patch(uid,ds.review,{rated:n})).then(()=>toast("谢谢！回购码 "+couponCode(e.id)+" 已放进你的账户")) }
   if(ds.again){ const [,o]=findOrder(uid,ds.again); if(!o) return; eff(uid,o).items.forEach(c=>{ if(PM[c.id]){ const x=cart.find(k=>k.id===c.id); x?x.qty+=c.qty:cart.push({id:c.id,qty:c.qty}) } }); saveCart(); return go("cart") }
   if(ds.pub||ds.unpub){ if(!owner) return; const key=ds.pub||ds.unpub;
     if(ds.unpub) return setPub(pubRev.filter(p=>p.key!==key));
     const [u,oid]=[key.slice(0,key.lastIndexOf(":")),key.slice(key.lastIndexOf(":")+1)]; const r=arr(myReviews[u]).find(x=>cleanId(x.orderId)===oid); if(!r) return;
-    return setPub([{key,rating:clampN(r.rating,1,5),text:cleanTxt(r.text,500),items:cleanTxt(r.items,300),at:num(r.at)||Date.now()}].concat(pubRev.filter(p=>p.key!==key))) }
+    return setPub([{key,rating:clampN(r.rating,1,5),text:cleanTxt(r.text,500),items:cleanTxt(r.items,300),media:rvMed(r.media),at:num(r.at)||Date.now()}].concat(pubRev.filter(p=>p.key!==key))) }
   if(ds.asave){ if(!owner) return; const k=ds.asave, p=PM[k]; if(!p) return; const x=admCollect(k,p); if(!x) return; CAT.items={...CAT.items,[k]:x}; ui.aedit=null; return saveCat() }
   if(ds.areset){ if(!owner) return; const it={...CAT.items}; const ph=PM[ds.areset]&&PM[ds.areset].added; delete it[ds.areset]; CAT.items=it; if(ph) CAT.added=arr(CAT.added).filter(a=>a.id!==ds.areset); return saveCat() }
   if(ds.aphotorm){ if(!owner) return; const k=ds.aphotorm, x={...(CAT.items[k]||{})}; delete x.photo; CAT.items={...CAT.items,[k]:x}; return saveCat() }
