@@ -3023,6 +3023,17 @@ function luckyBody(){ const r=curRound(), m=member(uid), mine=luckyDraws(XU).sli
   <p class="muted" style="font-size:12px">${B("结果在投币那一刻由系统按公开的中奖率算出，动画只是把结果演出来，店主也改不了。积分一经使用不退。这一期从","The result is fixed by the published odds the moment you insert points; the animation just shows it. Points used are not refunded. This round started")} ${new Date(r.at).toLocaleDateString("zh-CN")}${B(" 开始。","")}</p></div></div>
   ${mine.some(d=>d.n!==ui.clawBusy)?`<section class="stack" style="gap:8px">${H2("我的夹取记录","My plays")}<div class="panel stack" style="gap:6px">${mine.filter(d=>d.n!==ui.clawBusy).slice(0,30).map(d=>`<div class="alrow"><span class="muted">${new Date(d.at).toLocaleString(isEN()?"en-MY":"zh-CN")}</span>${d.mach&&d.mach.name?`<span class="chip">${esc(d.mach.name)}</span>`:""}<b>${d.ok?(d.win?esc(d.prize):B("没夹到","Nothing")):B("无效记录","Invalid")}</b><span class="muted">−${d.cost} ${B("分","pts")}</span>${d.win?`<span class="chip">${LUCKY.sent[d.key]?B("已安排","Arranged"):B("等店主安排","Pending")}</span>`:""}</div>`).join("")}</div></section>`:""}`;
 }
+/* 2026-11-19 用户要：「第几张付款订单送免费夹取」是独立的设定，不和夹娃娃机设置放一起 */
+function admFree(){ const F=LUCKY.free||{at:[],n:0};
+  return `${H2("购物送免费夹取","Free plays for purchases")}<p class="muted">顾客第几张付款订单送免费夹娃娃次数。订单要你在后台按「通过」后才算付款。免费夹取不扣积分，哪台机都能用。</p>
+  <div class="panel stack"><label class="f">第几张付款订单送（用逗号分开，例如 1,3,5；留空就是不送）<input id="fp-at" inputmode="numeric" value="${esc(F.at.join(","))}" placeholder="例如：1,3,5"></label>
+  <label class="f" style="max-width:200px">每次送几次<input id="fp-n" type="number" min="1" max="20" step="1" value="${F.n||1}"></label>
+  <div><button class="pri" data-fpsave="1">保存</button></div></div>` }
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-fpsave]"); if(!b||!owner) return;
+  const raw=(document.getElementById("fp-at").value||"").trim(), at=raw?raw.split(/[,，、\s]+/).map(x=>parseInt(x,10)):[];
+  if(at.some(x=>!(x>=1&&x<=999))) return toast("请填 1 到 999 的数字，用逗号分开");
+  LUCKY.free={at:[...new Set(at)].sort((a,b)=>a-b).slice(0,20),n:at.length?clampN(document.getElementById("fp-n").value,1,20):0};
+  render(); saveLucky().then(()=>toast("已保存 Saved")) });
 function admStamp(){ const S=STM(), gs=S.goals.length?S.goals:[{at:5,k:"draw",n:1,txt:""},{at:10,k:"gift",n:0,txt:""}];
   const rows=[...gs,{at:"",k:"gift",n:"",txt:""}].slice(0,6).map((g,i)=>`<div class="row stg" style="gap:8px;align-items:flex-end"><label class="f" style="flex:0 1 110px">集到几个章<input class="st-at" type="number" min="1" max="50" value="${g.at}"></label><label class="f" style="flex:0 1 150px">送什么<select class="st-k">${[["draw","免费夹取"],["pts","积分"],["gift","礼物或商品"]].map(o=>`<option value="${o[0]}" ${g.k===o[0]?"selected":""}>${o[1]}</option>`).join("")}</select></label><label class="f" style="flex:1 1 180px">次数 / 分数 / 礼物名字<input class="st-v" value="${esc(g.k==="gift"?g.txt:String(g.n||""))}" placeholder="例如：2，或：卡套一组"></label></div>`).join("");
   const us=Object.keys(typeof all!=="undefined"?all:{}), gifts=[]; us.forEach(u=>stampGot(u).filter(g=>g.k==="gift").forEach(g=>gifts.push({u,g})));
@@ -3045,8 +3056,6 @@ function admLucky(){ const r=curRound(); const rows=[]; const us=new Set(Object.
   return `${H1("店主后台","Admin")}${H2("夹娃娃机","Claw machines")}
   <div class="note">上线前请先确认：在马来西亚办需要消费才能参加的抽奖（包括夹娃娃机），可能要向政府申请准证。这一点我没有核对，请问律师。积分不要卖钱，只能靠签到和订单赚，风险会小一些。</div>
   <div class="panel stack"><label class="row" style="gap:8px"><input type="checkbox" id="lk-on" ${LUCKY.on?"checked":""}> 开放夹娃娃机（顾客看得到、能玩）</label>
-   <div class="row"><label class="f" style="flex:1 1 220px">第几张付款订单送免费夹取（用逗号分开，例如 1,3,5；留空就是不送）<input id="lk-fat" inputmode="numeric" value="${esc((LUCKY.free||{at:[]}).at.join(","))}" placeholder="例如：1,3,5"></label><label class="f" style="flex:0 1 150px">每次送几次<input id="lk-fn" type="number" min="0" max="20" step="1" value="${(LUCKY.free||{}).n||1}"></label></div>
-   <p class="muted" style="margin:0">订单要你在后台按「通过」后才算付款，免费夹取不扣积分，哪台机都能用。</p>
    <p class="muted">每台机自己设名字、投一次几分、放哪些奖品和每样的中奖率（%）。中奖率可以小到 0.00000001%。全部奖品加起来不能超过 100%，剩下的就是「没夹到」。最多 6 台。</p>
    ${(ui.lkM||(r&&r.machines.length?r.machines:[{id:"m1",name:"新手机",cost:20,miss:80,prizes:[]}])).map((mc,i)=>`<fieldset class="panel stack lkm" data-lki="${i}" style="gap:8px"><legend><b>第 ${i+1} 台</b></legend>
     <div class="row"><label class="f" style="flex:1 1 160px">机台名字<input class="lk-name" maxlength="30" value="${esc(mc.name||"")}" placeholder="例如：新手机、补充包机、稀有机"></label><label class="f" style="flex:0 1 130px">投一次几分<input class="lk-cost" type="number" min="1" step="1" value="${mc.cost||20}"></label></div>
@@ -3075,9 +3084,9 @@ ATABS.splice(ATABS.length-1,0,["lucky","抽奖","Lucky draw"]);
     if(ui.atab==="products") return H1("商品","Products")+off+admProducts();
     if(ui.atab==="users") return off+admUsers();
     if(ui.atab==="review") return H1("审核","Approve")+off+part("reviews")+part("wall",1);
-    if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=[["rules","积分规则","Points rules"],["stamp","集章卡","Stamp card"],["lucky","夹娃娃机","Claw machines"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"]]);
+    if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=[["rules","积分规则","Points rules"],["stamp","集章卡","Stamp card"],["freeplay","购物送夹取","Free plays"],["lucky","夹娃娃机","Claw machines"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"]]);
       const st=tabs.some(t=>t[0]===ui.stab)?ui.stab:"rules";
-      const body=st==="rules"?admMembers().split("<h2>")[0]+"<h2>"+admMembers().split("<h2>")[1]:st==="stamp"?admStamp():st==="lucky"?part("lucky",1):st==="staff"?admStaff().replace(/^\s*<h1>[\s\S]*?<\/h1>/,""):part("launch");
+      const body=st==="rules"?admMembers().split("<h2>")[0]+"<h2>"+admMembers().split("<h2>")[1]:st==="stamp"?admStamp():st==="freeplay"?admFree():st==="lucky"?part("lucky",1):st==="staff"?admStaff().replace(/^\s*<h1>[\s\S]*?<\/h1>/,""):part("launch");
       return H1("设置","Settings")+off+seg("data-stab",st,tabs)+body }
     const rows=[]; Object.entries(all).forEach(([u,d])=>liveO(u,d.orders).forEach(o=>rows.push([u,eff(u,o)]))); rows.sort((a,b)=>b[1].at-a[1].at);
     const f=OF.find(x=>x[0]===ui.ofil)||OF[0], list=rows.filter(r=>f[3](r[1]));
@@ -3153,7 +3162,6 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
     const c=curRound(), sig=x=>JSON.stringify(x.map(m=>[m.name,m.cost,m.miss,m.prizes.map(p=>[p.name,p.w])])), same=c&&c.pct&&!c.machines.some(m=>m.legacy)&&sig(c.machines)===sig(ms);
     const on=document.getElementById("lk-on").checked;
     if(!same){ const rb=new Uint8Array(8); crypto.getRandomValues(rb); LUCKY.rounds=LUCKY.rounds.concat({id:"r"+Date.now().toString(36),at:Date.now(),cost:ms[0].cost,miss:ms[0].miss,seed:[...rb].map(x=>x.toString(16).padStart(2,"0")).join(""),prizes:ms[0].prizes,machines:ms,pct:1}).slice(-20) }
-    const fat=(document.getElementById("lk-fat").value||"").split(/[,，、\s]+/).map(x=>parseInt(x,10)).filter(x=>x>=1&&x<=999); LUCKY.free={at:[...new Set(fat)].sort((a,b)=>a-b).slice(0,20),n:fat.length?clampN(document.getElementById("lk-fn").value,1,20):0};
     ui.lkM=null; LUCKY.on=on; render(); return saveLucky().then(()=>toast("已保存 Saved")) } },true);
 
 /* ---------- v36 每日签到 ----------
