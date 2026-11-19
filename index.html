@@ -1113,6 +1113,7 @@ header.bar::after{margin-top:8px}
 .mtop{display:flex;align-items:center;gap:14px;background:linear-gradient(120deg,#0e7c86,#2f8f7c);color:#fff;border:0}
 .mtop .mav{width:56px;height:56px;border-radius:50%;background:#fff;color:#0e7c86;display:grid;place-items:center;font:800 24px/1 var(--display);flex:none;position:relative;cursor:pointer}.mtop .mav img{width:100%;height:100%;border-radius:50%;object-fit:cover}.mtop .mavc{position:absolute;right:-4px;bottom:-4px;width:24px;height:24px;border-radius:99px;background:#fff;display:grid;place-items:center;font-size:12px;box-shadow:0 1px 4px rgba(0,0,0,.25)}.mtop .mavx{color:#fff;font-size:12px;min-height:0;padding:2px 0;opacity:.85;justify-self:start}
 .mgrp .mi .mid{width:44px;height:44px;object-fit:contain;display:block}
+.tiert{width:100%;border-collapse:collapse;font-size:14px}.tiert th,.tiert td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}.tiert thead th{font-size:15px}.tiert thead small{display:block;font-size:11px;color:var(--red);font-weight:700}.tiert .me{background:color-mix(in srgb,var(--sun,#f6b93b) 16%,transparent)}.tiert tbody th{font-weight:600;color:var(--muted);white-space:nowrap}.tiert .perkul{padding-left:16px}
 .perkul{margin:0;padding-left:20px;display:grid;gap:4px;color:var(--muted)}.perk h3{font-size:16px}
 .avgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px}.avgrid button{display:grid;justify-items:center;gap:4px;padding:6px;border-radius:14px;background:transparent;border:2px solid transparent;min-height:0}.avgrid button.on{border-color:var(--red)}.avgrid img{width:64px;height:64px;border-radius:50%;object-fit:cover;display:block}.avgrid small{font-size:12px}
 #loginbtn .av img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
@@ -3003,7 +3004,9 @@ function normLucky(d){ d=d&&typeof d==="object"?d:{};
   /* 2026-11-19 用户要：集章卡。单笔商品金额满 stamp.min 得 1 个章；集到 goals[].at 个送奖励（k: draw 免费夹取 / pts 积分 / gift 礼物文字），集满最大那格换新卡 */
   const st0=d.stamp&&typeof d.stamp==="object"?d.stamp:{}, goals=arr(st0.goals).map(g=>({at:clampN(g&&g.at,1,50),k:["draw","pts","gift"].includes(g&&g.k)?g.k:"gift",n:clampN(g&&g.n,0,100000),txt:cleanTxt(g&&g.txt,60)})).filter(g=>g.at>=1&&(g.k==="gift"?g.txt:g.n>0)).sort((a,b)=>a.at-b.at).slice(0,6);
   const stamp={on:st0.on===true,min:Math.max(1,num(st0.min)||150),goals};
-  return {on:d.on===true,rounds,log,sent,ci,free,stamp} }
+  /* 2026-11-19 用户要：不同等级有不同福利。店主在后台「等级福利」每个等级一行一条写专属福利 */
+  const tp0=d.tierPerks&&typeof d.tierPerks==="object"?d.tierPerks:{}, tierPerks={}; ["m","s","g"].forEach(k=>{ tierPerks[k]=arr(tp0[k]).map(x=>cleanTxt(x,80)).filter(Boolean).slice(0,10) });
+  return {on:d.on===true,rounds,log,sent,ci,free,stamp,tierPerks} }
 function normDraw(x){ if(!x||typeof x!=="object") return null; const n=clampN(x.n,0,1e6); if(!n) return null; return {n,r:cleanId(x.r),m:cleanId(x.m||""),cost:clampN(x.cost,0,1e6),free:x.free===1?1:0,at:num(x.at)||0} }
 function h01(str){ let h=2166136261>>>0; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619)>>>0 }
   h^=h>>>16; h=Math.imul(h,0x85ebca6b)>>>0; h^=h>>>13; h=Math.imul(h,0xc2b2ae35)>>>0; h^=h>>>16; return (h>>>0)/4294967296 }
@@ -3047,7 +3050,14 @@ V.lucky=()=>`${H1("签到和抽奖","Check-in & lucky draw")}${ciPanel()}<p styl
 V.perks=()=>{ const R=rules(), S=STM(), F=LUCKY.free||{}, r=LUCKY.on?curRound():null, g=isGuest()||!signedIn();
   const sec=(t,e,body)=>`<section class="panel stack perk" style="gap:6px"><h3 style="margin:0">${B(t,e)}</h3>${body}</section>`, ul=l=>`<ul class="perkul">${l.map(x=>`<li>${x}</li>`).join("")}</ul>`;
   const out=[];
-  out.push(sec("会员等级","Tiers",ul([B(`会员：注册就是，买东西每 RM1 得 ${R.earn} 分。`,`Member: just sign up. ${R.earn} pt per RM1.`),B(`银卡：近 12 个月消费满 ${rm(R.silver)}，积分 ×${R.silverX}。`,`Silver: ${rm(R.silver)} in the last 12 months, points ×${R.silverX}.`),B(`金卡：近 12 个月消费满 ${rm(R.gold)}，积分 ×${R.goldX}。`,`Gold: ${rm(R.gold)} in the last 12 months, points ×${R.goldX}.`),B("每月 1 日按最新的 12 个月重新算等级。","Tiers are recalculated on the 1st of every month.")])));
+  const TP=LUCKY.tierPerks||{m:[],s:[],g:[]}, cur=g?"":(m=>m.tier[0]==="金卡"?"g":m.tier[0]==="银卡"?"s":"m")(member(uid));
+  const TC=[["m","会员","Member",B("注册就是","Sign up"),1],["s","银卡","Silver",B(`近 12 个月消费满 ${rm(R.silver)}`,`${rm(R.silver)} in 12 months`),R.silverX],["g","金卡","Gold",B(`近 12 个月消费满 ${rm(R.gold)}`,`${rm(R.gold)} in 12 months`),R.goldX]];
+  out.push(`<section class="panel stack" style="gap:8px"><h3 style="margin:0">${B("不同等级的福利","Perks by tier")}</h3><div class="tw"><table class="tiert"><thead><tr><th></th>${TC.map(t=>`<th class="${cur===t[0]?"me":""}">${B(t[1],t[2])}${cur===t[0]?`<small>${B("你现在","You")}</small>`:""}</th>`).join("")}</tr></thead><tbody>
+   <tr><th>${B("怎么升级","How to reach")}</th>${TC.map(t=>`<td class="${cur===t[0]?"me":""}">${t[3]}</td>`).join("")}</tr>
+   <tr><th>${B("买东西积分","Points per RM1")}</th>${TC.map(t=>`<td class="${cur===t[0]?"me":""}">${Math.round(R.earn*t[4]*100)/100} ${B("分","pts")}${t[4]!==1?` <small>(×${t[4]})</small>`:""}</td>`).join("")}</tr>
+   <tr><th>${B("生日月下单","Birthday month")}</th>${TC.map(t=>`<td class="${cur===t[0]?"me":""}">${B("积分","points")} ×${R.bdayX}</td>`).join("")}</tr>
+   <tr><th>${B("专属福利","Tier extras")}</th>${TC.map(t=>`<td class="${cur===t[0]?"me":""}">${(TP[t[0]]||[]).length?`<ul class="perkul">${TP[t[0]].map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:t[0]==="m"?"—":OWNER_TBD()}</td>`).join("")}</tr></tbody></table></div>
+   <p class="muted" style="margin:0;font-size:13px">${B("等级看近 12 个月已送达订单的消费，每月 1 日重新计算。签到、集章卡和下面其他福利所有等级都一样。","Tiers use delivered spend in the last 12 months and are recalculated on the 1st of each month. Check-in, stamp card and the perks below are the same for every tier.")}</p></section>`);
   out.push(sec("买东西赚积分","Earn points",ul([B("订单送达后才加积分，取消或退回的订单不算。","Points are added once an order is delivered; cancelled or returned orders don't count."),B(`生日月下单，积分 ×${R.bdayX}（要先在会员中心填生日）。`,`Birthday-month orders earn ×${R.bdayX} (add your birthday in Membership first).`)])));
   out.push(sec("积分怎么用","Use points",ul([B(`结账时抵扣：每 ${R.redeemPts} 分抵 ${rm(R.redeemRM)}。`,`At checkout: ${R.redeemPts} pts = ${rm(R.redeemRM)} off.`)+OWNER_TBD()].concat(r?[B(`玩夹娃娃机：${r.machines.map(m=>esc(m.name)+" "+m.cost+" 分").join("、")}，每台机的奖品和中奖率都公开。`,`Claw machines: ${r.machines.map(m=>esc(m.name)+" "+m.cost+" pts").join(", ")}; prizes and odds are public.`)]:[]).concat([B("每单最多抵多少：","Max discount per order: ")+OWNER_TBD(),B("积分有效期：","Points expiry: ")+OWNER_TBD(),B("能不能和回购优惠码一起用：","Combine with return coupons: ")+OWNER_TBD()]))));
   out.push(sec("每日签到","Daily check-in",`<p class="muted" style="margin:0">${ciRuleTxt(R)}</p><p style="margin:0"><a href="#lucky">${B("去签到","Check in")} ›</a></p>`));
@@ -3099,6 +3109,13 @@ function luckyBody(){ const r=curRound(), m=member(uid), mine=luckyDraws(XU).sli
   ${mine.some(d=>d.n!==ui.clawBusy)?`<section class="stack" style="gap:8px">${H2("我的夹取记录","My plays")}<div class="panel stack" style="gap:6px">${mine.filter(d=>d.n!==ui.clawBusy).slice(0,30).map(d=>`<div class="alrow"><span class="muted">${new Date(d.at).toLocaleString(isEN()?"en-MY":"zh-CN")}</span>${d.mach&&d.mach.name?`<span class="chip">${esc(d.mach.name)}</span>`:""}<b>${d.ok?(d.win?esc(d.prize):B("没夹到","Nothing")):B("无效记录","Invalid")}</b><span class="muted">−${d.cost} ${B("分","pts")}</span>${d.win?`<span class="chip">${LUCKY.sent[d.key]?B("已安排","Arranged"):B("等店主安排","Pending")}</span>`:""}</div>`).join("")}</div></section>`:""}`;
 }
 /* 2026-11-19 用户要：「第几张付款订单送免费夹取」是独立的设定，不和夹娃娃机设置放一起 */
+function admTiers(){ const TP=LUCKY.tierPerks||{m:[],s:[],g:[]}, R=rules();
+  return `${H2("等级福利","Tier perks")}<p class="muted">每个等级的专属福利，一行写一条（例如：免运费、新品优先预订、生日礼物）。会员福利页会按等级并排显示。升级金额和积分倍数在「积分规则」改。</p>
+  <div class="panel stack">${[["m","会员（注册就是）"],["s",`银卡（近 12 个月满 ${rm(R.silver)}）`],["g",`金卡（近 12 个月满 ${rm(R.gold)}）`]].map(t=>`<label class="f">${t[1]}<textarea id="tp-${t[0]}" rows="3" placeholder="一行一条，留空就是没有">${esc((TP[t[0]]||[]).join("\n"))}</textarea></label>`).join("")}
+  <div><button class="pri" data-tpsave="1">保存</button></div></div>` }
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-tpsave]"); if(!b||!owner) return; const tp={};
+  ["m","s","g"].forEach(k=>{ tp[k]=(document.getElementById("tp-"+k).value||"").split("\n").map(x=>cleanTxt(x.trim(),80)).filter(Boolean).slice(0,10) });
+  LUCKY.tierPerks=tp; render(); saveLucky().then(()=>toast("已保存 Saved")) });
 function admFree(){ const F=LUCKY.free||{at:[],n:0};
   return `${H2("购物送免费夹取","Free plays for purchases")}<p class="muted">顾客第几张付款订单送免费夹娃娃次数。订单要你在后台按「通过」后才算付款。免费夹取不扣积分，哪台机都能用。</p>
   <div class="panel stack"><label class="f">第几张付款订单送（用逗号分开，例如 1,3,5；留空就是不送）<input id="fp-at" inputmode="numeric" value="${esc(F.at.join(","))}" placeholder="例如：1,3,5"></label>
@@ -3160,9 +3177,9 @@ ATABS.splice(ATABS.length-1,0,["lucky","抽奖","Lucky draw"]);
     if(ui.atab==="products") return H1("商品","Products")+off+admProducts();
     if(ui.atab==="users") return off+admUsers();
     if(ui.atab==="review") return H1("审核","Approve")+off+part("reviews")+part("wall",1);
-    if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=[["rules","积分规则","Points rules"],["stamp","集章卡","Stamp card"],["freeplay","购物送夹取","Free plays"],["lucky","夹娃娃机","Claw machines"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"]]);
+    if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=[["rules","积分规则","Points rules"],["tiers","等级福利","Tier perks"],["stamp","集章卡","Stamp card"],["freeplay","购物送夹取","Free plays"],["lucky","夹娃娃机","Claw machines"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"]]);
       const st=tabs.some(t=>t[0]===ui.stab)?ui.stab:"rules";
-      const body=st==="rules"?admMembers().split("<h2>")[0]+"<h2>"+admMembers().split("<h2>")[1]:st==="stamp"?admStamp():st==="freeplay"?admFree():st==="lucky"?part("lucky",1):st==="staff"?admStaff().replace(/^\s*<h1>[\s\S]*?<\/h1>/,""):part("launch");
+      const body=st==="rules"?admMembers().split("<h2>")[0]+"<h2>"+admMembers().split("<h2>")[1]:st==="tiers"?admTiers():st==="stamp"?admStamp():st==="freeplay"?admFree():st==="lucky"?part("lucky",1):st==="staff"?admStaff().replace(/^\s*<h1>[\s\S]*?<\/h1>/,""):part("launch");
       return H1("设置","Settings")+off+seg("data-stab",st,tabs)+body }
     const rows=[]; Object.entries(all).forEach(([u,d])=>liveO(u,d.orders).forEach(o=>rows.push([u,eff(u,o)]))); rows.sort((a,b)=>b[1].at-a[1].at);
     const f=OF.find(x=>x[0]===ui.ofil)||OF[0], list=rows.filter(r=>f[3](r[1]));
