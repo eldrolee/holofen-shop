@@ -3056,7 +3056,7 @@ function admLucky(){ const r=curRound(); const rows=[]; const us=new Set(Object.
    <div><button class="pri" data-lsave="1">保存</button></div></div>
   ${H2(`中奖名单（${wins.length}）`,"Winners")}${wins.length?`<div class="tw"><table><thead><tr><th>顾客</th><th>奖品</th><th>时间</th><th></th></tr></thead><tbody>${wins.map(x=>`<tr><td>${nm(x.u)}</td><td>${esc(x.d.prize)}</td><td>${new Date(x.d.at).toLocaleString(isEN()?"en-MY":"zh-CN")}</td><td>${LUCKY.sent[x.d.key]?`<button class="sm" data-lsent="${esc(x.d.key)}" data-v="0">已安排 ✓</button>`:`<button class="sm pri" data-lsent="${esc(x.d.key)}" data-v="1">标记已安排</button>`}</td></tr>`).join("")}</tbody></table></div>`:`<p class="muted">还没有人抽中。</p>`}
   <p class="muted">${BL(`全部抽奖 ${rows.length} 次，其中无效 ${rows.filter(x=>!x.d.ok).length} 次（顾客端记录对不上，不发奖、不扣分）。`,`${rows.length} draws in total, ${rows.filter(x=>!x.d.ok).length} invalid (customer record didn't match: no prize, no points taken).`)}</p>` }
-ROUTES.add("lucky"); GROUPS.cart.splice(2,0,["lucky","签到抽奖","Check-in"]); PARENT.lucky="cart";
+ROUTES.add("lucky"); /* 2026-11-19 用户要：签到抽奖从购物车分页搬到会员中心分页 */ GROUPS.member=[["member","会员中心","Membership"],["lucky","签到抽奖","Check-in"]]; PARENT.member="member"; PARENT.lucky="member";
 ATABS.splice(ATABS.length-1,0,["lucky","抽奖","Lucky draw"]);
 { const _adm=V.admin; V.admin=()=>owner&&ui.atab==="lucky"?admLucky():_adm() }
 /* ---------- 后台精简（v69）：一件事只在一个地方。5 页：订单、商品、用户、审核、设置 ----------
