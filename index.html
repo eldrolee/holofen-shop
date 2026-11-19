@@ -1118,6 +1118,67 @@ header.bar::after{margin-top:8px}
 #addok .aok b{font-size:17px}#addok .aok span{font-size:13px;color:var(--muted);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}#addok .aok a{margin-top:6px;font-weight:700}
 @keyframes aokIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
 #addok.rm .aok{animation:none}
+
+/* ---------- 深色森林样板（执行稿图 01–08）。只在 ?forest=1 的行情页生效，正式页面不受影响 ---------- */
+html.forest{--bg:#10251F;--surface:#1D372F;--tile:#183029;--soft:#183029;--ink:#EDF3E9;--muted:#B7C8BB;--line:#2E4A40;--gold:#E1BF78;--note:#24402F;--note-ink:#EDF3E9;--mint:#183029;--skyb:#183029;--cream:#1D372F;--teal:#E1BF78;--accent:#9FD3B5;--blue:#9FD3B5;--up:#7FD8A0;--down:#FF9A85;color-scheme:dark}
+html.forest body{background:var(--bg);color:var(--ink)}
+html.forest a{color:#9FD3B5}
+html.forest header.bar{background:#0E201B;color:var(--ink);box-shadow:0 1px 0 var(--line)}
+html.forest header.bar::after{background:linear-gradient(90deg,#2E4A40,#E1BF78 50%,#2E4A40)}
+html.forest header.bar a,html.forest header.bar button{color:var(--ink)}
+html.forest nav.tabs a.on{color:var(--gold)}
+html.forest button{background:var(--surface);color:var(--ink);border-color:var(--line)}
+html.forest #view>section.sec{background:var(--surface);border-color:var(--line)}
+html.forest .mhero{background:radial-gradient(80% 120% at 100% 0%,rgba(225,191,120,.16),transparent 60%),linear-gradient(160deg,#1D372F,#10251F);border:1px solid var(--line);color:var(--ink)}
+html.forest .mhero p{color:var(--muted)}
+html.forest .mhero .tag.live,html.forest .board .tag.live{border-color:var(--gold);color:var(--gold)}
+html.forest .msearch{background:#0E201B;border:1.5px solid #3C5D50;box-shadow:none;color:var(--ink)}
+html.forest .msearch input{color:var(--ink)}html.forest .msearch input::placeholder{color:#8FA597}
+html.forest .mkpi>div,html.forest .kstrip div{background:#183029;border:1px solid var(--line)}
+html.forest .mkpi small,html.forest .kstrip small{color:var(--muted)}
+html.forest .mkpi .up,html.forest .kstrip b.up{color:var(--up)}html.forest .mkpi .down,html.forest .kstrip b.down{color:var(--down)}
+html.forest .tape{background:#0E201B;color:var(--ink);border:1px solid var(--line)}
+html.forest .serstrip button,html.forest .serstrip button[style*="--sc"]{background:var(--surface);border-color:var(--line);color:var(--muted)}
+html.forest .serstrip button.on,html.forest .serstrip button[style*="--sc"].on{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold);color:var(--ink)}
+html.forest .serstrip button.all{color:var(--ink)}
+html.forest .board{background:var(--surface);color:var(--ink);border-color:var(--line)}
+html.forest .board .bh,html.forest .board .ch,html.forest .board .col,html.forest .kstrip,html.forest .kstrip div{border-color:var(--line)}
+html.forest .board .ch{background:#183029;color:var(--ink)}
+html.forest .board .bh b{color:var(--ink)}
+html.forest .board .tag{border-color:#3C5D50;color:var(--muted)}
+html.forest .brow{border-bottom-color:#264137;color:var(--ink)}
+html.forest .brow:hover{background:#244238}
+html.forest .brow .no,html.forest .brow .sb,html.forest .brow .mk{color:var(--muted)}
+html.forest .brow img{background:#0E201B}
+html.forest .chg.up{color:var(--up);background:rgba(127,216,160,.12);border-color:rgba(127,216,160,.45)}html.forest .chg.down{color:var(--down);background:rgba(255,154,133,.12);border-color:rgba(255,154,133,.45)}html.forest .chg.flat{background:transparent;color:var(--muted);border-color:var(--line)}
+html.forest .note{background:#183029;color:var(--muted);border-color:var(--line)}
+html.forest .seg{border-color:var(--line)}
+html.forest .seg button{background:var(--surface);color:var(--muted)}
+html.forest .seg button.on{background:#0E201B;color:var(--gold);box-shadow:inset 0 0 0 1.5px var(--gold);font-weight:700}
+html.forest .seg[aria-label="稀有度"] button.on::before{content:"✓ ";}
+html.forest .ctl{background:var(--surface);border-color:var(--line)}
+html.forest .ctl:hover{box-shadow:0 10px 22px rgba(0,0,0,.35)}
+html.forest .ctl .rk{background:var(--gold);color:#10251F}
+html.forest .chip{background:#183029;border-color:var(--line);color:var(--muted)}
+html.forest .muted{color:var(--muted)}
+html.forest h1,html.forest h2,html.forest h3{color:var(--ink)}
+html.forest footer{background:#0A1814;color:var(--muted)}
+html.forest footer a{color:var(--muted)}
+html.forest #btm{background:#0E201B;border-color:var(--line)}
+html.forest #btm a{color:var(--muted)}html.forest #btm a.on{color:var(--gold)}
+html.forest .tag{background:transparent}
+html.forest .pill.up{background:rgba(127,216,160,.16);color:var(--up);box-shadow:inset 0 0 0 1px rgba(127,216,160,.45)}
+html.forest .pill.down{background:rgba(255,154,133,.14);color:var(--down);box-shadow:inset 0 0 0 1px rgba(255,154,133,.45)}
+html.forest .pill.flat{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 1px var(--line)}
+html.forest .kt{background:color-mix(in srgb,var(--kc) 18%,#10251F);color:color-mix(in srgb,var(--kc) 45%,#fff);border-color:color-mix(in srgb,var(--kc) 40%,#10251F)}
+html.forest .trend{background:#14302A;color:#9FD3B5}html.forest .trend:hover{background:var(--gold);color:#10251F}
+html.forest .totopw{background:linear-gradient(90deg,#0E201B,#16302A 50%,#0E201B)}
+html.forest .totopw::before{opacity:.25}
+html.forest .ctc a{background:#14302A;border-color:var(--line);color:var(--ink)}
+html.forest .fbadge a{color:#10251F}
+.fbadge{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;gap:10px;align-items:center;background:#E1BF78;color:#10251F;font-size:12.5px;font-weight:700;padding:6px 8px 6px 14px;border-radius:99px;box-shadow:0 6px 20px rgba(0,0,0,.35);white-space:nowrap}
+.fbadge a{color:#10251F;background:rgba(16,37,31,.12);padding:3px 10px;border-radius:99px;text-decoration:none}
+@media (min-width:641px){.fbadge{bottom:20px}}
 </style>
 
 <div class="bgfx" aria-hidden="true"></div>
@@ -1559,8 +1620,10 @@ let lang="zh"; try{ if(localStorage.getItem("lang")==="en") lang="en" }catch(e){
 function applyLang(){ document.documentElement.dataset.lang=lang; document.documentElement.lang=lang==="en"?"en":"zh"; const b=$("#langbtn"); if(b){ b.innerHTML=`<span class="${lang==="zh"?"on":""}">中</span><span class="${lang==="en"?"on":""}">EN</span>`; b.setAttribute("aria-label",lang==="zh"?"Switch to English":"切换到中文") } if(lang==="en") langPass() }
 function adminTabs(){ return ATABS.concat(window.HOLO_AUTH&&HOLO_AUTH.role()==="owner"?[["staff","员工权限","Staff"]]:[]) }
 const _html={}; function setHTML(sel,h){ const k=sel+"|"+lang; if(_html[sel]===k+h) return false; _html[sel]=k+h; $(sel).innerHTML=h; return true }
+const FOREST=(()=>{ try{ const q=new URLSearchParams(location.search).get("forest"); if(q!=null) sessionStorage.setItem("forest",q==="1"?"1":"0"); return sessionStorage.getItem("forest")==="1" }catch(e){ return /[?&]forest=1/.test(location.search) } })();
 function render(){
   const adm=route==="admin"&&owner;
+  { const on=FOREST&&route==="market"; document.documentElement.classList.toggle("forest",on); let fb=document.getElementById("fbadge"); if(on&&!fb){ fb=document.createElement("div"); fb.id="fbadge"; fb.className="fbadge"; fb.innerHTML=`<span>${B("深色森林样板预览","Dark forest preview")}</span><a href="?forest=0#market">${B("看原版","See current")}</a>`; document.body.appendChild(fb) } if(fb) fb.hidden=!on }
   $("#bar").className="bar"+(adm?" adm":"");
   $("#brand").innerHTML=buddy(26)+(adm?`店主后台<small>Admin</small>`:`Holofen`);
   $("#tabs").innerHTML=adm?adminTabs().map(t=>`<a href="#admin" data-atab="${t[0]}" class="${ui.atab===t[0]?"on":""}">${t[1]}<i>${t[2]}</i></a>`).join("")
@@ -1700,7 +1763,7 @@ V.market=()=>{
   const so=ui.msort, pv=c=>cRM(c)==null?-1:cRM(c); all.sort(so==="new"?(a,b)=>SI[b.s].date.localeCompare(SI[a.s].date)||pv(b)-pv(a):so==="hi"?(a,b)=>pv(b)-pv(a):so==="lo"?(a,b)=>(cRM(a)==null?1e9:cRM(a))-(cRM(b)==null?1e9:cRM(b)):so==="no"?(a,b)=>a.s.localeCompare(b.s)||a.i-b.i:so==="up"?(a,b)=>(b.tr??-1e3)-(a.tr??-1e3):(a,b)=>pv(b)-pv(a));
   const sets=sel?[sel]:(ui.mallsets?SETS:SETS.slice(0,3));
   const results=`<section class="stack" style="gap:12px" id="mres">
-   <div class="mfilt"><div class="seg" role="group" aria-label="稀有度">${[["","全部","All"],["SAR","SAR",""],["SR","SR",""],["UR","UR",""],["MUR","MUR",""],["AR","AR",""],["RR","RR",""],["CC","★C",""]].map(r=>`<button data-mrar="${r[0]}" class="${ui.mrar===r[0]?"on":""}">${r[2]?B(r[1],r[2]):r[1]}</button>`).join("")}</div>
+   <div class="mfilt"><div class="seg" role="group" aria-label="稀有度">${[["","全部","All"],["SAR","SAR",""],["SR","SR",""],["UR","UR",""],["MUR","MUR",""],["AR","AR",""],["RR","RR",""],["CC","★C",""]].map(r=>`<button data-mrar="${r[0]}" class="${ui.mrar===r[0]?"on":""}" aria-pressed="${ui.mrar===r[0]}">${r[2]?B(r[1],r[2]):r[1]}</button>`).join("")}</div>
     <div class="seg" role="group" aria-label="排序">${[["hi","价格高","High"],["up","7 天涨幅","7d up"],["new","最新","Newest"],["lo","价格低","Low"],["no","编号","Number"]].map(r=>`<button data-msort="${r[0]}" class="${(so||"hi")===r[0]?"on":""}">${B(r[1],r[2])}</button>`).join("")}</div></div>
    <p class="muted">${B(`找到 ${all.length} / ${callp.length} 张`,`${all.length} of ${callp.length}`)}${q?` · <button class="lnk" data-mclear="1">${B("清除搜索","Clear search")}</button>`:""}</p>
    <div class="cgrid">${all.slice(0,ui.mshown||24).map(ctile).join("")||`<p class="muted">${B("没有符合的卡","No cards match")}</p>`}</div>${all.length>(ui.mshown||24)?`<div><button data-mmore="1">${B("再显示 24 张","Show 24 more")}</button></div>`:""}</section>`;
@@ -2973,7 +3036,7 @@ document.addEventListener("click",async e=>{
   if(ds.mallsets){ ui.mallsets=true; return render() }
   if(ds.scar){ return scarGo(+ds.scar) }
   if("mser" in ds){ e.preventDefault(); ui.mser=ds.mser; if(route!=="market") return go("market"); return render() }
-  if("mrar" in ds){ ui.mrar=ds.mrar; return render() }
+  if("mrar" in ds){ ui.mrar=(FOREST&&ds.mrar&&ui.mrar===ds.mrar)?"":ds.mrar; return render() }
   if(ds.msort){ ui.msort=ds.msort; return render() }
   if(ds.contact){ ui.kf=true; return render() }
   if(ds.top){ return window.scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"}) }
