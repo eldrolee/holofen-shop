@@ -1113,6 +1113,7 @@ header.bar::after{margin-top:8px}
 .mtop{display:flex;align-items:center;gap:14px;background:linear-gradient(120deg,#0e7c86,#2f8f7c);color:#fff;border:0}
 .mtop .mav{width:56px;height:56px;border-radius:50%;background:#fff;color:#0e7c86;display:grid;place-items:center;font:800 24px/1 var(--display);flex:none;position:relative;cursor:pointer}.mtop .mav img{width:100%;height:100%;border-radius:50%;object-fit:cover}.mtop .mavc{position:absolute;right:-4px;bottom:-4px;width:24px;height:24px;border-radius:99px;background:#fff;display:grid;place-items:center;font-size:12px;box-shadow:0 1px 4px rgba(0,0,0,.25)}.mtop .mavx{color:#fff;font-size:12px;min-height:0;padding:2px 0;opacity:.85;justify-self:start}
 .mgrp .mi .mid{width:44px;height:44px;object-fit:contain;display:block}
+.perkul{margin:0;padding-left:20px;display:grid;gap:4px;color:var(--muted)}.perk h3{font-size:16px}
 .avgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px}.avgrid button{display:grid;justify-items:center;gap:4px;padding:6px;border-radius:14px;background:transparent;border:2px solid transparent;min-height:0}.avgrid button.on{border-color:var(--red)}.avgrid img{width:64px;height:64px;border-radius:50%;object-fit:cover;display:block}.avgrid small{font-size:12px}
 #loginbtn .av img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
 .mtop .mwho{display:flex;flex-direction:column;gap:4px;min-width:0}.mtop .mwho b{font-size:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -2837,7 +2838,7 @@ function welPrompt(){ let seen=false; try{ seen=localStorage.getItem("welSeen")=
   const g=!signedIn()||isGuest(), m=document.createElement("div"); m.id="welm"; m.className="lgm"; m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true"); m.setAttribute("aria-labelledby","welh");
   m.innerHTML=`<div class="box welbox">${buddy(56)}<h2 id="welh">${BL("欢迎来到 Holofen","Welcome to Holofen")}</h2>
    <div><b>${B("我们卖什么","What we sell")}</b><p class="muted" style="margin:4px 0 0">${B("宝可梦集换式卡牌的原盒和补充包，有中文、英文、日文版。补充包可以整盒买，也可以单包买。也接私人订制组牌。","Sealed Pokémon TCG boxes and booster packs in Chinese, English and Japanese. Buy packs by the box or one at a time. We also build custom decks.")}</p></div>
-   <div><b>${B("会员优惠","Member perks")}</b><ul class="welul">${welOffers().map(x=>`<li>${x}</li>`).join("")}</ul></div>
+   <div><b>${B("会员优惠","Member perks")}</b><ul class="welul">${welOffers().map(x=>`<li>${x}</li>`).join("")}</ul><a href="#perks" data-welgo="x" style="font-size:14px">${B("看全部会员福利","See all perks")} ›</a></div>
    <div class="row" style="gap:8px">${g?`<button class="pri" data-welgo="login">${B("登录或注册","Sign in or register")}</button><button data-welgo="shop">${B("先逛逛","Browse first")}</button>`:`<button class="pri" data-welgo="shop">${B("去逛商店","Go to shop")}</button><button data-welgo="x">${B("关闭","Close")}</button>`}</div></div>`;
   document.body.appendChild(m); if(lang==="en"&&typeof langPass==="function") langPass(); try{ localStorage.setItem("welSeen","1") }catch(e){}
   const f=m.querySelector("[data-welgo]"); if(f) try{ f.focus({preventScroll:true}) }catch(_){} }
@@ -3041,15 +3042,21 @@ function doDraw(mid){ if(needLogin("要先登录或注册才能玩夹娃娃机",
   const fr=freeLeft(XU)>0; if(!fr&&m.left<mc.cost) return toast(`积分不够，这台机要 ${mc.cost} 分`);
   const n=Math.max(0,...arr(ME.draws).map(d=>d.n),...arr(LUCKY.log[XU]).map(d=>d.n))+1;
   ME.draws=arr(ME.draws).concat(fr?{n,r:r.id,m:mc.id,cost:0,free:1,at:Date.now()}:{n,r:r.id,m:mc.id,cost:mc.cost,at:Date.now()}).slice(-300); ui.lastDraw=0; ui.clawBusy=n; saveMe(); setTimeout(()=>clawPlay(n),30) }
-V.lucky=()=>`${H1("签到和抽奖","Check-in & lucky draw")}${ciPanel()}${ptsRules()}${luckyBody()}`;
-function ptsRules(){ const R=rules(); return `<details class="panel wrules"><summary><b>${B("积分规则","Points rules")}</b></summary><ul>
- <li>${B("已定：","Confirmed: ")}${ciRuleTxt(R)}</li>
- <li>${B(`积分换折扣：现在后台设定是 ${R.redeemPts} 分抵 ${rm(R.redeemRM)}。`,`Points to discount: currently set to ${R.redeemPts} pts = ${rm(R.redeemRM)} off.`)}${OWNER_TBD()}</li>
- <li>${B("每单最多抵多少：","Maximum discount per order: ")}${OWNER_TBD()}</li>
- <li>${B("积分有效期：","Points expiry: ")}${OWNER_TBD()}</li>
- <li>${B("能不能和回购优惠码一起用：","Can be combined with return coupons: ")}${OWNER_TBD()}</li>
- <li>${B("抽奖规则和中奖怎么公布：","Draw rules and how winners are announced: ")}${OWNER_TBD()}</li>
- <li>${B("签到和抽奖不保证一定得到奖品或折扣。","Checking in or drawing does not guarantee a prize or discount.")}</li></ul></details>` }
+V.lucky=()=>`${H1("签到和抽奖","Check-in & lucky draw")}${ciPanel()}<p style="margin:0"><a href="#perks">${B("积分规则和全部会员福利","Points rules and all member perks")} ›</a></p>${luckyBody()}`;
+/* 2026-11-19 用户要：会员福利说明。一页讲完，内容全部按后台现在的设定生成；没定的写「待店主确认」；积分规则只放这里，不在别处重复 */
+V.perks=()=>{ const R=rules(), S=STM(), F=LUCKY.free||{}, r=LUCKY.on?curRound():null, g=isGuest()||!signedIn();
+  const sec=(t,e,body)=>`<section class="panel stack perk" style="gap:6px"><h3 style="margin:0">${B(t,e)}</h3>${body}</section>`, ul=l=>`<ul class="perkul">${l.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+  const out=[];
+  out.push(sec("会员等级","Tiers",ul([B(`会员：注册就是，买东西每 RM1 得 ${R.earn} 分。`,`Member: just sign up. ${R.earn} pt per RM1.`),B(`银卡：近 12 个月消费满 ${rm(R.silver)}，积分 ×${R.silverX}。`,`Silver: ${rm(R.silver)} in the last 12 months, points ×${R.silverX}.`),B(`金卡：近 12 个月消费满 ${rm(R.gold)}，积分 ×${R.goldX}。`,`Gold: ${rm(R.gold)} in the last 12 months, points ×${R.goldX}.`),B("每月 1 日按最新的 12 个月重新算等级。","Tiers are recalculated on the 1st of every month.")])));
+  out.push(sec("买东西赚积分","Earn points",ul([B("订单送达后才加积分，取消或退回的订单不算。","Points are added once an order is delivered; cancelled or returned orders don't count."),B(`生日月下单，积分 ×${R.bdayX}（要先在会员中心填生日）。`,`Birthday-month orders earn ×${R.bdayX} (add your birthday in Membership first).`)])));
+  out.push(sec("积分怎么用","Use points",ul([B(`结账时抵扣：每 ${R.redeemPts} 分抵 ${rm(R.redeemRM)}。`,`At checkout: ${R.redeemPts} pts = ${rm(R.redeemRM)} off.`)+OWNER_TBD()].concat(r?[B(`玩夹娃娃机：${r.machines.map(m=>esc(m.name)+" "+m.cost+" 分").join("、")}，每台机的奖品和中奖率都公开。`,`Claw machines: ${r.machines.map(m=>esc(m.name)+" "+m.cost+" pts").join(", ")}; prizes and odds are public.`)]:[]).concat([B("每单最多抵多少：","Max discount per order: ")+OWNER_TBD(),B("积分有效期：","Points expiry: ")+OWNER_TBD(),B("能不能和回购优惠码一起用：","Combine with return coupons: ")+OWNER_TBD()]))));
+  out.push(sec("每日签到","Daily check-in",`<p class="muted" style="margin:0">${ciRuleTxt(R)}</p><p style="margin:0"><a href="#lucky">${B("去签到","Check in")} ›</a></p>`));
+  if(S.on&&S.goals.length) out.push(sec("集章卡","Stamp card",ul([B(`单笔商品金额满 ${rm(S.min)}（不算运费），付款确认后盖 1 个章。`,`${rm(S.min)}+ in goods per order (excl. shipping) earns 1 stamp once payment is confirmed.`)].concat(S.goals.map(x=>B(`集到 ${x.at} 个：送${stampName(x)}`,`${x.at} stamps: ${stampName(x)}`))).concat([B(`集满 ${stampSize()} 个换新卡，重新集。`,`A new card starts after ${stampSize()}.`)]))));
+  if(F.n&&F.at&&F.at.length) out.push(sec("购物送免费夹取","Free plays",`<p class="muted" style="margin:0">${B(`第 ${F.at.join("、")} 张付款订单各送 ${F.n} 次免费夹娃娃，不用积分。`,`Paid order no. ${F.at.join(", ")} each gives ${F.n} free claw play${F.n>1?"s":""}, no points needed.`)}</p>`));
+  out.push(sec("写评价","Reviews",`<p class="muted" style="margin:0">${B("收到货写评价（可以附照片和 15 秒内的视频），送一张回购码：下次满 RM100 减 RM10。","Review a delivered order (photos and 15 s videos welcome) to get a coupon: RM10 off your next RM100+ order.")}${OWNER_TBD()}</p>`));
+  out.push(sec("其他","Also",ul([B("收藏商品、打开新系列到货提醒，上架时通知你。","Save products and turn on new-set alerts."),B("晒卡墙：登录后可以晒你开到的卡。","Pull wall: sign in to share your pulls.")])));
+  return `${H1("会员福利","Member perks")}${g?`<div class="note row" style="justify-content:space-between;gap:8px"><span>${B("注册会员就能享有下面的福利。","Sign up to get the perks below.")}</span><button class="pri" data-needlogin="1">${B("登录或注册","Sign in or register")}</button></div>`:""}${out.join("")}
+  <p class="muted" style="font-size:13px">${B("签到和夹娃娃机不保证一定得到奖品或折扣。数字以这一页显示的为准，店主调整后这里会马上更新。详细条款看","Check-ins and claw plays don't guarantee a prize or discount. The numbers on this page are always current. Full terms:")} <a href="#terms">${B("条款与细则","Terms")}</a></p>` };
 const CLAWC=["#0b6672","#e0a526","#d9644a","#3f86c4","#7a5bb5","#3f9b62"];
 function dollSet(mc){ const ps=mc.prizes.slice(0,8), out=[]; for(let i=0;i<9;i++){ const p=ps[i%ps.length]; out.push({p,c:CLAWC[mc.prizes.indexOf(p)%CLAWC.length]}) } return out }
 function clawBox(mc,big){ const ds=dollSet(mc);
@@ -3135,7 +3142,7 @@ function admLucky(){ const r=curRound(); const rows=[]; const us=new Set(Object.
    ${ui.lkErr?`<p class="note" role="alert" style="margin:0;border-color:var(--red)">${esc(ui.lkErr)}</p>`:""}<div><button class="pri" data-lsave="1">保存机台</button></div></div>
   ${H2(`中奖名单（${wins.length}）`,"Winners")}${wins.length?`<div class="tw"><table><thead><tr><th>顾客</th><th>奖品</th><th>时间</th><th></th></tr></thead><tbody>${wins.map(x=>`<tr><td>${nm(x.u)}</td><td>${esc(x.d.prize)}</td><td>${new Date(x.d.at).toLocaleString(isEN()?"en-MY":"zh-CN")}</td><td>${LUCKY.sent[x.d.key]?`<button class="sm" data-lsent="${esc(x.d.key)}" data-v="0">已安排 ✓</button>`:`<button class="sm pri" data-lsent="${esc(x.d.key)}" data-v="1">标记已安排</button>`}</td></tr>`).join("")}</tbody></table></div>`:`<p class="muted">还没有人抽中。</p>`}
   <p class="muted">${BL(`全部抽奖 ${rows.length} 次，其中无效 ${rows.filter(x=>!x.d.ok).length} 次（顾客端记录对不上，不发奖、不扣分）。`,`${rows.length} draws in total, ${rows.filter(x=>!x.d.ok).length} invalid (customer record didn't match: no prize, no points taken).`)}</p>` }
-ROUTES.add("lucky"); /* 2026-11-19 用户要：签到抽奖从购物车分页搬到会员中心分页 */ GROUPS.member=[["member","会员中心","Membership"],["lucky","签到抽奖","Check-in"]]; PARENT.member="member"; PARENT.lucky="member";
+ROUTES.add("lucky"); /* 2026-11-19 用户要：签到抽奖从购物车分页搬到会员中心分页 */ GROUPS.member=[["member","会员中心","Membership"],["lucky","签到抽奖","Check-in"],["perks","会员福利","Perks"]]; PARENT.member="member"; PARENT.lucky="member"; PARENT.perks="member"; ROUTES.add("perks");
 ATABS.splice(ATABS.length-1,0,["lucky","抽奖","Lucky draw"]);
 { const _adm=V.admin; V.admin=()=>owner&&ui.atab==="lucky"?admLucky():_adm() }
 /* ---------- 后台精简（v69）：一件事只在一个地方。5 页：订单、商品、用户、审核、设置 ----------
