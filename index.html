@@ -738,6 +738,8 @@ html[data-lang="en"] .lgg .en2{display:none}
 .pqimg img,.pqimg .spr{width:100%;border-radius:10px;box-shadow:0 8px 22px rgba(20,37,74,.22)}
 .pqcode{display:inline-block;margin-top:6px;font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-radius:99px;padding:2px 10px}
 .pqprice{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.pqprice b{font-family:var(--num);font-size:30px;color:#14855a}.pqprice>span{font-size:12px;color:var(--muted);font-weight:700}
+.slang button{border:0;background:transparent;border-radius:8px;padding:6px 14px;font-size:14px;color:var(--ink);min-height:0}.slang button.on{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:700}
+.lgc{align-self:flex-start;font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:999px;background:#e3eefc;color:#1d4f91}.lgc.lg-ja{background:#fde4e4;color:#b42318}.lgc.lg-zh{background:#fff1c2;color:#8a5a00}
 .slang{margin:4px 0;align-self:flex-start}.slang a{text-decoration:none;border-radius:8px;padding:6px 14px;font-size:14px;color:var(--ink)}.slang a.on{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:700}
 .seg2{display:inline-flex;background:#eef1f5;border-radius:10px;padding:3px;gap:2px}.seg2 button{border:0;background:transparent;border-radius:8px;padding:5px 12px;font-size:13px;min-height:0}.seg2 button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:700}.seg2 button:disabled{opacity:.45}
 .gtab{width:100%;border-collapse:collapse;border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:14px}.gtab th,.gtab td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--line)}.gtab th{background:#f6f7fa;font-weight:600;color:var(--muted)}
@@ -1367,7 +1369,7 @@ window.HOLO_AUTH=(function(){
 "use strict";
 /* 散包：每个系列一件「单包补充包」，顾客自己填要几包（1 到 99）。已经有 Booster Pack 商品的系列直接用；没有的先建一件价格待定的，店主在后台填价格后才上架。 */
 (function(){ const L=window.PRODUCTS||(window.PRODUCTS=[]), SIx=window.SETINFO||{};
-  Object.keys(SIx).filter(s=>SIx[s].ja).forEach(s=>{ const id="jb-"+SIx[s].code.toLowerCase(); if(!L.some(p=>p.id===id)) L.push({id,s,n:"Booster Box",zh:"补充包盒（日文版）",t:"B",no:"",usd:0,myr:0,loc:null,price:0,img:null,src:"",c:"box",lang:"jp"}) });
+  Object.keys(SIx).filter(s=>SIx[s].ja).forEach(s=>{ const id="jb-"+SIx[s].code.toLowerCase(); if(!L.some(p=>p.id===id)) L.push({id,s,n:"Booster Box",zh:"补充包盒（日文版 · 20 包）",packs:20,t:"B",no:"",usd:0,myr:0,loc:null,price:0,img:null,src:"",c:"box",lang:"jp"}) });
   Object.keys(SIx).forEach(s=>{ const ex=L.find(p=>p.s===s&&p.n==="Booster Pack"); if(ex){ ex.loose=1; return }
     L.push({id:SIx[s].ja?"jp-"+SIx[s].code.toLowerCase():"lp-"+s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""),s,n:"Booster Pack",zh:SIx[s].ja?"散包（日文版）":"散包（单包补充包）",lang:SIx[s].ja?"jp":undefined,t:"B",no:"",usd:0,myr:0,loc:null,price:0,img:null,src:"",c:"pack",loose:1}) }) })();
 /* 暂用商品图（TCGplayer 目录图），之后换成实拍。Keldeo 单包吊卡还没有公开图，保留占位。 */
@@ -1392,12 +1394,14 @@ function applyCatalog(){
   const items=(CAT.items&&typeof CAT.items==="object")?CAT.items:{};
   arr(CAT.added).slice(0,500).forEach(a=>{ const id=cleanId(a&&a.id); if(!id||!/^n/.test(id)) return; if(!own(PM,id)){ const np={id,s:"",n:"",zh:"",t:"S",no:"",usd:0,myr:0,loc:null,price:0,img:null,src:"",c:"single",added:1}; PM[id]=np; ALLP.push(np); ORIG[id]={price:0,n:"",zh:""} } });
   ALLP.forEach(p=>{ const o=ORIG[p.id]||{}; p.price=o.price; p.n=o.n; p.zh=o.zh; ["desc","stock","cond","lng","photo","hidden"].forEach(k=>delete p[k]);
+    /* 2026-11-19 用户要：英文版和日文版分开。没在后台改过的商品按资料默认：日文资料=日文版，中文资料=中文版，其余英文版 */
+    if(!p.svc&&p.c!=="single") p.lng=p.lang==="jp"?"日文版":p.lang==="cn"?"中文版":"英文版";
     const x=own(items,p.id)&&items[p.id]&&typeof items[p.id]==="object"?items[p.id]:null; if(!x) return;
     const pr=num(x.price); if(isFinite(pr)&&pr>=0) p.price=Math.round(pr*100)/100;
     if(typeof x.n==="string"&&x.n.trim()) p.n=cleanTxt(x.n,120); if(typeof x.zh==="string") p.zh=cleanTxt(x.zh,120);
     if(typeof x.desc==="string") p.desc=cleanTxt(x.desc,1500);
     const st=num(x.stock); if(isFinite(st)) p.stock=Math.max(0,Math.round(st));
-    if(typeof x.cond==="string") p.cond=cleanTxt(x.cond,20); if(typeof x.lng==="string") p.lng=cleanTxt(x.lng,20);
+    if(typeof x.cond==="string") p.cond=cleanTxt(x.cond,20); if(typeof x.lng==="string"&&x.lng) p.lng=cleanTxt(x.lng,20);
     if(typeof x.photo==="string"&&/^[A-Za-z0-9_-]{6,64}$/.test(x.photo)) p.photo=x.photo;
     if(p.added){ if(typeof x.s==="string") p.s=cleanTxt(x.s,60); if(typeof x.c==="string"&&own(CATS,x.c)) p.c=x.c; p.t=p.c==="single"?"S":"X" }
     if(x.hidden===true) p.hidden=true; });
@@ -1675,10 +1679,11 @@ const banner=()=>"";
 function svcCard(){ return `<div class="prod svcc"><div class="pic"><a href="#build" aria-label="${isEN()?"Deck building service":"代组服务"}">${buddy(150,"wow")}</a><span class="prebdg" style="background:#0e7c86">${B("服务","Service")}</span></div>
   <div class="info"><a class="nm" href="#build">${B("私人订制组牌","Custom deck building")}</a><div class="muted set">${B("说预算和打法，我们帮你配好 60 张，1 天内报价","Tell us your budget and style. We build the 60 cards and quote within 1 day")}</div>
   <div class="bigp" style="font-size:18px">${B("按牌表报价","Quoted per list")}</div><div class="foot"><button class="sun" data-go="build">${B("填需求","Start")}</button></div></div></div>` }
+const LNGEN={"英文版":"English","日文版":"Japanese","中文版":"Chinese"}, lngT=l=>isEN()?(LNGEN[l]||l):l;
 function prodCard(p){
   const c=CI[p.id], tc=c&&TYPEC[c.type];
   return `<div class="prod" data-goitem="${p.id}"${tc?` style="--glow:${tc[0]}99"`:""}><div class="pic"><a href="#p/${p.id}" aria-label="${esc(pname(p))} ${BT("快速查看","Quick view")}"><img loading="lazy" src="${simg(p)}" alt=""></a><button class="qv" data-open="${p.id}">快速查看 <span class="en">Quick view</span></button>${wishBtn(p)}${isPre(p)?`<span class="prebdg">${B("预购","Pre-order")} · ${preTxt(p)}</span>`:""}</div>
-  <div class="info">${p.no?`<div class="cno">${esc(numTxt(p))}</div>`:""}<a class="nm" href="#p/${p.id}">${esc(PZ(p))}</a><div class="muted set">${slogo(p.s)}<span>${esc(p.s)}</span></div>
+  <div class="info">${p.no?`<div class="cno">${esc(numTxt(p))}</div>`:""}${p.lng?`<span class="lgc lg-${{"日文版":"ja","中文版":"zh"}[p.lng]||"en"}">${esc(lngT(p.lng))}</span>`:""}<a class="nm" href="#p/${p.id}">${esc(PZ(p))}</a><div class="muted set">${slogo(p.s)}<span>${esc(p.s)}</span></div>
   <div class="bigp">${rm(p.price)}</div>
   <div class="foot">${p.c==="single"&&!listed(p)?(p.ck?`<a class="btnl" href="#card/${esc(p.ck)}">${B("看卡价","Card prices")} ›</a>`:""):p.stock===0&&!isPre(p)?`<button disabled>缺货 <span class="en">Sold out</span></button>`:isPre(p)?`<button class="sun" data-add="${p.id}">预购 <span class="en">Pre-order</span></button>`:`<button class="sun" data-add="${p.id}">加入购物车 <span class="en">Add</span></button>`}</div></div></div>`;
 }
@@ -2259,12 +2264,14 @@ function reviewList(){
   return `<div class="panel stack">${reviews.slice(0,8).map(r=>`<div><div><span style="color:var(--sun)">${"★".repeat(clampN(r.rating,1,5))}</span><span style="color:var(--line)">${"★".repeat(5-clampN(r.rating,1,5))}</span> <span class="muted">${new Date(num(r.at)||0).toLocaleDateString("zh-CN")} · ${esc(r.items||"")}</span></div><div>${esc(r.text||"（没有写文字）")}</div>${rvShow(r.media)}</div>`).join("")}</div>`;
 }
 V.shop=()=>{
-  const SP=P.filter(listed), series=[...new Set(SP.map(p=>p.s))], q=ui.q.trim().toLowerCase();
-  let list=SP.filter(p=>(!ui.series||p.s===ui.series)&&(!ui.cat||p.c===ui.cat)&&(!q||(p.n+" "+p.zh+" "+p.s+" "+p.no).toLowerCase().includes(q)));
+  const SP=P.filter(listed), series0=[...new Set(SP.map(p=>p.s))], q=ui.q.trim().toLowerCase();
+  const lgs=["英文版","日文版","中文版"].filter(l=>SP.some(p=>p.lng===l)); if(ui.slng&&!lgs.includes(ui.slng)) ui.slng=""; const series=series0.filter(x=>!ui.slng||SP.some(p=>p.s===x&&p.lng===ui.slng));
+  let list=SP.filter(p=>(!ui.slng||p.lng===ui.slng)&&(!ui.series||p.s===ui.series)&&(!ui.cat||p.c===ui.cat)&&(!q||(p.n+" "+p.zh+" "+p.s+" "+p.no).toLowerCase().includes(q)));
   const band=p=>p.price>=50&&p.price<=300?0:p.price<50?1:2;
   list.sort((ui.sort||"rec")==="rec"?(a,b)=>band(a)-band(b)||b.price-a.price:ui.sort==="hi"?(a,b)=>b.price-a.price:ui.sort==="lo"?(a,b)=>a.price-b.price:(a,b)=>a.n.localeCompare(b.n));
-  const n=c=>SP.filter(p=>p.c===c&&(!ui.series||p.s===ui.series)).length;
+  const n=c=>SP.filter(p=>p.c===c&&(!ui.slng||p.lng===ui.slng)&&(!ui.series||p.s===ui.series)).length;
   return `${H1("商店","Shop")}
+  ${lgs.length>1?`<div class="seg2 slang" role="group" aria-label="版本 Edition">${[["",B("全部版本","All editions")]].concat(lgs.map(l=>[l,B(l,LNGEN[l]||l)])).map(x=>`<button data-slng="${x[0]}" class="${(ui.slng||"")===x[0]?"on":""}" aria-pressed="${(ui.slng||"")===x[0]}">${x[1]}${x[0]?` <small class="muted">${SP.filter(p=>p.lng===x[0]).length}</small>`:""}</button>`).join("")}</div>`:""}
   <div class="chips" role="group" aria-label="产品类别"><button data-cat="" class="${ui.cat===""?"on":""}">全部 <span class="en">All</span></button>${Object.entries(CATS).filter(([k])=>k!=="single").map(([k,v])=>`<button data-cat="${k}" class="${ui.cat===k?"on":""}">${v[0]} <span class="en">${v[1]}</span> <span class="cnt">${n(k)}</span></button>`).join("")}</div>
   <div class="serstrip" role="group" aria-label="选择系列 Series"><button class="all${ui.series===""?" on":""}" data-ser="">全部系列<span class="en" style="font-weight:400">All sets</span></button>${series.map(s=>`<button data-ser="${esc(s)}" class="${ui.series===s?"on":""}" aria-pressed="${ui.series===s}" title="${esc(s)}" style="--sc:${SETC[s]||"#1c8fc4"}">${slogo(s,"")}<span>${esc(s)}</span></button>`).join("")}</div>
   ${ui.series&&SI[ui.series]?`<div class="serhead">${slogo(ui.series,"")}<div><b>${esc(ui.series)}</b><div class="muted">${SI[ui.series].date} ${B("发售","released")} · ${setCnt(ui.series)} · 本店 ${SP.filter(p=>p.s===ui.series).length} 件商品 · <a href="${setUrl(ui.series)}">看这个系列的完整卡表 ›</a></div></div></div>`:""}
@@ -2694,7 +2701,7 @@ function looseBox(s,skip,qv){ const p=PM[(looseFor(s)||{}).id], b0=PM[(boxFor(s)
   const lgs=[...new Set(looseAll(s).filter(listed).map(x=>x.lng||""))], lsel=lgs.length>1?`<div class="row lgsel" style="gap:6px;flex-basis:100%">${lgs.map(l=>`<button type="button" class="chip${(p.lng||"")===l?" on":""}" data-llng="${esc(l)}" data-lset="${esc(s)}" aria-pressed="${(p.lng||"")===l}">${esc(l||B("未注明语言","Language TBD"))}</button>`).join("")}</div>`:"";
   const ok=p&&listed(p)&&(p.stock!==0||isPre(p)), bok=bx&&listed(bx)&&(bx.stock!==0||isPre(bx)), cap=p&&p.stock>0&&!isPre(p)?Math.min(99,p.stock):99, k=p?p.id:"";
   return `<div class="loose">${lsel}<img src="${simg(p||bx)}" alt="" loading="lazy"><div class="lt"><b>${qv?B("本系列散包","Loose packs from this set"):B("整盒或散包","Box or loose packs")}</b><span class="muted">${qv?`${esc(s)}${p.lng?" · "+esc(p.lng):""} · ${p.price>0?rm(p.price)+" / "+BT("包","pack"):BT("价格待定","Price TBD")}`:B(esc(s)+"：可以买整盒，也可以自己选要几包","Buy a full "+esc(s)+" box, or choose how many packs")}</span></div>
-  ${bx?`<div class="lq"><button ${bok?"":"disabled"} class="sun" data-add="${bx.id}" data-q="1">${B("买整盒","Full box")}<small>${bx.price>0?rm(bx.price):B("价格待定","Price TBD")}</small></button></div>`:""}
+  ${bx?`<div class="lq"><button ${bok?"":"disabled"} class="sun" data-add="${bx.id}" data-q="1">${B("买整盒","Full box")}${bx.packs?` <span class="muted">(${bx.packs} ${BT("包","packs")})</span>`:""}<small>${bx.price>0?rm(bx.price):B("价格待定","Price TBD")}</small></button></div>`:""}
   ${p?`<div class="lq lcus"><span class="row" style="gap:4px;flex-wrap:nowrap"><button type="button" data-lstep="${k}" data-d="-1" aria-label="${BT("少一包","One less")}" ${ok?"":"disabled"}>−</button><input id="lq-${k}" type="number" min="1" max="${cap}" step="1" inputmode="numeric" value="1" aria-label="${BT("要几包","Number of packs")}" data-lprice="${p.price||0}" ${ok?"":"disabled"}><button type="button" data-lstep="${k}" data-d="1" aria-label="${BT("多一包","One more")}" ${ok?"":"disabled"}>+</button></span><button class="pri" data-addq="${k}" ${ok?"":"disabled"}>${B("加入散包","Add packs")}<small id="lqt-${k}">${p.price>0?`1 ${B("包","pack")} · ${rm(p.price)}`:B("价格待定","Price TBD")}</small></button></div>`:""}</div>` }
 function lqUpd(k){ const el=document.getElementById("lq-"+k), t=document.getElementById("lqt-"+k); if(!el||!t) return; const pr=+el.dataset.lprice||0, n=clampN(el.value||1,1,+el.max||99); if(pr>0) t.textContent=n+" "+BT("包","packs")+" · "+rm(pr*n) }
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-lstep],[data-addq]"); if(!b) return; e.stopPropagation(); const k=b.dataset.lstep||b.dataset.addq, el=document.getElementById("lq-"+k); if(!el) return;
@@ -3476,6 +3483,7 @@ document.addEventListener("click",async e=>{
   if(ds.gocard){ ui.toPrice=true; location.hash="card/"+ds.gocard; return }
   if(ds.more){ ui.shown+=24; return render() }
   if("cat" in ds){ ui.cat=ds.cat; ui.shown=24; return render() }
+  if("slng" in ds){ ui.slng=ds.slng; ui.series=""; ui.shown=24; return render() }
   if(ds.ncat){ ui.ncat=ds.ncat; return render() }
   if(ds.tdir){ ui.tdir=ds.tdir; return render() }
   if(ds.gtab){ ui.gtab=ds.gtab; return render() }
