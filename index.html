@@ -1666,7 +1666,7 @@ function render(){
   /* v86 内容没变就不重画：刷新后资料一份份载入时，首页不会一直闪 */
   const vch=setHTML("#view",subnav()+(V[route]||V.home)());
   $("#view").classList.toggle("hassub",!!GROUPS[PARENT[route]]);
-  setHTML("#modal",ui.kf?kfModal():ui.pid&&PM[ui.pid]?detail(PM[ui.pid]):ui.mid&&PM[ui.mid]?mdetail(PM[ui.mid]):ui.cid?cardModal(ui.cid):"");
+  setHTML("#modal",ui.avPick&&ME?avPicker():ui.kf?kfModal():ui.pid&&PM[ui.pid]?detail(PM[ui.pid]):ui.mid&&PM[ui.mid]?mdetail(PM[ui.mid]):ui.cid?cardModal(ui.cid):"");
   if(lang==="en") langPass();
   if(vch&&route==="home"&&window.fitHero) requestAnimationFrame(window.fitHero);
   if(window.fitBar) window.fitBar();
@@ -2739,12 +2739,13 @@ function markSeen(){ const un=unreadOrders(); if(!un.length) return; ME.oseen=Ob
 /* 2026-11-19 用户要：会员可以加自己的头像。先做上传照片（裁成正方形 256px 再上传）；预设头像定稿后放进 AVATARS */
 const AVLIST=[["fawn","小白鹿","Fawn"],["pangolin","穿山甲","Pangolin"],["kingfisher","翠鸟","Kingfisher"],["tapir","马来貘","Tapir"],["hornbill","犀鸟","Hornbill"],["firefly","萤火虫","Firefly"],["orangutan","红毛猩猩","Orangutan"],["sunbear","马来熊","Sun bear"],["mousedeer","鼠鹿","Mouse deer"]];
 const AVATARS=Object.fromEntries(AVLIST.map(a=>[a[0],"av/"+a[0]+".webp"]));
-function avPicker(){ if(!ui.avPick) return ""; return `<section class="panel stack avpk" style="gap:10px"><div class="row" style="justify-content:space-between"><h3 style="margin:0">${B("选一个头像","Pick an avatar")}</h3><button type="button" class="linkbtn" data-avpick="0">${B("收起","Close")}</button></div>
+/* 2026-11-20 用户要求：选头像用弹窗 */
+function avPicker(){ if(!ui.avPick) return ""; return `<div class="modal"><div class="box stack avpk" role="dialog" aria-modal="true" aria-label="${isEN()?"Pick an avatar":"选一个头像"}" style="gap:12px;max-width:520px;display:flex;flex-direction:column;align-items:stretch"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><h3 style="margin:0">${B("选一个头像","Pick an avatar")}</h3><button type="button" class="qvx" data-avpick="0" aria-label="关闭 Close" style="position:static;margin:0;flex:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <div class="avgrid">${AVLIST.map(a=>`<button type="button" data-avset="${a[0]}" class="${ME.av&&ME.av.k==="p"&&ME.av.id===a[0]?"on":""}" aria-label="${B(a[1],a[2]).replace(/<[^>]+>/g,"")}"><img src="${AVATARS[a[0]]}" alt="" loading="lazy"><small>${B(a[1],a[2])}</small></button>`).join("")}</div>
-  <div class="row" style="gap:8px"><label class="upshot">📷 ${BL("上传自己的照片","Upload my photo")}<input type="file" accept="image/*" data-avup="1" hidden></label>${ME.av?`<button type="button" class="linkbtn" data-avdel="1">${B("移除头像","Remove avatar")}</button>`:""}</div></section>` }
+  <div class="row" style="gap:8px"><label class="upshot">📷 ${BL("上传自己的照片","Upload my photo")}<input type="file" accept="image/*" data-avup="1" hidden></label>${ME.av?`<button type="button" class="linkbtn" data-avdel="1">${B("移除头像","Remove avatar")}</button>`:""}</div></div></div>` }
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-avpick],[data-avset]"); if(!b) return; if(b.tagName==="LABEL") e.preventDefault();
   if(b.dataset.avset){ ME.av={k:"p",id:b.dataset.avset}; ui.avPick=false; saveMe().then(()=>{ render(); if(window.HOLO_AUTH) HOLO_AUTH.paint(); toast("头像已更新") }); return }
-  ui.avPick=b.dataset.avpick!=="0"; render(); if(ui.avPick){ const x=document.querySelector(".avpk"); if(x) x.scrollIntoView({block:"nearest",behavior:"smooth"}) } });
+  ui.avPick=b.dataset.avpick!=="0"; render() });
 const avUrl=a=>!a?"":a.k==="up"?BLOB(a.id):a.k==="p"&&AVATARS[a.id]?AVATARS[a.id]:"";
 function sqImg(f,n){ return new Promise((res,rej)=>{ const u=URL.createObjectURL(f), im=new Image(); im.onload=()=>{ const s=Math.min(im.naturalWidth,im.naturalHeight), c=document.createElement("canvas"); c.width=c.height=n; c.getContext("2d").drawImage(im,(im.naturalWidth-s)/2,(im.naturalHeight-s)/2,s,s,0,0,n,n); URL.revokeObjectURL(u); c.toBlob(b=>b?res(new File([b],"avatar.jpg",{type:"image/jpeg"})):rej(0),"image/jpeg",.88) }; im.onerror=()=>{ URL.revokeObjectURL(u); rej(0) }; im.src=u }) }
 document.addEventListener("change",async e=>{ const t=e.target; if(!t||!t.dataset||!t.dataset.avup) return; const f=t.files&&t.files[0]; t.value=""; if(!f) return;
@@ -3385,7 +3386,7 @@ V.member=()=>{ const E=isEN();
   const unr=new Set(openOrders().map(x=>x[0])), GR=[["unpaid","待付款","To pay","M3 7h18v12H3zM3 11h18M7 15h3"],["review","待审核","In review","M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7zM8.5 12l2.5 2.5 4.5-5"],["approved","备货中","Packing","M4 8l8-4 8 4v8l-8 4-8-4zM4 8l8 4 8-4M12 12v8"],["shipped","已寄出","Shipped","M2 6h12v10H2zM14 10h4l3 3v3h-7zM6 19a2 2 0 1 0 0-.1M17 19a2 2 0 1 0 0-.1"],["delivered","待评价","To review","M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"]];
   const top=`<section class="panel mtop"><label class="mav" data-avpick="1" title="${isEN()?"Change avatar":"换头像"}">${avUrl(ME.av)?`<img src="${esc(avUrl(ME.av))}" alt="">`:esc(String(nm)[0]||"?").toUpperCase()}</label><div class="mwho"><b>${esc(nm)}</b><span class="mtier">${B(m.tier[0],m.tier[1])}</span><button type="button" class="linkbtn mavx" data-avpick="1">${B("换头像","Change avatar")}</button></div><div class="mpts"><b>${m.left}</b><small>${B("可用积分","Points")}</small></div></section>
   <section class="panel mords"><div class="row" style="justify-content:space-between"><h2 style="margin:0;font-size:17px">${B("我的订单","My orders")}</h2><a href="#orders" data-ofl="">${B("查看全部","View all")} ›</a></div><div class="mgrp">${GR.map(g=>{ const n=os.filter(o=>o.status===g[0]).length, u=os.some(o=>o.status===g[0]&&unr.has(o.id)); return `<a href="#orders" data-ofl="${g[0]}"><span class="mi"><img class="mid" src="trk/trk-${g[0]}.webp" alt="" width="44" height="44" loading="lazy">${n?`<b class="${u?"u":""}">${n}</b>`:""}</span>${B(g[1],g[2])}</a>` }).join("")}</div></section>`;
-  return `${H1("会员中心","Membership")}${top}${avPicker()}${memberCard(1)}${stampCard()}${histSec}
+  return `${H1("会员中心","Membership")}${top}${memberCard(1)}${stampCard()}${histSec}
   <section class="panel stack" style="gap:10px">${H2("活动计划","What's on")}<ul class="evl">${ev.map(e=>`<li class="${e[3]?"on":""}"><i aria-hidden="true"></i><div><b>${e[0]}</b><p class="muted">${e[1]}</p></div><span>${e[2]}</span></li>`).join("")}</ul></section>
 ` };
 /* v83 访客下单：不用登录也能买。按提交时自动建一个访客身份（Supabase 匿名登录），页面重载后自动填回表单再提交 */
@@ -3453,7 +3454,7 @@ document.addEventListener("click",async e=>{
   const ms=e.target.closest&&e.target.closest("[data-msheet]"); if(ms){ e.preventDefault(); ui.msheet=!ui.msheet; return render() }
   if(ui.msheet&&!(e.target.closest&&e.target.closest(".msheet"))){ ui.msheet=false; render() }
   if(e.target.classList&&e.target.classList.contains("aedit-bg")){ ui.aedit=null; return render() }
-  if(e.target.classList&&e.target.classList.contains("modal")){ ui.pid=null; ui.mid=null; return render() }
+  if(e.target.classList&&e.target.classList.contains("modal")){ ui.pid=null; ui.mid=null; ui.avPick=false; return render() }
   const a=e.target.closest("a[data-atab]"); if(a){ ui.atab=a.dataset.atab; if(route==="admin"){ e.preventDefault(); render() } return }
   const b=e.target.closest("button,[data-go],a[data-tbd],a[data-ser],a[data-mser],.ctl[data-cid]");
   if(!b){ if(e.target.closest(".totopw")) return window.scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"}); const pc=e.target.closest(".prod[data-goitem]"); if(pc&&!e.target.closest("a")) openItem(pc.dataset.goitem); return }
@@ -3543,7 +3544,7 @@ document.addEventListener("click",async e=>{
     if(ds.adm==="deliver"){ const txt=val("dl-"+oid); if(!txt) return toast("请先贴上牌表"); return saveAdm(u,oid,o.svcOnly?{delivery:txt,status:"delivered",deliveredAt:Date.now()}:{delivery:txt}).then(()=>toast("牌表已保存")) }
   }
 });
-document.addEventListener("keydown",e=>{ if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("ctl")){ e.preventDefault(); ui.cid=e.target.dataset.cid; return render() } if(e.key==="Escape"&&(ui.pid||ui.mid||ui.kf||ui.cid)){ ui.pid=null; ui.mid=null; ui.kf=false; ui.cid=null; render() } if(e.key==="Escape"&&ui.aedit){ ui.aedit=null; render() } });
+document.addEventListener("keydown",e=>{ if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("ctl")){ e.preventDefault(); ui.cid=e.target.dataset.cid; return render() } if(e.key==="Escape"&&(ui.pid||ui.mid||ui.kf||ui.cid||ui.avPick)){ ui.avPick=false; ui.pid=null; ui.mid=null; ui.kf=false; ui.cid=null; render() } if(e.key==="Escape"&&ui.aedit){ ui.aedit=null; render() } });
 document.addEventListener("input",e=>{
   if(e.isComposing) return;
   const id=e.target.id, v=e.target.value;
