@@ -1166,20 +1166,22 @@ header.bar::after{margin-top:8px}
 .clawpick button small{color:var(--muted);font-size:12px}
 .clawpick button.on{border-color:var(--teal,#0b6672);box-shadow:0 0 0 2px var(--teal,#0b6672);background:#e8f3ee}
 .clawwrap{align-items:start}
-.claw{width:min(100%,340px);border-radius:22px;padding:10px;background:linear-gradient(180deg,#f6cf63,#e9b949);box-shadow:0 10px 24px rgba(16,38,55,.18),inset 0 -6px 0 rgba(0,0,0,.08)}
-.clawtop{display:flex;justify-content:space-between;align-items:center;padding:4px 8px 8px;color:#102637;font-weight:800}
-.clawtop span{background:#102637;color:#fff;border-radius:99px;padding:2px 10px;font-size:12.5px}
-.clawglass{position:relative;height:300px;border-radius:14px;overflow:hidden;background:linear-gradient(180deg,#dff1fb 0%,#eef8f3 70%,#e6dcc6 70%);border:3px solid #102637}
-.clawrail{position:absolute;left:0;right:0;top:0;height:10px;background:#102637}
-.clawarm{position:absolute;top:6px;left:var(--x);width:44px;margin-left:-22px;height:66px;color:#102637;z-index:4}
-.clawarm .rope{position:absolute;left:50%;top:0;width:3px;height:40px;margin-left:-1.5px;background:#102637}
+.claw{width:min(100%,340px);border-radius:26px;padding:10px;background:linear-gradient(180deg,#fffaf0 0%,#e3f4ec 100%);border:3px solid #a9dcc6;box-shadow:0 10px 24px rgba(47,127,106,.18),inset 0 -6px 0 rgba(47,127,106,.10)}
+.clawtop{display:flex;justify-content:space-between;align-items:center;padding:4px 8px 8px;color:#2a5f53;font-weight:800}
+.clawtop span{background:#ffd56b;color:#5b4310;border-radius:99px;padding:2px 10px;font-size:12.5px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08)}
+.clawglass{position:relative;height:300px;border-radius:20px;overflow:hidden;background:radial-gradient(circle at 22% 18%,rgba(255,255,255,.95) 0 2px,transparent 3px),radial-gradient(circle at 74% 30%,rgba(255,255,255,.9) 0 2px,transparent 3px),radial-gradient(circle at 48% 12%,rgba(255,226,140,.9) 0 2px,transparent 3px),linear-gradient(180deg,#e8f5fd 0%,#f4fbf6 68%,#fbefd6 68%,#f6e4bf 100%);border:7px dotted #f6c453;box-shadow:0 0 0 3px #fbe3a2,0 0 14px rgba(246,196,83,.55)}
+.clawglass::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 0 30%,rgba(255,255,255,.45) 34%,transparent 40%);pointer-events:none;z-index:5}
+.clawrail{position:absolute;left:0;right:0;top:0;height:10px;background:linear-gradient(180deg,#e7eef2,#b9c7cf);border-bottom:1px solid #a4b3bc}
+.clawarm{position:absolute;top:6px;left:var(--x);width:44px;margin-left:-22px;height:66px;color:#7d909c;z-index:4;filter:drop-shadow(0 2px 1px rgba(60,80,95,.25))}
+.clawarm .rope{position:absolute;left:50%;top:0;width:4px;height:40px;margin-left:-2px;border-radius:2px;background:linear-gradient(90deg,#c9d5dc,#eef3f6,#b3c1ca)}
 .clawsvg{position:absolute;left:2px;top:36px;width:40px;height:30px;transition:transform .25s}
 .clawarm.grab .clawsvg{transform:scaleX(.62)}
 .dolls{position:absolute;left:58px;right:8px;bottom:6px;height:120px;display:flex;flex-wrap:wrap-reverse;gap:2px;align-content:flex-start;justify-content:center}
-.doll{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 18%,transparent 19%),linear-gradient(180deg,var(--c) 0 50%,#fffaf0 50%);border:2px solid rgba(16,38,55,.55);display:grid;place-items:center;position:relative;box-shadow:0 3px 0 rgba(16,38,55,.2)}
-.doll img{width:28px;height:28px;object-fit:contain}
-.chute{position:absolute;left:6px;bottom:6px;width:46px;height:70px;border-radius:8px;background:rgba(16,38,55,.12);border:2px dashed rgba(16,38,55,.35)}
-.pdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:0}
+.doll{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 32% 26%,#fff 0 14%,rgba(255,255,255,0) 15%),radial-gradient(circle at 70% 78%,rgba(255,255,255,.55) 0 8%,transparent 9%),linear-gradient(180deg,var(--c) 0 50%,#fffaf0 50%);border:2px solid #fff;display:grid;place-items:center;position:relative;box-shadow:0 3px 6px rgba(47,90,80,.22),inset 0 -3px 0 rgba(0,0,0,.06)}
+.doll::after{content:"";position:absolute;left:4px;right:4px;top:calc(50% - 2px);height:4px;border-radius:2px;background:rgba(255,255,255,.75)}
+.doll img{width:28px;height:28px;object-fit:contain;position:relative;z-index:1}
+.chute{position:absolute;left:6px;bottom:6px;width:46px;height:70px;border-radius:14px 14px 10px 10px;background:linear-gradient(180deg,#d6efe4,#bfe3d3);border:2px solid #fff;box-shadow:inset 0 3px 6px rgba(47,127,106,.25)}
+.pdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:0;box-shadow:0 0 0 1px rgba(16,38,55,.25)}
 .lkm legend{padding:0 6px}
 @media (prefers-reduced-motion:reduce){.clawsvg{transition:none}}
 .claw.big .clawvid{display:block;width:100%;aspect-ratio:1/1;height:auto;border-radius:14px;object-fit:cover;background:#f5efe2}
@@ -3156,7 +3158,7 @@ V.perks=()=>{ const R=rules(), S=STM(), F=LUCKY.free||{}, r=LUCKY.on?curRound():
   out.push(sec("其他","Also",ul([B("收藏商品、打开新系列到货提醒，上架时通知你。","Save products and turn on new-set alerts."),B("晒卡墙：登录后可以晒你开到的卡。","Pull wall: sign in to share your pulls.")])));
   return `${H1("会员福利","Member perks")}${g?`<div class="note row" style="justify-content:space-between;gap:8px"><span>${B("注册会员就能享有下面的福利。","Sign up to get the perks below.")}</span><button class="pri" data-needlogin="1">${B("登录或注册","Sign in or register")}</button></div>`:""}${out.join("")}
   <p class="muted" style="font-size:13px">${B("签到和夹娃娃机不保证一定得到奖品或折扣。数字以这一页显示的为准，店主调整后这里会马上更新。详细条款看","Check-ins and claw plays don't guarantee a prize or discount. The numbers on this page are always current. Full terms:")} <a href="#terms">${B("条款与细则","Terms")}</a></p>` };
-const CLAWC=["#0b6672","#e0a526","#d9644a","#3f86c4","#7a5bb5","#3f9b62"];
+const CLAWC=["#7fcfb0","#8fc1ee","#f6cf62","#f3a9bb","#c3aef0","#9fdcc0"];
 function dollSet(mc){ const ps=mc.prizes.slice(0,8), out=[]; for(let i=0;i<9;i++){ const p=ps[i%ps.length]; out.push({p,c:CLAWC[mc.prizes.indexOf(p)%CLAWC.length]}) } return out }
 function clawBox(mc,big){ const ds=dollSet(mc);
   return `<div class="claw${big?" big":""}" data-cm="${esc(mc.id)}"><div class="clawtop"><b>${esc(mc.name||BT("夹娃娃机","Claw machine"))}</b><span>${mc.cost} ${B("分","pts")}</span></div>
