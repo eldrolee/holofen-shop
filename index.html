@@ -1182,6 +1182,10 @@ header.bar::after{margin-top:8px}
 .pdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:0}
 .lkm legend{padding:0 6px}
 @media (prefers-reduced-motion:reduce){.clawsvg{transition:none}}
+.claw.big .clawvid{display:block;width:100%;aspect-ratio:1/1;height:auto;border-radius:14px;object-fit:cover;background:#f5efe2}
+.claw.big:not(.on) .clawglass{display:none}
+.claw.big.on .clawvid{display:none}
+@media (prefers-reduced-motion:reduce){.claw.big .clawvid{display:none}.claw.big .clawglass{display:block}}
 /* v96 页头防重叠：放不下就把导航移到第二行（fitBar 量真实宽度决定）；提示气泡放在彩色线下面，触屏不显示 */
 @media (min-width:641px){
  .bar.stack .wrap{flex-wrap:wrap;row-gap:0}
@@ -3156,10 +3160,11 @@ const CLAWC=["#0b6672","#e0a526","#d9644a","#3f86c4","#7a5bb5","#3f9b62"];
 function dollSet(mc){ const ps=mc.prizes.slice(0,8), out=[]; for(let i=0;i<9;i++){ const p=ps[i%ps.length]; out.push({p,c:CLAWC[mc.prizes.indexOf(p)%CLAWC.length]}) } return out }
 function clawBox(mc,big){ const ds=dollSet(mc);
   return `<div class="claw${big?" big":""}" data-cm="${esc(mc.id)}"><div class="clawtop"><b>${esc(mc.name||BT("夹娃娃机","Claw machine"))}</b><span>${mc.cost} ${B("分","pts")}</span></div>
-  <div class="clawglass"><div class="clawrail"></div><div class="clawarm" style="--x:50%"><i class="rope"></i><svg class="clawsvg" viewBox="0 0 40 30" aria-hidden="true"><path d="M20 0v8M8 10h24M8 10L4 22l5 6M32 10l4 12-5 6M20 10v6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  ${big?`<video class="clawvid" src="lucky/claw-loop.mp4" poster="lucky/claw-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>`:""}<div class="clawglass"><div class="clawrail"></div><div class="clawarm" style="--x:50%"><i class="rope"></i><svg class="clawsvg" viewBox="0 0 40 30" aria-hidden="true"><path d="M20 0v8M8 10h24M8 10L4 22l5 6M32 10l4 12-5 6M20 10v6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
   <div class="dolls">${ds.map((d,i)=>`<span class="doll" data-pi="${esc(d.p.id)}" data-i="${i}" style="--c:${d.c}"><img src="intro/holofen-mark.webp" alt=""></span>`).join("")}</div><div class="chute"></div></div></div>` }
 async function clawPlay(n){ const d=luckyDraws(XU).find(x=>x.n===n), box=document.querySelector(".claw.big"); const done=()=>{ ui.clawBusy=0; ui.lastDraw=n; render() };
   if(!d||!box||matchMedia("(prefers-reduced-motion:reduce)").matches) return done();
+  box.classList.add("on");
   try{ const arm=box.querySelector(".clawarm"), glass=box.querySelector(".clawglass"), G=glass.getBoundingClientRect(), dolls=[...box.querySelectorAll(".doll")];
     const pick=d.win?(dolls.filter(x=>x.dataset.pi===d.win)[Math.floor(h01("p"+n)*9)%Math.max(1,dolls.filter(x=>x.dataset.pi===d.win).length)]||dolls[0]):dolls[Math.floor(h01("q"+n)*dolls.length)];
     const P=pick.getBoundingClientRect(), x=P.left+P.width/2-G.left, x0=arm.offsetLeft+arm.offsetWidth/2, drop=P.top-G.top-arm.offsetHeight+P.height*0.45, ease="cubic-bezier(.45,0,.25,1)";
