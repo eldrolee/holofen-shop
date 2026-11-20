@@ -2591,20 +2591,24 @@ const astOk=(p,f)=>f==="chk"?listed(p)&&!p.svc&&!isPre(p)&&skLevel(p,ui._pq||{})
 function admCard(p){ const tags=[], on=listed(p), sel=!!(ui.asel&&ui.asel[p.id]);
   if(!on) tags.push(["已下架","off"]); if(isPre(p)) tags.push(["预购 "+isPre(p),"ok"]); else if(p.stock===0) tags.push(["缺货","bad"]); else if(p.stock>0) tags.push(["库存 "+p.stock,"ok"]);  { const wn=Object.values(MEALL).filter(m=>m.wish.includes(p.id)).length; if(wn) tags.push(["♥ "+wn+" 人收藏","ok"]) }
   return `<div class="prod acard${on?"":" off"}${sel?" sel":""}"><label class="asel" title="选择"><input type="checkbox" data-asel="${p.id}" ${sel?"checked":""} aria-label="选择 ${esc(p.n||"新商品")}"></label><div class="pic"><img loading="lazy" src="${simg(p)}" alt=""><span class="atags">${tags.map(t=>`<i class="${t[1]}">${t[0]}</i>`).join("")}</span></div>
-  <div class="info">${p.no?`<div class="cno">${esc(numTxt(p))}</div>`:""}<b class="nm">${esc(PZ(p)||(isEN()?"(Untitled new item)":"（未命名新商品）"))}</b><div class="muted" style="font-size:12px">${esc(isEN()?"":(p.zh?p.n:""))}</div><div class="muted set">${p.s?slogo(p.s):""}<span>${esc(p.s||"")}</span></div>
+  <div class="info">${p.no?`<div class="cno">${esc(numTxt(p))}</div>`:""}${p.lng?`<span class="lgc lg-${{"日文版":"ja","中文版":"zh"}[p.lng]||"en"}">${esc(lngT(p.lng))}</span>`:""}<b class="nm">${esc(PZ(p)||(isEN()?"(Untitled new item)":"（未命名新商品）"))}</b><div class="muted" style="font-size:12px">${esc(isEN()?"":(p.zh?p.n:""))}</div><div class="muted set">${p.s?slogo(p.s):""}<span>${esc(p.s||"")}</span></div>
   <div class="bigp">${p.price?rm(p.price):"未定价"}</div>${p.myr||p.usd?`<div class="muted" style="font-size:12px">市价 ${rm(mp(p))}</div>`:""}
   <div class="foot afoot"><button class="sun" data-aedit="${p.id}">编辑</button><button class="${on?"":"pri"}" data-alist="${p.id}" data-on="${on?0:1}">${on?"下架":"上架"}</button></div></div></div>` }
 function admProducts(){
-  const q=(ui.apq||"").toLowerCase(), c=own(CATS,ui.apc)?ui.apc:"all", f=ui.aps||"all", ser=ui.aser||"";
-  const byQ=ALLP.filter(p=>(!q||(p.n+" "+p.zh+" "+p.s+" "+p.no).toLowerCase().includes(q))&&(!ser||p.s===ser));
+  /* 2026-11-20 用户要求：后台的分类和显示方式跟前台商店一样（版本切换 → 类别 → 系列条 → 搜索），后台另外多「状态」筛选 */
+  const q=(ui.apq||"").toLowerCase(), c=own(CATS,ui.apc)?ui.apc:"all", f=ui.aps||"all";
+  const AP=ALLP.filter(p=>p.c!=="single"), lgs=["英文版","日文版","中文版"].filter(l=>AP.some(p=>p.lng===l)); if(ui.alng&&!lgs.includes(ui.alng)) ui.alng=""; const alng=ui.alng||"";
+  const inL=AP.filter(p=>!alng||p.lng===alng), series=[...new Set(inL.map(p=>p.s).filter(Boolean))]; if(ui.aser&&!series.includes(ui.aser)) ui.aser=""; const ser=ui.aser||"";
+  const byQ=inL.filter(p=>(!q||(p.n+" "+p.zh+" "+p.s+" "+p.no).toLowerCase().includes(q))&&(!ser||p.s===ser));
   const inC=byQ.filter(p=>c==="all"||p.c===c), l=inC.filter(p=>astOk(p,f)), n=ui.ashown||24;
-  const series=[...new Set(ALLP.map(p=>p.s).filter(Boolean))];
   const chip=(k,t,cnt,on)=>`<button class="fchip${on?" on":""}" data-aps="${k}">${t} <b>${cnt}</b></button>`;
   const ed=ui.aedit&&own(PM,ui.aedit)?PM[ui.aedit]:null;
-  return `${H2("商品管理","Products")}<p class="muted">「编辑」改价格、照片、名字、详情、库存和预购；「上架 / 下架」决定顾客在商店看不看得到。库存填 0 会显示缺货；不填表示还没录入。已经审核通过的订单按当时的价格算，改价不影响。</p>
+  return `<p class="muted">「编辑」改价格、照片、名字、详情、库存和预购；「上架 / 下架」决定顾客在商店看不看得到。库存填 0 会显示缺货；不填表示还没录入。已经审核通过的订单按当时的价格算，改价不影响。</p>
 
-  <div class="serstrip" role="group" aria-label="选择系列"><button class="all${ser===""?" on":""}" data-aser="">全部系列</button>${series.map(x=>`<button data-aser="${esc(x)}" class="${ser===x?"on":""}" title="${esc(x)}">${slogo(x,"")}<span>${esc(x)}</span></button>`).join("")}</div>
-  <div class="row"><input id="apq" type="search" placeholder="搜索名字、系列、编号" value="${esc(ui.apq||"")}" style="flex:1 1 220px"><select id="apc" aria-label="类别"><option value="all">${isEN()?"All categories":"全部类别"}</option>${Object.entries(CATS).map(([k,v])=>`<option value="${k}" ${c===k?"selected":""}>${isEN()?v[1]+" ("+byQ.filter(p=>p.c===k).length+")":v[0]+"（"+byQ.filter(p=>p.c===k).length+"）"}</option>`).join("")}</select><button class="pri" data-anew="1">＋ 新增商品</button></div>
+  ${lgs.length>1?`<div class="seg2 slang" role="group" aria-label="版本 Edition">${[["",B("全部版本","All editions")]].concat(lgs.map(l=>[l,B(l,LNGEN[l]||l)])).map(x=>`<button data-alng="${x[0]}" class="${alng===x[0]?"on":""}" aria-pressed="${alng===x[0]}">${x[1]}${x[0]?` <small class="muted">${AP.filter(p=>p.lng===x[0]).length}</small>`:""}</button>`).join("")}</div>`:""}
+  <div class="chips" role="group" aria-label="产品类别"><button data-apc="all" class="${c==="all"?"on":""}">全部 <span class="en">All</span></button>${Object.entries(CATS).filter(([k])=>k!=="single").map(([k,v])=>`<button data-apc="${k}" class="${c===k?"on":""}">${v[0]} <span class="en">${v[1]}</span> <span class="cnt">${byQ.filter(p=>p.c===k).length}</span></button>`).join("")}</div>
+  <div class="serstrip" role="group" aria-label="选择系列 Series"><button class="all${ser===""?" on":""}" data-aser="">全部系列<span class="en" style="font-weight:400">All sets</span></button>${series.map(x=>`<button data-aser="${esc(x)}" class="${ser===x?"on":""}" aria-pressed="${ser===x}" title="${esc(x)}" style="--sc:${SETC[x]||"#1c8fc4"}">${slogo(x,"")}<span>${esc(x)}</span></button>`).join("")}</div>
+  <div class="row"><input id="apq" type="search" placeholder="搜索名字、系列、编号" value="${esc(ui.apq||"")}" style="flex:1 1 220px"><button class="pri" data-anew="1">＋ 新增商品</button></div>
   ${(ui._pq=pendQty(),"")}<div class="fbar">${AST.map(([k,t])=>chip(k,t,inC.filter(p=>astOk(p,k)).length,f===k)).join("")}</div>
   ${f==="chk"?stockChk(inC):`
   <datalist id="setlist">${SETS.map(x=>`<option value="${esc(x)}">`).join("")}</datalist>
@@ -3188,7 +3192,9 @@ function luckyBody(){ const r=curRound(), m=member(uid), mine=luckyDraws(XU).sli
 }
 /* 2026-11-19 用户要：「第几张付款订单送免费夹取」是独立的设定，不和夹娃娃机设置放一起 */
 function admFaq(){ const rows=FAQX.list.concat([{q:"",a:"",k:""}]);
-  return `${H2("客服问答","Help Q&A")}<p class="muted">网站右上角的客服会先让顾客点常见问题或打字问，还没解决才引去 IG。下单、付款、运费、退换、正版、组牌、积分等 12 题已经按网站现在的设定自动回答，不用在这里写。这里加你自己的问题；「关键词」写顾客可能会打的字，用空格分开。</p>
+  return `${H2("客服问答","Help Q&A")}<p class="muted">网站右上角的客服会先让顾客点常见问题或打字问，还没解决才引去 IG。下面先列出全部已有的问题。</p>
+  ${(()=>{ const bi=FAQ().filter(f=>!/^x\d/.test(f.id)); return `<div class="panel stack" style="gap:6px"><b>${B(`内置问题（${bi.length} 题，按网站现在的设定自动回答）`,`Built-in questions (${bi.length}, answered from the current site settings)`)}</b><p class="muted" style="margin:0">${B("这些回答会跟着后台设定自动更新，例如改了运费或积分规则，回答也会一起变。","These answers update with your settings, e.g. shipping fees or points rules.")}</p>${bi.map((f,i)=>`<details class="fqb"><summary>${i+1}. ${f.q}</summary><div class="muted" style="padding:6px 0 4px 18px">${f.a()}</div></details>`).join("")}</div>` })()}
+  <p class="muted"><b>${B(`你自己加的问题（${FAQX.list.length} 题）`,`Your own questions (${FAQX.list.length})`)}</b> · ${B("「关键词」写顾客可能会打的字，用空格分开。","Keywords: words customers might type, separated by spaces.")}</p>
   <div class="panel stack" id="fq">${rows.map((x,i)=>`<div class="fqr stack" style="gap:6px;border-bottom:1px solid var(--line);padding-bottom:10px"><label class="f">问题 ${i+1}<input class="fq-q" maxlength="120" value="${esc(x.q)}" placeholder="例如：你们有实体店吗？"></label><label class="f">回答<textarea class="fq-a" rows="3" maxlength="1200" placeholder="例如：现在只做网店，实体店开了会在这里通知。">${esc(x.a)}</textarea></label><label class="f">关键词（可不填）<input class="fq-k" maxlength="200" value="${esc(x.k)}" placeholder="实体店 门店 店面 地址"></label></div>`).join("")}
   <p class="muted" style="margin:0">要删一题，把问题清空再保存。保存后会多出一个空白格可以再加。</p><div><button class="pri" data-fqsave="1">保存</button></div></div>` }
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-fqsave]"); if(!b||!owner) return;
@@ -3519,6 +3525,8 @@ document.addEventListener("click",async e=>{
   if(ds.skset){ if(!owner) return; const id=ds.skset, v=(document.getElementById("sk-"+id)||{}).value, n=num(v); if(v===""||!isFinite(n)||n<0) return toast("库存要填 0 或以上的整数"); const it={...CAT.items}; it[id]={...(own(it,id)?it[id]:{}),stock:Math.round(n)}; CAT.items=it; return saveCat() }
   if(ds.aps){ ui.aps=ds.aps; ui.ashown=24; return render() }
   if(ds.aser!=null&&route==="admin"){ ui.aser=ds.aser; ui.ashown=24; return render() }
+  if(ds.alng!=null&&route==="admin"){ ui.alng=ds.alng; ui.ashown=24; return render() }
+  if(ds.apc!=null&&route==="admin"){ ui.apc=ds.apc; ui.ashown=24; return render() }
   if(ds.alist){ return setListed([ds.alist],ds.on==="1") }
   if(ds.aselall!=null){ ui.asel={...(ui.asel||{})}; ds.aselall.split(",").filter(Boolean).forEach(id=>ui.asel[id]=true); return render() }
   if(ds.aselnone){ ui.asel={}; return render() }
