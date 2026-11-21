@@ -1231,7 +1231,8 @@ header.bar::after{margin-top:8px}
   /* v76：每个浏览器会话只播一次；系统设了减少动态就不播；按 Esc 或「跳过」结束；不盖住顶部的付款提示 */
   var seen=false; try{ seen=sessionStorage.getItem("introSeen")==="1" }catch(e){}
   var rm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if((h&&h!=="home")||seen||rm){ el.remove(); if(rm&&!seen&&(!h||h==="home")) window.addEventListener("load",function(){ setTimeout(function(){ window.dispatchEvent(new Event("introdone")) },600) }); return }
+  /* 2026-11-21 店主要：手机开了「减少动态效果」也照样播开头视频（有「跳过」按钮） */
+  if((h&&h!=="home")||seen){ el.remove(); return }
   function esc(e){ if(e.key==="Escape") end() }
   document.addEventListener("keydown",esc);
   var tr=document.querySelector(".trial"); if(tr){ el.style.top=tr.offsetHeight+"px" }
