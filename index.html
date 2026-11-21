@@ -1719,7 +1719,7 @@ function detail(p){
     ${p.lng||p.cond?`<div class="row" style="gap:6px">${p.lng?`<span class="chip">${esc(lngT(p.lng))}</span>`:""}${p.cond?`<span class="chip">${B("卡况","Condition")} ${esc(p.cond)}</span>`:""}</div>`:""}
     ${p.desc?`<div class="note" style="white-space:pre-line">${esc(p.desc)}</div>`:""}
     ${p.c==="single"&&c?cardInfo(p,1):p.desc?"":`<div><h3>${B("内容","What's inside")}</h3><p>${esc(cc[0])}</p><p class="en">${esc(cc[1])}</p>${cc[2]?`<span class="chip tbd">待核对 <span class="en">Unverified</span></span>`:""}</div>`}
-    ${!p.loose&&p.c!=="single"&&p.s?looseBox(p.s,p.id,1):""}
+    ${!p.loose&&p.c!=="single"&&p.s?looseBox(p.s,p.id,1,p.lng||""):""}
   </div></div></div>`;
 }
 function openItem(id){ const p=PM[id]; if(!p) return; if(p.c==="single"&&p.ck&&!listed(p)){ location.hash="card/"+p.ck; return } ui.mid=null; ui.cid=null; ui.kf=false; ui.pid=id; render() }
@@ -2716,13 +2716,13 @@ async function initExtra(){
 function saveMe(){ const d=JSON.parse(JSON.stringify(ME)); MEALL[XU]=ME; render();
   meQ=meQ.then(()=>XDB?XDB.doc("me/"+XU).set(d):lsSet("me",d)).catch(e=>toast(e&&e.message==="login"?"请先登录，签到和积分才会记在你的账号":"没有保存成功，请再试一次 Could not save")); return meQ }
 function looseAll(s){ const seen={}; return P.concat(ALLP).filter(p=>p.loose&&p.s===s&&!seen[p.id]&&(seen[p.id]=1)) }
-function looseFor(s){ const L=looseAll(s), on=L.filter(listed), pool=on.length?on:L, lg=(ui.llng||{})[s]; return (lg!=null&&pool.find(p=>(p.lng||"")===lg))||pool[0] }
+function looseFor(s,pref){ const L=looseAll(s).filter(p=>!p.hidden), on=L.filter(listed), pool=on.length?on:L, lg=(ui.llng||{})[s]; return (lg!=null&&L.find(p=>(p.lng||"")===lg))||(pref!=null&&L.find(p=>(p.lng||"")===pref))||pool[0] }
 const BT=(zh,en)=>isEN()?en:zh;
 function boxFor(s,lg){ const L=P.concat(ALLP).filter(p=>p.c==="box"&&p.s===s&&(/^booster box$/i.test(p.n||"")||p.lang==="jp")); return (lg&&(L.find(p=>listed(p)&&p.lng===lg)||L.find(p=>p.lng===lg)))||L.find(p=>p.lang!=="jp")||L[0] }
-function looseBox(s,skip,qv){ const p=PM[(looseFor(s)||{}).id], b0=PM[(boxFor(s,(looseFor(s)||{}).lng)||{}).id], bx=b0&&b0.id!==skip&&!qv?b0:null;
-  if(qv&&!(p&&listed(p))) return `<div class="loose none"><span class="muted">${B("本系列散包暂未上架","Loose packs from this set are not listed yet")}</span></div>`;
+function looseBox(s,skip,qv,pref){ const p=PM[(looseFor(s,pref)||{}).id], b0=PM[(boxFor(s,(looseFor(s,pref)||{}).lng)||{}).id], bx=b0&&b0.id!==skip&&!qv?b0:null;
+  if(qv&&!p) return `<div class="loose none"><span class="muted">${B("本系列散包暂未上架","Loose packs from this set are not listed yet")}</span></div>`;
   if(!p&&!bx) return "";
-  const lgs=[...new Set(looseAll(s).filter(listed).map(x=>x.lng||""))], lsel=lgs.length>1?`<div class="row lgsel" style="gap:6px;flex-basis:100%">${lgs.map(l=>`<button type="button" class="chip${(p.lng||"")===l?" on":""}" data-llng="${esc(l)}" data-lset="${esc(s)}" aria-pressed="${(p.lng||"")===l}">${l?esc(lngT(l)):B("未注明语言","Language TBD")}</button>`).join("")}</div>`:"";
+  const lgs=[...new Set(looseAll(s).filter(x=>!x.hidden).map(x=>x.lng||""))], lsel=lgs.length>1?`<div class="row lgsel" style="gap:6px;flex-basis:100%">${lgs.map(l=>`<button type="button" class="chip${(p.lng||"")===l?" on":""}" data-llng="${esc(l)}" data-lset="${esc(s)}" aria-pressed="${(p.lng||"")===l}">${l?esc(lngT(l)):B("未注明语言","Language TBD")}</button>`).join("")}</div>`:"";
   const ok=p&&listed(p)&&(p.stock!==0||isPre(p)), bok=bx&&listed(bx)&&(bx.stock!==0||isPre(bx)), cap=p&&p.stock>0&&!isPre(p)?Math.min(99,p.stock):99, k=p?p.id:"";
   return `<div class="loose">${lsel}<img src="${simg(p||bx)}" alt="" loading="lazy"><div class="lt"><b>${qv?B("本系列散包","Loose packs from this set"):B("整盒或散包","Box or loose packs")}</b><span class="muted">${qv?`${esc(s)}${p.lng?" · "+esc(lngT(p.lng)):""} · ${p.price>0?rm(p.price)+" / "+BT("包","pack"):BT("价格待定","Price TBD")}`:B(esc(s)+"：可以买整盒，也可以自己选要几包","Buy a full "+esc(s)+" box, or choose how many packs")}</span></div>
   ${bx?`<div class="lq"><button ${bok?"":"disabled"} class="sun" data-add="${bx.id}" data-q="1">${B("买整盒","Full box")}${bx.packs?` <span class="muted">(${bx.packs} ${BT("包","packs")})</span>`:""}<small>${bx.price>0?rm(bx.price):B("价格待定","Price TBD")}</small></button></div>`:""}
