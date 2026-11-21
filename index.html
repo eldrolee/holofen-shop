@@ -1663,7 +1663,12 @@ function applyLang(){ document.documentElement.dataset.lang=lang; document.docum
 function adminTabs(){ return ATABS.concat(window.HOLO_AUTH&&HOLO_AUTH.role()==="owner"?[["staff","员工权限","Staff"]]:[]) }
 const _html={}; function setHTML(sel,h){ const k=sel+"|"+lang; if(_html[sel]===k+h) return false; _html[sel]=k+h; $(sel).innerHTML=h; return true }
 const FOREST=false; /* 2026-11-19 用户看过深色森林样板，不要，已拿掉 */
-function render(){
+/* 2026-11-21 店主要：横向滑动的条（系列条、分类条等）按了其中一个之后，停在原来滑到的位置，不要跳回第一个 */
+const HS_SEL=".serstrip,.setsw,.chips,.clawpick,.slang,.lgsel";
+function render(){ const keep={}; try{ document.querySelectorAll(HS_SEL).forEach((el,i)=>{ if(el.scrollLeft) keep[(el.classList[0]||"")+"#"+i]=el.scrollLeft }) }catch(e){}
+  renderCore();
+  try{ document.querySelectorAll(HS_SEL).forEach((el,i)=>{ const k=(el.classList[0]||"")+"#"+i; if(keep[k]!=null) el.scrollTo({left:keep[k],behavior:"instant"}); else { const on=el.querySelector(".on"); if(on&&(on.offsetLeft+on.offsetWidth>el.clientWidth)) el.scrollTo({left:on.offsetLeft-12,behavior:"instant"}) } }) }catch(e){} }
+function renderCore(){
   const adm=route==="admin"&&owner;
   { const fb=document.getElementById("fbadge"); if(fb) fb.remove(); document.documentElement.classList.remove("forest") }
   $("#bar").className="bar"+(adm?" adm":"");
@@ -3677,7 +3682,7 @@ readHash(); initStore(); initExtra(); initLucky(); initFaq();
   function glide(el,to){ to=Math.max(0,Math.min(el.scrollWidth-el.clientWidth,to)); if(RM.matches){ el.scrollLeft=to; return } el._to=to; if(el._g) return; el._g=1;
     (function step(){ const d=el._to-el.scrollLeft; if(Math.abs(d)<1){ el.scrollLeft=el._to; el._g=0; return } el.scrollLeft+=d*.2; requestAnimationFrame(step) })() }
   function upd(w){ const el=w._el, max=el.scrollWidth-el.clientWidth; const can=max>4; w.classList.toggle("can",can); w.classList.toggle("atL",!can||el.scrollLeft<=2); w.classList.toggle("atR",!can||el.scrollLeft>=max-2) }
-  function wire(el){ if(el._hs) return; el._hs=1; const w=document.createElement("div"); w.className="hsw"; el.parentNode.insertBefore(w,el); w.appendChild(el); w._el=el;
+  function wire(el){ if(el._hs) return; el._hs=1; const sl=el.scrollLeft; const w=document.createElement("div"); w.className="hsw"; el.parentNode.insertBefore(w,el); w.appendChild(el); if(sl) el.scrollTo({left:sl,behavior:"instant"}); w._el=el;
     const mk=(c,d,l)=>{ const b=document.createElement("button"); b.type="button"; b.className="hsa "+c; b.setAttribute("aria-label",l); b.innerHTML=d>0?"›":"‹"; b.addEventListener("click",()=>glide(el,(el._to!=null&&el._g?el._to:el.scrollLeft)+d*Math.max(160,el.clientWidth*.7))); w.appendChild(b) };
     mk("l",-1,"向左 Scroll left"); mk("r",1,"向右 Scroll right");
     el.addEventListener("scroll",()=>upd(w),{passive:true});
