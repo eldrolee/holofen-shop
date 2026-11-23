@@ -777,7 +777,7 @@ html[data-lang="en"] .lgg .en2{display:none}
 .mkpi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.mkpi>div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:8px 12px;display:flex;flex-direction:column}.mkpi small{opacity:.7;font-size:12px}.mkpi b{font-family:var(--num);font-size:18px}.mkpi .up{color:#4fd08a}.mkpi .down{color:#ff8a73}
 @media (max-width:640px){.mkpi{grid-template-columns:1fr 1fr}}
 button.lnk{border:0;background:none;padding:0;color:var(--blue,#2b6fd6);text-decoration:underline;min-height:0;font:inherit}
-.lres{display:flex;flex-direction:column;gap:2px;padding:14px 16px;border-radius:14px;background:#f3f5fa;border:1px solid var(--line)}.lres.win{background:linear-gradient(90deg,#fff8d6,#ffe9e2);border-color:#f2dc8a}.lres b{font-size:20px}.lres span{font-weight:700;color:var(--red)}
+.lres{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;padding:14px 16px;width:min(100%,340px);border-radius:14px;background:#f3f5fa;border:1px solid var(--line)}.lres.win{background:linear-gradient(90deg,#fff8d6,#ffe9e2);border-color:#f2dc8a}.lres b{font-size:20px}.lres span{font-weight:700;color:var(--red)}
 .cidays .fu i{background:#f6f7fb;color:#b9c0d4}.cilong{display:grid;gap:8px}.cibar{display:block;height:6px;border-radius:99px;background:var(--line,#e5e5e5);overflow:hidden;margin-top:4px}.cibar i{display:block;height:100%;background:var(--accent,#5bb59a)}
 .cidays{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.cidays span{display:flex;flex-direction:column;align-items:center;gap:3px}.cidays i{width:34px;height:34px;border-radius:99px;display:grid;place-items:center;background:#eef1f7;color:#fff;font-style:normal;font-weight:800}.cidays .on i{background:linear-gradient(135deg,var(--sun,#f6b93b),var(--red,#0e7c86))}.cidays .td i{outline:2px solid var(--red);outline-offset:2px}.cidays small{font-size:11px;color:var(--muted)}
 .setsw a{flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:132px;height:86px;padding:8px;border-radius:14px;background:color-mix(in srgb,var(--sc) 10%,#fff);border:1px solid color-mix(in srgb,var(--sc) 28%,#fff);font-size:12px;line-height:1.2;color:var(--ink);text-decoration:none;text-align:center}
@@ -1209,6 +1209,26 @@ header.bar::after{margin-top:8px}
 .pdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:0;box-shadow:0 0 0 1px rgba(16,38,55,.25)}
 .lkm legend{padding:0 6px}
 @media (prefers-reduced-motion:reduce){.clawsvg{transition:none}}
+.lres.again{background:linear-gradient(90deg,#e3f4ec,#e8f5fd);border-color:#a9dcc6}.lres.again span{color:#2a5f53}
+.gcap{position:relative;width:64px;height:64px;margin:20px auto 8px;flex:none}
+.gcap i{position:absolute;left:0;right:0;height:32px;border:2px solid #fff;box-shadow:0 3px 6px rgba(47,90,80,.22)}
+.gcap .gt{top:0;border-radius:32px 32px 4px 4px;background:radial-gradient(circle at 32% 30%,#fff 0 12%,transparent 13%),var(--c);transform-origin:8% 100%;transform:translate(-4px,-12px) rotate(-26deg)}
+.gcap .gb{bottom:0;border-radius:4px 4px 32px 32px;background:#fffaf0}
+.gcap .gs{position:absolute;left:50%;top:50%;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:radial-gradient(circle,rgba(255,226,140,.85) 0 30%,transparent 70%);opacity:.9}
+.lres.miss .gcap .gs{display:none}
+.lres.pop .gcap{animation:gIn .5s cubic-bezier(.3,1.4,.5,1) both}
+.lres.pop .gcap .gt{animation:gOpen .45s .75s cubic-bezier(.3,1.3,.5,1) both}
+.lres.pop .gcap .gs{animation:gGlow .6s .9s ease-out both}
+.lres.pop>:not(.gcap){animation:gTxt .3s 1.05s ease-out both}
+@keyframes gIn{0%{transform:translateY(-26px) scale(.6);opacity:0}60%{transform:translateY(0) scale(1.05) rotate(-8deg);opacity:1}80%{transform:rotate(8deg)}100%{transform:none}}
+@keyframes gOpen{from{transform:none}to{transform:translate(-4px,-12px) rotate(-26deg)}}
+@keyframes gGlow{from{opacity:0;transform:scale(.4)}to{opacity:.9;transform:none}}
+@keyframes gTxt{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.lres.pop .gcap,.lres.pop .gcap .gt,.lres.pop .gcap .gs,.lres.pop>*{animation:none!important}}
+.clawout{position:relative;height:38px;margin:8px 34px 2px;border-radius:12px;background:linear-gradient(180deg,#bfe3d3,#d6efe4);border:2px solid #fff;box-shadow:inset 0 4px 8px rgba(47,127,106,.3);overflow:hidden;display:flex;align-items:center;justify-content:flex-start;padding-left:12px}
+.clawout small{font-size:11.5px;font-weight:800;color:#2a5f53;letter-spacing:.5px}
+.clawout .gball{position:absolute;left:50%;top:3px;width:30px;height:30px;margin-left:-15px;border-radius:50%;border:2px solid #fff;background:linear-gradient(180deg,var(--c) 0 50%,#fffaf0 50%);box-shadow:0 2px 4px rgba(47,90,80,.25);opacity:0}
+.claw.big:not(.on) .clawout{display:none}
 .claw.big .clawvid{display:block;width:100%;aspect-ratio:1/1;height:auto;border-radius:14px;object-fit:cover;background:#f5efe2}
 .claw.big:not(.on) .clawglass{display:none}
 .claw.big.on .clawvid{display:none}
@@ -3109,6 +3129,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
+ ["v132","2026-11-23",["夹娃娃机每次都一定夹到一颗扭蛋：爪子夹起来送到出货口，扭蛋掉出来再打开，显示夹到的奖品；没奖品的扭蛋是空的，显示「谢谢惠顾」","新增「再抽一次」：后台每台机可以设「再抽一次」的中奖率，夹到就送一次免费夹取，不扣积分","36 件旧系列日文商品换成自家高清图"]],
  ["v131","2026-11-23",["换语言只换文字、不换排版：中文和英文叠在同一个位置，按钮、标题、段落、商品名、卡组名的大小和位置在两种语言下都一样，切换后停在原来的位置","新闻加了英文摘要，英文模式不再少一段","比赛表格的「牌表 / 原页」和标题也跟着语言切换"]],
  ["v130","2026-11-23",["改版需求 3：其余 18 个日文版系列（SV1S/SV1V 到 SV8）的官方补充包盒和散包加进后台商品库，共 36 件，先只在后台，定价并上架后才在商店出现；名称和代号对过 Cardrush 商品页和官方网站","改版需求 3：后台编辑商品时显示 SKU、系列、类别、版本、发售日期、来源、启用状态，并可以勾选多个供应商或新增供应商","改版需求 5：行情页加「版本」切换（全部/英文版/日文版），每条价格带版本标记；日文版还没有可核实的价格来源，显示「暂无数据」，不拿英文版价格代替","改版需求 7：比赛牌表上写明印刷版本（这些国际赛事用英文版卡，卡图也是英文版）","首页轮播：新的一张停好后才显示文字，滑动途中不会从箭头底下经过"]],
  ["v129","2026-11-23",["改版需求 10：防伪指南重做成 7 个步骤，每步有示意图、怎么做、要注意什么，并附可以点开的真实教学视频和 Cardmarket、Pokémon 官方卡牌数据库链接；顶部写明「只卖来源核验过的正版」承诺","改版需求 6：进货后台、分类、搜索框、购物车和登录按钮的读屏标签在英文模式下都改成英文"]],
@@ -3276,7 +3297,7 @@ function normLucky(d){ d=d&&typeof d==="object"?d:{};
   const nP=l=>arr(l).slice(0,20).map(p=>({id:cleanId(p.id),name:cleanTxt(p.name,60),w:Math.max(0,num(p.w)||0)})).filter(p=>p.id&&p.name);
   const rounds=arr(d.rounds).filter(r=>r&&typeof r==="object").slice(-20).map(r=>{ const x={id:cleanId(r.id),at:num(r.at)||0,cost:clampN(r.cost,1,1e6),seed:cleanId(r.seed),miss:Math.max(0,num(r.miss)||0),prizes:nP(r.prizes),pct:r.pct===1?1:0};
     /* v96 夹娃娃机：一期里有几台机，每台自己的积分、奖品和中奖率；旧的一期当成一台机 */
-    x.machines=arr(r.machines).slice(0,6).map(m=>({id:cleanId(m.id),name:cleanTxt(m.name,30),cost:clampN(m.cost,1,1e6),miss:Math.max(0,num(m.miss)||0),prizes:nP(m.prizes)})).filter(m=>m.id&&m.name&&m.prizes.length);
+    x.machines=arr(r.machines).slice(0,6).map(m=>({id:cleanId(m.id),name:cleanTxt(m.name,30),cost:clampN(m.cost,1,1e6),miss:Math.max(0,num(m.miss)||0),again:Math.max(0,num(m.again)||0),prizes:nP(m.prizes)})).filter(m=>m.id&&m.name&&m.prizes.length);
     if(!x.machines.length&&x.prizes.length) x.machines=[{id:"",name:"",cost:x.cost,miss:x.miss,prizes:x.prizes,legacy:1}];
     return x }).filter(r=>r.id&&r.seed);
   const log={}; const l0=d.log&&typeof d.log==="object"?d.log:{}; Object.keys(l0).slice(0,2000).forEach(u=>{ log[u]=arr(l0[u]).slice(-300).map(normDraw).filter(Boolean) });
@@ -3296,7 +3317,7 @@ function h01(str){ let h=2166136261>>>0; for(let i=0;i<str.length;i++){ h^=str.c
 const fmtPct=v=>(v>=1?String(Math.round(v*100)/100):v>0?v.toFixed(12).replace(/0+$/,"").replace(/\.$/,""):"0")+"%",
 /* 2026-11-20 用户要求：前台中奖率固定显示到小数点后 3 位（往下取，所以「没夹到」不会被四舍五入成 100%）；后台最多填到小数点后 5 位 */
 pctF=v=>(Math.floor(Math.max(0,v)*1000+1e-9)/1000).toFixed(3)+"%", pctA=v=>String(Math.round(Math.max(0,v)*1e5)/1e5);
-function drawRes(u,n,r,m){ m=m||r; const tot=m.prizes.reduce((a,p)=>a+p.w,0)+m.miss; if(!(tot>0)) return ""; const key=u+":"+n+":"+r.seed+(m.id?":"+m.id:""); /* 2026-11-19 中奖率可以小到 0.00000001%：新的一期用两段哈希拼成约 64 位的随机数；旧的一期照旧算，已夹过的结果不变 */ let t=(h01(key)+(r.pct?h01(key+"#")/4294967296:0))*tot; for(const p of m.prizes){ if(t<p.w) return p.id; t-=p.w } return "" }
+function drawRes(u,n,r,m){ m=m||r; const ag=m.again||0, tot=m.prizes.reduce((a,p)=>a+p.w,0)+ag+m.miss; if(!(tot>0)) return ""; const key=u+":"+n+":"+r.seed+(m.id?":"+m.id:""); /* 2026-11-19 中奖率可以小到 0.00000001%：新的一期用两段哈希拼成约 64 位的随机数；旧的一期照旧算，已夹过的结果不变 */ let t=(h01(key)+(r.pct?h01(key+"#")/4294967296:0))*tot; for(const p of m.prizes){ if(t<p.w) return p.id; t-=p.w } return t<ag?"+again":"" }
 const machOf=(r,mid)=>r?(r.machines||[]).find(m=>m.id===(mid||""))||null:null;
 const curRound=()=>LUCKY.rounds.length?LUCKY.rounds[LUCKY.rounds.length-1]:null;
 /* 某位顾客的有效抽奖：同一个 n 以店主抄下的为准；只认当期，或者店主已经抄下的旧期 */
@@ -3308,12 +3329,13 @@ function stampGot(u){ const S=STM(); if(!S.on||!S.goals.length) return []; const
   for(let c=0;c*sz<n;c++) S.goals.forEach(g=>{ if(c*sz+g.at<=n) out.push({...g,card:c+1,key:"st:"+u+":"+(c+1)+":"+g.at}) }); return out }
 function paidCount(u){ try{ return arr(((typeof all!=="undefined"&&all[u])||{}).orders).filter(o=>["approved","shipped","delivered","done"].includes(rawStatus(u,o)[0])).length }catch(e){ return 0 } }
 function freeEarned(u){ const F=LUCKY.free||{at:[],n:0}, k=paidCount(u); return (F.n?F.at.filter(x=>x<=k).length*F.n:0)+stampGot(u).filter(g=>g.k==="draw").reduce((a,g)=>a+g.n,0) }
-const freeLeft=u=>Math.max(0,freeEarned(u)-arr(Object.values(Object.fromEntries(arr(((typeof MEALL!=="undefined"&&MEALL[u])||{}).draws).concat(arr(LUCKY.log[u])).map(d=>[d.n,d])))).filter(d=>d.free===1).length);
+/* 2026-11-23 用户要：夹到「再抽一次」就送一次免费夹取 */
+const freeLeft=u=>Math.max(0,freeEarned(u)+luckyDraws(u).filter(d=>d.again).length-arr(Object.values(Object.fromEntries(arr(((typeof MEALL!=="undefined"&&MEALL[u])||{}).draws).concat(arr(LUCKY.log[u])).map(d=>[d.n,d])))).filter(d=>d.free===1).length);
 function luckyDraws(u){ const me=(typeof MEALL!=="undefined"&&MEALL[u])||{}, logged=arr(LUCKY.log[u]), by={}, cur=curRound();
   arr(me.draws).forEach(d=>{ by[d.n]={...d,logged:false} }); logged.forEach(d=>{ by[d.n]={...d,logged:true} });
-  const fe=freeEarned(u); let fu=0;
-  return Object.values(by).sort((a,b)=>a.n-b.n).map(d=>{ const r=LUCKY.rounds.find(x=>x.id===d.r), mc=machOf(r,d.m); const fr=d.free===1&&d.cost===0&&fu<fe; if(fr) fu++; const ok=!!r&&!!mc&&(fr||(!d.free&&d.cost===mc.cost))&&(d.logged||(cur&&r.id===cur.id)); const win=ok?drawRes(u,d.n,r,mc):""; const pz=win?mc.prizes.find(p=>p.id===win):null;
-    return {...d,ok,round:r,mach:mc,win,prize:pz?pz.name:"",key:u+":"+d.n} }) }
+  let fe=freeEarned(u), fu=0;
+  return Object.values(by).sort((a,b)=>a.n-b.n).map(d=>{ const r=LUCKY.rounds.find(x=>x.id===d.r), mc=machOf(r,d.m); const fr=d.free===1&&d.cost===0&&fu<fe; if(fr) fu++; const ok=!!r&&!!mc&&(fr||(!d.free&&d.cost===mc.cost))&&(d.logged||(cur&&r.id===cur.id)); const res=ok?drawRes(u,d.n,r,mc):"", again=res==="+again", win=again?"":res; if(again) fe++; const pz=win?mc.prizes.find(p=>p.id===win):null;
+    return {...d,ok,round:r,mach:mc,win,again,prize:pz?pz.name:"",key:u+":"+d.n} }) }
 function saveLucky(){ if(!owner) return Promise.resolve(); const d=JSON.parse(JSON.stringify(LUCKY));
   luckyQ=luckyQ.then(()=>XDB?XDB.doc("site/lucky").set(d):lsSet("lucky",d)).catch(()=>toast("抽奖设定没有保存成功")); return luckyQ }
 /* 店主端：把看到的抽奖记录抄进 site/lucky（有变化才写，合并 2 秒内的变化） */
@@ -3357,42 +3379,45 @@ function dollSet(mc){ const ps=mc.prizes.slice(0,8), out=[]; for(let i=0;i<9;i++
 function clawBox(mc,big){ const ds=dollSet(mc);
   return `<div class="claw${big?" big":""}" data-cm="${esc(mc.id)}"><div class="clawtop"><b>${esc(mc.name||BT("夹娃娃机","Claw machine"))}</b><span>${mc.cost} ${B("分","pts")}</span></div>
   ${big?`<video class="clawvid" src="lucky/claw-loop.mp4" poster="lucky/claw-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>`:""}<div class="clawglass"><div class="clawrail"></div><div class="clawarm" style="--x:50%"><i class="rope"></i><svg class="clawsvg" viewBox="0 0 40 30" aria-hidden="true"><path d="M20 0v8M8 10h24M8 10L4 22l5 6M32 10l4 12-5 6M20 10v6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-  <div class="dolls">${ds.map((d,i)=>`<span class="doll" data-pi="${esc(d.p.id)}" data-i="${i}" style="--c:${d.c}"><img src="intro/holofen-mark.webp" alt=""></span>`).join("")}</div><div class="chute"></div></div></div>` }
-async function clawPlay(n){ const d=luckyDraws(XU).find(x=>x.n===n), box=document.querySelector(".claw.big"); const done=()=>{ ui.clawBusy=0; ui.lastDraw=n; render() };
+  <div class="dolls">${ds.map((d,i)=>`<span class="doll" data-pi="${esc(d.p.id)}" data-i="${i}" style="--c:${d.c}"><img src="intro/holofen-mark.webp" alt=""></span>`).join("")}</div><div class="chute"></div></div><div class="clawout" aria-hidden="true"><small>${B("出货口","Prize chute")}</small><i class="gball"></i></div></div>` }
+/* 扭蛋颜色：中奖用奖品那颗的颜色，谢谢惠顾/再抽一次用爪子夹起的那颗 */
+const capC=d=>{ if(!d||!d.mach) return CLAWC[0]; const i=d.win?d.mach.prizes.findIndex(p=>p.id===d.win):-1; return i>=0?CLAWC[i%CLAWC.length]:dollSet(d.mach)[Math.floor(h01("q"+d.n)*9)%9].c };
+async function clawPlay(n){ const d=luckyDraws(XU).find(x=>x.n===n), box=document.querySelector(".claw.big"); const done=()=>{ ui.clawBusy=0; ui.lastDraw=n; ui.popDraw=n; render(); setTimeout(()=>{ if(ui.popDraw===n) ui.popDraw=0 },1800) };
   if(!d||!box||matchMedia("(prefers-reduced-motion:reduce)").matches) return done();
   box.classList.add("on");
+  /* 2026-11-23 用户要：每次都一定夹到一颗扭蛋，送到出货口掉出来，再打开看是什么（没奖品就是谢谢惠顾） */
   try{ const arm=box.querySelector(".clawarm"), glass=box.querySelector(".clawglass"), G=glass.getBoundingClientRect(), dolls=[...box.querySelectorAll(".doll")];
-    const pick=d.win?(dolls.filter(x=>x.dataset.pi===d.win)[Math.floor(h01("p"+n)*9)%Math.max(1,dolls.filter(x=>x.dataset.pi===d.win).length)]||dolls[0]):dolls[Math.floor(h01("q"+n)*dolls.length)];
-    const P=pick.getBoundingClientRect(), x=P.left+P.width/2-G.left, x0=arm.offsetLeft+arm.offsetWidth/2, drop=P.top-G.top-arm.offsetHeight+P.height*0.45, ease="cubic-bezier(.45,0,.25,1)";
-    const go=(kf,ms,el)=>(el||arm).animate(kf,{duration:ms,easing:ease,fill:"forwards"}).finished;
-    box.classList.add("on");
-    await go([{transform:"translateX(0)"},{transform:`translateX(${x-x0}px)`}],800);
-    await go([{transform:`translateX(${x-x0}px)`},{transform:`translateX(${x-x0}px) translateY(${drop}px)`}],750);
-    arm.classList.add("grab"); await new Promise(r=>setTimeout(r,320));
-    const lift=[{transform:"translate(0,0)"},{transform:`translate(0,${-drop}px)`}];
-    pick.style.zIndex=3; const up=go([{transform:`translateX(${x-x0}px) translateY(${drop}px)`},{transform:`translateX(${x-x0}px)`}],800);
-    if(d.win){ go(lift,800,pick); await up;
-      const ch=glass.querySelector(".chute"), cx=ch.offsetLeft+ch.offsetWidth/2-x0; await Promise.all([go([{transform:`translateX(${x-x0}px)`},{transform:`translateX(${cx}px)`}],800),go([{transform:`translate(0,${-drop}px)`},{transform:`translate(${cx-(x-x0)}px,${-drop}px)`}],800,pick)]);
-      arm.classList.remove("grab"); await go([{transform:`translate(${cx-(x-x0)}px,${-drop}px)`},{transform:`translate(${cx-(x-x0)}px,${G.height}px)`,opacity:0}],450,pick) }
-    else { const half=go([{transform:"translate(0,0)"},{transform:`translate(0,${-drop*0.45}px)`}],380,pick); await half; arm.classList.remove("grab");
-      await Promise.all([go([{transform:`translate(0,${-drop*0.45}px)`},{transform:"translate(0,0)"}],380,pick),up]) }
-    await new Promise(r=>setTimeout(r,250)) }catch(e){}
+    const same=d.win?dolls.filter(x=>x.dataset.pi===d.win):[], pick=same.length?same[Math.floor(h01("p"+n)*9)%same.length]:dolls[Math.floor(h01("q"+n)*9)%dolls.length]||dolls[0];
+    const P=pick.getBoundingClientRect(), x=P.left+P.width/2-G.left, x0=arm.offsetLeft+arm.offsetWidth/2, dx=x-x0, drop=P.top-G.top-arm.offsetHeight+P.height*0.45, ease="cubic-bezier(.45,0,.25,1)";
+    const go=(kf,ms,el,ez)=>(el||arm).animate(kf,{duration:ms,easing:ez||ease,fill:"forwards"}).finished, wait=ms=>new Promise(r=>setTimeout(r,ms));
+    await go([{transform:"translateX(0)"},{transform:`translateX(${dx}px)`}],800);
+    await go([{transform:`translateX(${dx}px)`},{transform:`translateX(${dx}px) translateY(${drop}px)`}],750);
+    arm.classList.add("grab"); await wait(320);
+    pick.style.zIndex=3;
+    await Promise.all([go([{transform:`translateX(${dx}px) translateY(${drop}px)`},{transform:`translateX(${dx}px)`}],800),go([{transform:"translate(0,0)"},{transform:`translate(0,${-drop}px)`}],800,pick)]);
+    const ch=glass.querySelector(".chute"), cx=ch.offsetLeft+ch.offsetWidth/2-x0;
+    await Promise.all([go([{transform:`translateX(${dx}px)`},{transform:`translateX(${cx}px)`}],850),go([{transform:`translate(0,${-drop}px)`},{transform:`translate(${cx-dx}px,${-drop}px)`}],850,pick)]);
+    arm.classList.remove("grab"); await wait(120);
+    await go([{transform:`translate(${cx-dx}px,${-drop}px)`},{transform:`translate(${cx-dx}px,${G.height}px)`}],420,pick,"cubic-bezier(.5,0,1,1)");
+    const ball=box.querySelector(".gball"); if(ball){ ball.style.setProperty("--c",pick.style.getPropertyValue("--c")||CLAWC[0]); const out=box.querySelector(".clawout").offsetWidth/2;
+      await go([{transform:`translate(${-out+18}px,-36px)`,opacity:1},{transform:`translate(${-out+18}px,0)`,opacity:1,offset:.3},{transform:`translate(${out-16}px,0) rotate(480deg)`,opacity:1,offset:.85},{transform:`translate(${out-22}px,0) rotate(540deg)`,opacity:1}],900,ball,"ease-out") }
+    await wait(300) }catch(e){}
   done() }
 function freeNote(){ const F=LUCKY.free||{}; if(!F.n||!F.at.length) return ""; const k=isGuest()?0:paidCount(XU), nx=F.at.find(x=>x>k);
   return `<p class="muted" style="margin:0;text-align:center;font-size:13px">${B(`第 ${F.at.join("、")} 张付款订单各送 ${F.n} 次免费夹取，不用积分。`,`Your paid order no. ${F.at.join(", ")} each gives ${F.n} free play${F.n>1?"s":""}, no points needed.`)}${nx?B(` 你已付款 ${k} 张，再 ${nx-k} 张就送。`,` You have ${k}; ${nx-k} more to go.`):""}</p>` }
 function luckyBody(){ const r=curRound(), m=member(uid), mine=luckyDraws(XU).slice().reverse(), last=ui.lastDraw?mine.find(d=>d.n===ui.lastDraw):null;
   if(!LUCKY.on||!r||!r.machines.length) return `${H2("夹娃娃机","Claw machines")}<p class="muted">${B("夹娃娃机还没开放，开放后会在这里公布每台机的奖品、中奖率和要几分。","The claw machines aren't open yet.")}</p>`;
-  const sel=machOf(r,ui.clawM)||r.machines[0], tot=sel.prizes.reduce((a,p)=>a+p.w,0)+sel.miss, pct=w=>tot?pctF(w/tot*100):"—", busy=!!ui.clawBusy;
+  const sel=machOf(r,ui.clawM)||r.machines[0], tot=sel.prizes.reduce((a,p)=>a+p.w,0)+(sel.again||0)+sel.miss, pct=w=>tot?pctF(w/tot*100):"—", busy=!!ui.clawBusy;
   return `${H2("夹娃娃机","Claw machines")}
-  <p class="muted" style="margin:0">${B("选一台机，用积分投币，爪子会随机夹一个出来。每台机的奖品和中奖率都公开在旁边。","Pick a machine, insert points and the claw grabs one at random. Each machine's prizes and odds are shown.")}</p>
+  <p class="muted" style="margin:0">${B("选一台机，用积分投币，爪子每次都会夹一颗扭蛋送到出货口，打开看看是什么。每台机的奖品和中奖率都公开在旁边。","Pick a machine and insert points. The claw always grabs a capsule and drops it in the chute; open it to see what you got. Each machine's prizes and odds are shown.")}</p>
   ${r.machines.length>1?`<div class="clawpick" role="group" aria-label="${BT("选机台","Choose a machine")}">${r.machines.map(mc=>`<button data-clawm="${esc(mc.id)}" class="${mc===sel?"on":""}" aria-pressed="${mc===sel}" ${busy?"disabled":""}><b>${esc(mc.name||BT("夹娃娃机","Claw machine"))}</b><small>${mc.cost} ${B("分一次","pts a go")}</small></button>`).join("")}</div>`:""}
   <div class="two clawwrap"><div class="stack" style="gap:12px;align-items:center">${clawBox(sel,1)}
-    ${last&&!busy?`<div class="lres${last.win?" win":""}"><b>${last.win?B("夹到了！","Got one!"):B("差一点，没夹到","So close, it slipped")}</b>${last.win?`<span>${esc(last.prize)}</span><small>${B("店主会联系你安排，或跟你下一张订单一起寄出。","We'll arrange delivery or send it with your next order.")}</small>`:`<small>${last.free?B("这次是免费夹取，没扣积分。下次好运。","This was a free play. Better luck next time."):B("积分已扣，下次好运。","Better luck next time.")}</small>`}</div>`:""}
+    ${last&&!busy?`<div class="lres ${last.win?"win":last.again?"again":"miss"}${ui.popDraw===last.n?" pop":""}" role="status"><div class="gcap" aria-hidden="true" style="--c:${capC(last)}"><i class="gb"></i><i class="gs"></i><i class="gt"></i></div><b>${last.win?B("夹到了！","Got one!"):last.again?B("再抽一次！","Play again!"):B("谢谢惠顾","Thanks for playing")}</b>${last.win?`<span>${esc(last.prize)}</span><small>${B("店主会联系你安排，或跟你下一张订单一起寄出。","We'll arrange delivery or send it with your next order.")}</small>`:last.again?`<span>${B("送你一次免费夹取","A free play for you")}</span><small>${B("不扣积分，按下面的「免费夹一次」就能玩。","No points needed. Tap Free play below.")}</small>`:`<small>${last.free?B("扭蛋里是空的。这次是免费夹取，没扣积分。","The capsule was empty. This was a free play, no points used."):B("扭蛋里是空的，积分已扣。下次好运。","The capsule was empty. Better luck next time.")}</small>`}</div>`:""}
     <div class="row" style="justify-content:center"><span class="muted">${B("你的积分","Your points")} <b>${m.left}</b></span><button class="pri" data-ldraw="1" data-m="${esc(sel.id)}" ${(m.left<sel.cost&&!freeLeft(XU))||busy?"disabled":""}>${busy?B("夹取中…","Grabbing…"):freeLeft(XU)?B(`免费夹一次（还有 ${freeLeft(XU)} 次）`,`Free play (${freeLeft(XU)} left)`):B(`投 ${sel.cost} 分，夹一次`,`Insert ${sel.cost} pts`)}</button></div>${freeNote()}
     ${m.left<sel.cost?`<p class="muted" style="margin:0">${B("积分不够。每天签到、订单送达后都会加分。","Not enough points. Check in daily or complete an order to earn more.")}</p>`:""}</div>
-  <div class="panel stack" style="gap:8px"><h3>${B("这台机的奖品和中奖率","Prizes & odds")}</h3><table class="tight"><tbody>${sel.prizes.map((p,i)=>`<tr><td><i class="pdot" style="background:${CLAWC[i%CLAWC.length]}"></i>${esc(p.name)}</td><td class="n">${pct(p.w)}</td></tr>`).join("")}<tr><td class="muted">${B("没夹到","Nothing")}</td><td class="n">${pct(sel.miss)}</td></tr></tbody></table>
+  <div class="panel stack" style="gap:8px"><h3>${B("这台机的奖品和中奖率","Prizes & odds")}</h3><table class="tight"><tbody>${sel.prizes.map((p,i)=>`<tr><td><i class="pdot" style="background:${CLAWC[i%CLAWC.length]}"></i>${esc(p.name)}</td><td class="n">${pct(p.w)}</td></tr>`).join("")}${sel.again>0?`<tr><td><i class="pdot" style="background:#fff"></i>${B("再抽一次（送免费夹取）","Play again (free play)")}</td><td class="n">${pct(sel.again)}</td></tr>`:""}<tr><td class="muted">${B("谢谢惠顾（空扭蛋）","Thanks for playing (empty)")}</td><td class="n">${pct(sel.miss)}</td></tr></tbody></table>
   <p class="muted" style="font-size:12px">${B("结果在投币那一刻由系统按公开的中奖率算出，动画只是把结果演出来，店主也改不了。积分一经使用不退。这一期从","The result is fixed by the published odds the moment you insert points; the animation just shows it. Points used are not refunded. This round started")} ${new Date(r.at).toLocaleDateString("zh-CN")}${B(" 开始。","")}</p></div></div>
-  ${mine.some(d=>d.n!==ui.clawBusy)?`<section class="stack" style="gap:8px">${H2("我的夹取记录","My plays")}<div class="panel stack" style="gap:6px">${mine.filter(d=>d.n!==ui.clawBusy).slice(0,30).map(d=>`<div class="alrow"><span class="muted">${new Date(d.at).toLocaleString(isEN()?"en-MY":"zh-CN")}</span>${d.mach&&d.mach.name?`<span class="chip">${esc(d.mach.name)}</span>`:""}<b>${d.ok?(d.win?esc(d.prize):B("没夹到","Nothing")):B("无效记录","Invalid")}</b><span class="muted">−${d.cost} ${B("分","pts")}</span>${d.win?`<span class="chip">${LUCKY.sent[d.key]?B("已安排","Arranged"):B("等店主安排","Pending")}</span>`:""}</div>`).join("")}</div></section>`:""}`;
+  ${mine.some(d=>d.n!==ui.clawBusy)?`<section class="stack" style="gap:8px">${H2("我的夹取记录","My plays")}<div class="panel stack" style="gap:6px">${mine.filter(d=>d.n!==ui.clawBusy).slice(0,30).map(d=>`<div class="alrow"><span class="muted">${new Date(d.at).toLocaleString(isEN()?"en-MY":"zh-CN")}</span>${d.mach&&d.mach.name?`<span class="chip">${esc(d.mach.name)}</span>`:""}<b>${d.ok?(d.win?esc(d.prize):d.again?B("再抽一次","Play again"):B("谢谢惠顾","Thanks for playing")):B("无效记录","Invalid")}</b><span class="muted">−${d.cost} ${B("分","pts")}</span>${d.win?`<span class="chip">${LUCKY.sent[d.key]?B("已安排","Arranged"):B("等店主安排","Pending")}</span>`:""}</div>`).join("")}</div></section>`:""}`;
 }
 /* 2026-11-19 用户要：「第几张付款订单送免费夹取」是独立的设定，不和夹娃娃机设置放一起 */
 function admFaq(){ const rows=FAQX.list.concat([{q:"",a:"",k:""}]);
@@ -3446,9 +3471,9 @@ function admLucky(){ const r=curRound(); const rows=[]; const us=new Set(Object.
   <div class="note">上线前请先确认：在马来西亚办需要消费才能参加的抽奖（包括夹娃娃机），可能要向政府申请准证。这一点我没有核对，请问律师。积分不要卖钱，只能靠签到和订单赚，风险会小一些。</div>
   <div class="panel stack"><label class="row" style="gap:8px"><input type="checkbox" id="lk-on" ${LUCKY.on?"checked":""}> 开放夹娃娃机（顾客看得到、能玩；勾选马上生效）</label>
    <p class="note" style="margin:0">${LUCKY.on&&curRound()?`前台现在看得到 ${curRound().machines.length} 台机。`:!curRound()?"还没有保存过机台，所以前台看不到。先在下面设好至少一台机（要有奖品和中奖率）并按「保存机台」，再勾开放。":"现在没开放，前台看不到。"}</p>
-   <p class="muted">每台机自己设名字、投一次几分、放哪些奖品和每样的中奖率（%）。中奖率最多填到小数点后 5 位（最小 0.00001%），前台显示到小数点后 3 位。全部奖品加起来不能超过 100%，剩下的就是「没夹到」。最多 6 台。</p>
+   <p class="muted">每台机自己设名字、投一次几分、放哪些奖品和每样的中奖率（%）。中奖率最多填到小数点后 5 位（最小 0.00001%），前台显示到小数点后 3 位。全部奖品加上「再抽一次」不能超过 100%，剩下的就是「谢谢惠顾」（空扭蛋）。「再抽一次」夹到就送一次免费夹取，不填就没有。最多 6 台。</p>
    ${(ui.lkM||(r&&r.machines.length?r.machines:[{id:"m1",name:"新手机",cost:20,miss:80,prizes:[]}])).map((mc,i)=>`<fieldset class="panel stack lkm" data-lki="${i}" style="gap:8px"><legend><b>第 ${i+1} 台</b></legend>
-    <div class="row"><label class="f" style="flex:1 1 160px">机台名字<input class="lk-name" maxlength="30" value="${esc(mc.name||"")}" placeholder="例如：新手机、补充包机、稀有机"></label><label class="f" style="flex:0 1 130px">投一次几分<input class="lk-cost" type="number" min="1" step="1" value="${mc.cost||20}"></label></div>
+    <div class="row"><label class="f" style="flex:1 1 160px">机台名字<input class="lk-name" maxlength="30" value="${esc(mc.name||"")}" placeholder="例如：新手机、补充包机、稀有机"></label><label class="f" style="flex:0 1 130px">投一次几分<input class="lk-cost" type="number" min="1" step="1" value="${mc.cost||20}"></label><label class="f" style="flex:0 1 160px">再抽一次 %<input class="lk-again" inputmode="decimal" value="${esc(String(mc.again?lkShow(mc,mc.again):""))}" placeholder="例如：10，不送就留空"></label></div>
     <div class="stack" style="gap:6px"><div class="lkph"><span>奖品名字</span><span>中奖率 %</span></div>${(arr(mc.prizes).length?arr(mc.prizes):[{name:"",w:""}]).map((p,j)=>`<div class="lkp"><input class="lkp-n" maxlength="60" aria-label="奖品名字" value="${esc(p.name||"")}" placeholder="例如：卡套一组"><input class="lkp-w" inputmode="decimal" aria-label="中奖率 %" value="${esc(String(lkShow(mc,p.w)))}" placeholder="例如：0.5"><button type="button" class="linkbtn" data-lkpdel="${i}" data-j="${j}" aria-label="删除这个奖品">×</button></div>`).join("")}<div><button type="button" data-lkpadd="${i}">＋ 加一个奖品</button></div></div>
     ${i>0?`<div><button class="linkbtn" data-lkdel="${i}">删除这台机</button></div>`:""}</fieldset>`).join("")}
    <div class="row"><button data-lkadd="1">＋ 加一台机</button></div>
@@ -3597,12 +3622,14 @@ function nmId(id){ const p=PM[id]; return p?PN(p):id }
   document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ofil],[data-stab]"); if(!b) return; if(b.dataset.ofil) ui.ofil=b.dataset.ofil; else ui.stab=b.dataset.stab; render() }); }
 
 /* 后台夹娃娃机：读表单（每台机一个 fieldset） */
-function lkShow(mc,w){ if(typeof w!=="number") return w; if(mc.pctIn) return pctA(w); const tot=arr(mc.prizes).reduce((a,p)=>a+(num(p.w)||0),0)+(num(mc.miss)||0); return tot?pctA(w/tot*100):w }
+function lkShow(mc,w){ if(typeof w!=="number") return w; if(mc.pctIn) return pctA(w); const tot=arr(mc.prizes).reduce((a,p)=>a+(num(p.w)||0),0)+(num(mc.again)||0)+(num(mc.miss)||0); return tot?pctA(w/tot*100):w }
 function lkRead(){ const out=[]; for(const f of document.querySelectorAll(".lkm")){ const q=c=>f.querySelector(c), name=cleanTxt(q(".lk-name").value.trim(),30)||("第 "+(out.length+1)+" 台"), cost=clampN(q(".lk-cost").value,1,1e6), prizes=[];
     for(const row of f.querySelectorAll(".lkp")){ const nm=row.querySelector(".lkp-n").value.trim(), wv=row.querySelector(".lkp-w").value.trim().replace(/%$/,""); if(!nm&&!wv) continue; if(!nm) return name+"：有一个中奖率没填奖品名字"; if(!/^[0-9]*\.?[0-9]+$/.test(wv)) return name+"：「"+nm.slice(0,20)+"」的中奖率要填数字"; if(/\.[0-9]{6,}$/.test(wv)) return name+"：「"+nm.slice(0,20)+"」的中奖率最多填到小数点后 5 位（最小 0.00001%）"; if(!(num(wv)>0)) return name+"：「"+nm.slice(0,20)+"」的中奖率要大于 0"; prizes.push({id:"p"+prizes.length,name:cleanTxt(nm,60),w:Math.max(0,num(wv)||0)}) }
-    if(!prizes.length) return name+"：请至少写一个奖品"; const sum=prizes.reduce((a,p)=>a+p.w,0); if(!(sum>0)) return name+"：中奖率不能全是 0"; if(sum>100+1e-9) return name+"：奖品中奖率加起来是 "+fmtPct(sum)+"，不能超过 100%";
-    out.push({id:"m"+(out.length+1),name,cost,miss:Math.max(0,100-sum),prizes}) } return out }
-function lkDraft(){ return [...document.querySelectorAll(".lkm")].map(f=>{ const q=c=>f.querySelector(c); return {pctIn:1,name:q(".lk-name").value,cost:num(q(".lk-cost").value)||20,prizes:[...f.querySelectorAll(".lkp")].map(r=>({name:r.querySelector(".lkp-n").value,w:r.querySelector(".lkp-w").value}))} }) }
+    if(!prizes.length) return name+"：请至少写一个奖品"; const sum=prizes.reduce((a,p)=>a+p.w,0); if(!(sum>0)) return name+"：中奖率不能全是 0";
+    const av=(q(".lk-again")?q(".lk-again").value:"").trim().replace(/%$/,""); if(av&&!/^[0-9]*\.?[0-9]+$/.test(av)) return name+"：「再抽一次」要填数字"; if(/\.[0-9]{6,}$/.test(av)) return name+"：「再抽一次」最多填到小数点后 5 位"; const again=av?Math.max(0,num(av)||0):0;
+    if(sum+again>100+1e-9) return name+"：奖品和再抽一次加起来是 "+fmtPct(sum+again)+"，不能超过 100%";
+    out.push({id:"m"+(out.length+1),name,cost,again,miss:Math.max(0,100-sum-again),prizes}) } return out }
+function lkDraft(){ return [...document.querySelectorAll(".lkm")].map(f=>{ const q=c=>f.querySelector(c); return {pctIn:1,name:q(".lk-name").value,cost:num(q(".lk-cost").value)||20,again:q(".lk-again")?q(".lk-again").value:"",prizes:[...f.querySelectorAll(".lkp")].map(r=>({name:r.querySelector(".lkp-n").value,w:r.querySelector(".lkp-w").value}))} }) }
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-clawm],[data-lkadd],[data-lkdel],[data-lkpadd],[data-lkpdel]"); if(!b) return; const ds=b.dataset;
   if(ds.clawm!=null){ if(ui.clawBusy) return; ui.clawM=ds.clawm; ui.lastDraw=0; return render() }
   if(!owner) return; const d=lkDraft();
@@ -3614,7 +3641,7 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   if(ds.ldraw) return doDraw(ds.m);
   if(ds.lsent){ if(!owner) return; const s={...LUCKY.sent}; if(ds.v==="1") s[ds.lsent]=true; else delete s[ds.lsent]; LUCKY.sent=s; render(); return saveLucky() }
   if(ds.lsave){ if(!owner) return; const ms=lkRead(); if(typeof ms==="string"){ ui.lkM=lkDraft(); ui.lkErr=ms; render(); return toast(ms) } if(!ms.length) return toast("请至少设一台机");
-    const c=curRound(), sig=x=>JSON.stringify(x.map(m=>[m.name,m.cost,m.miss,m.prizes.map(p=>[p.name,p.w])])), same=c&&c.pct&&!c.machines.some(m=>m.legacy)&&sig(c.machines)===sig(ms);
+    const c=curRound(), sig=x=>JSON.stringify(x.map(m=>[m.name,m.cost,m.miss,m.again||0,m.prizes.map(p=>[p.name,p.w])])), same=c&&c.pct&&!c.machines.some(m=>m.legacy)&&sig(c.machines)===sig(ms);
         if(!same){ const rb=new Uint8Array(8); crypto.getRandomValues(rb); LUCKY.rounds=LUCKY.rounds.concat({id:"r"+Date.now().toString(36),at:Date.now(),cost:ms[0].cost,miss:ms[0].miss,seed:[...rb].map(x=>x.toString(16).padStart(2,"0")).join(""),prizes:ms[0].prizes,machines:ms,pct:1}).slice(-20) }
     ui.lkM=null; ui.lkErr=""; render(); return saveLucky().then(()=>toast("机台已保存 Saved")) } },true);
 /* 2026-11-19：开放开关独立于机台表单，勾了就存；之前要和机台一起按保存，机台没填好时开关也没存上 */
