@@ -204,7 +204,7 @@ nav.sub a.on{background:var(--surface);color:var(--red);font-weight:700;box-shad
 @media (prefers-reduced-motion:reduce){.tile,.tile img{transition:none}}
 .trial{background:var(--note);color:var(--note-ink);font-size:12px;text-align:center;padding:4px 16px;line-height:1.4}
 .trial .en{color:inherit;opacity:.8}
-html[data-lang="zh"] .en,html[data-lang="zh"] h1 small,html[data-lang="zh"] h2 small,html[data-lang="zh"] nav.tabs a i,html[data-lang="zh"] th i,html[data-lang="zh"] .steps span i{display:none}
+html[data-lang="zh"] .en:not(.lgp>.en),html[data-lang="zh"] h1 small:not(.lgp>small):not(.sub),html[data-lang="zh"] h2 small:not(.lgp>small),html[data-lang="zh"] nav.tabs a i:not(.lgp>i),html[data-lang="zh"] th i:not(.lgp>i),html[data-lang="zh"] .steps span i:not(.lgp>i){display:none}
 button.lang{min-height:36px;padding:6px 10px;border-radius:99px;font-family:var(--display);font-weight:700;font-size:13px}
 .hassub h1{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
@@ -403,9 +403,16 @@ nav.btm a.on::before{transform:translateY(5px);opacity:1}
 button.lang{display:inline-flex;gap:0;padding:3px;align-items:center}
 button.lang span{padding:4px 9px;border-radius:99px;font-size:12px;line-height:1}
 button.lang span.on{background:var(--ink);color:var(--surface)}
-html[data-lang="en"] .zh{display:none!important}
+html[data-lang="en"] .zh:not(.lpz>.zh){display:none!important}
 html[data-lang="zh"] .en2{display:none!important}
-html:not([data-lang="en"]) .tr{display:none!important}
+.lgp{display:inline-grid;vertical-align:top;max-width:100%}.lgp.lpb{display:grid}
+.lgp>*{grid-area:1/1;min-width:0}
+html[data-lang="en"] .lgp>.lpz,html[data-lang="zh"] .lgp>.en,html[data-lang="zh"] .lgp>.tr,html[data-lang="zh"] .lgp>small,html[data-lang="zh"] .lgp>i{visibility:hidden}
+html[data-lang="zh"] .lgp>.en{color:inherit;font-size:inherit;opacity:1}
+html[data-lang] h1>.lgp>small,html[data-lang] h2>.lgp>small{font-size:1em;color:inherit;font-weight:inherit;letter-spacing:normal}
+html[data-lang] nav.tabs a .lgp>i{font-size:13.5px;opacity:1}
+html[data-lang] th .lgp>i{font-size:12px}
+html:not([data-lang="en"]) .tr:not(.lgp>.tr){display:none!important}
 html[data-lang="en"] .en{color:inherit;font-size:inherit;opacity:1}
 html[data-lang="en"] h1>small,html[data-lang="en"] h2>small{font-size:1em;color:inherit;font-weight:inherit;letter-spacing:normal}
 html[data-lang="en"] nav.tabs a i{font-size:13.5px;opacity:1}
@@ -1474,28 +1481,28 @@ const buddy=(s=44,mood="smile")=>`<img class="bud" src="intro/holofen-mark.webp"
 
 /* ---------- 真实数据（都带来源链接） ---------- */
 const NEWS = [
- {c:"play",d:"2026-10-31",t:"格但斯克区域赛：Aarni Karjala（芬兰）用 Slowking 夺冠",e:"Regional Gdańsk: Aarni Karjala (FI) wins with Slowking",b:"1,739 人参赛。亚军 Finn Lasse Fries（德国）用 Rocket's Honchkrow，前八里有 4 套 Dragapult ex。",s:"Limitless TCG",u:"https://limitlesstcg.com/tournaments/584"},
- {c:"play",d:"2026-10-24",t:"普埃布拉区域赛：Andrew Hedrick（美国）用 Dragapult ex 夺冠",e:"Regional Puebla: Andrew Hedrick (US) wins with Dragapult ex",b:"2,234 人参赛，前八有 6 套 Dragapult ex，冠亚军用的是同一份牌表。",s:"Limitless TCG",u:"https://limitlesstcg.com/tournaments/583"},
- {c:"play",d:"2026-10-17",t:"尼斯区域赛：Luc Gantner（瑞士）用 Basic Box 夺冠",e:"Regional Nice: Luc Gantner (CH) wins with Basic Box",b:"2,336 人参赛。亚军 Maxime Launay（法国）用 Dhelmise，季军 Paulo Mimoso（葡萄牙）用 Hydrapple ex。",s:"Limitless TCG",u:"https://limitlesstcg.com/tournaments/582"},
- {c:"play",d:"2026-10-10",t:"路易维尔区域赛：Riley McKay（加拿大）用 Dragapult ex 夺冠",e:"Regional Louisville: Riley McKay (CA) wins with Dragapult ex",b:"2,927 人参赛，是这四场区域赛里最大的一场。季军 Evan Campbell（美国）用 Mega Sharpedo ex。",s:"Limitless TCG",u:"https://limitlesstcg.com/tournaments/581"},
- {c:"play",d:"2026-11-20",t:"拉美国际锦标赛（圣保罗）：Vinícius Fernandez（巴西）用 N's Zoroark ex 夺冠",e:"LAIC São Paulo: Vinícius Fernandez (BR) wins with N's Zoroark ex",b:"2,646 人参赛。亚军 Damian Fernandez Urroz（阿根廷）用 Talonflame Dusknoir，季军 Owyn Kamerman（荷兰）用 Dragapult ex，前八里有 5 套 Dragapult ex。",s:"Limitless TCG",u:"https://limitlesstcg.com/tournaments/574"},
- {c:"play",d:"2026-11-28",t:"接下来的大赛：11 月 28 日斯图加特区域赛",e:"Upcoming: Stuttgart on 28 Nov, then Las Vegas, Sydney, Atlanta",b:"Limitless 的赛程表（11 月 23 日查看）接着是 12 月 5 日拉斯维加斯区域赛，明年 1 月 16 日悉尼和亚特兰大区域赛、1 月 23 日梅里达区域赛、1 月 30 日伯明翰区域赛。前九场里没有东南亚的比赛。",s:"Limitless TCG",u:"https://limitlesstcg.com/tournaments/upcoming"},
- {c:"new",d:"2026-11-19",t:"下一个英文系列 Flowing Fists 公布，2027 年 2 月 6 日发售",e:"Next English set Flowing Fists announced, out 6 Feb 2027",b:"Serebii 报道：主打超级路卡利欧 Z、超级阿勃梭鲁 Z，超过 110 张卡，含 5 张超级进化宝可梦 ex、4 张宝可梦 ex、11 张 IR、18 张 UR、6 张 SIR。从这个系列起，欧美新品改在星期六发售。",s:"Serebii",u:"https://www.serebii.net/news/2026/19-November-2026.shtml"},
- {c:"new",d:"2026-11-20",t:"日版 Aura Seeker 全卡表公开",e:"Full card list revealed for Japanese set Aura Seeker",b:"Serebii 报道官方公开了日版 Aura Seeker 的完整卡表，包括 Togedemaru ex（托戈德玛尔 ex）等。发售日是 11 月 27 日。",s:"Serebii",u:"https://www.serebii.net/news/2026/20-November-2026.shtml"},
- {c:"new",d:"2026-11-06",t:"Mega Evolution—Delta Reign 正式发售，全套 120 张",e:"Mega Evolution—Delta Reign released, 120 cards",b:"Serebii 报道该系列当天发售，收录《传说 Z-A》里的更多超级进化宝可梦，包括超级烈空坐。",s:"Serebii",u:"https://www.serebii.net/news/2026/06-November-2026.shtml"},
- {c:"new",d:"2026-11-06",t:"11 月新品清单：Delta Reign、30th Celebration、Mega Greninja ex 卡组",e:"Pokémon TCG November 2026 Releases",b:"OTIA 列出 9 款产品。Delta Reign 补充包盒 36 包，ETB 9 包并附 Kyogre 全图闪卡和 65 个卡套，Booster Bundle 6 包；30th Celebration 的 Ultra-Premium Collection 含 30 包。",s:"OTIA",u:"https://otia.com/news/pokemon-tcg-november-2026-releases-delta-reign-30th-celebration-mega-greninja-ex"},
- {c:"new",d:"2026-10-23",t:"日版下一个系列 Aura Seeker 定于 11 月 27 日发售",e:"Japanese set Aura Seeker due 27 Nov",b:"Serebii 10 月新闻页的条目。这一条只读到摘要，没有逐字核对。",s:"Serebii",u:"https://www.serebii.net/card/auraseeker/",h:1},
- {c:"new",d:"2026-10-01",t:"Delta Reign 预售赛 10 月 24 日开始，Pokémon Center 预购很快售罄",e:"'Pokemon TCG' Moves Right On to 'Mega Evolution - Delta Reign'",b:"ICv2 报道：Build & Battle Box 用于预售赛，内含 40 张卡组和四选一的闪卡促销卡。",s:"ICv2",u:"https://icv2.com/articles/news/view/63514/pokemon-tcg-moves-right-on-mega-evolution-delta-reign"},
- {c:"new",d:"2026-09-04",t:"League Battle Deck：Mega Greninja ex，美国定价 $29.99",e:"New 'Pokemon TCG: League Battle Deck' Incoming",b:"60 张即玩卡组（Mega Greninja ex、Mega Starmie ex、Meowth ex）。发售日两家说法不同：ICv2 写 11 月 11 日，OTIA 写 11 月 13 日。",s:"ICv2",u:"https://icv2.com/articles/news/view/63295/new-pokemon-tcg-league-battle-deck-incoming"},
- {c:"event",d:"2026-11-05",t:"马来西亚：Premier Ball League 现场的周边活动公布",e:"Side Events at the Premier Ball League",b:"官方列出两天都有的 30 周年展览、Gunslinger 车轮战和 Switch 2 试玩；第二天另有 30 周年 3 对 3 团体赛（要预先报名，送纪念促销卡）、新手教学 New Trainer Journey 和官方周边店。官方说 11 月 12 日前页面信息有误，已更正。",s:"Pokémon TCG Malaysia",u:"https://trainers-asia.portal-pokemon.com/my/2026-27/news-12/"},
- {c:"event",d:"",t:"马来西亚：Delta Reign 新弹对战会 11 月举行",e:"Mega Evolution – Delta Reign New Expansion Battle is coming this November 2026",b:"马来西亚官方训练家网站的公告标题。具体日期和店铺要点进去看。",s:"Pokémon TCG Malaysia",u:"https://asia.pokemon-card.com/my/archives/8542/"},
- {c:"event",d:"",t:"马来西亚：Great Ball League 第 2 季开放报名",e:"Registration for the Great Ball League Season 2 is open!",b:"官方的休闲级联赛。同一网站还有 Ultra Ball League 第 1 季的报名公告（竞技级）。",s:"Pokémon TCG Malaysia",u:"https://trainers-asia.portal-pokemon.com/sg/2026-27/great-ball-league/"},
- {c:"event",d:"",t:"马来西亚：2026 Pokémon TCG Academia 巡回活动回归",e:"2026 Pokémon TCG Academia: Roadshow: We're Back!",b:"面向新手的官方教学活动。之前有过一次取消公告，这是重新举办的通知。",s:"Pokémon TCG Malaysia",u:"https://asia.pokemon-card.com/my/archives/8689/"},
- {c:"event",d:"",t:"马来西亚：GYM Campaign 2026",e:"Pokémon TCG: GYM Campaign 2026",b:"道馆活动的公告。官网首页另有亚洲锦标赛系列 2026-27 的入口。",s:"Pokémon TCG Malaysia",u:"https://asia.pokemon-card.com/my/archives/8279/"},
- {c:"event",d:"2026-11-10",t:"Pokémon Club 进入 Boys & Girls Clubs of America",e:"Pokémon Club Expands to Boys & Girls Clubs of America",b:"只读到标题，正文未核对。",s:"OTIA",u:"https://otia.com/news/pokemon-club-expands-boys-girls-clubs-of-america",h:1},
- {c:"learn",d:"",t:"新手从哪里开始：马来西亚官网的入门页",e:"Beginner's guide on the official Malaysia site",b:"官网首页的「Beginner」入口。",s:"Pokémon TCG Malaysia",u:"https://asia.pokemon-card.com/my/archives/7820/"},
- {c:"learn",d:"",t:"官方规则和玩法教学",e:"Official rules and Learn to Play",b:"两个链接都来自马来西亚官网首页：规则页和国际官网的 Learn to Play。页面内容我没有打开核对。",s:"Pokémon TCG Malaysia",u:"https://asia.pokemon-card.com/my/rules/",u2:"https://tcg.pokemon.com/en-us/learn-to-play/",h:1},
- {c:"learn",d:"",t:"想找人教：官方的新手活动",e:"Beginner events: New Trainer Journey, Beginner's Session, Academia",b:"官网活动页把活动分三级：新手（New Trainer Journey、Beginner's Session、Academia）、休闲（GYM Battle、Premier Ball League、SHOWDOWN、Great Ball League）、竞技（Ultra Ball League、Master Ball League）。页面上有按店铺搜索活动的入口。",s:"Pokémon TCG Malaysia",u:"https://asia.pokemon-card.com/my/event/"}
+ {c:"play",d:"2026-10-31",t:"格但斯克区域赛：Aarni Karjala（芬兰）用 Slowking 夺冠",e:"Regional Gdańsk: Aarni Karjala (FI) wins with Slowking",b:"1,739 人参赛。亚军 Finn Lasse Fries（德国）用 Rocket's Honchkrow，前八里有 4 套 Dragapult ex。",eb:"1,739 players. Runner-up Finn Lasse Fries (Germany) played Rocket's Honchkrow, and 4 Dragapult ex decks made the top 8.",s:"Limitless TCG",u:"https://limitlesstcg.com/tournaments/584"},
+ {c:"play",d:"2026-10-24",t:"普埃布拉区域赛：Andrew Hedrick（美国）用 Dragapult ex 夺冠",e:"Regional Puebla: Andrew Hedrick (US) wins with Dragapult ex",b:"2,234 人参赛，前八有 6 套 Dragapult ex，冠亚军用的是同一份牌表。",eb:"2,234 players. 6 of the top 8 were Dragapult ex, and the winner and runner-up used the same list.",s:"Limitless TCG",u:"https://limitlesstcg.com/tournaments/583"},
+ {c:"play",d:"2026-10-17",t:"尼斯区域赛：Luc Gantner（瑞士）用 Basic Box 夺冠",e:"Regional Nice: Luc Gantner (CH) wins with Basic Box",b:"2,336 人参赛。亚军 Maxime Launay（法国）用 Dhelmise，季军 Paulo Mimoso（葡萄牙）用 Hydrapple ex。",eb:"2,336 players. Runner-up Maxime Launay (France) played Dhelmise, third place Paulo Mimoso (Portugal) played Hydrapple ex.",s:"Limitless TCG",u:"https://limitlesstcg.com/tournaments/582"},
+ {c:"play",d:"2026-10-10",t:"路易维尔区域赛：Riley McKay（加拿大）用 Dragapult ex 夺冠",e:"Regional Louisville: Riley McKay (CA) wins with Dragapult ex",b:"2,927 人参赛，是这四场区域赛里最大的一场。季军 Evan Campbell（美国）用 Mega Sharpedo ex。",eb:"2,927 players, the largest of these four Regionals. Third place Evan Campbell (USA) played Mega Sharpedo ex.",s:"Limitless TCG",u:"https://limitlesstcg.com/tournaments/581"},
+ {c:"play",d:"2026-11-20",t:"拉美国际锦标赛（圣保罗）：Vinícius Fernandez（巴西）用 N's Zoroark ex 夺冠",e:"LAIC São Paulo: Vinícius Fernandez (BR) wins with N's Zoroark ex",b:"2,646 人参赛。亚军 Damian Fernandez Urroz（阿根廷）用 Talonflame Dusknoir，季军 Owyn Kamerman（荷兰）用 Dragapult ex，前八里有 5 套 Dragapult ex。",eb:"2,646 players. Runner-up Damian Fernandez Urroz (Argentina) played Talonflame Dusknoir, third place Owyn Kamerman (Netherlands) played Dragapult ex, and 5 Dragapult ex decks made the top 8.",s:"Limitless TCG",u:"https://limitlesstcg.com/tournaments/574"},
+ {c:"play",d:"2026-11-28",t:"接下来的大赛：11 月 28 日斯图加特区域赛",e:"Upcoming: Stuttgart on 28 Nov, then Las Vegas, Sydney, Atlanta",b:"Limitless 的赛程表（11 月 23 日查看）接着是 12 月 5 日拉斯维加斯区域赛，明年 1 月 16 日悉尼和亚特兰大区域赛、1 月 23 日梅里达区域赛、1 月 30 日伯明翰区域赛。前九场里没有东南亚的比赛。",eb:"Limitless schedule (checked 23 Nov): next is Regional Las Vegas on 5 Dec, then Sydney and Atlanta on 16 Jan, Mérida on 23 Jan and Birmingham on 30 Jan. None of the next nine events are in Southeast Asia.",s:"Limitless TCG",u:"https://limitlesstcg.com/tournaments/upcoming"},
+ {c:"new",d:"2026-11-19",t:"下一个英文系列 Flowing Fists 公布，2027 年 2 月 6 日发售",e:"Next English set Flowing Fists announced, out 6 Feb 2027",b:"Serebii 报道：主打超级路卡利欧 Z、超级阿勃梭鲁 Z，超过 110 张卡，含 5 张超级进化宝可梦 ex、4 张宝可梦 ex、11 张 IR、18 张 UR、6 张 SIR。从这个系列起，欧美新品改在星期六发售。",eb:"Serebii: led by Mega Lucario Z and Mega Absol Z, over 110 cards, including 5 Mega Evolution Pokémon ex, 4 Pokémon ex, 11 IR, 18 UR and 6 SIR. From this set on, new English products release on Saturdays.",s:"Serebii",u:"https://www.serebii.net/news/2026/19-November-2026.shtml"},
+ {c:"new",d:"2026-11-20",t:"日版 Aura Seeker 全卡表公开",e:"Full card list revealed for Japanese set Aura Seeker",b:"Serebii 报道官方公开了日版 Aura Seeker 的完整卡表，包括 Togedemaru ex（托戈德玛尔 ex）等。发售日是 11 月 27 日。",eb:"Serebii reports the full card list of the Japanese Aura Seeker set is official, including Togedemaru ex. Release date is 27 November.",s:"Serebii",u:"https://www.serebii.net/news/2026/20-November-2026.shtml"},
+ {c:"new",d:"2026-11-06",t:"Mega Evolution—Delta Reign 正式发售，全套 120 张",e:"Mega Evolution—Delta Reign released, 120 cards",b:"Serebii 报道该系列当天发售，收录《传说 Z-A》里的更多超级进化宝可梦，包括超级烈空坐。",eb:"Serebii reports the set releases today, with more Mega Evolution Pokémon from Legends: Z-A, including Mega Rayquaza.",s:"Serebii",u:"https://www.serebii.net/news/2026/06-November-2026.shtml"},
+ {c:"new",d:"2026-11-06",t:"11 月新品清单：Delta Reign、30th Celebration、Mega Greninja ex 卡组",e:"Pokémon TCG November 2026 Releases",b:"OTIA 列出 9 款产品。Delta Reign 补充包盒 36 包，ETB 9 包并附 Kyogre 全图闪卡和 65 个卡套，Booster Bundle 6 包；30th Celebration 的 Ultra-Premium Collection 含 30 包。",eb:"OTIA lists 9 products. Delta Reign booster box has 36 packs, the ETB has 9 packs plus a full-art Kyogre and 65 sleeves, the Booster Bundle has 6 packs; the 30th Celebration Ultra-Premium Collection has 30 packs.",s:"OTIA",u:"https://otia.com/news/pokemon-tcg-november-2026-releases-delta-reign-30th-celebration-mega-greninja-ex"},
+ {c:"new",d:"2026-10-23",t:"日版下一个系列 Aura Seeker 定于 11 月 27 日发售",e:"Japanese set Aura Seeker due 27 Nov",b:"Serebii 10 月新闻页的条目。这一条只读到摘要，没有逐字核对。",eb:"An entry from Serebii's October news page. We only read the summary and did not check it word for word.",s:"Serebii",u:"https://www.serebii.net/card/auraseeker/",h:1},
+ {c:"new",d:"2026-10-01",t:"Delta Reign 预售赛 10 月 24 日开始，Pokémon Center 预购很快售罄",e:"'Pokemon TCG' Moves Right On to 'Mega Evolution - Delta Reign'",b:"ICv2 报道：Build & Battle Box 用于预售赛，内含 40 张卡组和四选一的闪卡促销卡。",eb:"ICv2 reports the Build & Battle Box is for prerelease events, with a 40-card deck and one of four foil promo cards.",s:"ICv2",u:"https://icv2.com/articles/news/view/63514/pokemon-tcg-moves-right-on-mega-evolution-delta-reign"},
+ {c:"new",d:"2026-09-04",t:"League Battle Deck：Mega Greninja ex，美国定价 $29.99",e:"New 'Pokemon TCG: League Battle Deck' Incoming",b:"60 张即玩卡组（Mega Greninja ex、Mega Starmie ex、Meowth ex）。发售日两家说法不同：ICv2 写 11 月 11 日，OTIA 写 11 月 13 日。",eb:"60-card ready-to-play decks (Mega Greninja ex, Mega Starmie ex, Meowth ex). The two sources differ on the date: ICv2 says 11 November, OTIA says 13 November.",s:"ICv2",u:"https://icv2.com/articles/news/view/63295/new-pokemon-tcg-league-battle-deck-incoming"},
+ {c:"event",d:"2026-11-05",t:"马来西亚：Premier Ball League 现场的周边活动公布",e:"Side Events at the Premier Ball League",b:"官方列出两天都有的 30 周年展览、Gunslinger 车轮战和 Switch 2 试玩；第二天另有 30 周年 3 对 3 团体赛（要预先报名，送纪念促销卡）、新手教学 New Trainer Journey 和官方周边店。官方说 11 月 12 日前页面信息有误，已更正。",eb:"The official page lists a 30th anniversary exhibition, Gunslinger battles and Switch 2 demos on both days; day two adds a 30th anniversary 3-vs-3 team event (pre-registration, commemorative promo), the New Trainer Journey beginner session and an official merchandise store. The organiser says the page had errors before 12 November and has been corrected.",s:"Pokémon TCG Malaysia",u:"https://trainers-asia.portal-pokemon.com/my/2026-27/news-12/"},
+ {c:"event",d:"",t:"马来西亚：Delta Reign 新弹对战会 11 月举行",e:"Mega Evolution – Delta Reign New Expansion Battle is coming this November 2026",b:"马来西亚官方训练家网站的公告标题。具体日期和店铺要点进去看。",eb:"Announcement title on the official Malaysian Trainers website. Open it for exact dates and stores.",s:"Pokémon TCG Malaysia",u:"https://asia.pokemon-card.com/my/archives/8542/"},
+ {c:"event",d:"",t:"马来西亚：Great Ball League 第 2 季开放报名",e:"Registration for the Great Ball League Season 2 is open!",b:"官方的休闲级联赛。同一网站还有 Ultra Ball League 第 1 季的报名公告（竞技级）。",eb:"The official casual league. The same site also has the sign-up notice for Ultra Ball League Season 1 (competitive).",s:"Pokémon TCG Malaysia",u:"https://trainers-asia.portal-pokemon.com/sg/2026-27/great-ball-league/"},
+ {c:"event",d:"",t:"马来西亚：2026 Pokémon TCG Academia 巡回活动回归",e:"2026 Pokémon TCG Academia: Roadshow: We're Back!",b:"面向新手的官方教学活动。之前有过一次取消公告，这是重新举办的通知。",eb:"An official teaching event for beginners. It was cancelled once before; this notice is for the rescheduled event.",s:"Pokémon TCG Malaysia",u:"https://asia.pokemon-card.com/my/archives/8689/"},
+ {c:"event",d:"",t:"马来西亚：GYM Campaign 2026",e:"Pokémon TCG: GYM Campaign 2026",b:"道馆活动的公告。官网首页另有亚洲锦标赛系列 2026-27 的入口。",eb:"A Gym event announcement. The official home page also links to the Asia Championship Series 2026-27.",s:"Pokémon TCG Malaysia",u:"https://asia.pokemon-card.com/my/archives/8279/"},
+ {c:"event",d:"2026-11-10",t:"Pokémon Club 进入 Boys & Girls Clubs of America",e:"Pokémon Club Expands to Boys & Girls Clubs of America",b:"只读到标题，正文未核对。",eb:"We only read the title; the article itself has not been checked.",s:"OTIA",u:"https://otia.com/news/pokemon-club-expands-boys-girls-clubs-of-america",h:1},
+ {c:"learn",d:"",t:"新手从哪里开始：马来西亚官网的入门页",e:"Beginner's guide on the official Malaysia site",b:"官网首页的「Beginner」入口。",eb:"The Beginner link on the official home page.",s:"Pokémon TCG Malaysia",u:"https://asia.pokemon-card.com/my/archives/7820/"},
+ {c:"learn",d:"",t:"官方规则和玩法教学",e:"Official rules and Learn to Play",b:"两个链接都来自马来西亚官网首页：规则页和国际官网的 Learn to Play。页面内容我没有打开核对。",eb:"Both links come from the official Malaysian home page: the rules page and the international Learn to Play page. We have not opened and checked their content.",s:"Pokémon TCG Malaysia",u:"https://asia.pokemon-card.com/my/rules/",u2:"https://tcg.pokemon.com/en-us/learn-to-play/",h:1},
+ {c:"learn",d:"",t:"想找人教：官方的新手活动",e:"Beginner events: New Trainer Journey, Beginner's Session, Academia",b:"官网活动页把活动分三级：新手（New Trainer Journey、Beginner's Session、Academia）、休闲（GYM Battle、Premier Ball League、SHOWDOWN、Great Ball League）、竞技（Ultra Ball League、Master Ball League）。页面上有按店铺搜索活动的入口。",eb:"The official events page sorts events into three levels: beginner (New Trainer Journey, Beginner's Session, Academia), casual (GYM Battle, Premier Ball League, SHOWDOWN, Great Ball League) and competitive (Ultra Ball League, Master Ball League). It has a search for events by store.",s:"Pokémon TCG Malaysia",u:"https://asia.pokemon-card.com/my/event/"}
 ];
 const NCAT={all:["全部","All"],play:["比赛与玩家","Players & results"],new:["新品","New products"],event:["活动","Events"],learn:["怎么玩","How to play"]};
 const META = [["Dragapult ex",35.65,284],["Basic Box",11.64,339],["N's Zoroark ex",8.89,320],["Slowking Seek Inspiration",8.35,322],["Crustle Mysterious Rock Inn",5.87,341],["Mega Excadrill ex",4.53,376],["Hydrapple ex",4.06,352],["Festival Lead",3.42,336],["Alakazam Powerful Hand",3.09,350],["Mega Rayquaza ex",2.58,377],["Dhelmise Hide n' Sneak",2.05,374],["Rocket's Honchkrow",1.58,356]];
@@ -1682,7 +1689,7 @@ function readHash(){ ui.msheet=false; if(location.hash!=="#orders") ui.hl=[]; le
   if(h.startsWith("set/")&&own(SI,h.slice(4))){ if(ui.set!==h.slice(4)){ ui.crar=""; ui.ckind="" } ui.set=h.slice(4); route="set"; render(); return window.scrollTo(0,0) } route=ROUTES.has(h)?h:({prices:"market",trends:"market",gallery:"market"}[h]||"home"); if(h==="prices") ui.mtab="price"; if(h==="gallery") ui.mtab="gal"; if(route==="admin"&&!owner) route="home"; render(); window.scrollTo(0,0) }
 
 let lang="zh"; try{ if(localStorage.getItem("lang")==="en") lang="en" }catch(e){}
-function applyLang(){ document.documentElement.dataset.lang=lang; document.documentElement.lang=lang==="en"?"en":"zh"; const b=$("#langbtn"); if(b){ b.innerHTML=`<span class="${lang==="zh"?"on":""}">中</span><span class="${lang==="en"?"on":""}">EN</span>`; b.setAttribute("aria-label",lang==="zh"?"Switch to English":"切换到中文") } if(lang==="en") langPass() }
+function applyLang(){ document.documentElement.dataset.lang=lang; document.documentElement.lang=lang==="en"?"en":"zh"; const b=$("#langbtn"); if(b){ b.innerHTML=`<span class="${lang==="zh"?"on":""}">中</span><span class="${lang==="en"?"on":""}">EN</span>`; b.setAttribute("aria-label",lang==="zh"?"Switch to English":"切换到中文") } langPass() }
 function adminTabs(){ return ATABS.concat(window.HOLO_AUTH&&HOLO_AUTH.role()==="owner"?[["staff","员工权限","Staff"]]:[]) }
 const _html={}; function setHTML(sel,h){ const k=sel+"|"+lang; if(_html[sel]===k+h) return false; _html[sel]=k+h; $(sel).innerHTML=h; return true }
 const FOREST=false; /* 2026-11-19 用户看过深色森林样板，不要，已拿掉 */
@@ -1711,7 +1718,7 @@ function renderCore(){
   const vch=setHTML("#view",subnav()+(V[route]||V.home)());
   $("#view").classList.toggle("hassub",!!GROUPS[PARENT[route]]);
   setHTML("#modal",ui.avPick&&ME?avPicker():ui.kf?kfModal():ui.pid&&PM[ui.pid]?detail(PM[ui.pid]):ui.mid&&PM[ui.mid]?mdetail(PM[ui.mid]):ui.cid?cardModal(ui.cid):"");
-  if(lang==="en") langPass();
+  langPass();
   if(vch&&route==="home"&&window.fitHero) requestAnimationFrame(window.fitHero);
   if(window.fitBar) window.fitBar();
   if(keep){ const el=document.getElementById(keep); if(el){ el.focus(); try{el.setSelectionRange(pos,pos)}catch(e){} } }
@@ -1727,7 +1734,7 @@ const LNGEN={"英文版":"English","日文版":"Japanese","中文版":"Chinese"}
 function prodCard(p){
   const c=CI[p.id], tc=c&&TYPEC[c.type];
   return `<div class="prod" data-goitem="${p.id}"${tc?` style="--glow:${tc[0]}99"`:""}><div class="pic"><a href="#p/${p.id}" aria-label="${esc(pname(p))} ${BT("快速查看","Quick view")}"><img loading="lazy" src="${simg(p)}" alt=""></a><button class="qv" data-open="${p.id}">快速查看 <span class="en">Quick view</span></button>${wishBtn(p)}${isPre(p)?`<span class="prebdg">${B("预购","Pre-order")} · ${preTxt(p)}</span>`:""}</div>
-  <div class="info">${p.no?`<div class="cno">${esc(numTxt(p))}</div>`:""}${p.lng?`<span class="lgc lg-${{"日文版":"ja","中文版":"zh"}[p.lng]||"en"}">${esc(lngT(p.lng))}</span>`:""}<a class="nm" href="#p/${p.id}">${esc(PZ(p))}</a><div class="muted set">${slogo(p.s)}<span>${esc(p.s)}</span></div>
+  <div class="info">${p.no?`<div class="cno">${esc(numTxt(p))}</div>`:""}${p.lng?`<span class="lgc lg-${{"日文版":"ja","中文版":"zh"}[p.lng]||"en"}">${esc(lngT(p.lng))}</span>`:""}<a class="nm" href="#p/${p.id}">${PZH(p)}</a><div class="muted set">${slogo(p.s)}<span>${esc(p.s)}</span></div>
   <div class="bigp">${p.price>0?rm(p.price):`<span class="np">${B("价格待定","Price TBD")}</span>`}</div>
   <div class="foot">${tbdShow(p)?`<button disabled>${B("价格待定","Price TBD")}</button>`:p.c==="single"&&!listed(p)?(p.ck?`<a class="btnl" href="#card/${esc(p.ck)}">${B("看卡价","Card prices")} ›</a>`:""):p.stock===0&&!isPre(p)?`<button disabled>缺货 <span class="en">Sold out</span></button>`:isPre(p)?`<button class="sun" data-add="${p.id}">预购 <span class="en">Pre-order</span></button>`:`<button class="sun" data-add="${p.id}">加入购物车 <span class="en">Add</span></button>`}</div></div></div>`;
 }
@@ -1775,7 +1782,7 @@ function deckImg(name){ const d=DECKIMG[name]; return d||"" }
 /* 2026-11-23 改版需求 9：中文界面显示卡组中文名。宝可梦名用官方简体中文名（跟卡表同一来源）；
    Basic Box、Seek Inspiration 这类玩家叫法没有官方中文，保留原文，括号写核心宝可梦。English 界面照旧显示原名。 */
 const DECKZH={"Dragapult ex":"多龙巴鲁托 ex","Basic Box":"Basic Box（超级袋兽 ex 核心）","Basic Box (Ogerpon)":"Basic Box（超级袋兽 ex、厄诡椪）","N's Zoroark ex":"N的索罗亚克 ex","Slowking Seek Inspiration":"呆呆王（Seek Inspiration）","Slowking":"呆呆王","Crustle Mysterious Rock Inn":"岩殿居蟹（Mysterious Rock Inn）","Crustle":"岩殿居蟹","Mega Excadrill ex":"超级龙头地鼠 ex","Hydrapple ex":"蜜集大蛇 ex","Festival Lead":"Festival Lead（裹蜜虫、啪咚猴）","Alakazam Powerful Hand":"胡地（Powerful Hand）","Mega Rayquaza ex":"超级烈空坐 ex","Dhelmise Hide n' Sneak":"破破舵轮（Hide n' Sneak）","Rocket's Honchkrow":"火箭队的乌鸦头头","Talonflame Dusknoir":"烈箭鹰、黑夜魔灵","Greninja ex":"甲贺忍蛙 ex","Mega Lopunny ex":"超级长耳兔 ex","Mega Sharpedo ex":"超级巨牙鲨 ex","Mega Absol Box":"超级阿勃梭鲁 Box","Mew Box Memory Helix":"梦幻（Memory Helix）","Mega Lucario ex":"超级路卡利欧 ex"};
-const dkN=n=>lang!=="en"&&DECKZH[n]?DECKZH[n]:n;
+const dkN=n=>lang!=="en"&&DECKZH[n]?DECKZH[n]:n, dkNH=n=>dualH(DECKZH[n],n);
 /* 没有套牌小图的也留同样大的位置，名字才会对齐 */
 const dkIm=(n,alt)=>deckImg(n)?`<img src="${deckImg(n)}" alt="${alt||""}" loading="lazy">`:`<span class="dimg0" aria-hidden="true"></span>`;
 function newsThumb(n){ const k=Object.keys(NEWSIMG).find(k=>n.u.includes(k)); let v=k?NEWSIMG[k]:"", src="";
@@ -1835,7 +1842,7 @@ V.series=()=>{ if(!SI[ui.set]) ui.set=SETS[0]; return V.set() };
 
 function mcard(p,i,opt){ const hot=MV[p.id]&&MV[p.id].ch>0;
   return `<button class="mc" data-mid="${p.id}">${i!=null?`<span class="rk">#${i+1}</span>`:""}${hot?`<span class="hot">HOT</span>`:""}<span class="im"><img loading="lazy" src="${simg(p)}" alt=""></span><span class="bd"><span class="mm">${esc(metaLine(p))}</span><b>${esc(PZ(p))}</b><span class="ss">${slogo(p.s)}<span>${esc(p.s)}</span></span><span class="row" style="justify-content:space-between;gap:6px"><span class="pr">${rm(dp(p))}</span>${chgPill(p)}</span>${mk(p)}</span></button>` }
-function brow(p,i){ return `<button class="brow" ${p.ck?`data-gocard="${p.ck}"`:`data-mid="${p.id}"`}><span class="no">${String(i+1).padStart(2,"0")}</span><img loading="lazy" src="${simg(p)}" alt=""><span style="min-width:0"><span class="nm" style="display:block">${esc(PZ(p))}</span><span class="sb" style="display:block">${esc([p.s,numTxt(p),rarS(p)].filter(Boolean).join(" · "))}</span></span><span class="pz">${rm(dp(p))}${mk(p)}${chgPill(p)}</span></button>` }
+function brow(p,i){ return `<button class="brow" ${p.ck?`data-gocard="${p.ck}"`:`data-mid="${p.id}"`}><span class="no">${String(i+1).padStart(2,"0")}</span><img loading="lazy" src="${simg(p)}" alt=""><span style="min-width:0"><span class="nm" style="display:block">${PZH(p)}</span><span class="sb" style="display:block">${esc([p.s,numTxt(p),rarS(p)].filter(Boolean).join(" · "))}</span></span><span class="pz">${rm(dp(p))}${mk(p)}${chgPill(p)}</span></button>` }
 const kindOf=p=>{ const k=(CI[p.id]||{}).kind||""; return k==="Pokémon"?0:/Supporter/.test(k)?1:k?2:3 };
 const howEl=()=>"";
 V.howto=()=>{ ui.ncat="learn"; return V.news() };
@@ -1854,7 +1861,7 @@ V.market=()=>{
   const gain=mov.filter(c=>c.tr>0).sort((a,b)=>b.tr-a.tr||cRM(b)-cRM(a)).slice(0,5), lose=mov.filter(c=>c.tr<0).sort((a,b)=>a.tr-b.tr||cRM(b)-cRM(a)).slice(0,5), hot=priced.slice().sort((a,b)=>cRM(b)-cRM(a)).slice(0,5);
   const up=mov.filter(c=>c.tr>0).length, dn=mov.filter(c=>c.tr<0).length, tot=priced.reduce((a,c)=>a+cRM(c),0);
   const tape=priced.filter(c=>c.tr!=null&&cRM(c)>=50).sort((a,b)=>Math.abs(b.tr)-Math.abs(a.tr)).slice(0,24).map(c=>`<span>${esc(cN(c))} ${rm(cRM(c))} <b class="${c.tr>0?"up":c.tr<0?"down":"flat"}">${c.tr>0?"▲":c.tr<0?"▼":"–"} ${Math.abs(c.tr)}%</b></span>`).join("");
-  const row=(c,i)=>`<button class="brow" data-gocard="${c.k}"><span class="no">${String(i+1).padStart(2,"0")}</span>${c.p?`<img loading="lazy" src="${simg(c.p)}" alt="">`:c.noimg?`<span class="bthumb noimg">★C</span>`:spr(c,"bthumb")}<span style="min-width:0"><span class="nm" style="display:block">${esc(cN(c))}</span><span class="sb" style="display:block">${edTag(c)} ${esc(c.s)} · #${esc(c.num)}</span></span><span class="pz">${rm(cRM(c))}${trPill(c)}</span></button>`;
+  const row=(c,i)=>`<button class="brow" data-gocard="${c.k}"><span class="no">${String(i+1).padStart(2,"0")}</span>${c.p?`<img loading="lazy" src="${simg(c.p)}" alt="">`:c.noimg?`<span class="bthumb noimg">★C</span>`:spr(c,"bthumb")}<span style="min-width:0"><span class="nm" style="display:block">${cNH(c)}</span><span class="sb" style="display:block">${edTag(c)} ${esc(c.s)} · #${esc(c.num)}</span></span><span class="pz">${rm(cRM(c))}${trPill(c)}</span></button>`;
   const col=(t,e,l)=>`<div class="col"><div class="ch"><span>${B(t,e)}</span><span style="color:#7d87a8">${l.length}</span></div>${l.length?l.map(row).join(""):`<p style="padding:14px 16px;color:#7d87a8;margin:0">${B("这个系列暂时没有","None in this set yet")}</p>`}</div>`;
   const q=ui.mq.trim().toLowerCase();
   const qw=q.split(/\s+/).filter(Boolean);
@@ -1925,9 +1932,23 @@ function trT(t){ if(lang!=="en"||typeof t!=="string") return t; const k=t.trim()
   const m=k.match(/^(.*?[㐀-鿿）」。！？：])\s*([A-Z][\x20-\x7e’—–é：]*)$/); if(m&&/[a-z]/.test(m[2])) return t.replace(k,m[2].replace(/：/g,": ").replace(/: $/,""));
   return t }
 window.trT=trT;
+/* 2026-11-23 店主要：换语言只换文字，不换排版。中文和英文叠在同一个格子里（.lgp），宽高取两者较大的那个，
+   切换时只是显示哪一个，所以按钮、标题、段落的位置和大小都不会跳。 */
+function lpWrap(){
+  document.querySelectorAll(".en,.tr,h1>small,h2>small,nav.tabs a>i,th>i,.steps span i").forEach(el=>{
+    if(el.parentElement&&el.parentElement.classList.contains("lgp")||el.closest(".backbtn")) return;
+    const zs=[]; let n=el.previousSibling;
+    const brs=[]; while(n&&(n.nodeType===3&&!n.nodeValue.trim()||n.nodeName==="BR")){ if(n.nodeName==="BR") brs.push(n); n=n.previousSibling }
+    while(n&&n.nodeType===1&&n.classList.contains("zh")&&!n.classList.contains("lgp")){ zs.unshift(n); let m=n.previousSibling; while(m&&m.nodeType===3&&!m.nodeValue.trim()) m=m.previousSibling; n=m }
+    if(!zs.length) return;
+    const BK=/^(block|flex|grid|list-item|table)/, blk=BK.test(getComputedStyle(zs[0]).display)||BK.test(getComputedStyle(el).display);
+    const w=document.createElement("span"); w.className="lgp"+(blk?" lpb":""); const z=document.createElement("span"); z.className="lpz";
+    brs.forEach(x=>x.remove()); zs[0].before(w); zs.forEach(x=>z.appendChild(x)); w.appendChild(z); w.appendChild(el);
+  });
+}
 function langPass(){
   const CJK=/[㐀-鿿]/, SEL=".en,h1>small,h2>small,nav.tabs a>i,th>i,.steps span i";
-  document.querySelectorAll(SEL).forEach(el=>{ let n=el.previousSibling;
+  document.querySelectorAll(SEL).forEach(el=>{ if(el.parentElement&&el.parentElement.classList.contains("lgp")) return; let n=el.previousSibling;
     while(n){ const prev=n.previousSibling;
       if(n.nodeType===3){ if(CJK.test(n.nodeValue)){ const sp=document.createElement("span"); sp.className="zh"; n.replaceWith(sp); sp.appendChild(n) } }
       else if(n.nodeType===1){ if(n.matches(SEL)||n.querySelector(SEL)) break;
@@ -1936,7 +1957,8 @@ function langPass(){
   const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:t=>CJK.test(t.nodeValue)&&!t.parentElement.closest(".zh,.tr,script,style")?1:3});
   const todo=[]; while(w.nextNode()) todo.push(w.currentNode);
   todo.forEach(t=>{ const v=trT(t.nodeValue); if(v===t.nodeValue) return; if(t.parentElement&&t.parentElement.closest("option")){ t.nodeValue=v; return } const a=document.createElement("span"); a.className="zh"; const b=document.createElement("span"); b.className="tr"; b.textContent=v; t.replaceWith(a,b); a.appendChild(t) });
-  document.querySelectorAll("[placeholder],[title],[aria-label],img[alt]").forEach(el=>{ for(const at of ["placeholder","title","aria-label","alt"]){ const p=el.getAttribute(at); if(!p||!CJK.test(p)) continue; let v=trT(p); if(v===p){ const m=p.match(/[A-Za-z][^\u3400-\u9fff]*$/); if(m) v=m[0] } if(v!==p) el.setAttribute(at,v) } });
+  if(lang==="en") document.querySelectorAll("[placeholder],[title],[aria-label],img[alt]").forEach(el=>{ for(const at of ["placeholder","title","aria-label","alt"]){ const p=el.getAttribute(at); if(!p||!CJK.test(p)) continue; let v=trT(p); if(v===p){ const m=p.match(/[A-Za-z][^\u3400-\u9fff]*$/); if(m) v=m[0] } if(v!==p) el.setAttribute(at,v) } });
+  lpWrap();
 }
 
 /* ---------- v19：单卡资料、系列 logo、商品页 ---------- */
@@ -1950,6 +1972,9 @@ const ecIcon=t=>{ const c=TYPEC[t]||["#999","?","?"]; return `<span class="ec" s
 const eText=t=>esc(t).replace(/\[([RWGLPFDMNC])\]/g,(m,k)=>{const e=Object.entries(TYPEC).find(x=>x[1][2]===k);return e?ecIcon(e[0]):m});
 const isEN=()=>lang==="en";
 const cN=c=>(!isEN()&&c.zh)?c.zh:c.n;
+/* 换语言不换排版：名字同时放中英文，叠在一起只显示当前语言（见 lpWrap） */
+const dualH=(z,e)=>z&&e&&z!==e?BL(esc(z),esc(e)):esc(e||z||"");
+const cNH=c=>dualH(c.zh,c.n), PZH=p=>p.svc?dualH(p.n,p.en):dualH(p.zh,p.n);
 function cardInfo(p,compact){
   const c=CI[p.id]; if(!c) return p.c==="single"?`<p class="muted">这张卡的详细资料还没有整理好。<span class="en"> Card details not added yet.</span></p>`:"";
   const ty=TYPEC[c.type], poke=c.kind==="Pokémon";
@@ -2118,7 +2143,7 @@ const TOP3=[
  {d:"N's Zoroark ex",id:31359,zh:"使用率 8.89%，排第三。下面是 Vinícius Fernandez（巴西）拿下拉丁美洲国际锦标赛（圣保罗，2,646 人）冠军的牌表。",en:"8.89% of the field. The list Vinícius Fernandez (BR) used to win LAIC São Paulo."}];
 function top3Decks(){ const k=Math.max(0,Math.min(2,ui.dk|0)), t=TOP3[k];
   return `${H2("最多人用的前 3 套牌","Top 3 most-played decks")}
-  <div class="dk3" role="tablist">${TOP3.map((x,i)=>`<button role="tab" aria-selected="${i===k}" class="${i===k?"on":""}" data-dk="${i}"><span class="rk">${i+1}</span>${dkIm(x.d)}<span><b>${esc(dkN(x.d))}</b><small>${(META.find(m=>m[0]===x.d)||[0,0])[1].toFixed(2)}%</small></span></button>`).join("")}</div>
+  <div class="dk3" role="tablist">${TOP3.map((x,i)=>`<button role="tab" aria-selected="${i===k}" class="${i===k?"on":""}" data-dk="${i}"><span class="rk">${i+1}</span>${dkIm(x.d)}<span><b>${dkNH(x.d)}</b><small>${(META.find(m=>m[0]===x.d)||[0,0])[1].toFixed(2)}%</small></span></button>`).join("")}</div>
   <p>${esc(t.zh)}<span class="en"> ${esc(t.en)}</span></p>
   <div class="feat">${dkIm(t.d,esc(dkN(t.d)))}${listBox(t.id)}</div>`;
 }
@@ -2203,7 +2228,7 @@ function kindTxt(c,html){ const k=kindKey(c), x=subs(c), f=html?B:BT, parts=[f(K
   x.forEach(t=>{ if(TAGZ[t]) parts.push(f(TAGZ[t][0],TAGZ[t][1])) }); return parts.join(" · ") }
 const kChip=c=>{ const k=kindKey(c); return `<span class="kt" style="--kc:${KCAT[k][2]}">${esc(kindTxt(c,0))}</span>` };
 function ctile(c){ const v=cRM(c);
-  return `<div class="ctl" data-cid="${c.k}" tabindex="0" role="button" aria-label="${esc(cN(c))} ${cNum(c)}"><div class="ctop"><span class="cn">${cNum(c)}</span>${rarB(c.r)}</div><div class="cpic">${cImg(c)}</div><b class="nm">${esc(cN(c))}</b>${kChip(c)}
+  return `<div class="ctl" data-cid="${c.k}" tabindex="0" role="button" aria-label="${esc(cN(c))} ${cNum(c)}"><div class="ctop"><span class="cn">${cNum(c)}</span>${rarB(c.r)}</div><div class="cpic">${cImg(c)}</div><b class="nm">${cNH(c)}</b>${kChip(c)}
   <div class="cpr">${cPriceTxt(c)}${c.p&&MV[c.p.id]?chgPill(c.p):trPill(c)}<a class="trend" href="#card/${c.k}" title="看价格走势 Price trend" aria-label="${esc(cN(c))} 价格走势">${ic("up",15)}</a></div>
   <div class="cpop" aria-hidden="true"><div class="cpi">${cImg(c)}</div><div class="cpb"><div class="mm">${esc((SI[c.s]&&CI_CODE(c))||"")} · #${esc(c.num)} · ${esc(c.r)}</div><b>${esc(cN(c))}</b><div class="ss">${slogo(c.s)}<span>${esc(c.s)}</span></div><div class="pp">${cPriceTxt(c)}</div><div class="muted">${cSrcTxt(c)}</div></div></div></div>` }
 function CI_CODE(c){ const d=SC[c.s]; if(d&&d.ja) return d.code; if(c.r==="CC") return "30C-CC"; return ({me55:"30C",me5:"PBL",me4:"CRI",me3:"POR",me2pt5:"ASC",me2:"PFL",me1:"MEG",rsv10pt5:"WHT",zsv10pt5:"BLK",sv10:"DRI",sv8pt5:"PRE",sv9:"JTG",sv8:"SSP",sv3pt5:"MEW"}[d.id])||"" }
@@ -2272,7 +2297,7 @@ V.set=()=>{
   <div class="row sethead"><h1 style="margin:0"><span>${esc(s)}</span> ${B("卡牌列表","card list")}</h1></div><p class="muted" style="margin:0">${B(st.date+" 发售","Released "+st.date)} · ${setCnt(s)}</p>
   <div class="seg2 slang" role="group" aria-label="版本 Edition">${[["",B("英文版","English"),SETS[0]],["ja",B("日文版","Japanese"),JSETS[0]]].filter(x=>x[2]).map(x=>`<a href="${setUrl(x[2])}" class="${(st.ja?"ja":"")===x[0]?"on":""}">${x[1]}</a>`).join("")}</div>
   <nav class="serstrip setsw" aria-label="切换系列 Other sets">${(st.ja?JSETS:SETS).map(x=>`<a href="${setUrl(x)}" class="${x===s?"on":""}" ${x===s?'aria-current="page"':""} style="--sc:${SETC[x]||"#1c8fc4"}">${slogo(x,"")}<span>${esc(x)}</span></a>`).join("")}</nav>
-  ${prods.length?`<section class="stack" style="gap:10px"><div class="row" style="justify-content:space-between">${H2("本店的 "+s+" 商品","Our "+s+" products")}<a href="#shop" data-ser="${esc(s)}">${B("全部 "+prods.length+" 件","All "+prods.length)} ›</a></div>${marquee(prods.map(p=>({id:p.id,href:"#p/"+p.id,n:PN(p),s:rm(p.price),src:simg(p)})))}</section>`:""}
+  ${prods.length?`<section class="stack" style="gap:10px"><div class="row" style="justify-content:space-between">${H2("本店的 "+s+" 商品","Our "+s+" products")}<a href="#shop" data-ser="${esc(s)}">${B("全部 "+prods.length+" 件","All "+prods.length)} ›</a></div>${marquee(prods.map(p=>({id:p.id,href:"#p/"+p.id,n:PN(p),nh:PZH(p)+(p.no?" #"+esc(p.no):""),s:rm(p.price),src:simg(p)})))}</section>`:""}
   <a class="svcstrip" href="#build">${buddy(44,"wow")}<span><b>${B("想要一副用 "+s+" 卡牌组成的卡组？","Want a deck with "+s+" cards?")}</b><small>${B("代组服务：说预算和打法，我们帮你配好 60 张，1 天内报价","Deck building: tell us your budget and style, we build the 60 cards and quote within 1 day")}</small></span><span class="go">${B("填需求","Start")} ›</span></a>
   <div class="legend chk"><div class="lgh"><b>${B("稀有度标志","Rarity symbols")}</b><span class="muted">${B("点一下只看这种稀有度，再点一下取消","Tap a symbol to filter; tap again to clear")}</span></div>
    <div class="lgg">${rset.map(r=>`<button data-crar="${fr===r?"":r}" class="${fr===r?"on":""}" aria-pressed="${fr===r}"><span class="sym" style="color:${RARX[r][3]}">${RARX[r][2]}</span><span class="eq">=</span><span class="nm">${B(RARX[r][0],RARX[r][1])}<small class="en2">${RARX[r][1]}</small></span><span class="cnt">${all.filter(c=>c.r===r).length}</span></button>`).join("")}</div>
@@ -2300,7 +2325,7 @@ const PROMOS={"30th Celebration":[
  ["Mew","在《30th Celebration》梦幻公仔礼盒里","Figure Collection: Mew"],
  ["Ditto","在《30th Celebration》百变怪高级礼盒里","Ditto Premium Collection"],
  ["Pikachu ex、Espeon ex、Umbreon ex","在《30th Celebration》UPC 大礼盒（Ultra-Premium Collection）里","Ultra-Premium Collections"]]};
-function marquee(list,rev){ let l=list.slice(); while(l.length&&l.length<16) l=l.concat(list); const one=l.map(c=>`<figure>${c.id||c.href?`<a href="${c.href||"#card/"+((PM[c.id]&&PM[c.id].ck)||c.id)}" tabindex="-1">`:""}<img src="${c.src}" alt="${esc(c.n)}">${c.id?"</a>":""}${c.b||""}<figcaption>${esc(c.n)}<br>${esc(c.s)}</figcaption></figure>`).join(""); return `<div class="mqw"><button type="button" class="mqa l" data-mq="-1" aria-label="${isEN()?"Scroll left":"向左看"}">‹</button><div class="mq${rev?" rev":""}"><div class="track" style="animation-duration:${l.length*3.75}s">${one}${one}</div></div><button type="button" class="mqa r" data-mq="1" aria-label="${isEN()?"Scroll right":"向右看"}">›</button></div>` }
+function marquee(list,rev){ let l=list.slice(); while(l.length&&l.length<16) l=l.concat(list); const one=l.map(c=>`<figure>${c.id||c.href?`<a href="${c.href||"#card/"+((PM[c.id]&&PM[c.id].ck)||c.id)}" tabindex="-1">`:""}<img src="${c.src}" alt="${esc(c.n)}">${c.id?"</a>":""}${c.b||""}<figcaption>${c.nh||esc(c.n)}<br>${esc(c.s)}</figcaption></figure>`).join(""); return `<div class="mqw"><button type="button" class="mqa l" data-mq="-1" aria-label="${isEN()?"Scroll left":"向左看"}">‹</button><div class="mq${rev?" rev":""}"><div class="track" style="animation-duration:${l.length*3.75}s">${one}${one}</div></div><button type="button" class="mqa r" data-mq="1" aria-label="${isEN()?"Scroll right":"向右看"}">›</button></div>` }
 function homeCi(){ const g=isGuest(), d=!g&&ciDone(), R=rules(), st=g?0:ciStreak(XU);
   if(d) return `<div class="hci ok"><span class="hci-t"><b>${B("✓ 今天已签到","✓ Checked in today")}</b><small>${B("已连续 "+st+" / 7 天，明天再来","Day "+st+" of 7. Come back tomorrow")}</small></span><a class="hci-b" href="#lucky">${B("去抽奖","Lucky draw")}</a></div>`;
   return `<div class="hci"><span class="hci-t"><b>${B("每日签到领 "+R.ciPts+" 分","Check in daily for "+R.ciPts+" pts")}</b><small>${B("连续第 3、7 天和月度、年度都有加送"+(g?"（要先登录）":""),"Extra points on day 3, day 7, monthly and yearly"+(g?" (sign in first)":""))}</small></span><button class="hci-b" type="button" data-ci="1">${B("立即签到","Check in")}</button></div>` }
@@ -2317,7 +2342,7 @@ V.home=()=>{
   <div class="hero-shell">${[0,1].map(r=>cbkStrip("l",r)+cbkStrip("r",r)).join("")}<section class="hero" aria-label="首页主视觉"><div class="aur" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="leaves" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="spot" aria-hidden="true"></div>
   <div class="stack hero-in" style="gap:14px">
     <img class="hlogo" src="intro/holofen-logo.webp" width="756" height="900" alt="Holofen">
-    <h1 class="tag">${B("欢迎来到 Holofen，和我们一起探索卡牌世界。","Welcome to Holofen. Explore the world of trading cards with us.")}<small>${B("从马来西亚发货，选购中文、英文和日文版宝可梦卡牌。","Chinese, English and Japanese Pokémon cards, shipped from Malaysia.")}</small></h1>
+    <h1 class="tag">${B("欢迎来到 Holofen，和我们一起探索卡牌世界。","Welcome to Holofen. Explore the world of trading cards with us.")}<small class="sub">${B("从马来西亚发货，选购中文、英文和日文版宝可梦卡牌。","Chinese, English and Japanese Pokémon cards, shipped from Malaysia.")}</small></h1>
     <div class="hero-cta4">${HERO_GO.map((g,k)=>`<a class="hgo${k?"":" main"}" href="#${g[0]}" style="--hc:${g[5]}"><span class="hi" aria-hidden="true">${g[6]}</span><span class="ht"><b>${B(g[1],g[2])}</b><small>${B(g[3],g[4])}</small></span><span class="ha" aria-hidden="true">›</span></a>`).join("")}</div></div>
   <div class="hero-mq" aria-label="名卡展览 Famous cards"><div class="hm1"><div class="mqlab">${B("涨幅前 5 · 跌幅前 5","Top 5 up · top 5 down")} <span>${B("PriceCharting 最近一次价格变动，"+PC_DATE,"PriceCharting latest move, "+PC_DATE)}</span></div>${marquee(row1)}</div><div class="hm2"><div class="mqlab">${B("名卡巡礼","Grail cards")} <span>${B("全球最贵、最受追捧的宝可梦卡，只供欣赏","The most wanted Pokémon cards in the world, just for looking")}</span></div>${marquee(row2,1)}</div></div></section></div>
   <section class="sec" aria-label="卡牌系列 Card sets">${serCarousel()}</section>
@@ -2396,7 +2421,7 @@ V.trends=()=>{
   <div class="tw"><table class="mob"><thead><tr><th></th>${TH("卡牌","Card")}${TH("涨跌幅","% Chg",1)}${TH("本店售价","Our price",1)}<th></th></tr></thead><tbody>
   ${list.map(m=>`<tr><td class="th">${m.p?`<img loading="lazy" src="${simg(m.p)}" alt="">`:""}</td><td><b>${esc(m.n)}</b><div class="muted">${esc(m.s)}</div></td><td class="n"><span class="pill ${sg(m)}">${ar(m)} ${Math.abs(m.pct).toFixed(2)}%</span></td><td class="n">${m.p?`<b style="color:var(--red)">${rm(m.p.price)}</b>`:`<span class="muted">暂无</span>`}</td><td>${m.p?`<button data-add="${m.p.id}">加入购物车</button>`:""}</td></tr>`).join("")}</tbody></table></div>`;
 };
-const newsItem=n=>`<article>${newsThumb(n)}<div><div class="row" style="gap:8px"><span class="chip">${NCAT[n.c][0]} <span class="en">${NCAT[n.c][1]}</span></span><time>${n.d||B("官网未标日期","undated")}</time></div><h3>${src(n.t,n.u)}</h3><p class="en">${esc(n.e)}</p><p class="zh${n.h?" muted":""}">${esc(n.b)}${n.u2?" "+src("国际官网玩法教学",n.u2):""}</p><p class="muted">${B("来源","Source")}: ${esc(n.s)}${n.u?` · <a class="nsrc" href="${esc(n.u)}" target="_blank" rel="noopener">${B("看原文","Read source")} ↗</a>`:""}</p></div></article>`;
+const newsItem=n=>`<article>${newsThumb(n)}<div><div class="row" style="gap:8px"><span class="chip">${NCAT[n.c][0]} <span class="en">${NCAT[n.c][1]}</span></span><time>${n.d||B("官网未标日期","undated")}</time></div><h3>${src(n.t,n.u)}</h3><p class="en">${esc(n.e)}</p><p class="zh${n.h?" muted":""}">${esc(n.b)}${n.u2?" "+src("国际官网玩法教学",n.u2):""}</p>${n.eb?`<p class="en${n.h?" muted":""}">${esc(n.eb)}</p>`:""}<p class="muted">${B("来源","Source")}: ${esc(n.s)}${n.u?` · <a class="nsrc" href="${esc(n.u)}" target="_blank" rel="noopener">${B("看原文","Read source")} ↗</a>`:""}</p></div></article>`;
 V.news=()=>{
   const list=NEWS.filter(n=>ui.ncat==="all"||n.c===ui.ncat).sort((a,b)=>(b.d||"0").localeCompare(a.d||"0"));
   return `${H1("宝可梦新闻","Pokémon news")}<p>赢了比赛的玩家和他们的套牌、新品发售、马来西亚的官方活动、怎么入门。每条都链接到原文，${DATA_DATE} 手动整理，不会自动更新。<span class="en"> Winning players and decks, new releases, official Malaysia events and how to start. Every item links to its source.</span></p>
@@ -2414,12 +2439,12 @@ V.decks=()=>`${H1("比赛卡组","Tournament decks")}
   <p>只收官方比赛：下面是 Play! Pokémon 的一场国际锦标赛（International Championship）和四场区域锦标赛（Regional Championships），不含店铺自办的普通比赛。数据来自 Limitless TCG，读取于 ${DATA_DATE}。<span class="en"> Official events only: one Play! Pokémon International Championship and four Regional Championships. Data from Limitless TCG.</span></p>
   ${H2("使用率排名（标准赛制 TEF–DLR）","Most-played decks, Standard")}
   <div class="note" style="font-size:12.5px">${B(`统计范围：Limitless TCG 收录的全球标准赛制（TEF–DLR）比赛，不含马来西亚本地赛。百分比是 Limitless 算的积分占比。统计起止日期和分母（多少场比赛、多少副卡组）Limitless 页面没有写。读取日期 ${DATA_DATE}。`,`Scope: Standard (TEF–DLR) events tracked by Limitless TCG worldwide, not Malaysian local events. Percentages are the share of points as Limitless calculates it. The date range and denominator (events, decks) are not shown on the page. Retrieved ${DATA_DATE}.`)} ${OWNER_TBD()}</div><p class="muted">来源 Source: ${src("limitlesstcg.com/decks","https://limitlesstcg.com/decks")}</p>
-  <div class="panel"><div class="share">${META.map((m,i)=>`<div style="min-width:0" class="dn">${dkIm(m[0])}<span>${i+1}. ${src(dkN(m[0]),"https://limitlesstcg.com/decks/"+m[2])}</span></div><div><div class="b${i?"":" top"}" style="width:${(m[1]/META[0][1]*100).toFixed(1)}%"></div></div><div class="price" style="text-align:right">${m[1].toFixed(2)}%</div>`).join("")}</div></div>
+  <div class="panel"><div class="share">${META.map((m,i)=>`<div style="min-width:0" class="dn">${dkIm(m[0])}<span>${i+1}. ${`<a href="${esc("https://limitlesstcg.com/decks/"+m[2])}" target="_blank" rel="noopener">${dkNH(m[0])}</a>`}</span></div><div><div class="b${i?"":" top"}" style="width:${(m[1]/META[0][1]*100).toFixed(1)}%"></div></div><div class="price" style="text-align:right">${m[1].toFixed(2)}%</div>`).join("")}</div></div>
   ${top3Decks()}
   ${H2("谁在哪场比赛用什么拿了第几名","Who placed where, with what")}
   <p class="muted">比赛页上卡组只显示图标，卡组名是按 Limitless 的卡组编号对应的。有「牌表」按钮的可以直接展开 60 张；其余的点「原页」看。<span class="en"> Rows with a "List" button expand the full 60 cards.</span></p>
-  ${TOURS.map(t=>`<div class="stack" style="gap:8px"><h3>${isEN()?esc(t.n):`${esc(t.zh)} <span class="muted" style="font-weight:500;display:inline-block">${esc(t.n)}</span>`} · ${t.d} · ${t.pl.toLocaleString()} ${isEN()?"players":"人"} · ${src("比赛页","https://limitlesstcg.com/tournaments/"+t.id)}</h3>
-  <div class="tw"><table class="tight"><thead><tr>${TH("名次","Place",1)}${TH("选手","Player")}${TH("国家","Country")}${TH("套牌","Deck")}${TH("牌表","List")}</tr></thead><tbody>${t.top.map((r,i)=>{const k=t.id+"-"+i,has=LISTS[r[3]];return `<tr><td class="n">${i+1}</td><td>${esc(r[0])}</td><td>${r[1]}</td><td><span class="dn">${dkIm(r[2])}<span>${esc(dkN(r[2]))}</span></span></td><td>${has?`<button data-list="${k}">${ui.open[k]?"收起 Hide":"牌表 List"}</button>`:src("原页 Source","https://limitlesstcg.com/decks/list/"+r[3])}</td></tr>${has&&ui.open[k]?`<tr><td colspan="5">${listBox(r[3])}</td></tr>`:""}`}).join("")}</tbody></table></div></div>`).join("")}
+  ${TOURS.map(t=>`<div class="stack" style="gap:8px"><h3><span style="display:block;margin-bottom:6px">${BL(`${esc(t.zh)} <span class="muted" style="font-weight:500;display:inline-block">${esc(t.n)}</span>`,esc(t.n))}</span>${t.d} · ${t.pl.toLocaleString()} ${B("人","players")} · ${src("比赛页","https://limitlesstcg.com/tournaments/"+t.id)}</h3>
+  <div class="tw"><table class="tight"><thead><tr>${TH("名次","Place",1)}${TH("选手","Player")}${TH("国家","Country")}${TH("套牌","Deck")}${TH("牌表","List")}</tr></thead><tbody>${t.top.map((r,i)=>{const k=t.id+"-"+i,has=LISTS[r[3]];return `<tr><td class="n">${i+1}</td><td>${esc(r[0])}</td><td>${r[1]}</td><td><span class="dn">${dkIm(r[2])}<span>${dkNH(r[2])}</span></span></td><td>${has?`<button data-list="${k}">${ui.open[k]?B("收起","Hide"):B("牌表","List")}</button>`:`<a href="${esc("https://limitlesstcg.com/decks/list/"+r[3])}" target="_blank" rel="noopener">${B("原页","Source")}</a>`}</td></tr>${has&&ui.open[k]?`<tr><td colspan="5">${listBox(r[3])}</td></tr>`:""}`}).join("")}</tbody></table></div></div>`).join("")}
   <div><button class="pri" data-go="build">让店主帮我组一套 <span class="en">Build one for me</span></button></div>`;
 const radio=(name,opts,def)=>`<div class="opts">${opts.map((o,i)=>`<label><input type="radio" name="${name}" id="${name}-${i}" value="${esc(o[0])}" ${(def==null?i===0:def===i)?"checked":""}>${esc(o[0])} <span class="en">${esc(o[1])}</span></label>`).join("")}</div>`;
 const QN=8;
@@ -2436,7 +2461,7 @@ V.build=()=>{ const st=ui.bstep||1, done=st>QN;
     ${Q(3,`<fieldset class="f"><legend>${B("你现在的水平？","Your level?")}</legend>${radio("b-level",[["刚入门","New"],["玩过一阵","Some experience"],["打过正式比赛","Tournament player"]])}</fieldset>${nav(3)}`)}
     ${Q(4,`<fieldset class="f"><legend>${B("买卡的预算大概多少？","Card budget?")}</legend>${radio("b-budget",[["RM100 以下","Under RM100"],["RM100–300",""],["RM300–600",""],["RM600–1,000",""],["RM1,000 以上","Over RM1,000"]],1)}</fieldset>${nav(4)}`)}
     ${Q(5,`<fieldset class="f"><legend>${B("喜欢哪种打法？","Play style?")}</legend>${radio("b-style",[["帮我决定","You decide"],["快攻","Aggro"],["稳扎稳打","Midrange"],["干扰控制","Control"]])}</fieldset>${nav(5)}`)}
-    ${Q(6,`<label class="f">${B("有想用的套牌吗？","Deck you want?")}<select id="b-want"><option value="帮我推荐 Recommend one">帮我推荐</option>${META.map(m=>`<option value="${esc(m[0])}">${esc(dkN(m[0]))}（使用率 ${m[1].toFixed(2)}%）</option>`).join("")}<option value="其他 Other">其他，写在下一题</option></select></label>
+    ${Q(6,`<label class="f">${B("有想用的套牌吗？","Deck you want?")}<select id="b-want"><option value="帮我推荐 Recommend one">帮我推荐</option>${META.map(m=>`<option value="${esc(m[0])}">${dkNH(m[0])}（使用率 ${m[1].toFixed(2)}%）</option>`).join("")}<option value="其他 Other">其他，写在下一题</option></select></label>
       <label class="f">${B("一定要放进去的宝可梦（可不填）","Must-include Pokémon (optional)")}<input id="b-must" placeholder="例如 Mega Lucario ex"></label>
       <label class="f pastebox">${B("已经有想参考的牌表？贴在这里（可不填）","Have a deck list in mind? Paste it here (optional)")}<textarea id="b-list" rows="7" maxlength="3000" placeholder="在「比赛卡组」按「复制牌表」，再贴到这里。例如：&#10;4 Dreepy TWM 128&#10;4 Drakloak TWM 129&#10;3 Dragapult ex TWM 130"></textarea><span class="muted">${B("我们会按这份牌表帮你调整，换掉你没有的卡或超出预算的卡。","We'll adapt this list to the cards you own and your budget.")} <a href="#decks">${B("去比赛卡组复制","Copy one from Decks")} ›</a></span></label>${nav(6)}`)}
     ${Q(7,`<div class="f"><label for="b-file">${B("你已经有哪些卡？上传清单或照片（可跳过）","Cards you own (optional)")}</label>
@@ -2774,7 +2799,7 @@ function profPrompt(){ let m=document.getElementById("profm"); if(typeof consent
   if(!m){ m=document.createElement("div"); m.id="profm"; m.className="lgm"; m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true"); m.setAttribute("aria-labelledby","profmh"); document.body.appendChild(m) }
   m.innerHTML=`<div class="box" style="width:min(520px,100%);max-height:100%;overflow:auto"><h2 id="profmh">${BL("欢迎来 Holofen","Welcome to Holofen")}</h2><p class="msg">${BL("先留个名字和手机号码，方便店主联系你。收件地址等你下单时才需要填。","Leave your name and phone number so we can reach you. A delivery address is only needed when you order.")}</p>
   <form id="profmform" class="stack" style="gap:10px">${profFields("pm",ME.prof,false)}<div class="row"><button class="pri" type="submit">${B("保存","Save")}</button><button type="button" data-profskip="1">${B("稍后再填","Later")}</button></div></form></div>`;
-  m.hidden=false; if(lang==="en"&&typeof langPass==="function") langPass() }
+  m.hidden=false; if(typeof langPass==="function") langPass() }
 let MELOADED=false;
 document.addEventListener("submit",e=>{ const id=e.target.id; if(id!=="profform"&&id!=="profmform") return; e.preventDefault(); e.stopPropagation();
   const f=readProf(id==="profform"?"pf":"pm"); if(!f.name||!f.phone) return toast("请填姓名和手机号码 Please enter your name and phone");
@@ -3022,7 +3047,7 @@ function welPrompt(){ let seen=false; try{ seen=localStorage.getItem("welSeen")=
    <div><b>${B("我们卖什么","What we sell")}</b><p class="muted" style="margin:4px 0 0">${B("宝可梦集换式卡牌的原盒和补充包，有中文、英文、日文版。补充包可以整盒买，也可以单包买。也接私人订制组牌。","Sealed Pokémon TCG boxes and booster packs in Chinese, English and Japanese. Buy packs by the box or one at a time. We also build custom decks.")}</p></div>
    <div><b>${B("会员优惠","Member perks")}</b><ul class="welul">${welOffers().map(x=>`<li>${x}</li>`).join("")}</ul><a href="#perks" data-welgo="x" style="font-size:14px">${B("看全部会员福利","See all perks")} ›</a></div>
    <div class="row" style="gap:8px">${g?`<button class="pri" data-welgo="login">${B("登录或注册","Sign in or register")}</button><button data-welgo="shop">${B("先逛逛","Browse first")}</button>`:`<button class="pri" data-welgo="shop">${B("去逛商店","Go to shop")}</button><button data-welgo="x">${B("关闭","Close")}</button>`}</div></div>`;
-  document.body.appendChild(m); if(lang==="en"&&typeof langPass==="function") langPass(); try{ localStorage.setItem("welSeen","1") }catch(e){}
+  document.body.appendChild(m); if(typeof langPass==="function") langPass(); try{ localStorage.setItem("welSeen","1") }catch(e){}
   const f=m.querySelector("[data-welgo]"); if(f) try{ f.focus({preventScroll:true}) }catch(_){} }
 window.addEventListener("introdone",()=>{ let n=0; const t=setInterval(()=>{ n++; if(typeof authReady==="undefined"||authReady||n>20){ clearInterval(t); welPrompt() } },150) });
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-welgo]"), bg=e.target&&e.target.id==="welm"?e.target:null; if(!b&&!bg) return;
@@ -3041,7 +3066,7 @@ function tourPrompt(){ if(!signedIn()||isGuest()||owner||!MELOADED||ME.tour||ui.
   m.innerHTML=`<div class="box"><span class="lbl">${B(`怎么用 Holofen · ${i+1} / ${TOUR.length}`,`How to use Holofen · ${i+1} of ${TOUR.length}`)}</span><h2 id="tourh">${B(t[0],t[1])}</h2><p class="msg">${B(t[2],t[3])}</p>
    <div class="tourdots" aria-hidden="true">${TOUR.map((_,k)=>`<i class="${k===i?"on":""}"></i>`).join("")}</div>
    <div class="row" style="gap:8px;justify-content:space-between"><button type="button" class="linkbtn" data-tour="skip">${B("跳过","Skip")}</button><span class="row" style="gap:8px">${i>0?`<button type="button" data-tour="prev">${B("上一步","Back")}</button>`:""}<button type="button" class="pri" data-tour="${i<TOUR.length-1?"next":"done"}">${i<TOUR.length-1?B("下一步","Next"):B("开始逛","Let's go")}</button></span></div></div>`;
-  m.hidden=false; if(lang==="en"&&typeof langPass==="function") langPass() }
+  m.hidden=false; if(typeof langPass==="function") langPass() }
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-tour]"); if(!b) return; const k=b.dataset.tour;
   if(k==="next"||k==="prev"){ ui.tourI=clampN((ui.tourI||0)+(k==="next"?1:-1),0,TOUR.length-1); return tourPrompt() }
   const m=document.getElementById("tourm"); if(m) m.remove(); ui.tourOff=true; ME.tour=Date.now(); saveMe() });
@@ -3061,7 +3086,7 @@ function consentPrompt(){ let m=document.getElementById("consm"); const anon=(()
     <label class="ck"><input type="checkbox" id="cs-mkt" ${ME.mkt?"checked":""}> <span>${B("有新优惠或新货时，用电邮通知我","Email me about new deals and arrivals")}</span></label>
     <label class="ck"><input type="checkbox" id="cs-ev" ${ME.ev?"checked":""}> <span>${B("有比赛、线下活动或新手教学时，用电邮通知我","Email me about tournaments, events and beginner sessions")}</span></label></fieldset>
    <div class="row"><button class="pri" type="submit" id="cs-ok" disabled>${B("同意并继续","Agree and continue")}</button><button type="button" data-consno="1">${B("不同意，登出","Don't agree, sign out")}</button></div></form></div>`;
-  m.hidden=false; if(lang==="en"&&typeof langPass==="function") langPass();
+  m.hidden=false; if(typeof langPass==="function") langPass();
   const box=m.querySelector("#legalbox"), chk=()=>{ if(box.scrollTop+box.clientHeight>=box.scrollHeight-24){ ["cs-agree","cs-age"].forEach(i=>m.querySelector("#"+i).disabled=false); const h=m.querySelector("#legalhint"); if(h) h.hidden=true; upd() } };
   const upd=()=>{ m.querySelector("#cs-ok").disabled=!(m.querySelector("#cs-agree").checked&&m.querySelector("#cs-age").checked) };
   box.addEventListener("scroll",chk,{passive:true}); box.addEventListener("toggle",chk,true); m.addEventListener("change",upd); setTimeout(chk,50);
@@ -3084,6 +3109,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
+ ["v131","2026-11-23",["换语言只换文字、不换排版：中文和英文叠在同一个位置，按钮、标题、段落、商品名、卡组名的大小和位置在两种语言下都一样，切换后停在原来的位置","新闻加了英文摘要，英文模式不再少一段","比赛表格的「牌表 / 原页」和标题也跟着语言切换"]],
  ["v130","2026-11-23",["改版需求 3：其余 18 个日文版系列（SV1S/SV1V 到 SV8）的官方补充包盒和散包加进后台商品库，共 36 件，先只在后台，定价并上架后才在商店出现；名称和代号对过 Cardrush 商品页和官方网站","改版需求 3：后台编辑商品时显示 SKU、系列、类别、版本、发售日期、来源、启用状态，并可以勾选多个供应商或新增供应商","改版需求 5：行情页加「版本」切换（全部/英文版/日文版），每条价格带版本标记；日文版还没有可核实的价格来源，显示「暂无数据」，不拿英文版价格代替","改版需求 7：比赛牌表上写明印刷版本（这些国际赛事用英文版卡，卡图也是英文版）","首页轮播：新的一张停好后才显示文字，滑动途中不会从箭头底下经过"]],
  ["v129","2026-11-23",["改版需求 10：防伪指南重做成 7 个步骤，每步有示意图、怎么做、要注意什么，并附可以点开的真实教学视频和 Cardmarket、Pokémon 官方卡牌数据库链接；顶部写明「只卖来源核验过的正版」承诺","改版需求 6：进货后台、分类、搜索框、购物车和登录按钮的读屏标签在英文模式下都改成英文"]],
  ["v128","2026-11-23",["改版需求 1：日文版盒装还没定价也会出现在系列里（Chaos Rising、White Flare、Black Bolt 等），显示「价格待定」","改版需求 2：商店和后台的系列条都按发行日期由新到旧；选日文版时用日本发售日","改版需求 4：卡表的英文版/日文版按钮去掉数字","改版需求 9：中文界面下卡组名称显示官方中文宝可梦名；没有小图的卡组名字也对齐了"]],
@@ -3728,7 +3754,7 @@ document.addEventListener("click",async e=>{
   if(ds.tbd){ e.preventDefault(); return toast(ds.tbd+" 账号还在开通中，开通后这里会直接跳转") }
   if("ser" in ds){ e.preventDefault(); ui.series=ds.ser; ui.shown=24; if(route!=="shop") return go("shop"); return render() }
   if(ds.go){ ui.pid=null; return go(ds.go) }
-  if(b.id==="langbtn"){ lang=lang==="zh"?"en":"zh"; try{localStorage.setItem("lang",lang)}catch(e){} return render() }
+  if(b.id==="langbtn"){ lang=lang==="zh"?"en":"zh"; try{localStorage.setItem("lang",lang)}catch(e){} const y=scrollY; render(); /* 换语言后停在原来的位置 */ document.documentElement.style.scrollBehavior="auto"; scrollTo(0,y); requestAnimationFrame(()=>{ scrollTo(0,y); document.documentElement.style.scrollBehavior="" }); return }
   if(ds.mtab){ ui.mtab=ds.mtab; return render() }
   if(ds.gocat){ ui.cat=ds.gocat; ui.series=""; ui.q=""; ui.shown=24; return go("shop") }
   if(ds.open){ return openItem(ds.open) }
