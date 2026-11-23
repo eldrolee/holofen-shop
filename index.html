@@ -172,6 +172,7 @@ pre.list{font-family:var(--mono);font-size:12.5px;white-space:pre-wrap;margin:0}
 .stars button{border:0;background:none;font-size:26px;padding:0 2px;color:var(--line)}
 .stars button.on{color:var(--sun);background:none}
 .modal{position:fixed;inset:0;z-index:20;background:rgba(16,22,43,.55);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) 16px}
+.cfm{position:fixed;inset:0;z-index:10000;background:rgba(16,22,43,.55);display:flex;align-items:center;justify-content:center;padding:16px;animation:fade 160ms ease-out}.cfbox{background:var(--surface,#fff);border-radius:18px;max-width:420px;width:100%;padding:20px;box-shadow:0 18px 50px rgba(0,0,0,.25);animation:pop 200ms var(--ease-out,ease-out)}.cft{font-size:17px;font-weight:700;margin:0 0 6px;line-height:1.45;overflow-wrap:anywhere}.cfs{margin:0 0 16px;color:var(--mut,#667);font-size:13.5px}.cfrow{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}.cfrow button{min-width:96px;min-height:44px}
 .modal{animation:fade 180ms ease-out}
 .modal .box{animation:pop 220ms var(--ease-out);background:var(--surface);border-radius:20px;max-width:760px;width:100%;max-height:100%;overflow:auto;padding:20px;display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px;align-items:start}
 .modal .box>img{background:var(--tile);border-radius:12px;width:100%}
@@ -1278,7 +1279,7 @@ window.HOLO_AUTH=(function(){
   async function saveStaff(em){ em=(em||"").trim().toLowerCase(); if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return toast("请填一个正确的邮箱"); var r=await sb.from("staff").upsert({email:em,role:"admin"}); if(r.error) return toast("没保存成功："+r.error.message); toast("已加入管理员"); loadStaff() }
   async function setPerms(em,perms){ var r=await sb.from("staff").update({perms:perms}).eq("email",em); if(r.error) return toast(/perms/.test(r.error.message)?"数据库还没加权限栏位，请先在 Supabase 跑一次设定":"没保存成功："+r.error.message); toast("已更新权限"); loadStaff() }
   async function removeStaff(em){ var r=await sb.from("staff").delete().eq("email",em); if(r.error) return toast("删不掉："+r.error.message); toast("已移除"); loadStaff() }
-  document.addEventListener("click",function(e){ var d=e.target.closest&&e.target.closest("[data-sdel]"); if(d&&confirm((window.trT||String)("确定移除这位管理员？"))) removeStaff(d.getAttribute("data-sdel")) });
+  document.addEventListener("click",function(e){ var d=e.target.closest&&e.target.closest("[data-sdel]"); if(d) removeStaff(d.getAttribute("data-sdel")) });
   document.addEventListener("submit",function(e){ if(e.target.matches&&e.target.matches("[data-sadd]")){ e.preventDefault(); saveStaff(e.target.querySelector("input[name=se]").value) } });
   function msg(t,c){ var m=el("lgmsg"); if(window.trT) t=window.trT(t); if(m){ m.textContent=t; m.className="msg"+(c?" "+c:"") } }
   async function sha(t){ var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t)); return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("") }
@@ -3736,6 +3737,55 @@ readHash(); initStore(); initExtra(); initLucky(); initFaq();
   setInterval(function(){ view.querySelectorAll(".ri:not(.in)").forEach(function(n){ var r=n.getBoundingClientRect(); if(r.height&&r.top<innerHeight&&r.bottom>0) n.classList.add("in") }) },1500);
   addEventListener("scroll",function(){ if(!tick) tick=requestAnimationFrame(show) },{passive:true}); addEventListener("resize",show);
   new MutationObserver(hook).observe(view,{childList:true}); hook();
+})();
+
+/* 2026-11-23 店主要：后台所有「最后决定」（确认收款、已寄出、测试订单、删除、保存、公开等）都要按两次：
+   第一次按钮先跳出弹窗写清楚要确认什么，在弹窗里再按一次「确认」才生效。 */
+(function(){
+  const R=[
+    ['[data-adm="approve"]',["确认已经收到这笔款项，通过审核？","Confirm the payment was received and approve this order?"]],
+    ['[data-adm="reject"]',["确认这张订单不通过审核？","Confirm you want to reject this order?"]],
+    ['[data-adm="ship"]',["确认这张订单已经寄出？","Confirm this order has been shipped?"]],
+    ['[data-adm="delivered"]',["确认这张订单已经送达？","Confirm this order was delivered?"]],
+    ['[data-adm="deliver"]',["确认交付这份牌表给顾客？","Confirm you want to deliver this decklist to the customer?"]],
+    ['[data-adm="quote"]',["确认把这个报价发给顾客？","Confirm you want to send this quote to the customer?"]],
+    ['[data-adm="undo"]',["确认把这张订单退回上一步？","Confirm you want to move this order back one step?"]],
+    ['[data-adm="del"]',["确认删除这张测试订单？删除后不能恢复。","Delete this test order? This can't be undone."]],
+    ['[data-atest]',el=>el.checked?["确认把这张订单标记为测试订单？","Mark this order as a test order?"]:["确认取消这张订单的测试订单标记？","Remove the test-order mark from this order?"]],
+    ['[data-sperm]',el=>el.checked?["确认给这位管理员开这项权限？","Give this admin this permission?"]:["确认收回这位管理员的这项权限？","Take this permission away from this admin?"]],
+    ['[data-sdel]',["确认移除这位管理员？","Remove this admin?"]],
+    ['[data-abulk="1"]',["确认把选中的商品全部上架？","List all selected products?"]],
+    ['[data-abulk="0"]',["确认把选中的商品全部下架？","Unlist all selected products?"]],
+    ['[data-lkdel]',["确认删除这台娃娃机？","Delete this claw machine?"]],
+    ['[data-lkpdel]',["确认删除这个奖品？","Delete this prize?"]],
+    ['[data-aphotorm]',["确认移除上传的照片，改用回参考图？","Remove the uploaded photo and use the reference image?"]],
+    ['[data-areset]',["确认放弃还没保存的修改？","Discard the changes you haven't saved?"]],
+    ['[data-lsent]',el=>el.dataset.v==="1"?["确认这份礼物已经寄出？","Confirm this gift has been sent?"]:["确认把这份礼物改回未寄出？","Mark this gift as not sent?"]],
+    ['[data-msend]',el=>["确认现在"+(el.textContent.match(/寄出给 \d+ 人/)||["寄出这封邮件"])[0]+"？寄出后收不回来。","Send this email now? It can't be recalled."]],
+    ['[data-unfile]',["确认移除这个附件？","Remove this attachment?"]],
+  ];
+  const KW=/保存|删除|移除|确认|发送|寄出|通过|公开|上架|下架|报价|还原|退回|完成|标记|计入/, SKIP=/取消选择|全选|刷新|下载|搜索|新增|加一个/;
+  const label=el=>{ const E=typeof isEN==="function"&&isEN(), en=el.querySelector(".tr")||el.querySelector(".en"); if(E&&en) return en.textContent.replace(/\s+/g," ").trim(); const c=el.cloneNode(true); c.querySelectorAll(".en,.tr,svg").forEach(x=>x.remove()); return c.textContent.replace(/\s+/g," ").trim() };
+  function rule(el){
+    for(const [sel,m] of R){ const t=el.closest(sel); if(t) return [t,typeof m==="function"?m(t):m] }
+    const b=el.closest("button,input[type=submit]"); if(!b||b.disabled||b.closest("#cfm,[data-ofl],[data-atab],[data-stc],.chips,[role=tab],[role=tablist],nav,header")) return null;
+    const t=label(b)||b.value||"", zh=(()=>{ const c=b.cloneNode(true); c.querySelectorAll(".en,.tr,svg").forEach(x=>x.remove()); return c.textContent })(); if(!t||SKIP.test(zh)||!KW.test(zh)) return null;
+    return [b,["确认「"+t+"」？","Confirm: "+t+"?"]] }
+  let pass=null;
+  function ask(el,m){ const old=document.getElementById("cfm"); if(old) old.remove();
+    const E=typeof isEN==="function"&&isEN(), d=document.createElement("div"); d.id="cfm"; d.className="cfm"; d.setAttribute("role","dialog"); d.setAttribute("aria-modal","true");
+    d.innerHTML='<div class="cfbox"><p class="cft"></p><p class="cfs">'+(E?"Tap Confirm to go ahead.":"这一步按了就生效，请再确认一次。")+'</p><div class="cfrow"><button type="button" data-cfno="1">'+(E?"Cancel":"取消")+'</button><button type="button" class="pri" data-cfok="1">'+(E?"Confirm":"确认")+'</button></div></div>';
+    d.querySelector(".cft").textContent=E?m[1]:m[0]; document.body.appendChild(d);
+    const close=()=>{ d.remove(); document.removeEventListener("keydown",key,true) }, key=e=>{ if(e.key==="Escape"){ e.preventDefault(); close() } };
+    document.addEventListener("keydown",key,true);
+    d.addEventListener("click",e=>{ if(e.target===d||e.target.closest("[data-cfno]")) return close();
+      if(e.target.closest("[data-cfok]")){ close(); if(!el.isConnected) return; pass=el; try{ el.click() } finally { pass=null } } });
+    setTimeout(()=>{ const b=d.querySelector("[data-cfok]"); if(b) b.focus() },30) }
+  document.addEventListener("click",e=>{ if(typeof route==="undefined"||route!=="admin") return; const r=rule(e.target); if(!r) return; const [el,m]=r; if(pass===el) return;
+    e.preventDefault(); e.stopImmediatePropagation(); ask(el,m) },true);
+  /* 在输入框按 Enter 直接送出表单的情况，也要先确认 */
+  document.addEventListener("submit",e=>{ if(typeof route==="undefined"||route!=="admin"||pass) return; const f=e.target; if(!f||!f.closest||!f.closest("main")) return;
+    const b=f.querySelector("button[type=submit],button:not([type])"); if(!b) return; const r=rule(b); if(!r) return; e.preventDefault(); e.stopImmediatePropagation(); ask(r[0],r[1]) },true);
 })();
 </script>
 <script>
