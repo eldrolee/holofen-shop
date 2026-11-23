@@ -173,6 +173,7 @@ pre.list{font-family:var(--mono);font-size:12.5px;white-space:pre-wrap;margin:0}
 .stars button.on{color:var(--sun);background:none}
 .modal{position:fixed;inset:0;z-index:20;background:rgba(16,22,43,.55);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) 16px}
 .cfm{position:fixed;inset:0;z-index:10000;background:rgba(16,22,43,.55);display:flex;align-items:center;justify-content:center;padding:16px;animation:fade 160ms ease-out}.cfbox{background:var(--surface,#fff);border-radius:18px;max-width:420px;width:100%;padding:20px;box-shadow:0 18px 50px rgba(0,0,0,.25);animation:pop 200ms var(--ease-out,ease-out)}.cft{font-size:17px;font-weight:700;margin:0 0 6px;line-height:1.45;overflow-wrap:anywhere}.cfs{margin:0 0 16px;color:var(--mut,#667);font-size:13.5px}.cfrow{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}.cfrow button{min-width:96px;min-height:44px}
+.clog ul{margin:6px 0 0;padding-left:20px}.clog li{margin:2px 0;overflow-wrap:anywhere}
 .modal{animation:fade 180ms ease-out}
 .modal .box{animation:pop 220ms var(--ease-out);background:var(--surface);border-radius:20px;max-width:760px;width:100%;max-height:100%;overflow:auto;padding:20px;display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px;align-items:start}
 .modal .box>img{background:var(--tile);border-radius:12px;width:100%}
@@ -3014,6 +3015,78 @@ const APERMS=[["orders","订单"],["products","商品"],["stock","进货"],["use
 function admAllowed(k){ const P=window.HOLO_AUTH&&HOLO_AUTH.perms&&HOLO_AUTH.perms(); return !P||P.includes(k) }
 document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dataset.cur&&CURS[t.value]){ CUR=t.value; try{ localStorage.setItem("cur",CUR) }catch(x){} render(); return } });
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
+/* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
+const CHANGELOG=[
+ ["v127","2026-11-23",["后台「设置」加「版本记录」，每次上线都记在这里","进货可以勾「测试进货」：不加库存、不改成本，可以删除，导出 CSV 有「测试」栏"]],
+ ["v126","2026-11-23",["后台所有「最后决定」都要按两次：确认收款、标记已寄出/已送达、测试订单、删除、保存、公开、批量上下架、发报价、群发邮件等，先跳弹窗写清楚，再按「确认」才生效"]],
+ ["v125","2026-11-23",["每周更新：卡价换成 TCGdex 11 月 22 日价格（2,729 张）","比赛页加拉美国际锦标赛（圣保罗，2,646 人），附冠军 N's Zoroark ex 牌表","套牌使用率按 Limitless 最新数字更新（赛制 TEF–DLR）","新闻加 Flowing Fists（2027-02-06 发售）、日版 Aura Seeker 全卡表、接下来的比赛日程"]],
+ ["v124","2026-11-23",["后台「进货」每行加商品图片","进货加分类筛选（跟商店一样的分类和数量）","把另一条线程做的进货后台合进网站源码"]],
+ ["v123","2026-11-21",["系列条、分类条等横向条：按了其中一个后停在原来滑到的位置，不再跳回第一个"]],
+ ["v122","2026-11-21",["17 个日文版单包都成为商店里的独立商品；还没定价的显示「价格待定」，不能下单"]],
+ ["v121","2026-11-21",["看日文版整盒时，下面「本系列散包」自动选日文版单包，可切换英文/日文"]],
+ ["v120","2026-11-21",["全站价格统一马币","页尾可选别国货币，整站一起换（汇率 2026-11-20）","后台、电邮、收据、付款永远用马币"]],
+ ["v119","2026-11-21",["手机开了「减少动态效果」也照样播开头视频（可跳过）"]],
+ ["v118","2026-11-20",["夹娃娃机夹取画面改成可爱粉彩版（灯泡框、扭蛋）"]],
+ ["v117","2026-11-20",["夹娃娃机平时播 5 秒循环立体视频；夹取时照真实结果播中/没中动画"]],
+ ["v116","2026-11-20",["后台商品卡的勾选框移到图片上方，不再挡住图片"]],
+ ["v115","2026-11-20",["夹娃娃中奖率前台显示到 3 位小数，后台可填到 5 位","会员等级加「黑卡」「至尊黑卡」（门槛填了才开放）"]],
+ ["v114","2026-11-20",["后台商品页排列跟商店一样（版本、分类、系列条）","后台客服问答列出全部内建问题和答案","头像选择改成弹窗","补上 Delta Reign 凯路迪欧吸塑商品图"]],
+ ["v113","2026-11-19",["35 个日文系列 logo（从官方卡包图裁出）","M7 单包","英文模式补翻译（版本标签、法律条文、签到奖励栏位）"]],
+ ["v112","2026-11-19",["日文版盒装和单包上架，归进同名英文系列，用「日文版」标签区分"]],
+ ["v111","2026-11-19",["商店分英文版/日文版/中文版，商品标版本"]],
+ ["v110","2026-11-19",["日文版朱紫和 MEGA 时代 34 个系列卡表（TCGdex）","系列页加英文版/日文版切换"]],
+ ["v109","2026-11-19",["自助客服问答（常见问题、打字问、没解决引去 IG）","后台客服问答设置"]],
+ ["v108","2026-11-19",["会员福利按等级对比","后台加「等级福利」设置"]],
+ ["v107","2026-11-19",["会员福利页按后台设置自动生成；积分规则只在这一页"]],
+ ["v106","2026-11-19",["购物车有东西时按钮变红并显示件数"]],
+ ["v105","2026-11-19",["9 个预设头像可选，或上传自己的照片","订单状态图标用小鹿图"]],
+ ["v104","2026-11-19",["会员可上传头像（自动裁成正方形）"]],
+ ["v103","2026-11-19",["夹娃娃机开关单独保存","开头视频后跳欢迎弹窗","第一次登录有网站导览","手机页头字标不再被切掉"]],
+ ["v102","2026-11-19",["「购物送夹取」独立成后台设置分页"]],
+ ["v101","2026-11-19",["夹娃娃机后台：奖品名和中奖率分开填"]],
+ ["v100","2026-11-19",["签到和夹娃娃机从购物车移到会员中心"]],
+ ["v99","2026-11-19",["集章卡（单笔满额得章，集满送奖励）","拿掉深色森林配色样板"]],
+ ["v98","2026-11-19",["签到第 3/7 天、每月、每年奖励","夹娃娃中奖率可设到很小","第 N 张付款订单送免费夹取","评价可附照片和 15 秒视频","付款平台选择"]],
+ ["v97","2026-11-19",["积分抽奖改成夹娃娃机：多台机台，各自投币积分、奖品和中奖率"]],
+ ["v96","2026-11-19",["页头不重叠自动排版","订单提示一直亮到写完评价","测试订单可删除","生日填完整年月日","登录要看完条款与隐私声明并同意，同时问兴趣"]],
+ ["v95","2026-11-19",["行情页深色森林配色样板（只在 ?forest=1 显示，之后已拿掉）"]],
+ ["v94","2026-11-18",["快速查看取代独立商品页","本系列散包一行","订单更新未读提示","头像入口合并","会员中心新排版","加入购物车飞入动画"]],
+ ["v93","2026-11-18",["订单追踪每一步用小鹿图","页尾和收据放官方邮箱和 IG","库存检测每行有商品照片"]],
+ ["v92","2026-11-18",["订单邮件列出商品和价格；审核通过寄电子收据"]],
+ ["v91","2026-11-18",["顾客可上传付款截图，后台订单看得到"]],
+ ["v90","2026-11-18",["已审核订单改成测试订单会把库存加回；改回正式再扣"]],
+ ["v89","2026-11-18",["账号下拉菜单（订单、会员、收藏、资料、登出）"]],
+ ["v88","2026-11-18",["登录/资料弹窗在矮屏幕可滚动，登出按得到"]],
+ ["v87","2026-11-18",["结账必填邮箱","订单状态邮件和优惠邮件（Brevo）"]],
+ ["v86","2026-11-18",["库存检测页","测试订单不算营业额"]],
+ ["v85","2026-11-18",["订单追踪条","后台订单可退回上一步"]],
+ ["v84","2026-11-18",["所有横向条可用箭头、拖拉、滚轮滑动"]],
+ ["v83","2026-11-18",["快递公司选择和查件链接","电子收据","访客也能下单"]],
+ ["v82","2026-11-17",["防止误登出：登出要按两次"]],
+ ["v81","2026-11-17",["手机版后台分页独立一行"]],
+ ["v80","2026-11-17",["后台页头加回前台按钮"]],
+ ["v79","2026-11-17",["员工账号可分别开后台页面权限"]],
+ ["v78","2026-11-17",["签到从第一次签到起算连续 7 天"]],
+ ["v77","2026-11-17",["独立会员页","回到顶部横条","背景加 logo 配色叶子"]],
+ ["v76","2026-11-17",["配色改成 logo 取色的奶油/薄荷/蓝","未确认的承诺标「待店主确认」"]],
+ ["v75","2026-11-17",["隐私声明和删除我的资料","审核通过才扣库存","每月营业额和热卖榜","打印寄件地址"]],
+ ["v74","2026-11-17",["每个系列页都有私人订制组牌卡片"]],
+ ["v73","2026-11-17",["后台订单和用户可导出 CSV"]],
+ ["v72","2026-11-17",["签到每周重置，周一是第 1 天"]],
+ ["v71","2026-11-17",["首页签到卡","用户角色","行情页排版"]],
+ ["v70","2026-11-17",["前台精简；评价和晒卡墙要登录"]],
+ ["v66–v69","2026-11-16",["网站搬到 GitHub + Cloudflare","顾客登录（邮件或 Google，Supabase）","订单、会员、评价、晒卡墙、商品目录存进 Supabase","全站中英翻译","后台精简为 5 页（订单/商品/用户/审核/设置）"]],
+ ["v49","2026-11-16",["第一次每周自动更新（新闻、卡价、比赛卡组）"]],
+ ["v42–v46","2026-11-15",["单包商品","系列切换","稀有度核对","官方中文卡名","加 Journey Together 和 Surging Sparks"]],
+ ["v36–v38","2026-11-15",["私人订制组牌报价","新加坡/中国运送","日文版进货","积分抽奖、每日签到","每周一自动更新","散包可买整盒或自填包数"]],
+ ["v35","2026-11-15",["卡价改用 TCGdex","散包","单卡价格页和行情页重做"]],
+ ["v30–v34","2026-11-14",["完整卡表、单卡行情页、价格走势","客服、防伪指南","收藏提醒、预购、晒卡墙、会员等级"]],
+ ["v24","2026-11-13",["修了 2 个安全漏洞"]],
+ ["v20","2026-11-12",["6 个主标题、系列页、卡牌行情页、轮播、整页中英切换"]],
+ ["v19","2026-11-12",["商品页、系列 logo、回到顶部"]],
+ ["v1–v18","2026-11-11",["网店试运行站第一版到第十八版：首页滚动名卡、商店、查价、比赛卡组、组牌问卷"]]
+];
+function admChangelog(){ return `<p class="muted">${BL("每次网站上线都记在这里，最新的在最上面。","Every release is listed here, newest first.")}</p><div class="stack" style="gap:10px">${CHANGELOG.map(v=>`<div class="panel clog"><div class="row" style="gap:8px;align-items:baseline"><b>${esc(v[0])}</b><span class="muted">${esc(v[1])}</span></div><ul>${v[2].map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`).join("")}</div>` }
 function admStaff(){
   const H=window.HOLO_AUTH, boss=H.role()==="owner", list=H.staffList();
   const head=`${H1("员工权限","Staff access")}<p class="muted">这里加的管理员，用他们的邮箱登录网站后，就能进店主后台。每个管理员可以单独勾选能进哪些后台页面，勾掉就看不到那一页。只有店主能加人、移除人和改权限。</p>`;
@@ -3307,10 +3380,12 @@ function admStock(){ if(!ui.rstAt){ ui.rstAt=1; loadRestock().then(()=>render())
   const low=rows.filter(x=>x.lv==="low"||x.lv==="out"||x.lv==="short");
   const open=RST.filter(r=>r.status!=="已到货"), done=RST.filter(r=>r.status==="已到货");
   const nm=id=>{ const p=PM[id]; return p?PN(p):id };
-  const card=r=>`<form class="panel stack" data-rs="${r.id}" style="gap:8px">${PM[r.product_id]?pc(PM[r.product_id]):`<b>${esc(nm(r.product_id))}</b>`}<div class="muted">${esc(r.status)} · 创建 ${esc(r.created_by||"")} · 最后改 ${esc(r.updated_by||"")}${r.stock_applied?` · 已计入库存 ${r.stock_applied}`:""}</div>
+  const tb=r=>r.is_test?` <i class="tbadge">测试</i>`:"";
+  /* 2026-11-23 店主要：进货也能勾「测试」，用来试每个功能。测试进货不加库存、不改成本，可以删除 */
+  const card=r=>`<form class="panel stack${r.is_test?" istest":""}" data-rs="${r.id}" style="gap:8px">${PM[r.product_id]?pc(PM[r.product_id]):`<b>${esc(nm(r.product_id))}</b>`}<div class="muted">${tb(r)} ${esc(r.status)} · 创建 ${esc(r.created_by||"")} · 最后改 ${esc(r.updated_by||"")}${r.stock_applied?` · 已计入库存 ${r.stock_applied}`:""}</div>
     <div class="row"><label class="f">数量<input name="qty" inputmode="numeric" value="${r.qty}"></label><label class="f">单价成本 RM<input name="cost" inputmode="decimal" value="${sen(r.unit_cost_cents)}"></label><label class="f">供应商<input name="supplier" maxlength="120" value="${esc(r.supplier||"")}"></label>
     <label class="f">状态<select name="status">${["待进货","已下单","已到货"].map(s=>`<option ${r.status===s?"selected":""}>${s}</option>`).join("")}</select></label></div>
-    <div><button class="pri" type="submit">保存</button></div></form>`;
+    <div class="row" style="gap:10px;align-items:center"><button class="pri" type="submit">保存</button><label class="tchk"><input type="checkbox" name="test" ${r.is_test?"checked":""}> 测试进货（不动库存）</label>${r.is_test&&!r.stock_applied?`<button type="button" class="linkbtn tdel" data-rsdel="${r.id}">删除</button>`:""}</div></form>`;
   return `<p class="muted">${B("勾「要进货」会出现在下面，填数量和成本后保存。状态改成「已到货」才把数量加进现在的库存，再保存一次不会再加。订单审核通过时扣的也是这个库存。","Tick Restock to add a line. Stock increases only when the status becomes Arrived, and saving again does not add it twice. Order approval deducts this same stock.")}</p>
   ${ui.rstErr?`<p class="note">${esc(ui.rstErr)}。请先在 Supabase 执行进货迁移。</p>`:""}
   <div class="row"><input id="stq" type="search" placeholder="搜索商品" value="${esc(ui.stq||"")}" style="flex:1"><button data-rexp="1">导出 CSV</button></div>
@@ -3321,7 +3396,7 @@ function admStock(){ if(!ui.rstAt){ ui.rstAt=1; loadRestock().then(()=>render())
     return `<tr><td>${pc(x.p)}</td><td class="n">${x.p.stock==null?"—":x.p.stock}</td><td class="n">${x.p.price?rm(x.p.price):"—"}</td><td><input data-rcost="${esc(x.p.id)}" inputmode="decimal" value="${sen(x.cost)}" aria-label="${esc(PN(x.p))} 成本" style="width:7em"></td><td class="n">${profit==null?"—":rm(profit/100)}</td><td><label class="row" style="gap:6px"><input type="checkbox" data-rneed="${esc(x.p.id)}" ${x.need?"checked":""}>要进货</label></td></tr>` }).join("")||`<tr><td colspan="6" class="muted">没有在售的实物商品。</td></tr>`}</tbody></table></div>
   ${rows.length>(ui.stn||40)?`<div><button data-stmore="1">再显示 40 件</button></div>`:""}
   <h3>要进货</h3>${open.map(card).join("")||`<p class="muted">没有待处理的进货。</p>`}
-  <h3>进货记录</h3>${done.length?`<div class="tw"><table><thead><tr><th>商品</th><th class="n">数量</th><th class="n">单价</th><th>供应商</th><th>创建</th><th>最后修改</th></tr></thead><tbody>${done.map(r=>`<tr><td>${PM[r.product_id]?pc(PM[r.product_id]):esc(nm(r.product_id))}</td><td class="n">${r.qty}</td><td class="n">RM${sen(r.unit_cost_cents)}</td><td>${esc(r.supplier||"")}</td><td>${esc(r.created_by||"")}</td><td>${esc(r.updated_by||"")}</td></tr>`).join("")}</tbody></table></div>`:`<p class="muted">还没有到货记录。</p>`}` }
+  <h3>进货记录</h3>${done.length?`<div class="tw"><table><thead><tr><th>商品</th><th class="n">数量</th><th class="n">单价</th><th>供应商</th><th>创建</th><th>最后修改</th></tr></thead><tbody>${done.map(r=>`<tr${r.is_test?' class="istest"':""}><td>${PM[r.product_id]?pc(PM[r.product_id]):esc(nm(r.product_id))}${tb(r)}${r.is_test&&!r.stock_applied?` <button type="button" class="linkbtn tdel" data-rsdel="${r.id}">删除</button>`:""}</td><td class="n">${r.qty}</td><td class="n">RM${sen(r.unit_cost_cents)}</td><td>${esc(r.supplier||"")}</td><td>${esc(r.created_by||"")}</td><td>${esc(r.updated_by||"")}</td></tr>`).join("")}</tbody></table></div>`:`<p class="muted">还没有到货记录。</p>`}` }
 document.addEventListener("input",e=>{ if(e.target.id==="stq"){ ui.stq=e.target.value; clearTimeout(admStock.t); admStock.t=setTimeout(render,200) } });
 document.addEventListener("change",async e=>{ const t=e.target;
   if(!owner||!admAllowed("stock")) return; const sb=window.HOLO_AUTH&&window.HOLO_AUTH.client(); if(!sb) return; const who=(window.HOLO_AUTH.user()||{}).email||"";
@@ -3338,15 +3413,17 @@ document.addEventListener("change",async e=>{ const t=e.target;
 document.addEventListener("submit",async e=>{ const f=e.target.closest&&e.target.closest("[data-rs]"); if(!f||!owner||!admAllowed("stock")) return; e.preventDefault();
   const cost=toSen(f.cost.value), qty=Math.round(Number(f.qty.value)); if(cost==null||!(qty>0)) return toast("数量和成本请填数字");
   const row=RST.find(x=>x.id===f.dataset.rs); if(!row) return; const sb=window.HOLO_AUTH.client();
-  const r=await sb.rpc("save_restock",{p_id:f.dataset.rs,p_product_id:row.product_id,p_qty:qty,p_cost:cost,p_supplier:f.supplier.value.trim(),p_status:f.status.value});
+  const test=!!(f.test&&f.test.checked), r=await sb.rpc("save_restock",{p_id:f.dataset.rs,p_product_id:row.product_id,p_qty:qty,p_cost:cost,p_supplier:f.supplier.value.trim(),p_status:f.status.value,p_test:test});
   if(r.error) return toast(/stock_short/.test(r.error.message)?"库存不够，没法把已到货改回去":/stock_locked/.test(r.error.message)?"请用保存来改到货状态":r.error.message);
   const d=r.data||{}; if(d.changed&&d.product_id!=null&&d.stock!=null){ const it={...CAT.items}; it[d.product_id]={...(it[d.product_id]||{}),stock:d.stock}; CAT.items=it; applyCatalog() }
-  await loadRestock(); render(); toast(f.status.value==="已到货"?"已到货，库存已加上":"进货已保存") });
+  await loadRestock(); render(); toast(test?(d.changed?"已改成测试进货，之前加上的库存已扣回":"测试进货已保存，库存没有变"):f.status.value==="已到货"?"已到货，库存已加上":"进货已保存") });
+document.addEventListener("click",async e=>{ const b=e.target.closest&&e.target.closest("[data-rsdel]"); if(!b||!owner||!admAllowed("stock")) return; const sb=window.HOLO_AUTH&&window.HOLO_AUTH.client(); if(!sb) return;
+  const r=await sb.from("restocks").delete().eq("id",b.dataset.rsdel).eq("is_test",true).eq("stock_applied",0); if(r.error) return toast(r.error.message); await loadRestock(); render(); toast("测试进货已删除") });
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-stmore],[data-rexp],[data-stc]"); if(!b||!owner) return;
   if(b.dataset.stc!=null){ ui.stc=b.dataset.stc; ui.stn=40; return render() }
   if(b.dataset.stmore){ ui.stn=(ui.stn||40)+40; return render() }
   const rows=stockRows(), cell=v=>{ let t=v==null?"":String(v); if(/^[=+\-@]/.test(t)) t="'"+t; return /[",\n]/.test(t)?'"'+t.replace(/"/g,'""')+'"':t };
-  const csv="\uFEFF"+[["商品","系列","库存","售价 RM","成本 RM","单件利润 RM","要进货"]].concat(rows.map(x=>{ const profit=x.p.price?Math.round(x.p.price*100)-x.cost:""; return [PN(x.p),x.p.s||"",x.p.stock==null?"":x.p.stock,x.p.price||"",sen(x.cost),profit===""?"":sen(profit),x.need?"是":"否"] })).concat([[],["进货记录"],["商品","数量","单价 RM","供应商","状态","已计入","创建人","最后修改"]]).concat(RST.map(r=>[nmId(r.product_id),r.qty,sen(r.unit_cost_cents),r.supplier||"",r.status,r.stock_applied,r.created_by||"",r.updated_by||""])).map(r=>r.map(cell).join(",")).join("\r\n");
+  const csv="\uFEFF"+[["商品","系列","库存","售价 RM","成本 RM","单件利润 RM","要进货"]].concat(rows.map(x=>{ const profit=x.p.price?Math.round(x.p.price*100)-x.cost:""; return [PN(x.p),x.p.s||"",x.p.stock==null?"":x.p.stock,x.p.price||"",sen(x.cost),profit===""?"":sen(profit),x.need?"是":"否"] })).concat([[],["进货记录"],["商品","数量","单价 RM","供应商","状态","已计入","测试","创建人","最后修改"]]).concat(RST.map(r=>[nmId(r.product_id),r.qty,sen(r.unit_cost_cents),r.supplier||"",r.status,r.stock_applied,r.is_test?"是":"否",r.created_by||"",r.updated_by||""])).map(r=>r.map(cell).join(",")).join("\r\n");
   const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"})); a.download="holofen-stock.csv"; a.click(); toast("已导出") });
 function nmId(id){ const p=PM[id]; return p?PN(p):id }
 { const _adm=V.admin; V.admin=()=>owner&&ui.atab==="lucky"?admLucky():_adm() }
@@ -3366,9 +3443,9 @@ function nmId(id){ const p=PM[id]; return p?PN(p):id }
     if(ui.atab==="stock") return H1("进货","Restock")+off+admStock();
     if(ui.atab==="users") return off+admUsers();
     if(ui.atab==="review") return H1("审核","Approve")+off+part("reviews")+part("wall",1);
-    if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=[["rules","积分规则","Points rules"],["tiers","等级福利","Tier perks"],["stamp","集章卡","Stamp card"],["freeplay","购物送夹取","Free plays"],["lucky","夹娃娃机","Claw machines"],["faq","客服问答","Help Q&A"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"]]);
+    if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=[["rules","积分规则","Points rules"],["tiers","等级福利","Tier perks"],["stamp","集章卡","Stamp card"],["freeplay","购物送夹取","Free plays"],["lucky","夹娃娃机","Claw machines"],["faq","客服问答","Help Q&A"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"],["log","版本记录","Change log"]]);
       const st=tabs.some(t=>t[0]===ui.stab)?ui.stab:"rules";
-      const body=st==="rules"?admMembers().split("<h2>")[0]+"<h2>"+admMembers().split("<h2>")[1]:st==="tiers"?admTiers():st==="faq"?admFaq():st==="stamp"?admStamp():st==="freeplay"?admFree():st==="lucky"?part("lucky",1):st==="staff"?admStaff().replace(/^\s*<h1>[\s\S]*?<\/h1>/,""):part("launch");
+      const body=st==="rules"?admMembers().split("<h2>")[0]+"<h2>"+admMembers().split("<h2>")[1]:st==="tiers"?admTiers():st==="faq"?admFaq():st==="stamp"?admStamp():st==="freeplay"?admFree():st==="lucky"?part("lucky",1):st==="staff"?admStaff().replace(/^\s*<h1>[\s\S]*?<\/h1>/,""):st==="log"?admChangelog():part("launch");
       return H1("设置","Settings")+off+seg("data-stab",st,tabs)+body }
     const rows=[]; Object.entries(all).forEach(([u,d])=>liveO(u,d.orders).forEach(o=>rows.push([u,eff(u,o)]))); rows.sort((a,b)=>b[1].at-a[1].at);
     const f=OF.find(x=>x[0]===ui.ofil)||OF[0], list=rows.filter(r=>f[3](r[1]));
@@ -3763,6 +3840,8 @@ readHash(); initStore(); initExtra(); initLucky(); initFaq();
     ['[data-lsent]',el=>el.dataset.v==="1"?["确认这份礼物已经寄出？","Confirm this gift has been sent?"]:["确认把这份礼物改回未寄出？","Mark this gift as not sent?"]],
     ['[data-msend]',el=>["确认现在"+(el.textContent.match(/寄出给 \d+ 人/)||["寄出这封邮件"])[0]+"？寄出后收不回来。","Send this email now? It can't be recalled."]],
     ['[data-unfile]',["确认移除这个附件？","Remove this attachment?"]],
+    ['[data-rsdel]',["确认删除这笔测试进货？删除后不能恢复。","Delete this test restock? This can't be undone."]],
+    ['form[data-rs] button[type=submit]',el=>{ const f=el.form, t=f&&f.test&&f.test.checked, st=f&&f.status&&f.status.value; return t?["确认保存这笔测试进货？测试进货不会动库存。","Save this test restock? It won't change stock."]:st==="已到货"?["确认这批货已经到了？数量会加进库存。","Confirm this stock has arrived? The quantity will be added to stock."]:["确认保存这笔进货？","Save this restock?"] }],
   ];
   const KW=/保存|删除|移除|确认|发送|寄出|通过|公开|上架|下架|报价|还原|退回|完成|标记|计入/, SKIP=/取消选择|全选|刷新|下载|搜索|新增|加一个/;
   const label=el=>{ const E=typeof isEN==="function"&&isEN(), en=el.querySelector(".tr")||el.querySelector(".en"); if(E&&en) return en.textContent.replace(/\s+/g," ").trim(); const c=el.cloneNode(true); c.querySelectorAll(".en,.tr,svg").forEach(x=>x.remove()); return c.textContent.replace(/\s+/g," ").trim() };
