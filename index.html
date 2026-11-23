@@ -424,7 +424,11 @@ html[data-lang="en"] th i{font-size:12px}
 .sld.on{opacity:1;transform:none}
 /* 2026-11-23 旁边露出来的系列只露图，文字和按钮藏起来，左右箭头才不会压到字 */
 .sld:not(.on) .sd,.sld:not(.on) .row,.sld:not(.on) .go,.sld:not(.on) .go2{visibility:hidden}
+/* 滑动途中新的一张还没停好时，文字先不出现，避免从箭头底下经过 */
+.sld.on .sd,.sld.on .row{transition:visibility 0s linear .5s}
 .sld .lg{max-height:110px;max-width:100%;width:auto;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
+.ainfo{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:6px 14px;margin:0;font-size:12.5px}.ainfo div{min-width:0}.ainfo dt{color:var(--muted,#6b7280);font-size:11.5px}.ainfo dd{margin:0;overflow-wrap:anywhere}.asup{display:flex;flex-direction:row;flex-wrap:wrap;justify-content:flex-start;margin:0;min-width:0;gap:6px 14px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 10px}.asup legend{font-size:12.5px;padding:0 4px}.asup input[id]{flex:1 1 220px;min-width:0;height:auto;align-self:center}.asup .tchk{display:inline-flex;gap:6px;align-items:center}
+.edtag{display:inline-block;font-size:10.5px;font-weight:800;line-height:1;padding:2px 5px;border-radius:4px;background:var(--mint,#dff3ea);color:var(--ink);vertical-align:1px;margin-right:2px}
 .sld .sd{font-size:13px;opacity:.85;margin:10px 0 16px}
 .sld .row a{text-decoration:none}
 .sld .go{background:var(--sun);color:#14254a;border-radius:99px;padding:10px 18px;font-weight:800;font-size:14px}
@@ -1414,7 +1418,7 @@ const rules = () => { const r={...RULES0}; const x=CAT.rules||{}; Object.keys(RU
 function applyCatalog(){
   const items=(CAT.items&&typeof CAT.items==="object")?CAT.items:{};
   arr(CAT.added).slice(0,500).forEach(a=>{ const id=cleanId(a&&a.id); if(!id||!/^n/.test(id)) return; if(!own(PM,id)){ const np={id,s:"",n:"",zh:"",t:"S",no:"",usd:0,myr:0,loc:null,price:0,img:null,src:"",c:"single",added:1}; PM[id]=np; ALLP.push(np); ORIG[id]={price:0,n:"",zh:""} } });
-  ALLP.forEach(p=>{ const o=ORIG[p.id]||{}; p.price=o.price; p.n=o.n; p.zh=o.zh; ["desc","stock","cond","lng","photo","hidden"].forEach(k=>delete p[k]);
+  ALLP.forEach(p=>{ const o=ORIG[p.id]||{}; p.price=o.price; p.n=o.n; p.zh=o.zh; ["desc","stock","cond","lng","photo","hidden","sup"].forEach(k=>delete p[k]);
     /* 2026-11-19 用户要：英文版和日文版分开。没在后台改过的商品按资料默认：日文资料=日文版，中文资料=中文版，其余英文版 */
     if(!p.svc&&p.c!=="single") p.lng=p.lang==="jp"?"日文版":p.lang==="cn"?"中文版":"英文版";
     const x=own(items,p.id)&&items[p.id]&&typeof items[p.id]==="object"?items[p.id]:null; if(!x) return;
@@ -1425,6 +1429,7 @@ function applyCatalog(){
     if(typeof x.cond==="string") p.cond=cleanTxt(x.cond,20); if(typeof x.lng==="string"&&x.lng) p.lng=cleanTxt(x.lng,20);
     if(typeof x.photo==="string"&&/^[A-Za-z0-9_-]{6,64}$/.test(x.photo)) p.photo=x.photo;
     if(p.added){ if(typeof x.s==="string") p.s=cleanTxt(x.s,60); if(typeof x.c==="string"&&own(CATS,x.c)) p.c=x.c; p.t=p.c==="single"?"S":"X" }
+    if(Array.isArray(x.sup)) p.sup=x.sup.filter(v=>typeof v==="string").map(v=>cleanTxt(v,60).trim()).filter(Boolean).slice(0,12);
     if(x.hidden===true) p.hidden=true; });
   P.splice(0,P.length,...ALLP.filter(p=>!p.hidden&&(!p.added||(p.n&&p.price>0))));
   if(typeof SINGLES!=="undefined") SINGLES.splice(0,SINGLES.length,...P.filter(p=>p.c==="single"));
@@ -1834,13 +1839,22 @@ function brow(p,i){ return `<button class="brow" ${p.ck?`data-gocard="${p.ck}"`:
 const kindOf=p=>{ const k=(CI[p.id]||{}).kind||""; return k==="Pokémon"?0:/Supporter/.test(k)?1:k?2:3 };
 const howEl=()=>"";
 V.howto=()=>{ ui.ncat="learn"; return V.news() };
+/* 2026-11-23 改版需求 5：英文版、日文版市价分开记录。每条价格记录带版本（ed），同一张卡的英文版和日文版是两条记录，
+   涨跌榜可以两种都上，用「版本」筛选。现在只有英文版有可核实的价格（TCGdex 读 TCGplayer/Cardmarket，都是英文版市场）；
+   日文版还没有可核实的来源，所以日文版显示「暂无数据」，绝不拿英文版价格冒充。 */
+const cEd=c=>c.ed||"en";
+const edTag=c=>`<span class="edtag">${cEd(c)==="jp"?B("日","JP"):B("英","EN")}</span>`;
 V.market=()=>{
-  const sel=ui.mser, callp=Object.values(CARDS).filter(c=>!sel||c.s===sel), priced=callp.filter(c=>cRM(c)!=null);
+  const med=ui.med||"";
+  const edbar=`<div class="seg" role="group" aria-label="${BT("版本","Edition")}" style="margin:4px 0 8px">${[["","全部版本","All editions"],["en","英文版","English"],["jp","日文版","Japanese"]].map(r=>`<button data-med="${r[0]}" class="${med===r[0]?"on":""}" aria-pressed="${med===r[0]}">${B(r[1],r[2])}</button>`).join("")}</div>`;
+  if(med==="jp") return `<section class="mhero"><div class="mh1"><span class="tag live">${isEN()?"MARKET":"行情"}</span><h1>${B("卡价雷达","Card price radar")}</h1>${edbar}</div></section>
+  <div class="panel stack" style="gap:8px"><h3 style="margin:0">${B("日文版市价：暂无数据","Japanese prices: no data yet")}</h3><p style="margin:0">${B("我们现在用的价格来源（TCGdex 读取的 TCGplayer 和 Cardmarket）都是英文版市场，没有日文版成交价。日文版和英文版价格差很多，所以这里不拿英文版价格代替。等找到可以核实的日文版来源再补上。","Our current price sources (TCGplayer and Cardmarket via TCGdex) only cover the English market. Japanese prints sell at very different prices, so we do not show English prices in their place. We will add Japanese prices once there is a source we can verify.")} ${OWNER_TBD()}</p><p class="muted" style="margin:0">${B("日文版完整卡表在这里：","Japanese card lists:")} <a href="${setUrl(JSETS[0])}">${B("日文版卡表","Japanese card lists")} ›</a></p></div>`;
+  const sel=ui.mser, callp=Object.values(CARDS).filter(c=>(!sel||c.s===sel)&&(!med||cEd(c)===med)), priced=callp.filter(c=>cRM(c)!=null);
   const mov=priced.filter(c=>c.tr!=null&&cRM(c)>=20);
   const gain=mov.filter(c=>c.tr>0).sort((a,b)=>b.tr-a.tr||cRM(b)-cRM(a)).slice(0,5), lose=mov.filter(c=>c.tr<0).sort((a,b)=>a.tr-b.tr||cRM(b)-cRM(a)).slice(0,5), hot=priced.slice().sort((a,b)=>cRM(b)-cRM(a)).slice(0,5);
   const up=mov.filter(c=>c.tr>0).length, dn=mov.filter(c=>c.tr<0).length, tot=priced.reduce((a,c)=>a+cRM(c),0);
   const tape=priced.filter(c=>c.tr!=null&&cRM(c)>=50).sort((a,b)=>Math.abs(b.tr)-Math.abs(a.tr)).slice(0,24).map(c=>`<span>${esc(cN(c))} ${rm(cRM(c))} <b class="${c.tr>0?"up":c.tr<0?"down":"flat"}">${c.tr>0?"▲":c.tr<0?"▼":"–"} ${Math.abs(c.tr)}%</b></span>`).join("");
-  const row=(c,i)=>`<button class="brow" data-gocard="${c.k}"><span class="no">${String(i+1).padStart(2,"0")}</span>${c.p?`<img loading="lazy" src="${simg(c.p)}" alt="">`:c.noimg?`<span class="bthumb noimg">★C</span>`:spr(c,"bthumb")}<span style="min-width:0"><span class="nm" style="display:block">${esc(cN(c))}</span><span class="sb" style="display:block">${esc(c.s)} · #${esc(c.num)}</span></span><span class="pz">${rm(cRM(c))}${trPill(c)}</span></button>`;
+  const row=(c,i)=>`<button class="brow" data-gocard="${c.k}"><span class="no">${String(i+1).padStart(2,"0")}</span>${c.p?`<img loading="lazy" src="${simg(c.p)}" alt="">`:c.noimg?`<span class="bthumb noimg">★C</span>`:spr(c,"bthumb")}<span style="min-width:0"><span class="nm" style="display:block">${esc(cN(c))}</span><span class="sb" style="display:block">${edTag(c)} ${esc(c.s)} · #${esc(c.num)}</span></span><span class="pz">${rm(cRM(c))}${trPill(c)}</span></button>`;
   const col=(t,e,l)=>`<div class="col"><div class="ch"><span>${B(t,e)}</span><span style="color:#7d87a8">${l.length}</span></div>${l.length?l.map(row).join(""):`<p style="padding:14px 16px;color:#7d87a8;margin:0">${B("这个系列暂时没有","None in this set yet")}</p>`}</div>`;
   const q=ui.mq.trim().toLowerCase();
   const qw=q.split(/\s+/).filter(Boolean);
@@ -1852,7 +1866,7 @@ V.market=()=>{
     <div class="seg" role="group" aria-label="排序">${[["hi","价格高","High"],["up","7 天涨幅","7d up"],["new","最新","Newest"],["lo","价格低","Low"],["no","编号","Number"]].map(r=>`<button data-msort="${r[0]}" class="${(so||"hi")===r[0]?"on":""}">${B(r[1],r[2])}</button>`).join("")}</div></div>
    <p class="muted">${B(`找到 ${all.length} / ${callp.length} 张`,`${all.length} of ${callp.length}`)}${q?` · <button class="lnk" data-mclear="1">${B("清除搜索","Clear search")}</button>`:""}</p>
    <div class="cgrid">${all.slice(0,ui.mshown||24).map(ctile).join("")||`<p class="muted">${B("没有符合的卡","No cards match")}</p>`}</div>${all.length>(ui.mshown||24)?`<div><button data-mmore="1">${B("再显示 24 张","Show 24 more")}</button></div>`:""}</section>`;
-  return `<section class="mhero"><div class="mh1"><span class="tag live">${isEN()?"MARKET":"行情"}</span><h1>${B("卡价雷达","Card price radar")}</h1><p>${B(`${Object.keys(CARDS).length} 张卡，${SETS.length} 个系列每一张都有价格。手上的卡值多少、最近谁在涨，搜一下就知道。`,`${Object.keys(CARDS).length} cards across ${SETS.length} sets, every one priced. Search to see what yours is worth.`)}</p>
+  return `<section class="mhero"><div class="mh1"><span class="tag live">${isEN()?"MARKET":"行情"}</span><h1>${B("卡价雷达","Card price radar")}</h1>${edbar}<p>${B(`${Object.keys(CARDS).length} 张卡，${SETS.length} 个系列每一张都有价格。手上的卡值多少、最近谁在涨，搜一下就知道。`,`${Object.keys(CARDS).length} cards across ${SETS.length} sets, every one priced. Search to see what yours is worth.`)}</p>
     <div class="msearch">${ic("search",20)}<input id="mq" type="search" placeholder="输入卡名或编号，例如 月亮伊布 161、Pikachu" value="${esc(ui.mq)}" aria-label="搜索卡牌 Search cards"></div>
     <div class="mkpi"><div><small>${B("所列卡牌参考价合计","Sum of listed reference prices")}</small><b>${rm(tot)}</b></div><div><small>${B("7 天上涨 / 有涨跌数据","Up 7d / with data")}</small><b class="up">${up} <span class="muted" style="font-size:.6em">/ ${mov.length}</span></b></div><div><small>${B("7 天下跌 / 有涨跌数据","Down 7d / with data")}</small><b class="down">${dn} <span class="muted" style="font-size:.6em">/ ${mov.length}</span></b></div><div><small>${B("价格更新","Updated")}</small><b>${TD.date}</b></div></div></div></section>
   ${q?results:`<div class="tape"><div class="track">${tape}${tape}</div></div>
@@ -1877,7 +1891,7 @@ function mdetail(p){ const m=MV[p.id];
 const TR={"卡牌店铺":"Card Shop","品牌名待定":"name to come","小红书":"Xiaohongshu","比赛页":"Event page","Limitless 原页":"Limitless page","阶段一":"Stage 1","阶段二":"Stage 2","阶段三":"Stage 3","店主后台":"Admin","购物车":"Cart"};
 /* 英文模式的补充翻译：后台、提示信息、零散标签。langPass 和 toast 都会查这里。 */
 Object.assign(TR,{
-"导出 CSV":"Export CSV","现在的库存、成本和利润":"Current stock, cost and profit","商品":"Product","售价":"Price","成本 RM":"Cost RM","单件利润":"Profit per item","要进货":"Restock","再显示 40 件":"Show 40 more","没有待处理的进货。":"No restocks waiting.","进货记录":"Restock records","还没有到货记录。":"No arrivals recorded yet.","低库存":"Low stock","测试进货（不动库存）":"Test restock (stock not changed)","测试":"Test","待进货":"To order","已下单":"Ordered","已到货":"Arrived","单价成本 RM":"Unit cost RM","供应商":"Supplier","单价":"Unit cost","最后修改":"Last edited","售罄":"Sold out","不够发":"Not enough to ship","快没了":"Running low","未录入":"Not entered",
+"只在后台":"Back-office only","导出 CSV":"Export CSV","现在的库存、成本和利润":"Current stock, cost and profit","商品":"Product","售价":"Price","成本 RM":"Cost RM","单件利润":"Profit per item","要进货":"Restock","再显示 40 件":"Show 40 more","没有待处理的进货。":"No restocks waiting.","进货记录":"Restock records","还没有到货记录。":"No arrivals recorded yet.","低库存":"Low stock","测试进货（不动库存）":"Test restock (stock not changed)","测试":"Test","待进货":"To order","已下单":"Ordered","已到货":"Arrived","单价成本 RM":"Unit cost RM","供应商":"Supplier","单价":"Unit cost","最后修改":"Last edited","售罄":"Sold out","不够发":"Not enough to ship","快没了":"Running low","未录入":"Not entered",
 "单卡":"Single","自己新增":"Added by you","已改动":"Edited","会员":"Member","保存":"Save","保存规则":"Save rules","全部":"All","库存检测":"Stock check","电邮 holofenn@gmail.com":"Email holofenn@gmail.com","全部系列":"All sets","上架":"List","下架":"Unlist","上传照片":"Upload photo","中文名":"Chinese name","英文名":"English name","卡况":"Condition","可用积分":"Points available","已得积分":"Points earned","在售中":"On sale","已下架":"Unlisted","已售完":"Sold out","库存":"Stock","库存未录入":"Stock not entered","改过的":"Edited","预购":"Pre-order","预购到货月份":"Pre-order arrival month","（新商品）":"(New item)","＋ 新增商品":"+ Add item","移除":"Remove","等级":"Tier","类别":"Category","系列":"Set","累计消费":"Total spent","近 12 个月消费":"Spent in last 12 months","订单":"Orders","语言":"Language","还原":"Reset","顾客":"Customer","编辑":"Edit","编辑商品":"Edit item","生日月":"Birthday month","自己新增 ·":"Added by you ·",
 "商品详情（顾客在商品页看到）":"Item details (shown on the product page)","填了就算没库存也能下单；到货后清空":"If set, customers can order even with no stock. Clear it when stock arrives.","填好名字和售价再按保存":"Fill in the name and price, then press Save",
 "「编辑」改价格、照片、名字、详情、库存和预购；「上架 / 下架」决定顾客在商店看不看得到。库存填 0 会显示缺货；不填表示还没录入。已经审核通过的订单按当时的价格算，改价不影响。":"Use Edit to change price, photo, name, details, stock and pre-order. List / Unlist decides whether customers see the item in the shop. Stock 0 shows as sold out; empty means not entered yet. Approved orders keep the price at approval, so price changes don't affect them.",
@@ -2391,7 +2405,11 @@ V.news=()=>{
 };
 function deckGrid(id){ const L=LISTS[id]; if(!L) return ""; const H=[["宝可梦","Pokémon"],["训练家","Trainer"],["能量","Energy"]];
   return H.map((h,i)=>`<div class="dkh">${B(h[0],h[1])} <span class="muted">(${cnt(L[i])})</span></div><div class="dkg">${L[i].split("; ").map(x=>{ const m=x.match(/^(\d+) (.+) ([A-Z0-9]{2,4}) (\d+)$/); if(!m) return ""; return `<figure class="dkc" title="${esc(m[2])} ${m[3]} ${m[4]}"><span class="im"><img loading="lazy" src="deckimg/${m[3]}_${m[4]}.png" alt="${esc(m[2])}" data-alt="https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/${m[3]}/${m[3]}_${m[4].padStart(3,"0")}_R_EN_SM.png" onerror="if(this.dataset.alt){this.src=this.dataset.alt;this.dataset.alt=''}else this.style.visibility='hidden'"><b>×${m[1]}</b></span><figcaption>${esc(nZ(m[2]))}<small>${m[3]} ${m[4]}</small></figcaption></figure>` }).join("")}</div>`).join("") }
-function listBox(id){ return `<div class="panel stack" style="gap:8px">${deckGrid(id)}<details class="txtl"><summary>${B("文字版牌表","Text list")}</summary><pre class="list">${esc(listText(id))}</pre></details><div class="row"><button data-copylist="${id}">复制牌表 <span class="en">Copy list</span></button>${src("Limitless 原页","https://limitlesstcg.com/decks/list/"+id)}</div></div>` }
+/* 2026-11-23 改版需求 7：卡组卡图要用选手实际用的版本。现在收录的牌表都来自 Limitless 的国际/区域赛，
+   这些比赛用英文版卡，所以卡图也是英文版。以后加日本 City League 等日文比赛时，在 LISTLANG 写 "jp"。 */
+const LISTLANG={};
+const listLang=id=>LISTLANG[id]||"en";
+function listBox(id){ const lg=listLang(id); return `<div class="panel stack" style="gap:8px"><p class="muted" style="margin:0;font-size:12.5px">${lg==="jp"?B("印刷版本：日文版（这场比赛用日文版卡）","Print: Japanese (this event uses Japanese cards)"):B("印刷版本：英文版。这是 Play! Pokémon 国际赛事，选手用英文版卡，下面的卡图也是英文版。","Print: English. This is an international Play! Pokémon event, players use English cards and the images below are English prints.")}</p>${deckGrid(id)}<details class="txtl"><summary>${B("文字版牌表","Text list")}</summary><pre class="list">${esc(listText(id))}</pre></details><div class="row"><button data-copylist="${id}">复制牌表 <span class="en">Copy list</span></button>${src("Limitless 原页","https://limitlesstcg.com/decks/list/"+id)}</div></div>` }
 V.decks=()=>`${H1("比赛卡组","Tournament decks")}
   <p>只收官方比赛：下面是 Play! Pokémon 的一场国际锦标赛（International Championship）和四场区域锦标赛（Regional Championships），不含店铺自办的普通比赛。数据来自 Limitless TCG，读取于 ${DATA_DATE}。<span class="en"> Official events only: one Play! Pokémon International Championship and four Regional Championships. Data from Limitless TCG.</span></p>
   ${H2("使用率排名（标准赛制 TEF–DLR）","Most-played decks, Standard")}
@@ -2621,6 +2639,12 @@ V.admin=()=>{
 const LNGS=["","中文版","英文版","日文版"], CONDS=["","全新未拆 Sealed","Near Mint","Lightly Played","Moderately Played","Heavily Played","Damaged"];
 const aid=x=>safeStr(x).replace(/[^A-Za-z0-9_-]/g,"").slice(0,64);
 const opt=(l,v)=>l.map(x=>`<option value="${esc(x)}" ${x===v?"selected":""}>${esc(x||"（不写）")}</option>`).join("");
+/* 2026-11-23 改版需求 3：后台商品库每件商品都写清楚：名称、系列、类别、版本、发售日期、图片、SKU、来源、启用状态、供应商（可以多个）。
+   供应商名单＝所有商品填过的供应商＋进货单里写过的供应商，勾选即可，也可以直接加新的。 */
+const supList=()=>{ const S=new Set(); ALLP.forEach(p=>(p.sup||[]).forEach(v=>S.add(v))); (typeof RST!=="undefined"?RST:[]).forEach(r=>{ if(r.supplier) String(r.supplier).split(/[,，、]/).map(v=>v.trim()).filter(Boolean).forEach(v=>S.add(v)) }); return [...S].sort((a,b)=>a.localeCompare(b)) };
+function admInfo(p){ const d=p.code?(jDate(p.code)||""):(SI[p.s]&&SI[p.s].date)||"", on=listed(p)||tbdShow(p);
+  const lk=(u,t)=>u?`<a href="${esc(u)}" target="_blank" rel="noopener">${t}</a>`:"";
+  return `<dl class="ainfo"><div><dt>SKU</dt><dd><code>${esc(p.id)}</code></dd></div><div><dt>${B("系列","Series")}</dt><dd>${esc(p.s||"—")}${p.code?` · ${esc(p.code)}`:""}${p.jn?` · ${esc(p.jn)}`:""}</dd></div><div><dt>${B("类别","Type")}</dt><dd>${BT(CATS[p.c][0],CATS[p.c][1])}${p.packs?` · ${p.packs} ${BT("包","packs")}`:""}</dd></div><div><dt>${B("版本","Edition")}</dt><dd>${esc(lngT(p.lng||""))||"—"}</dd></div><div><dt>${B("发售日期","Release date")}</dt><dd>${esc(d||"—")}</dd></div><div><dt>${B("来源","Source")}</dt><dd>${[lk(p.src,B("商品页","Product page")),lk(p.off1,B("官方页","Official page"))].filter(Boolean).join(" · ")||B("待补","To add")}</dd></div><div><dt>${B("状态","Status")}</dt><dd>${on?B("已启用（商店看得到）","Enabled (visible in shop)"):p.cat0?B("只在后台商品库，定价并上架后才启用","Back-office only. Set a price and list it to enable"):B("未启用","Not enabled")}</dd></div></dl>` }
 function admRow(p){ const x=own(CAT.items,p.id)?CAT.items[p.id]:{}, ch=Object.keys(x).length>0, k=p.id;
   return `<div class="panel arow${p.hidden?" off":""}" id="ar-${k}"><div class="aph"><img src="${simg(p)}" alt=""><label class="btn sm">${p.photo?"换照片":"上传照片"}<input type="file" accept="image/*" data-aphoto="${k}" hidden></label>${p.photo?`<button class="sm" data-aphotorm="${k}">用回参考图</button>`:""}</div>
   <div class="stack" style="gap:8px;flex:1;min-width:0">
@@ -2636,12 +2660,14 @@ function admRow(p){ const x=own(CAT.items,p.id)?CAT.items[p.id]:{}, ch=Object.ke
     <label class="f">卡况<select id="a-cond-${k}">${opt(CONDS,p.cond||"")}</select></label>
     ${p.added?`<label class="f">系列<input id="a-s-${k}" value="${esc(p.s)}" list="setlist" maxlength="60"></label><label class="f">类别<select id="a-c-${k}">${Object.entries(CATS).map(([c,v])=>`<option value="${c}" ${p.c===c?"selected":""}>${v[0]}</option>`).join("")}</select></label>`:""}
    </div>
+   ${admInfo(p)}
+   <fieldset class="asup"><legend>${B("供应商（可多选）","Suppliers (pick any)")}</legend>${supList().map(v=>`<label class="tchk"><input type="checkbox" data-asup="${k}" value="${esc(v)}" ${(p.sup||[]).includes(v)?"checked":""}> ${esc(v)}</label>`).join("")||`<span class="muted">${B("还没有供应商","No suppliers yet")}</span>`}<input id="a-supnew-${k}" maxlength="200" placeholder="${BT("新增供应商，多个用逗号分开","Add suppliers, separated by commas")}"></fieldset>
    <label class="f">商品详情（顾客在商品页看到）<textarea id="a-desc-${k}" rows="2" maxlength="1500" placeholder="例如：实拍卡况、边角、是否有白边、附送卡套等">${esc(p.desc||"")}</textarea></label>
    <div class="row"><span style="flex:1"></span>${ch?`<button data-areset="${k}">还原</button>`:""}<button class="pri" data-asave="${k}">保存</button></div>
   </div></div>` }
 /* 上架 / 下架（参考 Shopee 卖家中心）：店主在 site/catalog 的 items[id].off 记录；没设过的，盒装默认上架、单卡默认下架。 */
 /* 2026-11-21 店主要：日文版单包也要是商店里的独立商品。还没定价的先显示「价格待定」，不能下单；店主在后台下架的就不显示 */
-function tbdShow(p){ /* 2026-11-23 改版需求 1：日文版盒装没定价也要在系列里看得到 */ if(!p||p.hidden||p.lang!=="jp"||p.price>0) return false; const x=own(CAT.items,p.id)?CAT.items[p.id]:null; return !(x&&x.off===true) }
+function tbdShow(p){ /* 2026-11-23 改版需求 1：日文版盒装没定价也要在系列里看得到 */ if(!p||p.hidden||p.lang!=="jp"||p.price>0) return false; const x=own(CAT.items,p.id)?CAT.items[p.id]:null; if(p.cat0) return !!(x&&x.off===false); return !(x&&x.off===true) }
 function listed(p){ if(!p||p.hidden) return false; if(!p.svc&&!(p.price>0)) return false; const x=own(CAT.items,p.id)?CAT.items[p.id]:null; if(x&&typeof x.off==="boolean") return !x.off&&!(p.added&&!(p.n&&p.price>0)); return p.c!=="single"&&!(p.added&&!(p.n&&p.price>0)) }
 function setListed(ids,on){ if(!owner) return; const it={...CAT.items}; let skip=0, n=0;
   ids.forEach(id=>{ const p=PM[id]; if(!p) return; if(on&&p.added&&!(p.n&&p.price>0)){ skip++; return } const x={...(own(it,id)?it[id]:{})}; x.off=!on; delete x.hidden; it[id]=x; n++ });
@@ -2661,7 +2687,7 @@ function stockChk(inC){ const [all0,pq]=skList(), ids=new Set(inC.map(p=>p.id)),
 const AST=[["chk","库存检测"],["all","全部"],["live","在售中"],["out","已售完"],["off","已下架"],["pre","预购"],["tbd","库存未录入"],["ch","改过的"],["new","自己新增"]];
 const astOk=(p,f)=>f==="chk"?listed(p)&&!p.svc&&!isPre(p)&&skLevel(p,ui._pq||{})!=="ok":f==="all"?true:f==="live"?listed(p)&&(p.stock!==0||!!isPre(p)):f==="off"?!listed(p):f==="out"?listed(p)&&p.stock===0&&!isPre(p):f==="pre"?!!isPre(p):f==="tbd"?p.stock==null:f==="ch"?own(CAT.items,p.id):f==="new"?!!p.added:true;
 function admCard(p){ const tags=[], on=listed(p), sel=!!(ui.asel&&ui.asel[p.id]);
-  if(!on) tags.push(["已下架","off"]); if(isPre(p)) tags.push(["预购 "+isPre(p),"ok"]); else if(p.stock===0) tags.push(["缺货","bad"]); else if(p.stock>0) tags.push(["库存 "+p.stock,"ok"]);  { const wn=Object.values(MEALL).filter(m=>m.wish.includes(p.id)).length; if(wn) tags.push(["♥ "+wn+" 人收藏","ok"]) }
+  if(p.cat0&&!on) tags.push(["只在后台","off"]); else if(!on) tags.push(["已下架","off"]); if(isPre(p)) tags.push(["预购 "+isPre(p),"ok"]); else if(p.stock===0) tags.push(["缺货","bad"]); else if(p.stock>0) tags.push(["库存 "+p.stock,"ok"]);  { const wn=Object.values(MEALL).filter(m=>m.wish.includes(p.id)).length; if(wn) tags.push(["♥ "+wn+" 人收藏","ok"]) }
   return `<div class="prod acard${on?"":" off"}${sel?" sel":""}"><label class="asel" title="选择"><input type="checkbox" data-asel="${p.id}" ${sel?"checked":""} aria-label="选择 ${esc(p.n||"新商品")}"><span>选择</span></label><div class="pic"><img loading="lazy" src="${simg(p)}" alt=""><span class="atags">${tags.map(t=>`<i class="${t[1]}">${t[0]}</i>`).join("")}</span></div>
   <div class="info">${p.no?`<div class="cno">${esc(numTxt(p))}</div>`:""}${p.lng?`<span class="lgc lg-${{"日文版":"ja","中文版":"zh"}[p.lng]||"en"}">${esc(lngT(p.lng))}</span>`:""}<b class="nm">${esc(PZ(p)||(isEN()?"(Untitled new item)":"（未命名新商品）"))}</b><div class="muted" style="font-size:12px">${esc(isEN()?"":(p.zh?p.n:""))}</div><div class="muted set">${p.s?slogo(p.s):""}<span>${esc(p.s||"")}</span></div>
   <div class="bigp">${p.price?rm(p.price):"未定价"}</div>${p.myr||p.usd?`<div class="muted" style="font-size:12px">市价 ${rm(mp(p))}</div>`:""}
@@ -2697,12 +2723,13 @@ function admMembers(){
   <div><button class="pri" data-rsave="1">保存规则</button></div></div>
   ${H2("会员","Members")}${us.length?`<div class="tw"><table><thead><tr><th>顾客</th><th>等级</th><th class="n">近 12 个月消费</th><th class="n">累计消费</th><th>生日</th><th class="n">已得积分</th><th class="n">可用积分</th><th class="n">订单</th></tr></thead><tbody>${us.map(([u,m,c])=>`<tr><td>${esc(arr(all[u].orders).map(o=>cleanTxt(o.name,40)).filter(Boolean).pop()||u.slice(0,8))}</td><td>${m.tier[0]}</td><td class="n">${rm(m.spend)}</td><td class="n">${rm(m.life)}</td><td>${esc((typeof MEALL!=="undefined"&&MEALL[u]||{}).bd||"")||(m.bm?m.bm+" 月":"—")}</td><td class="n">${m.earned}</td><td class="n">${m.left}</td><td class="n">${c}</td></tr>`).join("")}</tbody></table></div>`:`<p class="muted">还没有顾客。</p>`}` }
 function admCollect(k,p){ const g=f=>val("a-"+f+"-"+k), x={};
-  const pr=num(g("price")); if(!isFinite(pr)||pr<0) return toast("售价要填数字"),null;
+  const pr=g("price")===""&&!(ORIG[k]&&ORIG[k].price>0)?0:num(g("price")); if(!isFinite(pr)||pr<0) return toast("售价要填数字"),null;
   x.price=Math.round(pr*100)/100;
   if(g("n")) x.n=g("n"); x.zh=g("zh"); x.desc=cleanTxt(document.getElementById("a-desc-"+k).value,1500);
   const st=g("stock"); if(st!==""){ const n=num(st); if(!isFinite(n)||n<0) return toast("库存要填 0 或以上的整数"),null; x.stock=Math.round(n) }
   x.lng=g("lng"); x.cond=g("cond"); { const pre=g("pre"); if(/^\d{4}-\d{2}$/.test(pre)) x.pre=pre } if(p.added){ x.s=g("s"); x.c=g("c") }
   
+  { const S=new Set([...document.querySelectorAll('[data-asup="'+k+'"]:checked')].map(i=>i.value)); val("a-supnew-"+k).split(/[,，、\n]/).map(v=>cleanTxt(v,60).trim()).filter(Boolean).forEach(v=>S.add(v)); x.sup=[...S].slice(0,12) }
   const old=own(CAT.items,k)?CAT.items[k]:{}; if(old.photo) x.photo=old.photo; if(typeof old.off==="boolean") x.off=old.off;
   if(p.added&&(!x.n||!(x.price>0))) toast("新商品要有英文名和售价，才会在前台出现");
   return x }
@@ -3057,6 +3084,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
+ ["v130","2026-11-23",["改版需求 3：其余 18 个日文版系列（SV1S/SV1V 到 SV8）的官方补充包盒和散包加进后台商品库，共 36 件，先只在后台，定价并上架后才在商店出现；名称和代号对过 Cardrush 商品页和官方网站","改版需求 3：后台编辑商品时显示 SKU、系列、类别、版本、发售日期、来源、启用状态，并可以勾选多个供应商或新增供应商","改版需求 5：行情页加「版本」切换（全部/英文版/日文版），每条价格带版本标记；日文版还没有可核实的价格来源，显示「暂无数据」，不拿英文版价格代替","改版需求 7：比赛牌表上写明印刷版本（这些国际赛事用英文版卡，卡图也是英文版）","首页轮播：新的一张停好后才显示文字，滑动途中不会从箭头底下经过"]],
  ["v129","2026-11-23",["改版需求 10：防伪指南重做成 7 个步骤，每步有示意图、怎么做、要注意什么，并附可以点开的真实教学视频和 Cardmarket、Pokémon 官方卡牌数据库链接；顶部写明「只卖来源核验过的正版」承诺","改版需求 6：进货后台、分类、搜索框、购物车和登录按钮的读屏标签在英文模式下都改成英文"]],
  ["v128","2026-11-23",["改版需求 1：日文版盒装还没定价也会出现在系列里（Chaos Rising、White Flare、Black Bolt 等），显示「价格待定」","改版需求 2：商店和后台的系列条都按发行日期由新到旧；选日文版时用日本发售日","改版需求 4：卡表的英文版/日文版按钮去掉数字","改版需求 9：中文界面下卡组名称显示官方中文宝可梦名；没有小图的卡组名字也对齐了"]],
  ["v127","2026-11-23",["后台「设置」加「版本记录」，每次上线都记在这里","进货可以勾「测试进货」：不加库存、不改成本，可以删除，导出 CSV 有「测试」栏"]],
@@ -3691,6 +3719,7 @@ document.addEventListener("click",async e=>{
   if(ds.mmore){ ui.mshown=(ui.mshown||24)+24; return render() }
   if(ds.mallsets){ ui.mallsets=true; return render() }
   if(ds.scar){ return scarGo(+ds.scar) }
+  if("med" in ds){ e.preventDefault(); ui.med=ds.med; return render() }
   if("mser" in ds){ e.preventDefault(); ui.mser=ds.mser; if(route!=="market") return go("market"); return render() }
   if("mrar" in ds){ ui.mrar=(FOREST&&ds.mrar&&ui.mrar===ds.mrar)?"":ds.mrar; return render() }
   if(ds.msort){ ui.msort=ds.msort; return render() }
