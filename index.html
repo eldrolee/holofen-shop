@@ -140,6 +140,14 @@ td.th img{width:40px;height:56px;object-fit:contain;background:var(--tile);borde
 .nthumb{width:84px;height:84px;border-radius:12px;background:var(--tile);display:grid;place-items:center;overflow:hidden}
 .nthumb img{max-height:78px;width:auto;object-fit:contain}
 .news article:last-child{border-bottom:0}
+/* v137 没配图的新闻：不用千篇一律的图标，改成报纸式日期块（日 + 月），颜色跟分类 */
+/* v137 后台设置分组 */
+.sgrp{display:grid;gap:8px;margin:4px 0 16px}.sgr{display:flex;align-items:center;gap:12px;min-width:0}.sgl{flex:0 0 9.5em;white-space:nowrap;font-size:12.5px;font-weight:700;color:var(--muted)}.sgr .aseg{margin:0;flex:1 1 auto;min-width:0}
+@media (max-width:640px){.sgr{flex-direction:column;align-items:flex-start;gap:4px}.sgl{flex:none}}
+.nthumb.ndt{background:var(--surface);border:2px solid var(--nc);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;line-height:1}.nthumb.ndt b{font-family:var(--display);font-size:30px;color:var(--ink)}.nthumb.ndt small{font-size:12px;font-weight:700;color:var(--muted);margin-top:2px}
+@media (max-width:520px){.nthumb.ndt b{font-size:24px}}
+.news article:has(.ndt) time{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:640px){.ncrow{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding:2px 16px}.ncrow::-webkit-scrollbar{display:none}.ncrow button{flex:none;white-space:nowrap}}
 .news time{font-family:var(--mono);font-size:12px;color:var(--muted);padding-top:3px}
 @media (max-width:520px){.news article{grid-template-columns:64px minmax(0,1fr);gap:10px}.nthumb{width:64px;height:64px}.nthumb img{max-height:60px}}
 .share{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,2fr) auto;gap:6px 10px;align-items:center;font-size:13px}
@@ -1256,6 +1264,10 @@ header.bar::after{margin-top:8px}
 .bar:not(.adm) nav.tabs a{opacity:1;color:#4a5866}
 .bar:not(.adm) nav.tabs a:hover{color:var(--ink);background:transparent}
 .bar:not(.adm) nav.tabs a.on{color:#0a3d45;font-weight:800;background:transparent;box-shadow:inset 0 -3px 0 #0a3d45;border-radius:0}
+/* v137 店主：顶部导航字太小不够明显；鼠标移上去要变深色 */
+@media (min-width:641px){.bar:not(.adm) nav.tabs a{font-size:15.5px;font-weight:600;color:#3d4b58;border-radius:10px;transition:color .15s,background-color .15s}
+ .bar:not(.adm) nav.tabs a:hover:not(.on){color:#0a3d45;background:rgba(10,61,69,.08);text-shadow:0 0 .01px #0a3d45,.35px 0 0 #0a3d45}
+ .bar:not(.adm) nav.tabs a.on{font-size:15.5px;border-radius:0}}
 @media (min-width:641px){.bar:not(.adm) nav.tabs{flex:1 1 auto;justify-content:center;gap:4px}.bar:not(.adm) nav.tabs a{padding:8px 12px}.bar.stack:not(.adm) nav.tabs{justify-content:center;gap:6px}.bar.stack:not(.adm) nav.tabs a{padding:8px 12px}}
 
 /* 导航不用中英叠放（叠放会按较长的英文留空，间距不均）：只显示当前语言 */
@@ -2104,7 +2116,7 @@ const dkN=n=>lang!=="en"&&DECKZH[n]?DECKZH[n]:n, dkNH=n=>dualH(DECKZH[n],n);
 const dkIm=(n,alt)=>deckImg(n)?`<img src="${deckImg(n)}" alt="${alt||""}" loading="lazy">`:`<span class="dimg0" aria-hidden="true"></span>`;
 function newsThumb(n){ const k=Object.keys(NEWSIMG).find(k=>n.u.includes(k)); let v=k?NEWSIMG[k]:"", src="";
   if(v.startsWith("img:")){ const [,id,big]=v.split(":"); const p=PM[id]; if(p) src=(big&&p.big?"big/":"img/")+p.img+".jpg" } else if(v) src=deckImg(v);
-  return src?`<div class="nthumb"><img src="${src}" alt="" loading="lazy"></div>`:`<div class="nthumb ic" style="background:${CATCOL[n.c]}"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#14254a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${CATICON[n.c]}</svg></div>` }
+  return src?`<div class="nthumb"><img src="${src}" alt="" loading="lazy"></div>`:(n.d?`<div class="nthumb ndt" style="--nc:${CATCOL[n.c]}" aria-hidden="true"><b>${+n.d.slice(8,10)}</b><small>${B(+n.d.slice(5,7)+" 月","JanFebMarAprMayJunJulAugSepOctNovDec".substr((+n.d.slice(5,7)-1)*3,3))}</small></div>`:`<div class="nthumb ic" style="background:${CATCOL[n.c]}"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#14254a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${CATICON[n.c]}</svg></div>`) }
 const V={};
 /* ---------- v20：系列、行情、轮播、语言 ---------- */
 const CI=window.CARDINFO||{}, SI=window.SETINFO||{};
@@ -2721,7 +2733,7 @@ V.home=()=>{
   <div class="hero-shell fb">${[0,1].map(r=>cbkStrip("l",r)+cbkStrip("r",r)).join("")}<section class="hero" aria-label="首页主视觉"><div class="aur" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="leaves" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="spot" aria-hidden="true"></div>
   <div class="stack hero-in" style="gap:14px">
     <img class="hlogo" src="intro/holofen-logo.webp" width="756" height="900" alt="Holofen">
-    <h1 class="tag">${B("欢迎来到 Holofen，和我们一起探索卡牌世界。","Welcome to Holofen. Explore the world of trading cards with us.")}<small class="sub">${B("从马来西亚发货，选购中文、英文和日文版宝可梦卡牌。","Chinese, English and Japanese Pokémon cards, shipped from Malaysia.")}</small></h1>
+    <h1 class="tag">${B("马来西亚的宝可梦卡牌店","A Pokémon card shop in Malaysia")}<small class="sub">${B("原盒、补充包和礼盒，中文、英文、日文版都有，不登录也能下单。","Sealed boxes, packs and gift sets in Chinese, English and Japanese. No account needed to order.")}</small></h1>
     <div class="hero-cta4">${HERO_GO.map((g,k)=>`<a class="hgo${k?"":" main"}" href="#${g[0]}" style="--hc:${g[5]}"><span class="hi" aria-hidden="true">${g[6]}</span><span class="ht"><b>${B(g[1],g[2])}</b><small>${B(g[3],g[4])}</small></span><span class="ha" aria-hidden="true">›</span></a>`).join("")}</div></div>
   <div class="hero-mq" aria-label="名卡展览 Famous cards"><div class="hm1"><div class="mqlab">${B("涨幅前 5 · 跌幅前 5","Top 5 up · top 5 down")} <span>${B("PriceCharting 最近一次价格变动，"+PC_DATE,"PriceCharting latest move, "+PC_DATE)}</span></div>${marquee(row1)}</div><div class="hm2"><div class="mqlab">${B("名卡巡礼","Grail cards")} <span>${B("全球最贵、最受追捧的宝可梦卡，只供欣赏","The most wanted Pokémon cards in the world, just for looking")}</span></div>${marquee(row2,1)}</div></div></section></div>
   ${serCarousel()}
@@ -2804,7 +2816,7 @@ const newsItem=n=>`<article>${newsThumb(n)}<div><div class="row" style="gap:8px"
 V.news=()=>{
   const list=NEWS.filter(n=>ui.ncat==="all"||n.c===ui.ncat).sort((a,b)=>(b.d||"0").localeCompare(a.d||"0"));
   return `${H1("宝可梦新闻","Pokémon news")}<p>赢了比赛的玩家和他们的套牌、新品发售、马来西亚的官方活动、怎么入门。每条都链接到原文，${DATA_DATE} 手动整理，不会自动更新。<span class="en"> Winning players and decks, new releases, official Malaysia events and how to start. Every item links to its source.</span></p>
-  <div class="row" role="group">${Object.entries(NCAT).map(([k,v])=>`<button data-ncat="${k}" class="${ui.ncat===k?"on":""}">${v[0]} <span class="en">${v[1]}</span></button>`).join("")}</div>
+  <div class="row ncrow" role="group">${Object.entries(NCAT).map(([k,v])=>`<button data-ncat="${k}" class="${ui.ncat===k?"on":""}">${v[0]} <span class="en">${v[1]}</span></button>`).join("")}</div>
   <div class="panel news">${list.map(newsItem).join("")}</div>`;
 };
 function deckGrid(id){ const L=LISTS[id]; if(!L) return ""; const H=[["宝可梦","Pokémon"],["训练家","Trainer"],["能量","Energy"]];
@@ -2886,8 +2898,8 @@ V.about=()=>`${H1("关于我们","About us")}
     <p>让每一位收藏家和玩家，都能以合理的价格放心买到真卡，并找到一起玩的社群。</p><p class="en">Every collector and player should be able to buy genuine cards at a fair price, with confidence, and find people to play with.</p></div>
     <div class="fan" aria-hidden="true">${["p087","p001","p064"].map(id=>PM[id]).filter(Boolean).map(p=>`<img src="${bigF(p)}" alt="">`).join("")}</div></section>
   <section class="vis mis"><span class="lbl">宗旨 <span class="en">Mission</span></span>
-    <p class="big">以清楚的定价、可靠的品质和专业的服务，连接卡牌、玩家与社群。</p>
-    <p class="en">To connect cards, players and community through clear pricing, reliable quality and expert service.</p></section>
+    <p class="big">价格、库存和运费都写在网站上，不用私讯问价。</p>
+    <p class="en">Prices, stock and shipping are all on the site, so you never have to DM us to ask.</p></section>
   <section class="stack sec" style="gap:14px">${H2("核心价值","Core values")}
     <div class="vals">${VALUES.map((v,i)=>`<div class="val" style="--c:${v[4]}"><span class="no">${String(i+1).padStart(2,"0")}</span><h3>${v[0]} <span class="en">${v[1]}</span></h3><p>${v[2]}</p><p class="en">${v[3]}</p></div>`).join("")}</div></section>
   <section class="stack sec" style="gap:14px">${H2("发展路径","Roadmap")}
@@ -2906,12 +2918,12 @@ const TRUST=[
 const VALUES=[
  ["定价清楚","Clear pricing","标价就是售价，没有隐藏费用；运费在结账前清楚列出。","The price you see is the price you pay, with shipping shown before checkout.","var(--water)"],
  ["正品核对","Authenticity checks","每件按语言、版本和包装核对后才寄出；实拍图陆续补上。","Each item is checked for language, version and packaging before it ships. Our own photos are being added.","var(--red)"],
- ["专业服务","Expertise","持续跟踪官方赛事和市场数据，为玩家提供组牌与收藏建议。","We follow official tournaments and market data to advise on decks and collections.","var(--grass)"],
- ["社群优先","Community","通过比赛、教学和活动，把玩家聚在一起。","Tournaments, lessons and events that bring players together.","#d9a400"]];
+ ["懂卡","Card know-how","我们每周看官方比赛结果和卡价，可以帮你组卡组、决定先收哪张。","We follow official results and card prices every week, so we can help you build a deck or decide what to collect first.","var(--grass)"],
+ ["消息集中","News in one place","比赛结果和新系列消息每周整理在「最新消息」，不用到处找。","Tournament results and new-set news are rounded up weekly in Latest News.","#d9a400"]];
 const ROAD=[
- ["阶段一","线上起步","Online launch","以 Instagram 等社交平台引流到自营网店，先做中文、英文和日文版的原盒、补充包和礼盒，建立定价清楚、正品可靠的口碑。","Grow from Instagram and other social platforms into our own web shop, starting with Chinese, English and Japanese sealed product."],
- ["阶段二","线下门店与赛事","Store and events","开设实体门店，定期举办比赛和新手教学，让线上的顾客在线下相聚。","Open a physical store with regular tournaments and beginner sessions."],
- ["阶段三","区域拓展","Regional growth","把服务带到东南亚更多地区，并引入更多热门集换式卡牌。","Serve players across Southeast Asia and add more popular trading card games."]];
+ ["阶段一","线上起步","Online launch","先在 Instagram 和这个网店卖中文、英文和日文版的原盒、补充包和礼盒，价格写清楚，每批货都核对。","Sell Chinese, English and Japanese sealed boxes, packs and gift sets on Instagram and this shop, with clear prices and every batch checked."],
+ ["阶段二","线下门店与赛事","Store and events","开实体门店，定期办比赛和新手教学，在网上买卡的人也能见面一起玩。","Open a physical store with regular tournaments and beginner sessions, so people who buy online can meet and play."],
+ ["阶段三","区域拓展","Regional growth","寄到东南亚更多地方，也开始卖其他热门集换式卡牌。","Ship to more of Southeast Asia and start selling other popular trading card games."]];
 const cartLinks=()=>{ const n=openOrders().length; return `<a class="qlink" href="#orders">${B("我的订单","My orders")}${n?`<b class="umc">${n}</b>`:""}</a><a class="qlink" href="#member">${B("会员中心","Membership")}</a>` };
 V.cart=()=>{
   if(!cart.length) return `${H1("购物车","Cart")}<div class="buddy">${buddy(44,"zzz")}<div>购物车是空的。<br><span class="en">Your cart is empty.</span></div></div><div class="row" style="gap:10px"><button class="pri" data-go="shop">去逛商店 <span class="en">Go to shop</span></button>${cartLinks()}</div>`;
@@ -3490,6 +3502,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
+ ["v137","2026-11-25",["后台「设置」的分页按用途分成 运送 / 会员和积分 / 活动 / 客服 / 店铺管理 五组","后台「进货」加上跟商品页一样的版本切换（英文版 / 日文版）和系列条","顶部导航字放大、加粗一点，鼠标移上去变深色并有浅色底","首页第一句改成「马来西亚的宝可梦卡牌店」，关于我们的宗旨、核心价值、发展路径改成更具体的白话，去掉套话","没配图的新闻不再放统一图标，改成日期块","新闻分类在手机上改成一行横滑"]],
  ["v136.3","2026-11-25",["头像菜单拿掉「个人资料」，个人资料统一在会员中心的「账户管理」里改"]],
  ["v136.2","2026-11-25",["头像菜单拿掉「收藏和提醒」，因为右上角已经有心形收藏图标"]],
  ["v136.1","2026-11-25",["右上角图标顺序改为：收藏 → 购物车 → 头像（头像放最右边）"]],
@@ -3887,7 +3900,12 @@ async function loadRestock(){ const sb=window.HOLO_AUTH&&HOLO_AUTH.client&&HOLO_
 function stockRows(){ const pq=pendQty(); return ALLP.filter(p=>listed(p)&&!p.svc&&!isPre(p)).map(p=>{ const c=PCOST[p.id]||{}, cost=c.cost_cents||0, open=RST.some(r=>r.product_id===p.id&&r.status!=="已到货");
   return {p, cost, need:!!c.needs_restock||open, lv:skLevel(p,pq), av:p.stock==null?null:p.stock-(pq[p.id]||0)} }) }
 function admStock(){ if(!ui.rstAt){ ui.rstAt=1; loadRestock().then(()=>render()) }
-  const q=(ui.stq||"").toLowerCase(), all=stockRows(), rows=all.filter(x=>(!ui.stc||x.p.c===ui.stc)&&(!q||(x.p.n+" "+x.p.zh+" "+x.p.s).toLowerCase().includes(q)));
+  /* 2026-11-25 店主要：进货也要有跟商品页一样的版本切换和系列条 */
+  const all0=stockRows(), lgs=["英文版","日文版","中文版"].filter(l=>all0.some(x=>x.p.lng===l)); if(ui.stl&&!lgs.includes(ui.stl)) ui.stl=""; const stl=ui.stl||"";
+  const inL=all0.filter(x=>!stl||x.p.lng===stl), sers=serSort([...new Set(inL.map(x=>x.p.s).filter(Boolean))],stl); if(ui.sts&&!sers.includes(ui.sts)) ui.sts=""; const sts=ui.sts||"";
+  const q=(ui.stq||"").toLowerCase(), all=inL.filter(x=>!sts||x.p.s===sts), rows=all.filter(x=>(!ui.stc||x.p.c===ui.stc)&&(!q||(x.p.n+" "+x.p.zh+" "+x.p.s).toLowerCase().includes(q)));
+  const stv=lgs.length>1?`<div class="seg2 slang" role="group" aria-label="版本 Edition">${[["",B("全部版本","All editions")]].concat(lgs.map(l=>[l,B(l,LNGEN[l]||l)])).map(x=>`<button type="button" data-stl="${x[0]}" class="${stl===x[0]?"on":""}" aria-pressed="${stl===x[0]}">${x[1]}${x[0]?` <small class="muted">${all0.filter(y=>y.p.lng===x[0]).length}</small>`:""}</button>`).join("")}</div>`:"";
+  const sstrip=`<div class="serstrip" role="group" aria-label="选择系列 Series"><button type="button" class="all${sts===""?" on":""}" data-sts="">全部系列<span class="en">All sets</span></button>${sers.map(x=>`<button type="button" data-sts="${esc(x)}" class="${sts===x?"on":""}" aria-pressed="${sts===x}" title="${esc(x)}" style="--sc:${SETC[x]||"#1c8fc4"}">${slogo(x,"")}<span>${esc(x)}</span></button>`).join("")}</div>`;
   /* 2026-11-23 店主要：进货也要有商品图片和分类选择（分类跟商店一样） */
   const thumb=p=>`<img class="stth" src="${simg(p)}" alt="" loading="lazy">`, pc=p=>`<div class="stp">${thumb(p)}<div><b>${esc(PN(p))}</b><div class="muted">${esc(p.s||"")}${p.lng?" · "+esc(lngT(p.lng)):""}</div></div></div>`;
   const cats=Object.entries(CATS).filter(([k])=>k!=="single"&&all.some(x=>x.p.c===k)), stc=`<div class="chips" role="group" aria-label="${BT("分类","Category")}"><button data-stc="" class="${!ui.stc?"on":""}">全部 <span class="cnt">${all.length}</span></button>${cats.map(([k,v])=>`<button data-stc="${k}" class="${ui.stc===k?"on":""}">${BT(v[0],v[1])} <span class="cnt">${all.filter(x=>x.p.c===k).length}</span></button>`).join("")}</div>`;
@@ -3903,7 +3921,9 @@ function admStock(){ if(!ui.rstAt){ ui.rstAt=1; loadRestock().then(()=>render())
   return `<p class="muted">${B("勾「要进货」会出现在下面，填数量和成本后保存。状态改成「已到货」才把数量加进现在的库存，再保存一次不会再加。订单审核通过时扣的也是这个库存。","Tick Restock to add a line. Stock increases only when the status becomes Arrived, and saving again does not add it twice. Order approval deducts this same stock.")}</p>
   ${ui.rstErr?`<p class="note">${B(esc(ui.rstErr)+"。请先在 Supabase 执行进货迁移。","Database error: "+esc(ui.rstErr)+". Run the restock migration in Supabase first.")}</p>`:""}
   <div class="row"><input id="stq" type="search" placeholder="${BT("搜索商品","Search products")}" value="${esc(ui.stq||"")}" style="flex:1"><button data-rexp="1">导出 CSV</button></div>
+  ${stv}
   ${stc}
+  ${sstrip}
   ${low.length?`<h3>低库存</h3><div class="tw"><table><tbody>${low.map(x=>`<tr><td>${pc(x.p)}</td><td class="n">${x.p.stock==null?"未录入":x.p.stock}</td><td>${x.lv==="out"?"售罄":x.lv==="short"?"不够发":"快没了"}</td></tr>`).join("")}</tbody></table></div>`:""}
   <h3>现在的库存、成本和利润</h3>
   <div class="tw"><table><thead><tr><th>商品</th><th class="n">库存</th><th class="n">售价</th><th>成本 RM</th><th class="n">单件利润</th><th>要进货</th></tr></thead><tbody>${rows.slice(0,ui.stn||40).map(x=>{ const profit=x.p.price?Math.round(x.p.price*100)-x.cost:null;
@@ -3933,8 +3953,10 @@ document.addEventListener("submit",async e=>{ const f=e.target.closest&&e.target
   await loadRestock(); render(); toast(test?(d.changed?"已改成测试进货，之前加上的库存已扣回":"测试进货已保存，库存没有变"):f.status.value==="已到货"?"已到货，库存已加上":"进货已保存") });
 document.addEventListener("click",async e=>{ const b=e.target.closest&&e.target.closest("[data-rsdel]"); if(!b||!owner||!admAllowed("stock")) return; const sb=window.HOLO_AUTH&&window.HOLO_AUTH.client(); if(!sb) return;
   const r=await sb.from("restocks").delete().eq("id",b.dataset.rsdel).eq("is_test",true).eq("stock_applied",0); if(r.error) return toast(r.error.message); await loadRestock(); render(); toast("测试进货已删除") });
-document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-stmore],[data-rexp],[data-stc]"); if(!b||!owner) return;
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-stmore],[data-rexp],[data-stc],[data-stl],[data-sts]"); if(!b||!owner) return;
   if(b.dataset.stc!=null){ ui.stc=b.dataset.stc; ui.stn=40; return render() }
+  if(b.dataset.stl!=null){ ui.stl=b.dataset.stl; ui.sts=""; ui.stn=40; return render() }
+  if(b.dataset.sts!=null){ ui.sts=b.dataset.sts; ui.stn=40; return render() }
   if(b.dataset.stmore){ ui.stn=(ui.stn||40)+40; return render() }
   const rows=stockRows(), cell=v=>{ let t=v==null?"":String(v); if(/^[=+\-@]/.test(t)) t="'"+t; return /[",\n]/.test(t)?'"'+t.replace(/"/g,'""')+'"':t };
   const csv="\uFEFF"+[["商品","系列","库存","售价 RM","成本 RM","单件利润 RM","要进货"]].concat(rows.map(x=>{ const profit=x.p.price?Math.round(x.p.price*100)-x.cost:""; return [PN(x.p),x.p.s||"",x.p.stock==null?"":x.p.stock,x.p.price||"",sen(x.cost),profit===""?"":sen(profit),x.need?"是":"否"] })).concat([[],["进货记录"],["商品","数量","单价 RM","供应商","状态","已计入","测试","创建人","最后修改"]]).concat(RST.map(r=>[nmId(r.product_id),r.qty,sen(r.unit_cost_cents),r.supplier||"",r.status,r.stock_applied,r.is_test?"是":"否",r.created_by||"",r.updated_by||""])).map(r=>r.map(cell).join(",")).join("\r\n");
@@ -3960,7 +3982,10 @@ function nmId(id){ const p=PM[id]; return p?PN(p):id }
     if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=[["shipfee","运费","Shipping fees"],["rules","积分规则","Points rules"],["tiers","等级福利","Tier perks"],["stamp","集章卡","Stamp card"],["freeplay","购物送夹取","Free plays"],["rewards","会员奖励","Member rewards"],["lucky","夹娃娃机","Claw machines"],["faq","客服问答","Help Q&A"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"],["log","版本记录","Change log"]]);
       const st=tabs.some(t=>t[0]===ui.stab)?ui.stab:"rules";
       const body=st==="shipfee"?admShipFee():st==="rules"?admMembers().split("<h2>")[0]+"<h2>"+admMembers().split("<h2>")[1]:st==="tiers"?admTiers():st==="faq"?admFaq():st==="stamp"?admStamp():st==="freeplay"?admFree():st==="rewards"?admRewards():st==="lucky"?part("lucky",1):st==="staff"?admStaff().replace(/^\s*<h1>[\s\S]*?<\/h1>/,""):st==="log"?admChangelog():part("launch");
-      return H1("设置","Settings")+off+seg("data-stab",st,tabs)+body }
+      /* 2026-11-25 店主：设置分页太乱，按用途分组。每个机制仍是自己的分页（admin-settings-independence） */
+      const SG=[["运送","Shipping",["shipfee"]],["会员和积分","Members & points",["rules","tiers","stamp","rewards"]],["活动","Events",["freeplay","lucky"]],["客服","Help",["faq"]],["店铺管理","Store admin",["staff","launch","log"]]];
+      const grp=`<div class="sgrp">${SG.map(g=>{ const l=tabs.filter(t=>g[2].includes(t[0])); return l.length?`<div class="sgr"><span class="sgl">${B(g[0],g[1])}</span>${seg("data-stab",st,l)}</div>`:"" }).join("")}</div>`;
+      return H1("设置","Settings")+off+grp+body }
     const rows=[]; Object.entries(all).forEach(([u,d])=>liveO(u,d.orders).forEach(o=>rows.push([u,eff(u,o)]))); rows.sort((a,b)=>b[1].at-a[1].at);
     const f=OF.find(x=>x[0]===ui.ofil)||OF[0], list=rows.filter(r=>f[3](r[1]));
     return H1("订单","Orders")+off+seg("data-ofil",f[0],OF.map(x=>[x[0],x[1],x[2],rows.filter(r=>x[3](r[1])).length]))+ordStats(rows)+(f[0]==="toship"&&list.length?`<div class="row"><button class="pri" data-plabel="1">${B("打印 "+list.length+" 张寄件地址","Print "+list.length+" shipping labels")}</button></div>`:"")+expBar("orders")+(list.length?list.map(r=>admOrder(r[0],r[1])).join(""):`<p class="muted">${rows.length?BL("这个状态下没有订单。","No orders in this state."):BL("还没有订单。顾客下单后会出现在这里，审核、寄送都在这一页做。","No orders yet. New orders appear here, and you review and ship them on this page.")}</p>`) };
@@ -4091,7 +4116,7 @@ V.member=()=>{ const E=isEN();
 const rwImg=r=>!r||!r.img?"":r.img.k==="up"?BLOB(r.img.id):PM[r.img.id]?simg(PM[r.img.id]):"";
 const rwName=r=>B(r.name,r.en||r.name);
 function rewardSec(m){ const L=(LUCKY.rewards||[]).filter(r=>r.on), all=ui.rwAll?L:L.slice(0,4), mine=arr(ME.rdm).slice().reverse();
-  return `<section class="panel stack rwsec" id="mrw" style="gap:12px"><div><h2 style="margin:0">${B("会员奖励","Member rewards")}</h2><p class="muted" style="margin:4px 0 0">${B("探索会员中心，解锁你的专属奖励！用积分兑换，兑换后店主会联系你安排。","Explore your member centre and unlock exclusive rewards. Redeem with points and we'll arrange delivery.")}</p></div>
+  return `<section class="panel stack rwsec" id="mrw" style="gap:12px"><div><h2 style="margin:0">${B("会员奖励","Member rewards")}</h2><p class="muted" style="margin:4px 0 0">${B("用积分换奖励。换了之后店主会联系你安排。","Swap points for rewards. We'll contact you to arrange it.")}</p></div>
   ${L.length?`<div class="rwgrid">${all.map(r=>{ const can=m.left>=r.pts; return `<div class="rwd"><div class="rwi">${rwImg(r)?`<img src="${esc(rwImg(r))}" alt="" loading="lazy">`:`<img src="intro/holofen-mark.webp" alt="" class="ph">`}</div><b>${rwName(r)}</b><span class="rwp">${r.pts.toLocaleString()} ${B("积分","pts")}</span><button type="button" class="${can?"pri":""}" data-rdm="${esc(r.id)}" ${can?"":"disabled"}>${can?B("兑换","Redeem"):B(`还差 ${r.pts-m.left} 分`,`${r.pts-m.left} pts short`)}</button></div>` }).join("")}</div>${L.length>4?`<button type="button" class="morebtn" data-rwall="1">${ui.rwAll?B("收起","Show less"):B("查看更多","See more")}</button>`:""}`:`<p class="note" style="margin:0">${B("奖励还在准备中，店主放上来后会出现在这里。","Rewards are on the way. They'll show up here once added.")}</p>`}
   ${mine.length?`<details class="rwmine"><summary>${B(`我的兑换记录（${mine.length}）`,`My redemptions (${mine.length})`)}</summary>${mine.map(x=>{ const r=(LUCKY.rewards||[]).find(y=>y.id===x.r), ok=m.rdOk&&m.rdOk[x.n]; return `<div class="alrow"><span class="muted">${new Date(x.at).toLocaleDateString(isEN()?"en-MY":"zh-CN")}</span><b>${r?rwName(r):esc(x.nm||"")}</b><span class="muted">−${x.pts} ${B("分","pts")}</span><span class="chip">${!ok?B("无效（积分不够）","Invalid (not enough points)"):(LUCKY.sent||{})["rw:"+XU+":"+x.n]?B("已安排","Arranged"):B("等店主安排","Pending")}</span></div>` }).join("")}</details>`:""}</section>` }
 function couponSec(cps){ if(!cps.length) return `<section class="panel stack" id="mcp" style="gap:6px"><h2 style="margin:0;font-size:18px">${B("我的优惠券","My coupons")}</h2><p class="muted" style="margin:0">${B("收到货写评价就送一张回购码：下次满 RM100 减 RM10。","Review a delivered order to get a coupon: RM10 off your next RM100+ order.")}</p></section>`;
@@ -4547,7 +4572,7 @@ readHash(); initStore(); initExtra(); initLucky(); initFaq();
   const label=el=>{ const E=typeof isEN==="function"&&isEN(), en=el.querySelector(".tr")||el.querySelector(".en"); if(E&&en) return en.textContent.replace(/\s+/g," ").trim(); const c=el.cloneNode(true); c.querySelectorAll(".en,.tr,svg").forEach(x=>x.remove()); return c.textContent.replace(/\s+/g," ").trim() };
   function rule(el){
     for(const [sel,m] of R){ const t=el.closest(sel); if(t) return [t,typeof m==="function"?m(t):m] }
-    const b=el.closest("button,input[type=submit]"); if(!b||b.disabled||b.closest("#cfm,[data-ofl],[data-atab],[data-stc],.chips,[role=tab],[role=tablist],nav,header")) return null;
+    const b=el.closest("button,input[type=submit]"); if(!b||b.disabled||b.closest("#cfm,[data-ofl],[data-atab],[data-stc],[data-stl],[data-sts],.serstrip,.slang,.chips,[role=tab],[role=tablist],nav,header")) return null;
     const t=label(b)||b.value||"", zh=(()=>{ const c=b.cloneNode(true); c.querySelectorAll(".en,.tr,svg").forEach(x=>x.remove()); return c.textContent })(); if(!t||SKIP.test(zh)||!KW.test(zh)) return null;
     return [b,["确认「"+t+"」？","Confirm: "+t+"?"]] }
   let pass=null;
@@ -4573,7 +4598,7 @@ readHash(); initStore(); initExtra(); initLucky(); initFaq();
 </script>
 <script>
 /* v84 全站横向滑动区：左右按钮、滑鼠拖动（带惯性）、滑鼠滚轮也能左右滑。适用于系列选择条、筛选按钮、横排商品等 */
-(function(){ const SEL=".serstrip,.crow,.mrow,.chips,.tape,nav.sub,.mfilt .seg";
+(function(){ const SEL=".serstrip,.crow,.mrow,.chips,.tape,nav.sub,.mfilt .seg,.ncrow";
   const RM=matchMedia("(prefers-reduced-motion:reduce)");
   function glide(el,to){ to=Math.max(0,Math.min(el.scrollWidth-el.clientWidth,to)); if(RM.matches){ el.scrollLeft=to; return } el._to=to; if(el._g) return; el._g=1;
     (function step(){ const d=el._to-el.scrollLeft; if(Math.abs(d)<1){ el.scrollLeft=el._to; el._g=0; return } el.scrollLeft+=d*.2; requestAnimationFrame(step) })() }
