@@ -146,6 +146,8 @@ td.th img{width:40px;height:56px;object-fit:contain;background:var(--tile);borde
 @media (max-width:640px){.sgr{flex-direction:column;align-items:flex-start;gap:4px}.sgl{flex:none}}
 /* v137.2 积分规则分区 */
 .rsec{border:1px solid var(--line);border-radius:14px;padding:12px 14px 14px;margin:0;min-width:0;display:grid;gap:10px}.rsec legend{font-weight:800;font-size:15px;padding:0 6px}.rtier{width:100%}.rtier input{width:9em;max-width:100%}
+/* v137.5 店主：不让人随便存图（挡不了截图） */
+img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}
 .nthumb.ndt{background:var(--surface);border:2px solid var(--nc);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;line-height:1}.nthumb.ndt b{font-family:var(--display);font-size:30px;color:var(--ink)}.nthumb.ndt small{font-size:12px;font-weight:700;color:var(--muted);margin-top:2px}
 @media (max-width:520px){.nthumb.ndt b{font-size:24px}}
 .news article:has(.ndt) time{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -2446,6 +2448,9 @@ function cbkStrip(side,row){ const n=8; return `<div class="cbks ${side}" data-r
   const end=e=>{ if(!drag) return; const d=drag; drag=null; d.t.parentElement.classList.remove("dragging"); if(d.moved&&performance.now()-d.lt<90) st(d.t).v=Math.max(-3000,Math.min(3000,d.v)); st(d.t).hold=performance.now()+1500; if(d.moved){ const kill=ev=>{ ev.preventDefault(); ev.stopPropagation() }; document.addEventListener("click",kill,{capture:true,once:true}); setTimeout(()=>document.removeEventListener("click",kill,{capture:true}),50) } };
   document.addEventListener("pointerup",end); document.addEventListener("pointercancel",end);
   document.addEventListener("dragstart",e=>{ if(e.target.closest&&e.target.closest(".mq")) e.preventDefault() });
+  /* v137.5 店主：图片不能右键另存、不能拖走（上传框和后台照片除外） */
+  document.addEventListener("contextmenu",e=>{ const t=e.target; if(t&&t.tagName==="IMG"&&!t.closest(".adm,#view .acard,[data-avdrop]")) e.preventDefault() });
+  document.addEventListener("dragstart",e=>{ if(e.target&&e.target.tagName==="IMG") e.preventDefault() });
   document.addEventListener("wheel",e=>{ const m=e.target.closest&&e.target.closest(".mq"); if(!m||Math.abs(e.deltaX)<=Math.abs(e.deltaY)) return; e.preventDefault(); const o=st(m.querySelector(".track")); o.tgt=null; o.v=0; o.x+=e.deltaX; o.hold=performance.now()+1500 },{passive:false});
   /* v76 左右箭头：每按一次移动约 2 张，停 2.5 秒再继续自动滚 */
   document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-mq]"); if(!b) return; const t=b.parentElement.querySelector(".track"); if(!t) return; const o=st(t), f=t.querySelector("figure"), w=f?f.getBoundingClientRect().width+12:180; const base=o.tgt!=null?o.tgt:o.x; o.tgt=base+(+b.dataset.mq)*w*2; o.hold=performance.now()+2500 });
@@ -3535,6 +3540,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
+ ["v137.5","2026-11-25",["防爬：网站前面加一道关卡，挡掉 AI 爬虫、抓数据工具和无头浏览器（搜索引擎和 WhatsApp / Facebook 分享预览照常）；加 robots.txt 和 noai 标记；图片不能右键另存、不能拖走、手机长按不弹存图"]],
  ["v137.4","2026-11-25",["首页滚动卡牌：只先载入前 6 张图，其余滑到才载入，手机网络慢时首页更快出来"]],
  ["v137.3","2026-11-25",["客服改成 Shopee 式：常见问题按分类分页、列表显示；下面有「订单」按钮，可以按状态筛选、用编号搜索自己的订单，选了就回答那张订单现在的进度"]],
  ["v137.2","2026-11-25",["后台「积分规则」分成 买东西得积分 / 积分换折扣 / 会员等级 / 生日 / 每日签到 五个区，等级门槛和倍数改成一张表","手机图鉴一排 5 张时，卡号、卡名和价格的字放大加粗，看得更清楚"]],
