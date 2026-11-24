@@ -605,7 +605,7 @@ textarea{font:inherit;width:100%;box-sizing:border-box;border:1px solid var(--li
 @media (max-width:640px){.hero-cta4{gap:8px}.hgo{padding:10px;gap:8px;flex-direction:column;align-items:flex-start}.hgo .hi{width:36px;height:36px}.hgo .ha{display:none}.hgo b{font-size:15px}.hgo small{font-size:11px}}
 .hero-shell{position:relative;--sp:0}
 .cbks{display:none}
-@media (min-width:1280px){
+@media (min-width:1100px){
  .cbks{display:block;position:absolute;overflow:visible;pointer-events:none;--cw:132px}
  .cbks.l{right:calc(100% + 16px);-webkit-mask:linear-gradient(90deg,transparent,#000 45%);mask:linear-gradient(90deg,transparent,#000 45%)}
  .cbks.r{left:calc(100% + 16px);-webkit-mask:linear-gradient(270deg,transparent,#000 45%);mask:linear-gradient(270deg,transparent,#000 45%)}
@@ -1388,18 +1388,7 @@ footer .disc{text-align:center;font-size:12px;color:#3d4a50;border-top:1px solid
 }
 @media (prefers-reduced-motion:reduce){.prod:hover,.ctl:hover,.mc:hover,.fcat:hover,.band .panel.news article:hover,.wgrid>*:hover,.rwd:hover,.serstrip button:hover{transform:none}.prod:hover .pic img,.fcat:hover img,.rwd:hover img{transform:none}}
 
-/* v134 五：系列目录、单卡页（Kado 参考） */
-.catw{display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:start}
-.catside{position:sticky;top:90px;display:flex;flex-direction:column;gap:4px;border:1px solid var(--line);border-radius:14px;padding:10px;background:#fff}
-.catside .cath{font-size:12px;color:var(--muted);padding:4px 8px}
-.catside button{display:flex;justify-content:space-between;align-items:center;gap:8px;border:0;background:transparent;border-radius:10px;padding:9px 10px;text-align:left;min-height:0;font-weight:600}
-.catside button.on{background:#0a3d45;color:#fff}.catside button small{opacity:.7}
-.catgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
-.fcat{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;color:inherit;text-decoration:none}
-.fcv{height:240px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(circle at 50% 35%,#fff,color-mix(in srgb,var(--sc) 22%,#fff));padding:12px}
-.fcv img{width:100%;height:100%;object-fit:contain}.fcv img.lg{max-width:80%}.fcv .lgt{font-size:28px;color:var(--sc)}
-.fci{display:flex;flex-direction:column;gap:2px;padding:10px 12px 12px}.fci b{font-size:14px;line-height:1.3}.fci small{color:var(--muted);font-size:12px}.fci .fcc{font-family:var(--mono);color:#0a3d45}
-@media (max-width:767px){.fcv{height:180px}.catw{grid-template-columns:1fr}.catside{position:static;flex-direction:row;overflow-x:auto;padding:6px}.catside .cath{display:none}.catside button{white-space:nowrap;justify-content:flex-start}.catgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
+/* v134 五：单卡页（Kado 参考） */
 .pqimg{position:relative}.pqimg .cbn,.pqimg .cbr{position:absolute;top:8px;font:800 12px/1 var(--mono);padding:5px 8px;border-radius:8px;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .pqimg .cbn{left:8px;background:rgba(10,61,69,.88)}.pqimg .cbr{right:8px;background:var(--rc,#0a3d45)}
 .pqL h1{font-size:clamp(24px,2.6vw,34px);word-break:keep-all;overflow-wrap:anywhere}
@@ -1416,9 +1405,136 @@ footer .disc{text-align:center;font-size:12px;color:#3d4a50;border-top:1px solid
 .tvi i{position:absolute;left:6px;top:6px;font:800 12px/1 var(--mono);font-style:normal;background:#0a3d45;color:#fff;border-radius:6px;padding:4px 6px}
 .topv b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.topv small{color:#0b6672;font-weight:700}
 .tvsum{margin:0;padding:12px 14px;border-radius:12px;background:#eef8f5;font-size:14px}.ctr{display:flex;justify-content:center}
-@media (hover:hover) and (prefers-reduced-motion:no-preference){.fcat{transition:transform .2s ease,box-shadow .2s ease}.fcat:hover{transform:translateY(-4px);box-shadow:0 12px 26px rgba(20,37,74,.14)}}
 #pricearea .gtab td small.muted{display:block;margin-top:2px}
 @media (max-width:359px){#wishbtn{display:none!important}}
+/* v135 改善方面 12 */
+.shopidx{display:flex;align-items:center;justify-content:space-between;gap:12px}.shopidx p{margin:0;flex:1 1 auto;min-width:0}
+.idxbtn{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;border:1.5px solid #0a3d45;border-radius:10px;padding:7px 14px;font-weight:700;color:#0a3d45;text-decoration:none;background:#fff}
+.idxbtn:hover{background:#0a3d45;color:#fff}
+/* v135 一：电脑版首页左右留白约 2cm；原创卡背在留白里跟着滚动卡同步；系列轮播再多留 1cm，后面露出半透明的前/后系列 */
+@media (min-width:1100px){
+ :root{--gut:75px}
+ .hero-shell.fb,.band.fb{margin-left:calc(50% - var(--vw,100vw)/2 + var(--gut));margin-right:calc(50% - var(--vw,100vw)/2 + var(--gut))}
+ .band.fb{border-radius:22px}
+ .hero-shell.fb .hero{border-radius:22px;border:1px solid var(--line)}
+ .hero-shell.fb .cbks{display:block;position:absolute;overflow:visible;pointer-events:none}
+ .hero-shell.fb .cbks.l{right:calc(100% + 10px)}.hero-shell.fb .cbks.r{left:calc(100% + 10px)}
+ .fsc .ftrk{margin:0 calc(var(--gut) + 38px)}
+ .fsc .fsl{border-radius:22px;transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1),visibility 0s linear .6s}
+ .fsc .fsl.on{transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+ .fsc .fsl.prev,.fsc .fsl.next{visibility:visible;opacity:.42;cursor:pointer;transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+ .fsc .fsl.prev{transform:translateX(calc(-100% - 18px)) scale(.94)}.fsc .fsl.next{transform:translateX(calc(100% + 18px)) scale(.94)}
+ .fsc .fsl.prev:hover,.fsc .fsl.next:hover{opacity:.6}
+ .fsc .fsl.on{z-index:1}
+ .fsc .sarr.l{left:calc(var(--gut) + 38px - 26px)}.fsc .sarr.r{right:calc(var(--gut) + 38px - 26px)}.fsc .sarr{z-index:3}
+}
+@media (min-width:1100px) and (max-width:1279px){.hero-shell.fb .cbks{--cw:120px}}
+.fsc .fsl.on{cursor:pointer}.fsc .fsl.on a,.fsc .fsl.on button{cursor:pointer}
+/* v135 二：手机版一屏看完、网格列数 */
+@media (max-width:640px){
+ /* 首页滚动卡：一屏 5 张 */
+ .hero{--mqh:calc((100vw - 56px)/5/.7174)}
+ .mq .track{gap:0}.mq figure{margin-right:6px}
+ .mq img{border-radius:5px;box-shadow:0 2px 6px rgba(20,37,74,.18)}
+ .hero .mq figure::after{border-radius:5px}
+ .mq figcaption{font-size:9px;line-height:1.25;padding-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+ .mq .bdg{top:3px;left:3px;font-size:8.5px;padding:1px 4px}
+ .mqa{width:30px;height:30px;font-size:16px}
+ /* 系列展示：名称、商品、按钮一屏看完 */
+ .fsl .fin{display:grid;grid-template-columns:minmax(0,1fr) 38%;grid-template-rows:auto;gap:8px 10px;padding-top:46px;padding-bottom:50px;min-height:0}
+ .fsl .fin>div:first-child{display:contents}
+ .fsl .lg{grid-column:1;grid-row:1;max-height:62px;max-width:100%;align-self:center}
+ .fsl .fpic{grid-column:2;grid-row:1/3;order:0;height:140px}
+ .fsl .sd{grid-column:1;grid-row:2;font-size:11.5px;margin:0;line-height:1.35}
+ .fsl .fpr{grid-column:1/-1;grid-row:3;margin:2px 0 0;gap:6px}
+ .fpr a{grid-template-columns:40px minmax(0,1fr);gap:8px;padding:5px 8px}
+ .fpr img{width:40px;height:40px}
+ .fpr b{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .fpr .pr{font-size:12.5px}
+ .fsl .fbtns{grid-column:1/-1;grid-row:4;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+ .fmore{min-height:40px;padding:0 10px;font-size:13.5px}
+ .fsc .sarr{top:auto;bottom:6px;width:32px;height:32px}
+ .fsc .sarr svg{width:16px;height:16px}
+ .fsc .sarr.l{left:12px}.fsc .sarr.r{right:12px}
+ .fsc .sbars{bottom:18px}
+ /* 商店：一排 3 个 */
+ .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+ .prod{border-radius:10px}
+ .prod .pic a{padding:4px}
+ .prod .info{padding:6px;gap:2px}
+ .prod .nm{font-size:11.5px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+ .prod .set{font-size:9.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.prod .set img{display:none}
+ .prod .cno,.prod .lgc{font-size:9px}
+ .bigp{font-size:13.5px}.prod .bigp .np{font-size:11px}
+ .prod .foot{padding-top:4px}.prod .foot button,.prod .foot .btnl{font-size:11px;padding:6px 2px;min-height:32px;border-radius:8px}
+ .prod .qv{display:none}
+ .prod .prebdg{font-size:9px;padding:2px 5px}
+ .prod .wish,.prod [data-wish]{transform:scale(.8);transform-origin:top right}
+ /* 卡表、相似卡：一排 5 张；高价前 15：一次 5 张 */
+ .cgrid{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+ .crow{gap:6px}.crow .ctl{flex:0 0 calc((100% - 24px)/5)}
+ .cgrid .ctl,.crow .ctl{padding:3px;gap:2px;border-radius:7px}
+ .cgrid .ctl .ctop,.crow .ctl .ctop{font-size:8px;gap:2px}
+ .cgrid .ctl .rb,.crow .ctl .rb{font-size:8px}
+ .cgrid .ctl .rb i,.crow .ctl .rb i{display:none}
+ .cgrid .ctl .nm,.crow .ctl .nm{font-size:9px}
+ .cgrid .ctl .kt,.crow .ctl .kt,.cgrid .ctl .cpr>:not(.np),.crow .ctl .cpr>:not(.np){display:none}
+ .cgrid .ctl .cpr,.crow .ctl .cpr{font-size:9.5px;gap:0}
+ .crow .ctl .rk{font-size:8.5px;padding:1px 4px;top:-4px;left:-4px}
+ /* 稀有度：上面一行横滑标签 */
+ .legend.chk{padding:10px;gap:8px}
+ .legend .lgh .muted,.legend.chk>p.muted{display:none}
+ .lgg{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+ .lgg::-webkit-scrollbar{display:none}
+ .lgg button{display:inline-flex;flex:0 0 auto;gap:4px;padding:5px 9px;border:1px solid var(--line);border-radius:99px;white-space:nowrap}
+ .lgg .eq,.lgg .en2{display:none}.lgg .sym{font-size:13px;letter-spacing:-1px}.lgg .nm{font-size:12px}
+ .legend.chk>.row{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.legend.chk>.row button{flex:0 0 auto;white-space:nowrap}
+ /* 卡组牌表：一排 4 张 */
+ .dkg{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+ /* 比赛成绩：一人一张小卡，不挤 */
+ table.trs thead{display:none}
+ table.trs,table.trs tbody{display:block;width:100%}
+ table.trs tr{display:grid;grid-template-columns:22px minmax(0,1fr) auto;grid-template-areas:"n p c" "n d b";gap:4px 8px;align-items:center;padding:9px 6px;border-bottom:1px solid var(--line)}
+ table.trs tr.trx{display:block;padding:6px 0}
+ table.trs td{padding:0!important;border:0!important;min-width:0}
+ table.trs td:nth-child(1){grid-area:n;align-self:start;font-weight:800}
+ table.trs td:nth-child(2){grid-area:p;font-weight:700}
+ table.trs td:nth-child(3){grid-area:c;color:var(--muted);font-size:12px}
+ table.trs td:nth-child(4){grid-area:d;font-size:12.5px}
+ table.trs td:nth-child(5){grid-area:b;justify-self:end}
+ table.trs tr.trx td{display:block}
+ table.trs .dn{display:flex;align-items:center;gap:6px;min-width:0}
+}
+/* v135 三：行情页（参考 Kado 行情页的版面，数字都是本站自己的来源） */
+.msay{margin:10px 0 0;font-size:15px;line-height:1.5}.msay b{font-weight:800;display:inline-block;white-space:nowrap}.msay small{display:block;color:var(--muted);font-size:12px}
+.kbh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px}.kbh h2{margin:0;font-size:22px}.kbh .muted{font-size:12.5px}
+.kboard,.ktop{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px}
+.kbtab{display:none}
+.kbcols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.kbc .col{border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.kbc.up .ch{background:#eaf7ef;color:#1a7f45}.kbc.dn .ch{background:#fdeeee;color:#b3261e}
+.kbc .ch{display:flex;justify-content:space-between;padding:10px 14px;font-weight:800}
+.ktrow{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 8px;scroll-snap-type:x proximity}
+.kt10{flex:0 0 128px;display:flex;flex-direction:column;gap:3px;color:inherit;text-decoration:none;scroll-snap-align:start;font-size:13px}
+.kti{position:relative;display:block}.kti img,.kti .spr{width:100%;border-radius:8px;display:block}
+.kti i{position:absolute;left:6px;top:6px;font:800 13px/1 var(--num);font-style:normal;background:#0a3d45;color:#fff;border-radius:7px;padding:4px 7px}
+.kt10 b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.kt10 small{color:var(--muted);font-size:11.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ktp{font:800 14px var(--num);color:#0a3d45}
+@media (hover:hover){.kt10:hover .kti img{transform:translateY(-3px);transition:transform .2s}}
+.mhow summary{cursor:pointer;font-weight:700}
+@media (max-width:640px){
+ .mhero{padding:14px!important}.mhero .tag{display:none}.mh1{gap:8px!important}.mhero h1{font-size:24px!important;margin:4px 0!important}.msay{font-size:13.5px;margin-top:8px}
+ .kboard,.ktop{padding:12px;border-radius:14px}.kbh h2{font-size:18px}
+ .kbtab{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+ .kbtab button{min-height:38px;border-radius:10px;font-weight:700;font-size:13.5px}
+ .kbtab button.on{background:#0a3d45;color:#fff;border-color:#0a3d45}
+ .kbcols{grid-template-columns:1fr}.kbc{display:none}.kbc.on{display:block}.kbc .ch{display:none}
+ .kt10{flex:0 0 calc((100% - 24px)/4);font-size:10.5px}.kt10 small{display:none}.ktp{font-size:11px}.kti i{font-size:10px;padding:2px 5px;left:3px;top:3px}
+}
+.cinfo .zt{display:block;color:var(--muted);font-size:12px;font-weight:500;margin-top:2px}
+.cinfo p.zt{margin-top:2px}
+.cmtrend{display:flex;justify-content:center;width:100%}
+@media (max-width:640px){.modal .box.cm .cmimg{width:150px;max-width:150px;margin:0 auto}}
+html[data-lang="en"] .lgp>.en,html[data-lang="en"] .lgp>i,html[data-lang="en"] .lgp>small,html[data-lang="en"] .lgp>.tr{font-weight:inherit}
 </style>
 
 <div class="bgfx" aria-hidden="true"></div>
@@ -1871,7 +1987,7 @@ const NAVZH={home:"欢迎来 Holofen！新品和热门都在这里",shop:"补充
 const NAVEN={home:"Welcome to Holofen! New and popular items are here",shop:"Booster boxes, ETBs and collections. Order here",series:"Full card lists and rarities for every set",market:"Check card prices and see what's rising or falling",decks:"Winning tournament decks, or let us build one for you",news:"New releases, tournament results and Malaysia events",about:"Who we are, and how to spot genuine cards"};
 /* 导航小提示：跟着当前语言走 */
 const NAVHINT=window.NAVHINT=new Proxy({}, {get:(_,k)=>(lang==="en"?NAVEN:NAVZH)[k]});
-const TABS=[["home","首页","Home"],["shop","商店","Shop"],["series","系列和卡牌","Sets & cards"],["market","卡牌行情","Card market"],["decks","卡组和代组","Decks & building"],["news","最新消息","News"],["about","关于我们","About us"]];
+const TABS=[["home","首页","Home"],["shop","商店","Shop"],["series","图鉴","Card Index"],["market","卡牌行情","Card market"],["decks","卡组和代组","Decks & building"],["news","最新消息","News"],["about","关于我们","About us"]];
 /* 二级导航：每个顶部栏目下面的分页。购物车和我的订单放在一起，从右上角的按钮进。 */
 const GROUPS={decks:[["decks","比赛卡组","Tournament decks"],["build","代组服务","Deck building"]],cart:[["cart","购物车","Cart"]]};
 const PARENT={}; Object.entries(GROUPS).forEach(([g,l])=>l.forEach(t=>PARENT[t[0]]=g));
@@ -1916,7 +2032,7 @@ function renderCore(){
   const vch=setHTML("#view",subnav()+(V[route]||V.home)());
   $("#view").classList.toggle("hassub",!!GROUPS[PARENT[route]]);
   setHTML("#modal",ui.avPick&&ME?avPicker():ui.kf?kfModal():ui.pid&&PM[ui.pid]?detail(PM[ui.pid]):ui.mid&&PM[ui.mid]?mdetail(PM[ui.mid]):ui.cid?cardModal(ui.cid):"");
-  langPass();
+  langPass(); titlePass();
   if(vch&&route==="home"&&window.fitHero) requestAnimationFrame(window.fitHero);
   if(window.fitBar) window.fitBar();
   if(keep){ const el=document.getElementById(keep); if(el){ el.focus(); try{el.setSelectionRange(pos,pos)}catch(e){} } }
@@ -1966,7 +2082,7 @@ const LAUNCH=[
 const TILES=[["single","单卡","Singles","#ffe3d1"],["box","补充包盒","Booster boxes","#dcebff"],["etb","ETB 训练家盒","Elite Trainer Boxes","#ddf3da"],["build","帮我组牌","Deck building help","#fff1b8"]];
 const BTM=[["home","首页",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>`],["news","消息",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>`],["shop","商店",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16l-1.5 12a1 1 0 0 1-1 .9H6.5a1 1 0 0 1-1-.9z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>`],["about","关于",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>`],["cart","购物车",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2.5 3h3l2.6 12.2a1.5 1.5 0 0 0 1.5 1.2h8.3a1.5 1.5 0 0 0 1.5-1.1L21.5 8H6.4"/></svg>`]];
 (()=>{ const I=Object.fromEntries(BTM.map(t=>[t[0],t[2]])), sv=d=>`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
-  BTM.splice(0,BTM.length,["home","首页",I.home],["series","系列",sv('<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>')],["market","行情",sv('<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>')],["decks","卡组",sv('<rect x="4" y="6" width="11" height="15" rx="2"/><path d="M9 3h9a2 2 0 0 1 2 2v12"/>')],["shop","商店",I.shop],["news","消息",I.news],["about","关于",sv('<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>')]);
+  BTM.splice(0,BTM.length,["home","首页",I.home],["series","图鉴",sv('<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>')],["market","行情",sv('<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>')],["decks","卡组",sv('<rect x="4" y="6" width="11" height="15" rx="2"/><path d="M9 3h9a2 2 0 0 1 2 2v12"/>')],["shop","商店",I.shop],["news","消息",I.news],["about","关于",sv('<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>')]);
   /* 手机底部只放 5 格：首页、行情、商店、卡组、更多；其余放进「更多」 */
   const M=Object.fromEntries(BTM.map(t=>[t[0],t]));
   window.BTM_MORE=[M.series,M.news,M.about,["member","会员中心",sv('<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>')],["orders","我的订单",sv('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>')]];
@@ -2028,34 +2144,24 @@ function setCnt(s){ const pr=(SC[s]&&SC[s].printed)||(SI[s]&&SI[s].total)||0, al
 function serProds(s){ return P.filter(p=>p.s===s&&p.c!=="single"&&listed(p)).sort((a,b)=>b.price-a.price).slice(0,3) }
 function serCarousel(){
   const n=SETS.length, i=((ui.sc%n)+n)%n;
-  return `<section class="fsc fb" aria-roledescription="carousel" aria-label="${BT("卡牌系列","Card sets")}"><div class="ftrk">${SETS.map((s,k)=>{ const [c,bx]=setFeature(s), ps=serProds(s); return `<div class="fsl${k===i?" on":""}" style="--sc:${SETC[s]||"#1c8fc4"}" role="group" aria-roledescription="slide" aria-label="${esc(s)}"${k===i?"":` aria-hidden="true"`}><img class="fmark" src="intro/holofen-logo.webp" alt="" aria-hidden="true"><div class="fin"><div><img class="lg" src="${SI[s].logo}" alt="${esc(s)}" loading="${k===i?"eager":"lazy"}"><div class="sd">${B("发售日期 "+SI[s].date,"Released "+SI[s].date)}<span> · </span>${setCnt(s)}</div>${ps.length?`<ul class="fpr">${ps.map(p=>`<li><a href="#p/${p.id}" tabindex="${k===i?0:-1}"><img src="${simg(p)}" alt="" loading="lazy"><span><b>${PZH(p)}</b><span class="pr">${p.price>0?rm(dp(p)):B("价格待定","Price TBD")}</span></span></a></li>`).join("")}</ul>`:""}<div class="fbtns"><a class="fmore pri" href="#shop" data-ser="${esc(s)}" tabindex="${k===i?0:-1}">${B("购买产品","Shop products")}</a><a class="fmore" href="${setUrl(s)}" tabindex="${k===i?0:-1}">${B("查看更多","See more")}</a></div></div><div class="fpic">${bx?`<img class="c2" src="${simg(bx)}" alt="${esc(bx.n)}" loading="lazy">`:""}${c?`<img class="c1" src="${c.big?"big":"img"}/${c.img}.jpg" alt="${esc(c.n)}" loading="lazy">`:SETFEAT[s]?`<img class="c1" src="${SETFEAT[s][0]}" alt="${esc(SETFEAT[s][1])}" loading="lazy">`:""}${!c&&!bx&&!SETFEAT[s]?`<div class="ph"><span>${B("这个系列的产品照片还在准备","Product photos coming soon")}</span></div>`:""}</div></div></div>` }).join("")}</div>
+  return `<section class="fsc fb" aria-roledescription="carousel" aria-label="${BT("卡牌系列","Card sets")}"><div class="ftrk">${SETS.map((s,k)=>{ const [c,bx]=setFeature(s), ps=serProds(s); const pv=k===(i-1+n)%n&&n>2, nx=k===(i+1)%n&&n>1; return `<div class="fsl${k===i?" on":pv?" prev":nx?" next":""}" style="--sc:${SETC[s]||"#1c8fc4"}" role="group" aria-roledescription="slide" aria-label="${esc(s)}"${k===i?"":` aria-hidden="true"`}><img class="fmark" src="intro/holofen-logo.webp" alt="" aria-hidden="true"><div class="fin"><div><img class="lg" src="${SI[s].logo}" alt="${esc(s)}" loading="${k===i?"eager":"lazy"}"><div class="sd">${B("发售日期 "+SI[s].date,"Released "+SI[s].date)}<span> · </span>${setCnt(s)}</div>${ps.length?`<ul class="fpr">${ps.map(p=>`<li><a href="#p/${p.id}" tabindex="${k===i?0:-1}"><img src="${simg(p)}" alt="" loading="lazy"><span><b>${PZH(p)}</b><span class="pr">${p.price>0?rm(dp(p)):B("价格待定","Price TBD")}</span></span></a></li>`).join("")}</ul>`:""}<div class="fbtns"><a class="fmore pri" href="#shop" data-ser="${esc(s)}" tabindex="${k===i?0:-1}">${B("购买产品","Shop products")}</a><a class="fmore" href="${setUrl(s)}" tabindex="${k===i?0:-1}">${B("查看图鉴","See Card Index")}</a></div></div><div class="fpic">${bx?`<img class="c2" src="${simg(bx)}" alt="${esc(bx.n)}" loading="lazy">`:""}${c?`<img class="c1" src="${c.big?"big":"img"}/${c.img}.jpg" alt="${esc(c.n)}" loading="lazy">`:SETFEAT[s]?`<img class="c1" src="${SETFEAT[s][0]}" alt="${esc(SETFEAT[s][1])}" loading="lazy">`:""}${!c&&!bx&&!SETFEAT[s]?`<div class="ph"><span>${B("这个系列的产品照片还在准备","Product photos coming soon")}</span></div>`:""}</div></div></div>` }).join("")}</div>
   <button class="sarr l" data-scar="-1" aria-label="${BT("上一个系列","Previous set")}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button class="sarr r" data-scar="1" aria-label="${BT("下一个系列","Next set")}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
   <div class="sbars" aria-hidden="true">${SETS.map((_,k)=>`<i class="${k===i?"on":""}"></i>`).join("")}</div></section>`;
 }
 (function(){ const f=()=>document.documentElement.style.setProperty("--vw",document.documentElement.clientWidth+"px"); f(); addEventListener("resize",f) })();
 function scarPos(i){ const w=matchMedia("(max-width:640px)").matches?88:78; return `transform:translateX(calc(${(100-w)/2}% - ${i} * (${w}% + 16px)))` }
-function scarGo(d){ const n=SETS.length; ui.sc=((ui.sc+d)%n+n)%n; document.querySelectorAll(".fsc").forEach(c=>{ c.querySelectorAll(".fsl").forEach((el,k)=>{ const on=k===ui.sc; el.classList.toggle("on",on); if(on) el.removeAttribute("aria-hidden"); else el.setAttribute("aria-hidden","true"); el.querySelectorAll("a").forEach(a=>a.tabIndex=on?0:-1); if(on) el.querySelectorAll("img[loading=lazy]").forEach(im=>im.loading="eager") }); c.querySelectorAll(".sbars i").forEach((el,k)=>el.classList.toggle("on",k===ui.sc)) }) }
+/* v135 改善方面 12：电脑上点露出来的前/后系列就切过去；点当前系列画面空白处直接进这个系列的商店 */
+document.addEventListener("click",e=>{ const sl=e.target.closest&&e.target.closest(".fsc .fsl"); if(!sl) return;
+  if(sl.classList.contains("prev")||sl.classList.contains("next")){ e.preventDefault(); e.stopPropagation(); return scarGo(sl.classList.contains("prev")?-1:1) }
+  if(sl.classList.contains("on")&&!e.target.closest("a,button")){ const b=sl.querySelector(".fmore.pri"); if(b) b.click() } },true);
+function scarGo(d){ const n=SETS.length; ui.sc=((ui.sc+d)%n+n)%n; document.querySelectorAll(".fsc").forEach(c=>{ c.querySelectorAll(".fsl").forEach((el,k)=>{ const on=k===ui.sc; el.classList.toggle("on",on); el.classList.toggle("prev",n>2&&k===(ui.sc-1+n)%n); el.classList.toggle("next",n>1&&!on&&k===(ui.sc+1)%n); if(on) el.removeAttribute("aria-hidden"); else el.setAttribute("aria-hidden","true"); el.querySelectorAll("a").forEach(a=>a.tabIndex=on?0:-1); if(on) el.querySelectorAll("img[loading=lazy]").forEach(im=>im.loading="eager") }); c.querySelectorAll(".sbars i").forEach((el,k)=>el.classList.toggle("on",k===ui.sc)) }) }
 setInterval(()=>{ const c=document.querySelector(".fsc"); if(!c||document.hidden||c.matches(":hover")||c.contains(document.activeElement)) return; scarGo(1) },5000);
 addEventListener("resize",()=>scarGo(0));
 let scX=null; document.addEventListener("touchstart",e=>{ scX=e.target.closest&&e.target.closest(".fsc")?e.touches[0].clientX:null },{passive:true});
 document.addEventListener("touchend",e=>{ if(scX==null) return; const dx=e.changedTouches[0].clientX-scX; scX=null; if(Math.abs(dx)>40) scarGo(dx<0?1:-1) },{passive:true});
 
-/* v134 改善方面 11 五①：系列目录（参考 Kado 资料库）。左边按世代分，右边是卡包封面、名称、编号·语言、发售日、张数。只列我们有卡表的系列。 */
-const GENS=[["mega","Mega 进化","Mega Evolution"],["sv","朱紫","Scarlet & Violet"]];
-const genOf=s=>{ const st=SI[s]||{}; if(st.ja) return /^M/i.test(st.code||"")?"mega":"sv"; const id=(SC[s]&&SC[s].id)||""; return /^me/.test(id)?"mega":"sv" };
-const setCode=s=>{ const st=SI[s]||{}; if(st.ja) return st.code; return CI_CODE({s,r:""})||((SC[s]&&SC[s].id)||"").toUpperCase() };
-function setCover(s){ const st=SI[s]||{}, mine=p=>st.ja?p.code&&String(p.code).toLowerCase()===String(st.code).toLowerCase():p.s===s&&p.lng!=="日文版";
-  const pk=["pack","box","etb","bundle"].map(k=>P.find(p=>mine(p)&&p.c===k&&(p.photo||p.img))).find(Boolean);
-  if(pk) return `<img src="${simg(pk)}" alt="" loading="lazy">`;
-  const lg=SLOGO(s); return lg?`<img class="lg" src="${lg}" alt="" loading="lazy">`:`<b class="lgt">${esc(st.code||s)}</b>` }
-V.series=()=>{ const lg=ui.clng==="ja"?"ja":"en", L=lg==="ja"?JSETS:SETS, g=GENS.some(x=>x[0]===ui.cgen)&&L.some(s=>genOf(s)===ui.cgen)?ui.cgen:"", list=L.filter(s=>!g||genOf(s)===g);
-  return `<div class="crumb">${B("系列和卡牌","Sets & cards")}</div>
-  <div class="row" style="justify-content:space-between;gap:10px"><h1 style="margin:0">${B("系列图鉴","Set catalogue")}</h1>
-   <div class="seg2" role="group" aria-label="${BT("版本","Edition")}">${[["en","英文版","English"],["ja","日文版","Japanese"]].map(x=>`<button type="button" data-clng="${x[0]}" class="${lg===x[0]?"on":""}" aria-pressed="${lg===x[0]}">${B(x[1],x[2])}</button>`).join("")}</div></div>
-  <div class="catw"><nav class="catside" aria-label="${BT("世代","Generations")}"><b class="cath">${B("世代","Generation")}</b>
-   ${[["","全部","All"]].concat(GENS).map(x=>{ const n=x[0]?L.filter(s=>genOf(s)===x[0]).length:L.length; return n?`<button type="button" data-cgen="${x[0]}" class="${g===x[0]?"on":""}" aria-pressed="${g===x[0]}"><span>${B(x[1],x[2])}</span><small>${n}</small></button>`:"" }).join("")}</nav>
-   <div class="catgrid">${list.map(s=>{ const st=SI[s], c=CBYSET[s]||[]; return `<a class="fcat" href="${setUrl(s)}" style="--sc:${SETC[s]||"#1c8fc4"}"><span class="fcv">${setCover(s)}</span><span class="fci"><b>${esc(st.ja?st.jn:s)}</b><small class="fcc">${esc(setCode(s))} · ${st.ja?"JAPANESE":"ENGLISH"}</small><small>${B(st.date+" 发售",st.date)}</small><small>${B((c.length||st.total)+" 张",(c.length||st.total)+" cards")}</small></span></a>` }).join("")}</div></div>
-  <p class="muted" style="font-size:12px">${lg==="ja"?B("日文系列资料来自 TCGdex 日文资料库（2026-11-19），封面是本店进货的商品照片，没有商品的系列先放系列标志。","Japanese set data from TCGdex (2026-11-19). Covers are our product photos; sets we don't stock show the set mark."):B("英文系列资料来自 Pokémon TCG API 和 TCGdex，封面是本店商品照片，没有商品的系列先放系列标志。","English set data from the Pokémon TCG API and TCGdex. Covers are our product photos; sets we don't stock show the set logo.")}</p>` };
+/* v135 改善方面 12 四：点「图鉴」直接进最新系列的卡表页（v134 的卡包封面中间页拿掉） */
+V.series=()=>{ if(!SI[ui.set]) ui.set=SETS[0]; return V.set() };
 
 function mcard(p,i,opt){ const hot=MV[p.id]&&MV[p.id].ch>0;
   return `<button class="mc" data-mid="${p.id}">${i!=null?`<span class="rk">#${i+1}</span>`:""}${hot?`<span class="hot">HOT</span>`:""}<span class="im"><img loading="lazy" src="${simg(p)}" alt=""></span><span class="bd"><span class="mm">${esc(metaLine(p))}</span><b>${esc(PZ(p))}</b><span class="ss">${slogo(p.s)}<span>${esc(p.s)}</span></span><span class="row" style="justify-content:space-between;gap:6px"><span class="pr">${rm(dp(p))}</span>${chgPill(p)}</span>${mk(p)}</span></button>` }
@@ -2075,8 +2181,8 @@ V.market=()=>{
   <div class="panel stack" style="gap:8px"><h3 style="margin:0">${B("日文版市价：暂无数据","Japanese prices: no data yet")}</h3><p style="margin:0">${B("我们现在用的价格来源（TCGdex 读取的 TCGplayer 和 Cardmarket）都是英文版市场，没有日文版成交价。日文版和英文版价格差很多，所以这里不拿英文版价格代替。等找到可以核实的日文版来源再补上。","Our current price sources (TCGplayer and Cardmarket via TCGdex) only cover the English market. Japanese prints sell at very different prices, so we do not show English prices in their place. We will add Japanese prices once there is a source we can verify.")} ${OWNER_TBD()}</p><p class="muted" style="margin:0">${B("日文版完整卡表在这里：","Japanese card lists:")} <a href="${setUrl(JSETS[0])}">${B("日文版卡表","Japanese card lists")} ›</a></p></div>`;
   const sel=ui.mser, callp=Object.values(CARDS).filter(c=>(!sel||c.s===sel)&&(!med||cEd(c)===med)), priced=callp.filter(c=>cRM(c)!=null);
   const mov=priced.filter(c=>c.tr!=null&&cRM(c)>=20);
-  const gain=mov.filter(c=>c.tr>0).sort((a,b)=>b.tr-a.tr||cRM(b)-cRM(a)).slice(0,5), lose=mov.filter(c=>c.tr<0).sort((a,b)=>a.tr-b.tr||cRM(b)-cRM(a)).slice(0,5), hot=priced.slice().sort((a,b)=>cRM(b)-cRM(a)).slice(0,5);
-  const up=mov.filter(c=>c.tr>0).length, dn=mov.filter(c=>c.tr<0).length, tot=priced.reduce((a,c)=>a+cRM(c),0);
+  const gain=mov.filter(c=>c.tr>0).sort((a,b)=>b.tr-a.tr||cRM(b)-cRM(a)).slice(0,10), lose=mov.filter(c=>c.tr<0).sort((a,b)=>a.tr-b.tr||cRM(b)-cRM(a)).slice(0,10), hot=priced.slice().sort((a,b)=>cRM(b)-cRM(a)).slice(0,10);
+  const up=mov.filter(c=>c.tr>0).length, dn=mov.filter(c=>c.tr<0).length, mc=ui.mcol==="dn"?"dn":"up";
   const tape=priced.filter(c=>c.tr!=null&&cRM(c)>=50).sort((a,b)=>Math.abs(b.tr)-Math.abs(a.tr)).slice(0,24).map(c=>`<span>${esc(cN(c))} ${rm(cRM(c))} <b class="${c.tr>0?"up":c.tr<0?"down":"flat"}">${c.tr>0?"▲":c.tr<0?"▼":"–"} ${Math.abs(c.tr)}%</b></span>`).join("");
   const row=(c,i)=>`<button class="brow" data-gocard="${c.k}"><span class="no">${String(i+1).padStart(2,"0")}</span>${c.p?`<img loading="lazy" src="${simg(c.p)}" alt="">`:c.noimg?`<span class="bthumb noimg">★C</span>`:spr(c,"bthumb")}<span style="min-width:0"><span class="nm" style="display:block">${cNH(c)}</span><span class="sb" style="display:block">${edTag(c)} ${esc(c.s)} · #${esc(c.num)}</span></span><span class="pz">${rm(cRM(c))}${trPill(c)}</span></button>`;
   const col=(t,e,l)=>`<div class="col"><div class="ch"><span>${B(t,e)}</span><span style="color:#7d87a8">${l.length}</span></div>${l.length?l.map(row).join(""):`<p style="padding:14px 16px;color:#7d87a8;margin:0">${B("这个系列暂时没有","None in this set yet")}</p>`}</div>`;
@@ -2090,16 +2196,17 @@ V.market=()=>{
     <div class="seg" role="group" aria-label="排序">${[["hi","价格高","High"],["up","7 天涨幅","7d up"],["new","最新","Newest"],["lo","价格低","Low"],["no","编号","Number"]].map(r=>`<button data-msort="${r[0]}" class="${(so||"hi")===r[0]?"on":""}">${B(r[1],r[2])}</button>`).join("")}</div></div>
    <p class="muted">${B(`找到 ${all.length} / ${callp.length} 张`,`${all.length} of ${callp.length}`)}${q?` · <button class="lnk" data-mclear="1">${B("清除搜索","Clear search")}</button>`:""}</p>
    <div class="cgrid">${all.slice(0,ui.mshown||24).map(ctile).join("")||`<p class="muted">${B("没有符合的卡","No cards match")}</p>`}</div>${all.length>(ui.mshown||24)?`<div><button data-mmore="1">${B("再显示 24 张","Show 24 more")}</button></div>`:""}</section>`;
-  return `<section class="mhero"><div class="mh1"><span class="tag live">${isEN()?"MARKET":"行情"}</span><h1>${B("卡价雷达","Card price radar")}</h1>${edbar}<p>${B(`${Object.keys(CARDS).length} 张卡，${SETS.length} 个系列每一张都有价格。手上的卡值多少、最近谁在涨，搜一下就知道。`,`${Object.keys(CARDS).length} cards across ${SETS.length} sets, every one priced. Search to see what yours is worth.`)}</p>
-    <div class="msearch">${ic("search",20)}<input id="mq" type="search" placeholder="输入卡名或编号，例如 月亮伊布 161、Pikachu" value="${esc(ui.mq)}" aria-label="搜索卡牌 Search cards"></div>
-    <div class="mkpi"><div><small>${B("所列卡牌参考价合计","Sum of listed reference prices")}</small><b>${rm(tot)}</b></div><div><small>${B("7 天上涨 / 有涨跌数据","Up 7d / with data")}</small><b class="up">${up} <span class="muted" style="font-size:.6em">/ ${mov.length}</span></b></div><div><small>${B("7 天下跌 / 有涨跌数据","Down 7d / with data")}</small><b class="down">${dn} <span class="muted" style="font-size:.6em">/ ${mov.length}</span></b></div><div><small>${B("价格更新","Updated")}</small><b>${TD.date}</b></div></div></div></section>
+  return `<section class="mhero"><div class="mh1"><span class="tag live">${isEN()?"MARKET":"行情"}</span><h1>${B("卡价雷达","Card price radar")}</h1>${edbar}<div class="msearch">${ic("search",20)}<input id="mq" type="search" placeholder="输入卡名或编号，例如 月亮伊布 161、Pikachu" value="${esc(ui.mq)}" aria-label="搜索卡牌 Search cards"></div>
+    <p class="msay">${BL(`这一周 <b class="up">▲ ${up} 张卡变贵</b>，<b class="down">▼ ${dn} 张卡变便宜</b>。`,`This week <b class="up">▲ ${up} cards went up</b>, <b class="down">▼ ${dn} went down</b>.`)}<small>${B(`价格 ${TD.date} 更新 · 只算 RM20 以上的卡`,`Prices updated ${TD.date} · cards over RM20 only`)}</small></p></div></section>
   ${q?results:`<div class="tape"><div class="track">${tape}${tape}</div></div>
   <div class="serstrip" role="group" aria-label="选择系列 Set">${`<button class="all${!sel?" on":""}" data-mser="">${B("全部系列","All sets")}</button>`}${SETS.map(s=>`<button data-mser="${esc(s)}" class="${sel===s?"on":""}" aria-pressed="${sel===s}">${slogo(s,"")}<span>${esc(s)}</span></button>`).join("")}</div>
-  <div class="board"><div class="bh"><b>${B("行情榜单","MARKET BOARD")}</b><span class="tag live">${isEN()?"MARKET":"行情"}</span><span class="tag">${B("更新于 "+TD.date,"Updated "+TD.date)}</span><span class="tag">${sel?esc(sel):B("全部系列","All sets")}</span></div>
-   <div class="cols">${col("7 天涨幅前 5","Top 5 gainers (7d)",gain)}${col("7 天跌幅前 5","Top 5 losers (7d)",lose)}${col("高价前 5","Top 5 by value",hot)}</div>
-   <div class="kstrip"><div><small>${B("收录卡牌","Cards")}</small><b>${callp.length}</b></div><div><small>${B("7 天上涨","Up")}</small><b class="up">${up} / ${mov.length}</b></div><div><small>${B("7 天下跌","Down")}</small><b class="down">${dn} / ${mov.length}</b></div><div><small>${B("所列卡牌参考价合计","Sum of listed prices")}</small><b>${rm(tot)}</b></div></div></div>
-  <div class="note" style="font-size:12.5px">${B(`怎么算：「所列卡牌参考价合计」是${sel?"这个系列":"全部系列"}有价格的 ${priced.length} 张卡各一张的 TCGplayer 参考价加起来，不是市场总值，也不是本店估价。美元价按 1 USD = RM${FX.toFixed(4)}、欧元价按 1 EUR = RM${FX_EUR.toFixed(4)}（${FX_DATE}）换成马币，全站价格都以马币为准，选别的货币时再按同一套汇率换算。「7 天上涨 / 下跌」的分母是 RM20 以上、有 7 天涨跌数据的 ${mov.length} 张卡。以下都是第三方参考价，不是本店收购价或售价，也不是投资建议；价格只在每周一更新时换，不会自己刷新。`,`How it is worked out: the sum adds one copy of each of the ${priced.length} priced cards ${sel?"in this set":"across all sets"} at the TCGplayer reference price. It is not a market valuation or a shop price. USD prices use 1 USD = RM${FX.toFixed(4)} and EUR prices 1 EUR = RM${FX_EUR.toFixed(4)} (${FX_DATE}). Every price starts in ringgit; other currencies use one shared set of rates. Up/down counts are out of the ${mov.length} cards over RM20 with 7-day data. All prices are third-party references, not our buy or sell prices and not investment advice. They change only at the Monday update.`)}</div>
-  <p class="muted" style="font-size:12px">${B(`点榜单里的卡直接看价格走势。涨跌幅是 Cardmarket 近 7 天平均成交价对比近 30 天（只算 RM20 以上的卡），价格是 TCGplayer 市场价，都经 TCGdex 读取，${TD.date}；本店跟踪的 73 张卡用 PriceCharting。`,`Tap a card for its price history. Change = Cardmarket 7-day vs 30-day average (cards over RM20); prices are TCGplayer market via TCGdex, ${TD.date}.`)}</p>
+  <section class="kboard" aria-label="${BT("今日卡价升跌榜","Price movers")}"><div class="kbh"><h2>${B("卡价升跌榜","Price Movers")}</h2><span class="muted">${sel?esc(sel):B("全部系列","All sets")} · ${B("近 7 天平均价对比近 30 天","7-day vs 30-day average")}</span></div>
+   <div class="kbtab" role="tablist">${[["up","▲ 涨最多","▲ Biggest Gainers"],["dn","▼ 跌最多","▼ Biggest Drops"]].map(t=>`<button type="button" role="tab" data-mcol="${t[0]}" class="${mc===t[0]?"on":""}" aria-selected="${mc===t[0]}">${B(t[1],t[2])}</button>`).join("")}</div>
+   <div class="kbcols"><div class="kbc up${mc==="up"?" on":""}">${col("▲ 这周涨最多","▲ Biggest Gainers This Week",gain)}</div><div class="kbc dn${mc==="dn"?" on":""}">${col("▼ 这周跌最多","▼ Biggest Drops This Week",lose)}</div></div></section>
+  <section class="ktop" aria-label="${BT("最贵 TOP 10","Top 10 by price")}"><div class="kbh"><h2>${B("最贵 TOP 10","Top 10 Most Valuable")}</h2><span class="muted">${sel?esc(sel):B("全部系列","All sets")}</span></div>
+   <div class="ktrow">${hot.map((c,i)=>`<a class="kt10" href="#card/${c.k}"><span class="kti">${cImg(c)}<i>${i+1}</i></span><b>${cNH(c)}</b><small>${esc(c.s)}</small><span class="ktp">${rm(cRM(c))}</span></a>`).join("")}</div></section>
+  <details class="note mhow" style="font-size:12.5px"><summary>${B("这些价格怎么来的？","Where do these prices come from?")}</summary>${B(`涨跌是 Cardmarket 近 7 天平均成交价对比近 30 天，只算 RM20 以上、有涨跌数据的 ${mov.length} 张卡。价格是 TCGplayer 市场价，都经 TCGdex 读取；本店跟踪的 73 张卡用 PriceCharting。美元按 1 USD = RM${FX.toFixed(4)}、欧元按 1 EUR = RM${FX_EUR.toFixed(4)}（${FX_DATE}）换成马币。这些都是第三方参考价，不是本店收购价或售价，也不是投资建议；每周一更新一次。`,`Change = Cardmarket 7-day vs 30-day average, for the ${mov.length} cards over RM20 with data. Prices are TCGplayer market via TCGdex; the 73 cards we track use PriceCharting. 1 USD = RM${FX.toFixed(4)}, 1 EUR = RM${FX_EUR.toFixed(4)} (${FX_DATE}). Third-party reference prices, not our buy or sell price, and not investment advice. Updated every Monday.`)}</details>
+  
   <section class="stack sec" style="gap:16px">${H2(sel?"高价前 15":"各系列高价前 15","Top 15 by value per set")}
    ${sets.map(s=>{ const l=(CBYSET[s]||[]).filter(c=>cRM(c)!=null).sort((a,b)=>cRM(b)-cRM(a)).slice(0,15); return l.length?`<div class="stack" style="gap:8px"><div class="sethd"><div class="l">${slogo(s,"")}<b>${esc(s)}</b><span class="muted">${SI[s].date}</span></div><a href="${setUrl(s)}">${B("本系列完整卡表","This set's full card list")} ›</a></div><div class="crow">${l.map((c,i)=>ctile(c).replace('<div class="ctop">',`<span class="rk">#${i+1}</span><div class="ctop">`)).join("")}</div></div>`:"" }).join("")}
    ${!sel&&!ui.mallsets?`<div><button data-mallsets="1">${B("展开全部 "+SETS.length+" 个系列","Show all "+SETS.length+" sets")}</button></div>`:""}</section>
@@ -2163,6 +2270,11 @@ function lpWrap(){
     brs.forEach(x=>x.remove()); zs[0].before(w); zs.forEach(x=>z.appendChild(x)); w.appendChild(z); w.appendChild(el);
   });
 }
+/* v135 五：英文版标题、导航、按钮用 Title Case（中文版是醒目标题的地方，英文也一样醒目）；卡名、ex 这类不改 */
+const TC_SMALL=new Set("a an and as at but by for in of on or the to vs via per with from".split(" "));
+function tcase(t){ let i=0; return t.replace(/\p{L}[\p{L}'’]*/gu,w=>{ const first=i++===0; if(/\p{Lu}/u.test(w)||!/^[a-z]/.test(w)||w==="ex"||w==="pts"||w==="pt") return w; if(!first&&TC_SMALL.has(w)) return w; return w[0].toUpperCase()+w.slice(1) }) }
+function titlePass(){ if(lang!=="en") return; const CJK=/[\u3040-\u9fff]/;
+  document.querySelectorAll('#view h2, #view h3, nav.tabs a, .morebtn, .fmore, .idxbtn, .kbtab button, .fcols h3, .fcols nav a, #view h1:not(.pqL h1):not(.hero h1)').forEach(e=>{ if(e.closest(".pqL,.cinfo,.nbp,.topv,.ktrow")) return; const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT); let n; while((n=w.nextNode())){ const pa=n.parentElement; if(!pa||pa.closest(".lpz")||CJK.test(n.nodeValue)||pa.closest(".dn,.mm,b.nm")) continue; const v=tcase(n.nodeValue); if(v!==n.nodeValue) n.nodeValue=v } }) }
 function langPass(){
   const CJK=/[㐀-鿿]/, SEL=".en,h1>small,h2>small,nav.tabs a>i,th>i,.steps>span i";
   document.querySelectorAll(SEL).forEach(el=>{ if(el.parentElement&&el.parentElement.classList.contains("lgp")) return; let n=el.previousSibling;
@@ -2181,7 +2293,7 @@ function langPass(){
 /* ---------- v19：单卡资料、系列 logo、商品页 ---------- */
 const TYPEC={Fire:["#f08030","火","R"],Water:["#4a8fe0","水","W"],Grass:["#5fae3e","草","G"],Lightning:["#e8b400","雷","L"],Psychic:["#c05aa8","超","P"],Fighting:["#c0612b","斗","F"],Darkness:["#3d4a5c","恶","D"],Metal:["#8a95a8","钢","M"],Dragon:["#a08a2a","龙","N"],Colorless:["#a8a8a0","无","C"]};
 const RAR={"Special Art Rare":"特别插画稀有 SAR","Secret Rare":"秘密稀有 SR","Art Rare":"插画稀有 AR","Ultra Rare":"超稀有 UR"};
-const KIND={"Pokémon":"宝可梦","Trainer - Supporter":"训练家 · 支援者","Trainer - Item":"训练家 · 物品","Trainer - Stadium":"训练家 · 竞技场"};
+const KIND={"Pokémon":"宝可梦","Trainer - Supporter":"训练家 · 支援者","Trainer - Item":"训练家 · 物品","Trainer - Stadium":"训练家 · 竞技场","Trainer - Pokémon Tool":"训练家 · 宝可梦道具","Energy":"能量"};
 const STAGE={"Basic":"基础","Stage 1":"1 阶进化","Stage 2":"2 阶进化"};
 const numTxt=p=>{ if(!p.no) return ""; const t=SI[p.s]&&/^\d+$/.test(p.no)?"/"+String(SI[p.s].total).padStart(3,"0"):""; return "#"+(/^\d+$/.test(p.no)?p.no.padStart(3,"0"):p.no)+t };
 const slogo=(s,cls="slogo")=>SLOGO(s)?`<img class="${cls}" src="${SLOGO(s)}" alt="${esc(s)} logo" loading="lazy">`:"";
@@ -2226,7 +2338,7 @@ function band(){
   return `<div class="totopw"><span class="tdeco l" aria-hidden="true"><i class="lf a"><svg viewBox="0 0 20 30" aria-hidden="true"><path d="M10 1C3 9 3 21 10 29C17 21 17 9 10 1Z"/><path d="M10 4V27" stroke="rgba(255,255,255,.55)" stroke-width="1.2" fill="none"/></svg></i><span class="mm b"><img src="intro/holofen-mark.webp" alt="" width="34" height="34"></span><i class="lf c"><svg viewBox="0 0 20 30" aria-hidden="true"><path d="M10 1C3 9 3 21 10 29C17 21 17 9 10 1Z"/><path d="M10 4V27" stroke="rgba(255,255,255,.55)" stroke-width="1.2" fill="none"/></svg></i><span class="mm d"><img src="intro/holofen-mark.webp" alt="" width="34" height="34"></span></span><button class="topbtn" type="button" data-top="1"><span class="pk" aria-hidden="true"><img src="intro/holofen-mark.webp" alt="" width="34" height="34"></span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>${B("回到顶部","Back to top")}</button><span class="tdeco r" aria-hidden="true"><i class="lf a"><svg viewBox="0 0 20 30" aria-hidden="true"><path d="M10 1C3 9 3 21 10 29C17 21 17 9 10 1Z"/><path d="M10 4V27" stroke="rgba(255,255,255,.55)" stroke-width="1.2" fill="none"/></svg></i><span class="mm b"><img src="intro/holofen-mark.webp" alt="" width="34" height="34"></span><i class="lf c"><svg viewBox="0 0 20 30" aria-hidden="true"><path d="M10 1C3 9 3 21 10 29C17 21 17 9 10 1Z"/><path d="M10 4V27" stroke="rgba(255,255,255,.55)" stroke-width="1.2" fill="none"/></svg></i><span class="mm d"><img src="intro/holofen-mark.webp" alt="" width="34" height="34"></span></span></div>
   <div class="fcols fin">
    <div class="fbr"><span class="fbn">${buddy(30)}Holofen</span><p>${B("中文、英文和日文版宝可梦卡牌，马来西亚发货，也寄新加坡和中国。","Chinese, English &amp; Japanese Pokémon cards, shipped from Malaysia to MY, SG &amp; China.")}</p>${CONTACT.some(c=>c[3])?`<div class="ctc" id="contact">${CONTACT.filter(c=>c[3]).map(c=>`<a href="${c[3]||"#"}" ${c[3]?'target="_blank" rel="noopener"':`data-tbd="${c[1]}"`}><span class="ic" style="background:${c[2]}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${c[4]}</svg></span>${c[1]}</a>`).join("")}</div>`:""}</div>
-   <nav aria-label="${BT("店铺","Shop")}"><h3>${B("店铺","Shop")}</h3><a href="#shop" data-fcat="">${B("全部商品","All products")}</a>${["box","etb","pack","coll"].map(k=>`<a href="#shop" data-fcat="${k}">${B(CATS[k][0],CATS[k][1])}</a>`).join("")}<a href="#shop" data-flng="日文版">${B("日文版","Japanese")}</a><a href="#series">${B("系列和卡牌","Sets &amp; cards")}</a></nav>
+   <nav aria-label="${BT("店铺","Shop")}"><h3>${B("店铺","Shop")}</h3><a href="#shop" data-fcat="">${B("商品","Products")}</a><a href="#series">${B("图鉴","Card Index")}</a><a href="#market">${B("行情","Market")}</a></nav>
    <nav aria-label="${BT("客户服务","Customer service")}"><h3>${B("客户服务","Customer service")}</h3><a href="#help">${B("常见问题","FAQ")}</a><a href="#shipping">${B("运费和寄送","Shipping")}</a><a href="#returns">${B("退货与退款","Returns &amp; refunds")}</a><a href="#terms">${B("条款与细则","Terms &amp; conditions")}</a><a href="#orders">${B("订单状态","Order status")}</a><a href="#" data-contact="1">${B("联系我们","Contact us")}</a></nav>
    <nav aria-label="${BT("信息","Information")}"><h3>${B("信息","Information")}</h3><a href="#about">${B("关于我们","About us")}</a><a href="#news">${B("最新消息","News")}</a><a href="#fake">${B("防伪指南","Spot fakes")}</a><a href="#wall">${B("晒卡墙","Pull wall")}</a><a href="#lucky">${B("签到和抽奖","Check-in &amp; draw")}</a><a href="#privacy">${B("隐私声明","Privacy notice")}</a></nav>
   </div><div class="fin"><p class="disc">${B("Holofen 是独立卡牌店，不是 The Pokémon Company 的官方商店。Pokémon 及相关名称和图片的商标归各自权利人所有。","Holofen is an independent card shop, not an official store of The Pokémon Company. Pokémon and related names and images are trademarks of their respective owners.")}</p></div>`;
@@ -2263,7 +2375,7 @@ const HERO_GO=[
   "#0e7c86",'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16l-1.5 12a1 1 0 0 1-1 .9H6.5a1 1 0 0 1-1-.9z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>'],
  ["market","卡价雷达","Price radar","查每张卡现在值多少、谁在涨","What every card is worth today",
   "#1f6fd1",'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>'],
- ["series","系列图鉴","Set guide","每个系列的完整卡表和稀有度","Every card in every set",
+ ["series","图鉴","Card Index","每个系列的完整卡表和稀有度","Every card in every set",
   "#2f9e5b",'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="11" height="15" rx="2"/><path d="M9 3h9a2 2 0 0 1 2 2v12"/></svg>'],
  ["build","帮我组卡组","Build my deck","说预算和打法，我们帮你配好 60 张","Tell us your budget, we build the 60",
   "#d99a00",'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0 5 5L12 19l-4 1 1-4z"/><path d="M5 5l3 3"/></svg>']];
@@ -2283,7 +2395,7 @@ function cbkStrip(side,row){ const n=8; return `<div class="cbks ${side}" data-r
       const t=m.querySelector(".track"), x=(t&&t._x)||0, off=((x%pitch)+pitch)%pitch; st.firstChild.style.transform=`translate3d(${L?pitch-off:-off}px,0,0)`; st.style.overflow=last>.01?"visible":"hidden" }) }
   function scat(){ const sh=document.querySelector(".hero-shell"); if(!sh) return; const r=sh.getBoundingClientRect(); const sp=Math.max(0,Math.min(1,(innerHeight-r.bottom)/(innerHeight*.5)));
     if(Math.abs(sp-last)>.003){ if(sp<last-.01){ sh.classList.add("ret"); clearTimeout(tm); tm=setTimeout(()=>sh.classList.remove("ret"),700) } sh.style.setProperty("--sp",sp.toFixed(3)); last=sp } }
-  function loop(){ if(innerWidth>=1280) strips(); requestAnimationFrame(loop) }
+  function loop(){ if(innerWidth>=1100) strips(); requestAnimationFrame(loop) }
   requestAnimationFrame(loop);
   addEventListener("scroll",scat,{passive:true}); addEventListener("resize",()=>{ fit(); scat() });
   addEventListener("hashchange",()=>{ last=-1; setTimeout(()=>{ fit(); scat() },60) }); window.fitHero=()=>{ fit(); scat() }; setTimeout(()=>{ fit(); scat() },300); })();
@@ -2460,13 +2572,31 @@ function ctile(c){ const v=cRM(c);
   <div class="cpr">${cPriceTxt(c)}${c.p&&MV[c.p.id]?chgPill(c.p):trPill(c)}<a class="trend" href="#card/${c.k}" title="看价格走势 Price trend" aria-label="${esc(cN(c))} 价格走势">${ic("up",15)}</a></div>
   <div class="cpop" aria-hidden="true"><div class="cpi">${cImg(c)}</div><div class="cpb"><div class="mm">${esc((SI[c.s]&&CI_CODE(c))||"")} · #${esc(c.num)} · ${esc(c.r)}</div><b>${esc(cN(c))}</b><div class="ss">${slogo(c.s)}<span>${esc(c.s)}</span></div><div class="pp">${cPriceTxt(c)}</div><div class="muted">${cSrcTxt(c)}</div></div></div></div>` }
 function CI_CODE(c){ const d=SC[c.s]; if(d&&d.ja) return d.code; if(c.r==="CC") return "30C-CC"; return ({me55:"30C",me5:"PBL",me4:"CRI",me3:"POR",me2pt5:"ASC",me2:"PFL",me1:"MEG",rsv10pt5:"WHT",zsv10pt5:"BLK",sv10:"DRI",sv8pt5:"PRE",sv9:"JTG",sv8:"SSP",sv3pt5:"MEW"}[d.id])||"" }
+/* v135 三：每张卡的属性、HP、特性、招式、弱点、抗性、撤退。英文卡来自 Pokémon TCG API 公开资料（github.com/PokemonTCG/pokemon-tcg-data），
+   日文卡来自 TCGdex 日文资料库（日文原文 + 台湾官方繁体中文卡文）。资料大，点开卡才下载（ctx/en.json、ctx/ja.json） */
+const CTX={}, CTXL={};
+function ctxGet(c){ const L=c.ja?"ja":"en"; if(CTXL[L]==="ok") return (CTX[L]||{})[c.k]||null;
+  if(!CTXL[L]){ CTXL[L]="loading"; fetch("ctx/"+L+".json").then(r=>r.ok?r.json():Promise.reject(r.status)).then(j=>{ CTX[L]=j; CTXL[L]="ok"; render() }).catch(()=>{ CTXL[L]="err"; render() }) }
+  return CTXL[L]==="err"?null:undefined }
+function ctxPanel(c){ const x=ctxGet(c);
+  if(x===undefined) return `<div class="cinfo"><div class="sec2 muted">${B("正在载入招式资料…","Loading card text…")}</div></div>`;
+  if(!x) return `<div class="cinfo"><div class="sec2 muted">${B("这张卡的招式资料还没收录。","Card text not available for this card yet.")}</div></div>`;
+  const ty=TYPEC[x.type], poke=x.kind==="Pokémon", J=!!c.ja;
+  const nm=(a,b)=>`<b>${esc(a)}</b>${J&&b?`<small class="zt">${esc(b)}</small>`:""}`, tx=(a,b)=>`${a?`<p>${eText(a)}</p>`:""}${J&&b?`<p class="zt">${eText(b)}</p>`:""}`;
+  const head=`<div class="hd"><span>${esc(isEN()?x.kind:(KIND[x.kind]||x.kind))}${x.stage?` · ${esc(isEN()?x.stage:(STAGE[x.stage]||x.stage))}`:""}${ty?` · ${ecIcon(x.type)} ${isEN()?esc(x.type):ty[1]+"属性"}`:""}</span>${x.hp?`<span class="hp"><small>HP</small>${esc(x.hp)}</span>`:""}</div>`;
+  const abl=(x.abilities||[]).map(a=>`<div class="sec2"><div><span class="abl">${B("特性","Ability")}</span>${nm(a.n,a.nz)}</div>${tx(a.t,a.tz)}</div>`).join("");
+  const atk=(x.attacks||[]).map(a=>`<div class="sec2 atk"><span class="ecost">${(a.cost||"").split(",").filter(Boolean).map(ecIcon).join("")}</span>${nm(a.n,a.nz)}<span class="dmg">${esc(a.dmg||"")}</span>${tx(a.t,a.tz)}</div>`).join("");
+  const txt=x.text?`<div class="sec2">${tx(x.text,x.textz)}</div>`:"", rule=x.rule?`<div class="sec2"><p class="muted" style="margin:0">${eText(x.rule)}</p></div>`:"";
+  const wrr=poke?`<div class="sec2" style="padding:0"><div class="wrr"><div><small>${B("弱点","Weakness")}</small>${x.weak?ecIcon(x.weak)+" ×2":"—"}</div><div><small>${B("抗性","Resistance")}</small>${x.resist?ecIcon(x.resist)+" −30":"—"}</div><div><small>${B("撤退","Retreat")}</small>${+x.retreat?Array(+x.retreat).fill(ecIcon("Colorless")).join(""):"0"}</div></div></div>`:"";
+  const note=`<div class="sec2 muted" style="font-size:11.5px">${J?B("日文版卡面原文；灰色小字是台湾官方繁体中文版卡文。来源 TCGdex。","Japanese card text; grey lines are the official Traditional Chinese text. Source: TCGdex."):B("英文版卡面原文，来源 Pokémon TCG API。","English card text from the Pokémon TCG API.")}</div>`;
+  return `<div class="cinfo">${head}${abl}${atk}${txt}${rule}${wrr}${note}</div>` }
 function cardModal(k){ const c=CARDS[k]; if(!c) return ""; const p=c.p;
   return `<div class="modal"><div class="box cm" role="dialog" aria-label="${esc(cN(c))}"><div class="cmimg">${cImg(c,1)}</div>
   <div class="stack" style="gap:12px"><div class="row" style="justify-content:space-between;flex-wrap:nowrap;align-items:flex-start"><div><div class="muted" style="font-family:var(--mono);font-size:12px">${cNum(c)} · ${esc(c.r)}</div><h2>${esc(cN(c))}</h2><div class="row" style="gap:6px">${slogo(c.s)}<span class="muted">${esc(c.s)}</span></div></div><button data-close="1" aria-label="关闭 Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <div><span class="muted">${B("目前市场价","Market price now")}</span><div class="row" style="gap:10px;align-items:baseline"><span class="bigp" style="font-size:30px;color:var(--ink)">${cPriceTxt(c)}</span>${p&&MV[p.id]?chgPill(p):""}</div><span class="muted" style="font-size:12px">${cSrcTxt(c)}</span></div>
+  <a class="btnl pri cmtrend" href="#card/${c.k}">${ic("up",16)} ${B("看价格走势和相似卡","Price Trend & Similar Cards")}</a>
   <dl class="cfacts">${RARX[c.r]?`<div><dt>${B("稀有度","Rarity")}</dt><dd>${rarB(c.r)} ${B(RARX[c.r][0],RARX[c.r][1])}</dd></div>`:""}<div><dt>${B("种类","Type")}</dt><dd>${kindTxt(c,1)}</dd></div>${c.hp?`<div><dt>HP</dt><dd>${esc(c.hp)}${c.ty?" · "+esc(c.ty):""}</dd></div>`:""}${c.art?`<div><dt>${B("插画师","Illustrator")}</dt><dd>${esc(c.art)}</dd></div>`:""}</dl>
-  ${p&&CI[p.id]?cardInfo(p,1):""}
-  <div class="row"><a class="btnl pri" href="#card/${c.k}">${ic("up",16)} ${B("看价格走势和相似卡","Price trend & similar cards")}</a></div>
+  ${ctxPanel(c)}
   <p class="muted" style="font-size:12px">${B("本店不单卖单卡，这里的价格只供参考。","We don't sell singles; prices are for reference.")}</p></div></div></div>` }
 const baseName=n=>n.replace(/^(Mega|Team Rocket's|[A-Z][a-z]+'s|Alolan|Galarian|Hisuian|Paldean)\s+/,"").replace(/\s+(ex|EX|GX|V|VMAX|VSTAR)$/,"").replace(/\s+[XY]$/,"").trim();
 function similar(c){ const b=baseName(c.n); let l=Object.values(CARDS).filter(x=>x.k!==c.k&&baseName(x.n)===b);
@@ -2502,7 +2632,7 @@ V.card=()=>{ const c=CARDS[ui.card]; if(!c) return V.market(); const p=c.p, h=HI
   const names=[["英文","EN",c.n],["日文","JP",c.jn],["中文","ZH",c.zh||(p&&p.zh)]].filter(x=>x[2]);
   const seg=(k,cur,opts)=>`<div class="seg2" role="group">${opts.map(o=>`<button type="button" data-${k}="${o[0]}" class="${cur===o[0]?"on":""}" aria-pressed="${cur===o[0]}">${B(o[1],o[2])}</button>`).join("")}</div>`;
   const why=mk==="jp"?B("日本本土成交价还没有授权的数据来源，暂无数据。","No licensed source for Japanese domestic sales yet."):gr!=="raw"?B("PSA 鉴定卡价格还没有授权的数据来源，暂无数据。","No licensed source for PSA graded prices yet."):c.tr!=null?B(`这张卡还没有每月走势。近 7 天平均成交价比近 30 天${c.tr>0?"高":c.tr<0?"低":"持平"} ${Math.abs(c.tr)}%（Cardmarket，经 TCGdex，${TD.date}）。`,`No monthly history for this card yet. 7-day average is ${c.tr}% vs 30-day (Cardmarket via TCGdex, ${TD.date}).`):B("目前只有本店跟踪的卡有每月走势，这张卡暂无数据。","Monthly history covers the cards we track; no data for this one yet.");
-  return `<div class="row" style="gap:10px">${backBtn(setUrl(c.s))}<nav class="crumb" aria-label="${BT("位置","Breadcrumb")}"><a href="#series">${B("系列图鉴","Sets")}</a> › <a href="${setUrl(c.s)}">${esc(SI[c.s]&&SI[c.s].ja?SI[c.s].jn:c.s)}</a> › ${esc(cN(c))}</nav></div>
+  return `<div class="row" style="gap:10px">${backBtn(setUrl(c.s))}<nav class="crumb" aria-label="${BT("位置","Breadcrumb")}"><a href="#series">${B("图鉴","Card Index")}</a> › <a href="${setUrl(c.s)}">${esc(SI[c.s]&&SI[c.s].ja?SI[c.s].jn:c.s)}</a> › ${esc(cN(c))}</nav></div>
   <div class="pq">
    <div class="pqL"><div class="pqimg">${cImg(c,1)}<span class="cbn">#${esc(c.num)}</span>${c.r&&RARX[c.r]?`<span class="cbr" style="--rc:${RARX[c.r][3]}">${esc(c.r)}</span>`:""}</div>
     <div class="stack" style="gap:10px;min-width:0"><div><h1 style="margin:0">${esc(cN(c))}</h1>
@@ -2511,13 +2641,14 @@ V.card=()=>{ const c=CARDS[ui.card]; if(!c) return V.market(); const p=c.p, h=HI
       ${same?`<a class="morebtn sm" href="#simsec" data-mjump="simsec">${B((c.zh||baseName(c.n)).replace(/\s*ex$/i,"")+" 的全部卡价",'All '+baseName(c.n)+" prices")}</a>`:""}</div>
      <div class="pqprice"><b>${cPriceTxt(c)}</b><span>RAW</span>${p&&MV[p.id]?chgPill(p):trPill(c)}</div>
      <p class="muted" style="margin:0;font-size:12px">${cSrcTxt(c)}</p>
-     <div class="row"><button data-cid="${c.k}">${B("看卡牌资料","Card details")}</button></div></div></div>
+     </div></div>
    <div class="pqR" id="pricearea"><h2 class="pqh">${B("价格走势","PRICE TREND")}</h2>
     <div class="row ctog">${seg("cmk",mk,[["intl","国际参考价","International"],["jp","日本本土","Japan"]])}${seg("cgr",gr,[["raw","RAW 未评级","RAW"],["psa9","PSA 9","PSA 9"],["psa10","PSA 10","PSA 10"]])}${seg("crng",rng,[["3m","3 个月","3M"],["6m","6 个月","6M"],["all","全部","All"]])}</div>
     <div class="kpis2">${kp.map(k=>`<div><small>${k[0]}</small>${k[1]}</div>`).join("")}</div>
     ${has&&pts.length>1?`${chartSVG(pts)}<p class="muted" style="font-size:12px;margin:0">${B("未评级卡每月价格，来源 PriceCharting，按 1 USD = "+FX.toFixed(2)+" MYR 换算。","Monthly ungraded price from PriceCharting at "+FX.toFixed(2)+" MYR/USD.")}</p>`
      :`<div class="nochart">${ic("up",28)}<div><b>${B("暂无数据","No data")}</b><p class="muted">${has?B("这个时间范围内的数据点不够画图，换成「全部」看看。","Not enough points in this range; try All."):why}</p></div></div>`}
     <table class="gtab" style="margin-top:12px"><tbody>${c.td>0?`<tr><td>${c.tde?"Cardmarket":"TCGplayer"} ${B("市场价","market")}</td><td><b>${rm(c.tde?c.td*FX_EUR:c.td*FX)}</b> <small class="muted">（${B("原价","source")} ${c.tde?"€":"US$"}${c.td.toFixed(2)}）</small></td></tr>`:""}${c.p?`<tr><td>PriceCharting ${B("未评级","ungraded")}</td><td><b>${rm(mp(c.p))}</b> <small class="muted">（${B("原价","source")} US$${c.p.usd.toFixed(2)}）</small></td></tr>`:""}${c.usd>0?`<tr><td>TCGplayer（2026-10-15）</td><td><b>${rm(c.usd*FX)}</b> <small class="muted">（${B("原价","source")} US$${c.usd.toFixed(2)}）</small></td></tr>`:""}<tr><td>PSA 9 / PSA 10</td><td><span class="chip tbd">${B("暂无数据","No data")}</span></td></tr><tr><td>${B("汇率","Rate")}</td><td>1 USD = ${FX.toFixed(2)} MYR</td></tr></tbody></table></div></div>
+  <section class="stack sec cpanel" style="gap:10px">${H2("卡牌资料：招式和特性","Card Text: Attacks & Abilities")}${ctxPanel(c)}</section>
   ${nb.length>1?`<nav class="nbp" aria-label="${BT("同系列相邻的卡","Nearby cards in this set")}">${nb.map(x=>`<a href="#card/${x.k}" class="${x===c?"on":""}" ${x===c?'aria-current="page"':""}><b>#${esc(x.num)}</b><span>${esc(cN(x))}</span></a>`).join("")}</nav>`:""}
   ${top.length?`<section class="stack sec" style="gap:12px"><div class="row" style="justify-content:space-between">${H2("同系列价值最高的卡","Most valuable in this set")}</div>
    <div class="topv">${top.map((x,i)=>`<a href="#card/${x.k}" class="${x===c?"on":""}"><span class="tvi">${cImg(x)}<i>${i+1}</i></span><b>${esc(cN(x))}</b><small>${rm(cRM(x))}</small></a>`).join("")}</div>
@@ -2534,7 +2665,7 @@ V.set=()=>{
   const ccl=list.filter(c=>c.r==="CC"), main=list.filter(c=>c.r!=="CC"&&(!/^\d+$/.test(c.num)||+c.num<=d.printed)), sec=list.filter(c=>c.r!=="CC"&&/^\d+$/.test(c.num)&&+c.num>d.printed);
   const prods=P.filter(p=>listed(p)&&p.s===s).sort((a,b)=>b.price-a.price);
   const promo=PROMOS[s]||[];
-  return `<div class="crumb">${B("系列和卡牌","Sets & cards")} › ${esc(s)}</div>
+  return `<div class="crumb">${B("图鉴","Card Index")} › ${esc(s)}</div>
   <div class="row sethead"><h1 style="margin:0"><span>${esc(s)}</span> ${B("卡牌列表","card list")}</h1></div><p class="muted" style="margin:0">${B(st.date+" 发售","Released "+st.date)} · ${setCnt(s)}</p>
   <div class="seg2 slang" role="group" aria-label="版本 Edition">${[["",B("英文版","English"),SETS[0]],["ja",B("日文版","Japanese"),JSETS[0]]].filter(x=>x[2]).map(x=>`<a href="${setUrl(x[2])}" class="${(st.ja?"ja":"")===x[0]?"on":""}">${x[1]}</a>`).join("")}</div>
   <nav class="serstrip setsw" aria-label="切换系列 Other sets">${(st.ja?JSETS:SETS).map(x=>`<a href="${setUrl(x)}" class="${x===s?"on":""}" ${x===s?'aria-current="page"':""} style="--sc:${SETC[x]||"#1c8fc4"}">${slogo(x,"")}<span>${esc(x)}</span></a>`).join("")}</nav>
@@ -2577,7 +2708,7 @@ V.home=()=>{
   const topBox=P.filter(p=>p.c==="box").sort((a,b)=>b.usd-a.usd)[0];
   const T=[["shop","商品","Products",`${P.length} 件 · 单卡、补充包盒、ETB`,`${P.length} items`,"#dcebff",topBox?`<img src="${simg(topBox)}" alt="" loading="lazy">`:""],
    ["build","代组服务","Deck building","说出预算和打法，帮你组好整副卡组","We build a deck around your budget","#fff1b8",`<span style="margin-top:auto;align-self:flex-end;transform:translateY(10px)">${buddy(80,"wow")}</span>`],
-   ["series","卡牌系列","Card sets",`${SETS.length} 个系列的卡牌整理`,`${SETS.length} sets`,"#ddf3da",`<img src="${SI[SETS[0]].logo}" alt="" loading="lazy" style="height:80px;transform:translateY(-10px) rotate(-4deg)">`],
+   ["series","图鉴","Card Index",`${SETS.length} 个系列的卡牌整理`,`${SETS.length} sets`,"#ddf3da",`<img src="${SI[SETS[0]].logo}" alt="" loading="lazy" style="height:80px;transform:translateY(-10px) rotate(-4deg)">`],
    ["contact","客服","Customer service","WhatsApp、IG、FB、小红书都能找到我们","Talk to us","#ffe3d1",`<span style="margin-top:auto;align-self:flex-end;transform:translateY(6px)">${ic("chat",86,"#0e7c86")}</span>`]];
   return `${banner()}
   <div class="hero-shell fb">${[0,1].map(r=>cbkStrip("l",r)+cbkStrip("r",r)).join("")}<section class="hero" aria-label="首页主视觉"><div class="aur" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="leaves" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="spot" aria-hidden="true"></div>
@@ -2625,12 +2756,12 @@ V.shop=()=>{
   return `${H1("商店","Shop")}
   ${lgs.length>1?`<div class="seg2 slang" role="group" aria-label="版本 Edition">${[["",B("全部版本","All editions")]].concat(lgs.map(l=>[l,B(l,LNGEN[l]||l)])).map(x=>`<button data-slng="${x[0]}" class="${(ui.slng||"")===x[0]?"on":""}" aria-pressed="${(ui.slng||"")===x[0]}">${x[1]}${x[0]?` <small class="muted">${SP.filter(p=>p.lng===x[0]).length}</small>`:""}</button>`).join("")}</div>`:""}
   <div class="chips" role="group" aria-label="产品类别"><button data-cat="" class="${ui.cat===""?"on":""}">全部 <span class="en">All</span></button>${Object.entries(CATS).filter(([k])=>k!=="single").map(([k,v])=>`<button data-cat="${k}" class="${ui.cat===k?"on":""}">${v[0]} <span class="en">${v[1]}</span> <span class="cnt">${n(k)}</span></button>`).join("")}</div>
-  <div class="serstrip" role="group" aria-label="选择系列 Series"><button class="all${ui.series===""?" on":""}" data-ser="">全部系列<span class="en" style="font-weight:400">All sets</span></button>${series.map(s=>`<button data-ser="${esc(s)}" class="${ui.series===s?"on":""}" aria-pressed="${ui.series===s}" title="${esc(s)}" style="--sc:${SETC[s]||"#1c8fc4"}">${slogo(s,"")}<span>${esc(s)}</span></button>`).join("")}</div>
-  ${ui.series&&SI[ui.series]?`<div class="serhead">${slogo(ui.series,"")}<div><b>${esc(ui.series)}</b><div class="muted">${SI[ui.series].date} ${B("发售","released")} · ${setCnt(ui.series)} · 本店 ${SP.filter(p=>p.s===ui.series).length} 件商品 · <a href="${setUrl(ui.series)}">看这个系列的完整卡表 ›</a></div></div></div>`:""}
+  <div class="serstrip" role="group" aria-label="选择系列 Series"><button class="all${ui.series===""?" on":""}" data-ser="">全部系列<span class="en">All sets</span></button>${series.map(s=>`<button data-ser="${esc(s)}" class="${ui.series===s?"on":""}" aria-pressed="${ui.series===s}" title="${esc(s)}" style="--sc:${SETC[s]||"#1c8fc4"}">${slogo(s,"")}<span>${esc(s)}</span></button>`).join("")}</div>
+  ${ui.series&&SI[ui.series]?`<div class="serhead">${slogo(ui.series,"")}<div><b>${esc(ui.series)}</b><div class="muted">${SI[ui.series].date} ${B("发售","released")} · ${setCnt(ui.series)} · 本店 ${SP.filter(p=>p.s===ui.series).length} 件商品 · <a href="${setUrl(ui.series)}">${B("看这个系列的图鉴","See this set in the Card Index")} ›</a></div></div></div>`:""}
   <div class="row"><input id="q" type="search" placeholder="搜索卡名或编号" value="${esc(ui.q)}" style="flex:1 1 220px">
    <details class="filt" ${ui.fopen?"open":""}><summary>排序 <span class="en">Sort</span>${(ui.sort||"rec")!=="rec"?" ·":""}</summary><div class="row">
    <select id="sort" aria-label="排序"><option value="rec" ${(ui.sort||"rec")==="rec"?"selected":""}>推荐（RM50–300 优先）</option><option value="hi" ${ui.sort==="hi"?"selected":""}>价格从高到低</option><option value="lo" ${ui.sort==="lo"?"selected":""}>价格从低到高</option><option value="az" ${ui.sort==="az"?"selected":""}>按名称</option></select></div></details></div>
-  <p class="muted">${BL(`共 ${list.length} 件，点图片看详情。本店不卖单卡；想知道单卡值多少，去 <a href="#market">卡价雷达</a>。`,`${list.length} items. Tap a picture for details. We don't sell singles; see the <a href="#market">price radar</a> for card values.`)}</p>
+  <div class="shopidx"><p class="muted">${BL(`共 ${list.length} 件，点图片看详情。本店不卖单卡；想知道单卡值多少，去 <a href="#market">卡价雷达</a>。`,`${list.length} items. Tap a picture for details. We don't sell singles; see the <a href="#market">price radar</a> for card values.`)}</p><a class="idxbtn" href="${ui.series&&SI[ui.series]?setUrl(ui.series):"#series"}">${ic("cards",18)}${B("图鉴","Card Index")}</a></div>
   ${list.length?`<div class="grid">${svcCard()}${list.slice(0,ui.shown).map(prodCard).join("")}</div>`:`<div class="grid">${svcCard()}</div><p class="muted">没有符合的商品，换个关键词试试。 No items match.</p>`}
   ${list.length>ui.shown?`<div><button data-more="1">再显示 24 件 <span class="en">Show 24 more</span></button></div>`:""}`;
 };
@@ -2685,7 +2816,7 @@ V.decks=()=>`${H1("比赛卡组","Tournament decks")}
   ${H2("谁在哪场比赛用什么拿了第几名","Who placed where, with what")}
   <p class="muted">比赛页上卡组只显示图标，卡组名是按 Limitless 的卡组编号对应的。有「牌表」按钮的可以直接展开 60 张；其余的点「原页」看。<span class="en"> Rows with a "List" button expand the full 60 cards.</span></p>
   ${TOURS.map(t=>`<div class="stack" style="gap:8px"><h3><span style="display:block;margin-bottom:6px">${BL(`${esc(t.zh)} <span class="muted" style="font-weight:500;display:inline-block">${esc(t.n)}</span>`,esc(t.n))}</span>${t.d} · ${t.pl.toLocaleString()} ${B("人","players")} · ${src("比赛页","https://limitlesstcg.com/tournaments/"+t.id)}</h3>
-  <div class="tw"><table class="tight"><thead><tr>${TH("名次","Place",1)}${TH("选手","Player")}${TH("国家","Country")}${TH("套牌","Deck")}${TH("牌表","List")}</tr></thead><tbody>${t.top.map((r,i)=>{const k=t.id+"-"+i,has=LISTS[r[3]];return `<tr><td class="n">${i+1}</td><td>${esc(r[0])}</td><td>${r[1]}</td><td><span class="dn">${dkIm(r[2])}<span>${dkNH(r[2])}</span></span></td><td>${has?`<button data-list="${k}">${ui.open[k]?B("收起","Hide"):B("牌表","List")}</button>`:`<a href="${esc("https://limitlesstcg.com/decks/list/"+r[3])}" target="_blank" rel="noopener">${B("原页","Source")}</a>`}</td></tr>${has&&ui.open[k]?`<tr><td colspan="5">${listBox(r[3])}</td></tr>`:""}`}).join("")}</tbody></table></div></div>`).join("")}
+  <div class="tw"><table class="tight trs"><thead><tr>${TH("名次","Place",1)}${TH("选手","Player")}${TH("国家","Country")}${TH("套牌","Deck")}${TH("牌表","List")}</tr></thead><tbody>${t.top.map((r,i)=>{const k=t.id+"-"+i,has=LISTS[r[3]];return `<tr><td class="n">${i+1}</td><td>${esc(r[0])}</td><td>${r[1]}</td><td><span class="dn">${dkIm(r[2])}<span>${dkNH(r[2])}</span></span></td><td>${has?`<button data-list="${k}">${ui.open[k]?B("收起","Hide"):B("牌表","List")}</button>`:`<a href="${esc("https://limitlesstcg.com/decks/list/"+r[3])}" target="_blank" rel="noopener">${B("原页","Source")}</a>`}</td></tr>${has&&ui.open[k]?`<tr class="trx"><td colspan="5">${listBox(r[3])}</td></tr>`:""}`}).join("")}</tbody></table></div></div>`).join("")}
   <div><button class="pri" data-go="build">让店主帮我组一套 <span class="en">Build one for me</span></button></div>`;
 const radio=(name,opts,def)=>`<div class="opts">${opts.map((o,i)=>`<label><input type="radio" name="${name}" id="${name}-${i}" value="${esc(o[0])}" ${(def==null?i===0:def===i)?"checked":""}>${esc(o[0])} <span class="en">${esc(o[1])}</span></label>`).join("")}</div>`;
 const QN=8;
@@ -2972,7 +3103,7 @@ function admProducts(){
 
   ${lgs.length>1?`<div class="seg2 slang" role="group" aria-label="版本 Edition">${[["",B("全部版本","All editions")]].concat(lgs.map(l=>[l,B(l,LNGEN[l]||l)])).map(x=>`<button data-alng="${x[0]}" class="${alng===x[0]?"on":""}" aria-pressed="${alng===x[0]}">${x[1]}${x[0]?` <small class="muted">${AP.filter(p=>p.lng===x[0]).length}</small>`:""}</button>`).join("")}</div>`:""}
   <div class="chips" role="group" aria-label="产品类别"><button data-apc="all" class="${c==="all"?"on":""}">全部 <span class="en">All</span></button>${Object.entries(CATS).filter(([k])=>k!=="single").map(([k,v])=>`<button data-apc="${k}" class="${c===k?"on":""}">${v[0]} <span class="en">${v[1]}</span> <span class="cnt">${byQ.filter(p=>p.c===k).length}</span></button>`).join("")}</div>
-  <div class="serstrip" role="group" aria-label="选择系列 Series"><button class="all${ser===""?" on":""}" data-aser="">全部系列<span class="en" style="font-weight:400">All sets</span></button>${series.map(x=>`<button data-aser="${esc(x)}" class="${ser===x?"on":""}" aria-pressed="${ser===x}" title="${esc(x)}" style="--sc:${SETC[x]||"#1c8fc4"}">${slogo(x,"")}<span>${esc(x)}</span></button>`).join("")}</div>
+  <div class="serstrip" role="group" aria-label="选择系列 Series"><button class="all${ser===""?" on":""}" data-aser="">全部系列<span class="en">All sets</span></button>${series.map(x=>`<button data-aser="${esc(x)}" class="${ser===x?"on":""}" aria-pressed="${ser===x}" title="${esc(x)}" style="--sc:${SETC[x]||"#1c8fc4"}">${slogo(x,"")}<span>${esc(x)}</span></button>`).join("")}</div>
   <div class="row"><input id="apq" type="search" placeholder="搜索名字、系列、编号" value="${esc(ui.apq||"")}" style="flex:1 1 220px"><button class="pri" data-anew="1">＋ 新增商品</button></div>
   ${(ui._pq=pendQty(),"")}<div class="fbar">${AST.map(([k,t])=>chip(k,t,inC.filter(p=>astOk(p,k)).length,f===k)).join("")}</div>
   ${f==="chk"?stockChk(inC):`
@@ -3352,6 +3483,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
+ ["v135","2026-11-24",["「系列和卡牌」全站改名「图鉴」；点图鉴直接进最新系列的卡表；商店商品列表旁边加图鉴入口；页脚店铺栏只留商品、图鉴、行情","电脑版首页左右留白；原创小鹿卡背在留白里跟着滚动卡同步移动；系列轮播两侧露出半透明的上一个、下一个系列，点一下就切过去；点系列画面直接进这个系列的商店；按钮「查看更多」改成「查看图鉴」","手机版：首页滚动卡一屏 5 张；系列展示一屏看完；商店一排 3 件；高价前 15 一次看 5 张；图鉴稀有度改成上面一行横滑标签、卡表一排 5 张；卡组牌表一排 4 张；比赛成绩改成一人一行，不再挤在一起","行情页重做：一句话看懂这一周多少张卡变贵、变便宜；涨最多 / 跌最多双栏各 10 张（手机用切换）；最贵 TOP 10 横排；说明收进「这些价格怎么来的？」","每张卡都能看属性、HP、特性、招式、弱点、抗性、撤退：英文卡 2,698 张、日文卡 4,484 张（日文原文加台湾官方繁体中文卡文）；点开卡就能一眼看到「看价格走势和相似卡」","英文版：标题、导航、按钮用 Title Case；中文加粗的地方英文也加粗"]],
  ["v134.1","2026-11-24",["基础会员等级改名为「小鹿」（英文 Fawn）"]],
  ["v134","2026-11-24",["顶部导航：当前页的字更深、下面有深色横线，菜单之间更紧凑","首页系列展示改成占满整个页面宽度：左上角 Holofen 标志、系列渐变背景、这个系列的商品、「购买产品」和「查看更多」按钮、半透明左右箭头、底部横条指示","首页签到、最新新闻改成全宽区块；「去商店」这类链接改成居中、有边框的按钮","商品卡、系列卡鼠标移上去会轻轻浮起来","右上角改成统一的线条图标：客服、收藏、个人中心、购物车","页脚改成「店铺 / 客户服务 / 信息」三栏，保留电邮、IG、晒卡墙、防伪指南、条款、隐私、免责声明和货币；新增常见问题、运送、退货与退款三个页面","会员中心新增：优惠券数量、可用积分、会员奖励（四列，用积分兑换，兑换前要确认）、账户管理（昵称、头像拖拽上传、生日、性别）、账户设置（电邮、电话未验证、登录方式、安全提示）","后台「设置 › 会员奖励」：自己加奖励、设所需积分和图片，看兑换名单并标记已安排","新增系列图鉴（参考 Kado）：英文版 / 日文版切换，左边按世代分，右边是卡包封面、编号·语言、发售日和张数","单卡页：卡图角标（编号、稀有度）、英日中卡名、同宝可梦全部卡价入口、同系列相邻卡快速切换；价格走势可切换国际 / 日本本土、RAW / PSA 9 / PSA 10、3 个月 / 6 个月 / 全部，没有来源的显示「暂无数据」；同系列价值最高的 8 张卡和这张卡的排名","会员等级改名：小鹿、银鹿、金鹿、黑鹿、至尊黑鹿"]],
  ["v133","2026-11-24",["商品可以填重量（克），只有后台看得到，结账时按重量算运费","新增「设置 › 运费」，全部自定义：寄送方式的名字、开关、寄到哪个国家，可以自己加新的方式；每个方式设满多少免运、按重量区间收多少、超过最重一档每多几克加多少；同一张表填我们实际付的快递费，另设每个包裹的包装重量和包装成本","每张订单卡上直接显示这单的实收、商品成本、实际运费（免运时记为免运补贴）、包装成本和赚多少，每一项都标了分类；成本可以改成实际数字","订单页多了「本月利润」，导出的订单 CSV 多了成本、运费支出、免运补贴、包装、利润和重量几栏","修好订单进度条（待付款、待审核……）在 v131 之后文字一圈套一圈重叠的问题"]],
@@ -4064,8 +4196,7 @@ document.addEventListener("click",async e=>{
   if(ds.cgt){ ui.cgt=ds.cgt; return render() }
   if(ds.cmk){ ui.cmk=ds.cmk; return render() }
   if(ds.cgr){ ui.cgr=ds.cgr; return render() }
-  if(ds.clng){ ui.clng=ds.clng; ui.cgen=""; return render() }
-  if("cgen" in ds){ ui.cgen=ds.cgen; return render() }
+  if(ds.mcol){ ui.mcol=ds.mcol; return render() }
   if(ds.mclear){ ui.mq=""; ui.mshown=24; return render() }
   if(ds.mmore){ ui.mshown=(ui.mshown||24)+24; return render() }
   if(ds.mallsets){ ui.mallsets=true; return render() }
