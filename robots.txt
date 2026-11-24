@@ -1,4 +1,4 @@
-# Holofen：不允许 AI 训练、抓数据和镜像整站。搜索引擎可以收录公开页面。
+# Holofen: no AI training, scraping or site mirroring. Search engines may index public pages.
 User-agent: GPTBot
 User-agent: ChatGPT-User
 User-agent: OAI-SearchBot

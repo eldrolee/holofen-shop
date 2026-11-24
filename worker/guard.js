@@ -10,6 +10,14 @@ export default {
     const res = await env.ASSETS.fetch(request);
     const h = new Headers(res.headers);
     h.set("X-Robots-Tag", "noai, noimageai");
+    // 2026-11-25 店主要求「不要给骇客有入侵的机会」：加上常见的安全标头。
+    h.set("X-Content-Type-Options", "nosniff");
+    h.set("X-Frame-Options", "DENY");
+    h.set("Content-Security-Policy", "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests");
+    h.set("Referrer-Policy", "strict-origin-when-cross-origin");
+    h.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()");
+    h.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+    h.set("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
     return new Response(res.body, { status: res.status, statusText: res.statusText, headers: h });
   }
 };
