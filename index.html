@@ -1533,6 +1533,7 @@ footer .disc{text-align:center;font-size:12px;color:#3d4a50;border-top:1px solid
 .cinfo .zt{display:block;color:var(--muted);font-size:12px;font-weight:500;margin-top:2px}
 .cinfo p.zt{margin-top:2px}
 .cmtrend{display:flex;justify-content:center;width:100%}
+.btnl.offj{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;font-size:13px;padding:8px 14px;min-height:0;white-space:nowrap;background:var(--mint,#e3f3ec);color:var(--ink);border:1px solid rgba(11,102,114,.25)}.offjn{display:block;font-size:11.5px;text-align:center;margin-top:-6px}.pqL .btnl.offj{width:auto;align-self:flex-start;margin-top:4px}.pqL .offjn{text-align:left;margin-top:0}
 @media (max-width:640px){.modal .box.cm .cmimg{width:150px;max-width:150px;margin:0 auto}}
 html[data-lang="en"] .lgp>.en,html[data-lang="en"] .lgp>i,html[data-lang="en"] .lgp>small,html[data-lang="en"] .lgp>.tr{font-weight:inherit}
 </style>
@@ -1779,7 +1780,7 @@ const $ = s => document.querySelector(s);
 const pname = p => p.n + (p.no ? " #" + p.no : "");
 /* 中文模式先显示中文名、英文官方名做副标；英文模式只显示英文名 */
 const PZ = p => p.svc?(lang==="en"?p.en:p.n):(lang!=="en"&&p.zh)?p.zh:p.n, PN = p => PZ(p)+(p.no?" #"+p.no:""), PNs = p => "";
-const B = (zh,en) => `${zh} <span class="en">${en}</span>`;
+const B = (zh,en) => zh===en?`${zh}`:`${zh} <span class="en">${en}</span>`;
 const BL = (zh,en) => `<span class="zh">${zh}</span><span class="en">${en}</span>`;
 const H1 = (zh,en) => `<h1>${zh}<small>${en}</small></h1>`;
 const H2 = (zh,en) => `<h2>${zh}<small>${en}</small></h2>`;
@@ -2131,7 +2132,7 @@ const mk=p=>"";
 const chgPill=(p,cls="chg")=>{ const m=MV[p.id]; if(!m) return `<span class="${cls} flat">— <span class="en">n/a</span></span>`; const k=m.ch>0?"up":m.ch<0?"down":"flat"; return `<span class="${cls} ${k}">${m.ch>0?"+":m.ch<0?"−":""}${Math.abs(m.pct).toFixed(2)}%</span>` };
 const rarS=p=>{ const r=(CI[p.id]||{}).rarity; return r?({"Special Art Rare":"SAR","Secret Rare":"SR","Ultra Rare":"UR","Art Rare":"AR"}[r]||r):"" };
 const metaLine=p=>[(CI[p.id]||{}).code||p.s, numTxt(p), rarS(p)].filter(Boolean).join(" · ");
-const ICO={search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',cards:'<rect x="4" y="6" width="11" height="15" rx="2"/><path d="M9 3h9a2 2 0 0 1 2 2v12"/>',bag:'<path d="M4 7h16l-1.5 12a1 1 0 0 1-1 .9H6.5a1 1 0 0 1-1-.9z"/><path d="M9 7a3 3 0 0 1 6 0"/>',fire:'<path d="M12 21c4 0 7-2.7 7-6.6 0-3.4-2.3-5.8-4-7.4.2 2.2-.8 3.6-2 4.1C13.4 7.8 12 5 9.5 3c.4 3-3.5 5.6-3.5 10.4C6 18.3 8.4 21 12 21z"/>',chat:'<path d="M4 20l1.3-4A8 8 0 1 1 8.5 19z"/>',up:'<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>'};
+const ICO={img:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 17l-5-5-8 8"/>',search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',cards:'<rect x="4" y="6" width="11" height="15" rx="2"/><path d="M9 3h9a2 2 0 0 1 2 2v12"/>',bag:'<path d="M4 7h16l-1.5 12a1 1 0 0 1-1 .9H6.5a1 1 0 0 1-1-.9z"/><path d="M9 7a3 3 0 0 1 6 0"/>',fire:'<path d="M12 21c4 0 7-2.7 7-6.6 0-3.4-2.3-5.8-4-7.4.2 2.2-.8 3.6-2 4.1C13.4 7.8 12 5 9.5 3c.4 3-3.5 5.6-3.5 10.4C6 18.3 8.4 21 12 21z"/>',chat:'<path d="M4 20l1.3-4A8 8 0 1 1 8.5 19z"/>',up:'<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>'};
 const ic=(k,sz=22,c="currentColor")=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICO[k]}</svg>`;
 function setFeature(s){ const c=SINGLES.filter(p=>p.s===s&&p.big).sort((a,b)=>mp(b)-mp(a))[0]||SINGLES.filter(p=>p.s===s).sort((a,b)=>mp(b)-mp(a))[0]; const bx=P.filter(p=>p.s===s&&(p.c==="box"||p.c==="etb"||p.c==="bundle")).sort((a,b)=>b.price-a.price)[0]; return [c,bx] }
 /* 没有本店单卡照片的系列：用卡表里最贵的那张卡做代表（卡图来自 TCGdex） */
@@ -2543,6 +2544,9 @@ const cKey=c=>c.k;
 const cRM=c=>c.p?mp(c.p):c.td>0?(c.tde?c.td*FX_EUR:c.td*FX):c.usd>0?c.usd*FX:null;
 const cNum=c=>{ const d=SC[c.s]; return /^\d+$/.test(c.num)?String(c.num).padStart(3,"0")+"/"+String(d.printed).padStart(3,"0"):c.num };
 const rarB=r=>{ const x=RARX[r]; return x?`<span class="rb" style="--rc:${x[3]}" title="${x[1]}">${x[2]}${r==="X"?"":`<i>${r}</i>`}</span>`:"" };
+/* 2026-11-24 日文卡官方卡图链接：TCGdex 没卡图的 14 个系列，链到宝可梦卡牌官网该卡页面（官网禁止转载图片，只放链接）。格式 系列>起始卡号.官网卡ID.连续张数 */
+const OFFJ={}; "M6a>1.50613.100 101.50742.3 104.50934.32 136.50713.16 153.50729.13;M6>1.50339.71 73.50410.1 75.50411.1 77.50518.37;M5>1.50220.81 82.50302.37;M4>1.50085.83 84.50183.37;M3>1.49634.80 81.50048.37;M2a>1.48523.193 194.49954.57;M2>1.48341.80 81.48487.36;M1L>1.47734.63 64.48421.29;M1S>1.47797.63 64.48450.29;SV11B>1.47537.86 87.47911.88;SV11W>1.47623.86 87.47999.88;SV10>1.47394.98 99.47503.34;SV8>1.46341.106 107.46630.32;SV5M>1.45218.71 72.45544.29".split(";").forEach(l=>{ const [s,r]=l.split(">"); OFFJ[s]={}; r.split(" ").forEach(x=>{ const [n,id,len]=x.split(".").map(Number); for(let i=0;i<len;i++) OFFJ[s][String(n+i).padStart(3,"0")]=id+i }) });
+const offJ=c=>{ if(!c||!c.ja||c.im) return ""; const d=SC[c.s], id=d&&OFFJ[d.code]&&OFFJ[d.code][c.key]; return id?`<a class="btnl offj" href="https://www.pokemon-card.com/card-search/details.php/card/${id}/regu/all" target="_blank" rel="noopener">${ic("img",16)} ${B("看官方卡图","Official Image")}</a><span class="muted offjn">${B("本店还没有这张卡的图，点上面开宝可梦卡牌官网（日文）。","We don't have this image yet. Opens the official Pokémon Card Game site (Japanese).")}</span>`:"" };
 function spr(c,cls){ const d=SC[c.s];
   if(d.ja) return c.im?`<img class="cim ${cls||""}" loading="lazy" src="https://assets.tcgdex.net/${d.img}/${c.key}/${/big/.test(cls||"")?"high":"low"}.webp" alt="${esc(cN(c))}" onerror="if(!this.dataset.r){this.dataset.r=1;this.src=this.src.replace(/low\.webp$/,'high.webp')}else{this.outerHTML='<span class=&quot;spr noimg&quot;><b>${esc(d.code)}</b><span>${esc(c.jn||c.n).replace(/'/g,"")}</span></span>'}">`:`<span class="spr noimg ${cls||""}" role="img" aria-label="${esc(cN(c))}"><b>${esc(d.code)}</b><span>${esc(c.jn||c.n)}</span><small>${B("卡图待收录","No image yet")}</small></span>`;
   const col=c.i%d.cols, row=Math.floor(c.i/d.cols);
@@ -2595,7 +2599,8 @@ function cardModal(k){ const c=CARDS[k]; if(!c) return ""; const p=c.p;
   <div class="stack" style="gap:12px"><div class="row" style="justify-content:space-between;flex-wrap:nowrap;align-items:flex-start"><div><div class="muted" style="font-family:var(--mono);font-size:12px">${cNum(c)} · ${esc(c.r)}</div><h2>${esc(cN(c))}</h2><div class="row" style="gap:6px">${slogo(c.s)}<span class="muted">${esc(c.s)}</span></div></div><button data-close="1" aria-label="关闭 Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <div><span class="muted">${B("目前市场价","Market price now")}</span><div class="row" style="gap:10px;align-items:baseline"><span class="bigp" style="font-size:30px;color:var(--ink)">${cPriceTxt(c)}</span>${p&&MV[p.id]?chgPill(p):""}</div><span class="muted" style="font-size:12px">${cSrcTxt(c)}</span></div>
   <a class="btnl pri cmtrend" href="#card/${c.k}">${ic("up",16)} ${B("看价格走势和相似卡","Price Trend & Similar Cards")}</a>
-  <dl class="cfacts">${RARX[c.r]?`<div><dt>${B("稀有度","Rarity")}</dt><dd>${rarB(c.r)} ${B(RARX[c.r][0],RARX[c.r][1])}</dd></div>`:""}<div><dt>${B("种类","Type")}</dt><dd>${kindTxt(c,1)}</dd></div>${c.hp?`<div><dt>HP</dt><dd>${esc(c.hp)}${c.ty?" · "+esc(c.ty):""}</dd></div>`:""}${c.art?`<div><dt>${B("插画师","Illustrator")}</dt><dd>${esc(c.art)}</dd></div>`:""}</dl>
+  ${offJ(c)}
+  <dl class="cfacts">${RARX[c.r]?`<div><dt>${B("稀有度","Rarity")}</dt><dd>${rarB(c.r)} ${B(RARX[c.r][0],RARX[c.r][1])}</dd></div>`:""}<div><dt>${B("种类","Type")}</dt><dd>${kindTxt(c,1)}</dd></div>${c.hp?`<div><dt>HP</dt><dd>${esc(c.hp)}${c.ty?" · "+(TYPEC[c.ty]?B(TYPEC[c.ty][1]+"属性",c.ty):esc(c.ty)):""}</dd></div>`:""}${c.art?`<div><dt>${B("插画师","Illustrator")}</dt><dd>${esc(c.art)}</dd></div>`:""}</dl>
   ${ctxPanel(c)}
   <p class="muted" style="font-size:12px">${B("本店不单卖单卡，这里的价格只供参考。","We don't sell singles; prices are for reference.")}</p></div></div></div>` }
 const baseName=n=>n.replace(/^(Mega|Team Rocket's|[A-Z][a-z]+'s|Alolan|Galarian|Hisuian|Paldean)\s+/,"").replace(/\s+(ex|EX|GX|V|VMAX|VSTAR)$/,"").replace(/\s+[XY]$/,"").trim();
@@ -2636,7 +2641,7 @@ V.card=()=>{ const c=CARDS[ui.card]; if(!c) return V.market(); const p=c.p, h=HI
   <div class="pq">
    <div class="pqL"><div class="pqimg">${cImg(c,1)}<span class="cbn">#${esc(c.num)}</span>${c.r&&RARX[c.r]?`<span class="cbr" style="--rc:${RARX[c.r][3]}">${esc(c.r)}</span>`:""}</div>
     <div class="stack" style="gap:10px;min-width:0"><div><h1 style="margin:0">${esc(cN(c))}</h1>
-      <dl class="cnames">${names.map(x=>`<div><dt>${B(x[0],x[1])}</dt><dd>${esc(x[2])}</dd></div>`).join("")}</dl>
+      <dl class="cnames">${names.map(x=>`<div><dt>${B(x[0],x[1])}</dt><dd>${esc(x[2])}</dd></div>`).join("")}</dl>${offJ(c)}
       <span class="pqcode">${esc(CI_CODE(c)||c.sid)} · ${esc(c.num)} · ${c.ja?"JAPANESE":"ENGLISH"}</span><div class="row" style="gap:6px;margin-top:6px">${slogo(c.s)}${rarB(c.r)}</div>
       ${same?`<a class="morebtn sm" href="#simsec" data-mjump="simsec">${B((c.zh||baseName(c.n)).replace(/\s*ex$/i,"")+" 的全部卡价",'All '+baseName(c.n)+" prices")}</a>`:""}</div>
      <div class="pqprice"><b>${cPriceTxt(c)}</b><span>RAW</span>${p&&MV[p.id]?chgPill(p):trPill(c)}</div>
@@ -3483,6 +3488,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
+ ["v136","2026-11-24",["卡片弹窗的属性改成中文（例如「水属性」），PSA 9 / PSA 10 这类中英相同的字在英文模式不再重复显示","日文卡里 TCGdex 还没有卡图的 14 个系列（SV5M、SV8、SV10、SV11W/B、MEGA 全系列），卡片弹窗和单卡页加「看官方卡图」按钮，直接开宝可梦卡牌官网那张卡的页面（官网禁止转载图片，所以只放链接）。1,697 张里对上 1,693 张"]],
  ["v135","2026-11-24",["「系列和卡牌」全站改名「图鉴」；点图鉴直接进最新系列的卡表；商店商品列表旁边加图鉴入口；页脚店铺栏只留商品、图鉴、行情","电脑版首页左右留白；原创小鹿卡背在留白里跟着滚动卡同步移动；系列轮播两侧露出半透明的上一个、下一个系列，点一下就切过去；点系列画面直接进这个系列的商店；按钮「查看更多」改成「查看图鉴」","手机版：首页滚动卡一屏 5 张；系列展示一屏看完；商店一排 3 件；高价前 15 一次看 5 张；图鉴稀有度改成上面一行横滑标签、卡表一排 5 张；卡组牌表一排 4 张；比赛成绩改成一人一行，不再挤在一起","行情页重做：一句话看懂这一周多少张卡变贵、变便宜；涨最多 / 跌最多双栏各 10 张（手机用切换）；最贵 TOP 10 横排；说明收进「这些价格怎么来的？」","每张卡都能看属性、HP、特性、招式、弱点、抗性、撤退：英文卡 2,698 张、日文卡 4,484 张（日文原文加台湾官方繁体中文卡文）；点开卡就能一眼看到「看价格走势和相似卡」","英文版：标题、导航、按钮用 Title Case；中文加粗的地方英文也加粗"]],
  ["v134.1","2026-11-24",["基础会员等级改名为「小鹿」（英文 Fawn）"]],
  ["v134","2026-11-24",["顶部导航：当前页的字更深、下面有深色横线，菜单之间更紧凑","首页系列展示改成占满整个页面宽度：左上角 Holofen 标志、系列渐变背景、这个系列的商品、「购买产品」和「查看更多」按钮、半透明左右箭头、底部横条指示","首页签到、最新新闻改成全宽区块；「去商店」这类链接改成居中、有边框的按钮","商品卡、系列卡鼠标移上去会轻轻浮起来","右上角改成统一的线条图标：客服、收藏、个人中心、购物车","页脚改成「店铺 / 客户服务 / 信息」三栏，保留电邮、IG、晒卡墙、防伪指南、条款、隐私、免责声明和货币；新增常见问题、运送、退货与退款三个页面","会员中心新增：优惠券数量、可用积分、会员奖励（四列，用积分兑换，兑换前要确认）、账户管理（昵称、头像拖拽上传、生日、性别）、账户设置（电邮、电话未验证、登录方式、安全提示）","后台「设置 › 会员奖励」：自己加奖励、设所需积分和图片，看兑换名单并标记已安排","新增系列图鉴（参考 Kado）：英文版 / 日文版切换，左边按世代分，右边是卡包封面、编号·语言、发售日和张数","单卡页：卡图角标（编号、稀有度）、英日中卡名、同宝可梦全部卡价入口、同系列相邻卡快速切换；价格走势可切换国际 / 日本本土、RAW / PSA 9 / PSA 10、3 个月 / 6 个月 / 全部，没有来源的显示「暂无数据」；同系列价值最高的 8 张卡和这张卡的排名","会员等级改名：小鹿、银鹿、金鹿、黑鹿、至尊黑鹿"]],
