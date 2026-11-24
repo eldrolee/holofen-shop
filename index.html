@@ -157,10 +157,10 @@ td.th img{width:40px;height:56px;object-fit:contain;background:var(--tile);borde
 @media (prefers-reduced-motion:reduce){.gcard .in{transition:none;transform:none!important}}
 /* orders */
 .steps{display:flex;flex-wrap:wrap;gap:4px;font-size:12px}
-.steps span{padding:3px 10px;border-radius:99px;border:1.5px solid var(--line);color:var(--muted);line-height:1.25;text-align:center}
-.steps span i{display:block;font-style:normal;font-size:10px}
-.steps span.done{background:var(--soft);color:var(--ink)}
-.steps span.now{background:var(--sun);color:var(--sun-ink);border-color:var(--sun);font-weight:700}
+.steps>span{padding:3px 10px;border-radius:99px;border:1.5px solid var(--line);color:var(--muted);line-height:1.25;text-align:center}
+.steps>span i{display:block;font-style:normal;font-size:10px}
+.steps>span.done{background:var(--soft);color:var(--ink)}
+.steps>span.now{background:var(--sun);color:var(--sun-ink);border-color:var(--sun);font-weight:700}
 .order{display:flex;flex-direction:column;gap:10px}
 .buddy{display:flex;gap:10px;align-items:center;background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:8px 12px}
 .buddy svg{flex:none}
@@ -204,7 +204,7 @@ nav.sub a.on{background:var(--surface);color:var(--red);font-weight:700;box-shad
 @media (prefers-reduced-motion:reduce){.tile,.tile img{transition:none}}
 .trial{background:var(--note);color:var(--note-ink);font-size:12px;text-align:center;padding:4px 16px;line-height:1.4}
 .trial .en{color:inherit;opacity:.8}
-html[data-lang="zh"] .en:not(.lgp>.en),html[data-lang="zh"] h1 small:not(.lgp>small):not(.sub),html[data-lang="zh"] h2 small:not(.lgp>small),html[data-lang="zh"] nav.tabs a i:not(.lgp>i),html[data-lang="zh"] th i:not(.lgp>i),html[data-lang="zh"] .steps span i:not(.lgp>i){display:none}
+html[data-lang="zh"] .en:not(.lgp>.en),html[data-lang="zh"] h1 small:not(.lgp>small):not(.sub),html[data-lang="zh"] h2 small:not(.lgp>small),html[data-lang="zh"] nav.tabs a i:not(.lgp>i),html[data-lang="zh"] th i:not(.lgp>i),html[data-lang="zh"] .steps>span i:not(.lgp>i){display:none}
 button.lang{min-height:36px;padding:6px 10px;border-radius:99px;font-family:var(--display);font-weight:700;font-size:13px}
 .hassub h1{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
@@ -1055,14 +1055,14 @@ header.bar::after{margin-top:8px}
 .trkbtn{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:99px;background:var(--teal);color:#fff;font-weight:700;text-decoration:none;font-size:13px}
 .trkbtn:hover{filter:brightness(1.1)}
 /* v83 订单进度：依次亮起，当前一步呼吸发光，完成的打勾 */
-.steps.sx span{opacity:0;transform:translateY(6px);animation:stIn .45s cubic-bezier(.22,1,.36,1) forwards;animation-delay:calc(var(--i)*90ms);display:inline-flex;align-items:center;gap:4px}
-.steps.sx span.done{background:#dcefe6;border-color:#b9dccb;color:#0b6672}
-.steps.sx span .ck{font-size:11px;color:#0b6672;animation:ckPop .4s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(var(--i)*90ms + .25s)}
-.steps.sx span.now{position:relative;animation:stIn .45s cubic-bezier(.22,1,.36,1) forwards,stGlow 2.2s ease-in-out infinite;animation-delay:calc(var(--i)*90ms),calc(var(--i)*90ms + .5s)}
+.steps.sx>span{opacity:0;transform:translateY(6px);animation:stIn .45s cubic-bezier(.22,1,.36,1) forwards;animation-delay:calc(var(--i)*90ms);display:inline-flex;align-items:center;gap:4px}
+.steps.sx>span.done{background:#dcefe6;border-color:#b9dccb;color:#0b6672}
+.steps.sx>span .ck{font-size:11px;color:#0b6672;animation:ckPop .4s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(var(--i)*90ms + .25s)}
+.steps.sx>span.now{position:relative;animation:stIn .45s cubic-bezier(.22,1,.36,1) forwards,stGlow 2.2s ease-in-out infinite;animation-delay:calc(var(--i)*90ms),calc(var(--i)*90ms + .5s)}
 @keyframes stIn{to{opacity:1;transform:none}}
 @keyframes ckPop{from{transform:scale(0)}to{transform:scale(1)}}
 @keyframes stGlow{0%,100%{box-shadow:0 0 0 0 rgba(240,192,80,.55)}50%{box-shadow:0 0 0 6px rgba(240,192,80,0)}}
-@media (prefers-reduced-motion:reduce){.steps.sx span,.steps.sx span.now,.steps.sx span .ck{animation:none;opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.steps.sx>span,.steps.sx>span.now,.steps.sx>span .ck{animation:none;opacity:1;transform:none}}
 .mord{display:block;padding:10px 12px;border-radius:14px;background:var(--surface);border:1px solid var(--line);text-decoration:none;color:inherit}.mord:hover{border-color:var(--teal)}.mord .steps{margin-top:6px}
 .hsw{position:relative;min-width:0;max-width:100%}
 .hsw>:first-child{scrollbar-width:none}.hsw>:first-child::-webkit-scrollbar{display:none}
@@ -1249,7 +1249,7 @@ header.bar::after{margin-top:8px}
 /* v133 运费设置、订单利润 */
 .money{margin-top:10px;padding:10px 14px}.money>summary{cursor:pointer;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;list-style:none}.money>summary::-webkit-details-marker{display:none}.money>summary::after{content:"▾";margin-left:auto;color:var(--muted)}.money[open]>summary::after{content:"▴"}.mhead{display:inline-flex;gap:8px;align-items:baseline}.mline{font-size:13px;overflow-wrap:anywhere}
 .mtab{width:100%;margin-top:8px;font-size:14px}.mtab td,.mtab th{padding:6px 8px;vertical-align:top}.mtab .mtot td{font-weight:700;border-top:1px solid var(--line)}.mtag{font-style:normal;font-size:12px;padding:2px 8px;border-radius:999px;white-space:nowrap;display:inline-block}.mtag.in{background:#e6f5ef;color:#1d6b4f}.mtag.out{background:#fdeeee;color:#9a3434}
-.shtab{width:100%}.shtab td,.shtab th{padding:6px;vertical-align:middle}.shtab input{width:100%;min-width:84px;box-sizing:border-box}.shtab td:last-child{width:1%;white-space:nowrap}
+.msub{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;margin-top:4px}.mtab td.n{white-space:nowrap;padding-left:12px}.shhead{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between}.shrows{display:flex;flex-direction:column;gap:10px}.shrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:8px;align-items:end;padding:10px;border:1px solid var(--line);border-radius:12px}.shrow .f{min-width:0}.shrow input{width:100%;box-sizing:border-box}@media (max-width:600px){.shrow{grid-template-columns:1fr 1fr}.shrow>button{grid-column:1/-1;justify-self:start}}
 </style>
 
 <div class="bgfx" aria-hidden="true"></div>
@@ -1960,7 +1960,7 @@ window.trT=trT;
 /* 2026-11-23 店主要：换语言只换文字，不换排版。中文和英文叠在同一个格子里（.lgp），宽高取两者较大的那个，
    切换时只是显示哪一个，所以按钮、标题、段落的位置和大小都不会跳。 */
 function lpWrap(){
-  document.querySelectorAll(".en,.tr,h1>small,h2>small,nav.tabs a>i,th>i,.steps span i").forEach(el=>{
+  document.querySelectorAll(".en,.tr,h1>small,h2>small,nav.tabs a>i,th>i,.steps>span i").forEach(el=>{
     if(el.parentElement&&el.parentElement.classList.contains("lgp")||el.closest(".backbtn")) return;
     const zs=[]; let n=el.previousSibling;
     const brs=[]; while(n&&(n.nodeType===3&&!n.nodeValue.trim()||n.nodeName==="BR")){ if(n.nodeName==="BR") brs.push(n); n=n.previousSibling }
@@ -1972,7 +1972,7 @@ function lpWrap(){
   });
 }
 function langPass(){
-  const CJK=/[㐀-鿿]/, SEL=".en,h1>small,h2>small,nav.tabs a>i,th>i,.steps span i";
+  const CJK=/[㐀-鿿]/, SEL=".en,h1>small,h2>small,nav.tabs a>i,th>i,.steps>span i";
   document.querySelectorAll(SEL).forEach(el=>{ if(el.parentElement&&el.parentElement.classList.contains("lgp")) return; let n=el.previousSibling;
     while(n){ const prev=n.previousSibling;
       if(n.nodeType===3){ if(CJK.test(n.nodeValue)){ const sp=document.createElement("span"); sp.className="zh"; n.replaceWith(sp); sp.appendChild(n) } }
@@ -2114,7 +2114,7 @@ const normFaq=d=>({list:arr(d&&d.list).slice(0,40).map(x=>({q:cleanTxt(x&&x.q,12
 async function initFaq(){ try{ if(window.claude&&window.claude.use){ const d=await window.claude.use("db"); if(d){ d.doc("site/faq").onSnapshot(s=>{ FAQX=normFaq(s.exists?s.data():null); if(ui.kf||ui.stab==="faq") render() },()=>{}); return } } }catch(e){}
   FAQX=normFaq(lsGet("faq",null)) }
 const kfA=(h,zh,en)=>`<a href="#${h}" data-kfgo="1">${B(zh,en)} ›</a>`;
-function FAQ(){ const R=rules(), shp=SHIP.map(x=>`${B(x.n,x.en)} ${shipRuleTxt(x.k)}`).join("；");
+function FAQ(){ const R=rules(), shp=SHIP.filter(x=>x.on!==false).map(x=>`${B(x.n,x.en)} ${shipRuleTxt(x.k)}`).join("；");
   const L=[
   ["order","怎么下单？要先注册吗？","How do I order? Do I need an account?","下单 买 购买 注册 登录 账号 访客 结账 order buy account checkout",
    ()=>`${B("不用注册也能下单。把商品加进购物车，结账时再填名字、电话和地址就可以。注册会员的话可以累积积分、签到、玩夹娃娃机。","You can order without an account. Add items to the cart and fill in your name, phone and address at checkout. Members also earn points and can check in and play the claw machine.")}<br>${kfA("shop","去商店","Shop")}`],
@@ -2519,7 +2519,7 @@ V.gallery=()=>{
 function cartTotals(){
   const sub=cart.reduce((a,c)=>a+item(c.id).price*c.qty,0);
   const onlySvc=cart.length>0&&cart.every(c=>item(c.id).svc);
-  const sh=SHIP.find(s=>s.k===(ui.ship||"wm"))||SHIP[0]; const q=onlySvc?null:shipQ(sh.k,cart,sub), fee=q?q.fee:0;
+  const sh=SHIP.find(s=>s.k===shipK())||SHIP[0]; const q=onlySvc?null:shipQ(sh.k,cart,sub), fee=q?q.fee:0;
   const cp=couponsOf(uid).find(c=>c.code===ui.coupon&&!c.used&&sub>=c.min); const mb=member(uid), R=mb.R;
   const maxU=Math.min(Math.floor(mb.left/R.redeemPts),Math.floor(Math.max(0,sub-(cp?cp.amount:0))/R.redeemRM||0)), pts=Math.min(ui.pts||0,maxU*R.redeemPts), ptsOff=pts/R.redeemPts*R.redeemRM;
   const off=(cp?cp.amount:0)+ptsOff;
@@ -2565,11 +2565,11 @@ V.cart=()=>{
   return `${H1("购物车和结账","Cart & checkout")}<div class="row" style="gap:10px;margin-top:-6px">${cartLinks()}</div><div class="two"><div class="stack">
   <div class="tw"><table><thead><tr><th></th>${TH("商品","Item")}${TH("单价","Price",1)}${TH("数量","Qty")}${TH("小计","Subtotal",1)}<th></th></tr></thead><tbody>${cart.map((c,i)=>{const p=item(c.id);return `<tr><td class="th">${p.svc?buddy(30):`<img src="${simg(p)}" alt="">`}</td><td>${esc(p.svc?(lang==="en"?p.en:p.n):PN(p))}<div class="muted">${esc(p.svc?(c.brief?`${c.brief.format} · ${c.brief.budget} · ${c.brief.want}`:""):(PNs(p)?PNs(p)+" · ":"")+p.s)}${!p.svc&&isPre(p)?`<div class="up">${B(`预购，预计 ${preTxt(p)}到货`,`Pre-order, expected ${isPre(p)}`)}</div>`:""}</div></td><td class="n">${p.quote?`<span class="muted">${B("待报价","To be quoted")}</span>`:rm(p.price)}</td><td>${p.svc?"1":`<span class="row" style="gap:4px;flex-wrap:nowrap"><button data-qty="${i}" data-d="-1" aria-label="减少">−</button><span class="price">${c.qty}</span><button data-qty="${i}" data-d="1" aria-label="增加">+</button></span>`}</td><td class="n">${rm(p.price*c.qty)}</td><td><button data-rm="${i}">移除</button></td></tr>`}).join("")}</tbody></table></div>
   <form class="panel stack" id="checkout">${H2("收件资料","Delivery details")}${signedIn()?`<p class="muted" style="margin:0">${myEmail()?`${B("登录账号","Signed in as")}：${esc(myEmail())}。`:""}${profOK()?B("已带入你保存的资料，可以直接改；这次填的会更新到「我的资料」。","Filled in from your saved details. Changes here update your saved details."):B("这次填的会保存到「我的资料」，下次不用重填。","What you enter here is saved to your details for next time.")}</p>`:""}
-   <div class="row"><label class="f">${B("姓名","Name")}<input id="c-name" required value="${esc(ui.cname||"")}"></label><label class="f">${B("手机号码","Phone")}<input id="c-phone" required inputmode="tel" placeholder="${(SHIP.find(x=>x.k===(ui.ship||"wm"))||{}).cc==="sg"?"+65 xxxx xxxx":(SHIP.find(x=>x.k===(ui.ship||"wm"))||{}).cc==="cn"?"+86 1xx xxxx xxxx":"01x-xxxxxxx"}" value="${esc(ui.cphone||"")}"></label></div>
+   <div class="row"><label class="f">${B("姓名","Name")}<input id="c-name" required value="${esc(ui.cname||"")}"></label><label class="f">${B("手机号码","Phone")}<input id="c-phone" required inputmode="tel" placeholder="${(SHIP.find(x=>x.k===shipK())||{}).cc==="sg"?"+65 xxxx xxxx":(SHIP.find(x=>x.k===shipK())||{}).cc==="cn"?"+86 1xx xxxx xxxx":"01x-xxxxxxx"}" value="${esc(ui.cphone||"")}"></label></div>
    ${`<label class="f">${B("电子邮件","Email")}<input id="c-email" type="email" required autocomplete="email" value="${esc(ui.cemail||ME.email||myEmail()||"")}"><small class="muted">${B("订单进度会寄到这个邮箱。","We'll email your order updates here.")}</small></label>`}
    ${t.onlySvc?`<p class="muted">只买组牌服务不需要寄送。 No shipping needed for the deck service.</p>`:`<label class="f">${B("地址","Address")}<input id="c-addr" required value="${esc(ui.caddr||"")}"></label>
-   ${(()=>{ const cc=(SHIP.find(x=>x.k===(ui.ship||"wm"))||{}).cc; return `<div class="row"><label class="f">${B("邮编","Postcode")}<input id="c-post" required inputmode="numeric" pattern="${cc?"[0-9]{6}":"[0-9]{5}"}" value="${esc(ui.cpost||"")}"></label>${cc==="sg"?`<label class="f">${B("国家","Country")}<input id="c-state" value="Singapore 新加坡" readonly></label>`:cc==="cn"?`<label class="f">${B("省份和城市","Province & city")}<input id="c-state" required placeholder="例如 广东省 深圳市" value="${esc(STATES.includes(ui.cstate)?"":ui.cstate||"")}"></label>`:`<label class="f">${B("州属","State")}<select id="c-state">${STATES.map(s=>`<option ${ui.cstate===s?"selected":""}>${s}</option>`).join("")}</select></label>`}</div>${cc?`<p class="muted" style="margin:0">${B(cc==="sg"?"寄新加坡：一般 5 到 10 个工作天，进口税费（如有）由收件人支付。":"寄中国：一般 7 到 14 个工作天，进口税费（如有）由收件人支付。","International delivery; any import duties are paid by the recipient.")}</p>`:""}` })()}
-   <label class="f"><span>${B("寄送方式","Shipping")}${SHIPCFG.at?"":` <span class="chip tbd">运费待定 <span class="en">TBD</span></span>`}</span><select id="c-ship">${SHIP.map(s=>`<option value="${s.k}" ${(ui.ship||"wm")===s.k?"selected":""}>${shipOpt(s,cartTotals().sub)}</option>`).join("")}</select></label>${shipNote()}`}
+   ${(()=>{ const cc=(SHIP.find(x=>x.k===shipK())||{}).cc; return `<div class="row"><label class="f">${B("邮编","Postcode")}<input id="c-post" required inputmode="numeric" pattern="${cc?"[0-9]{6}":"[0-9]{5}"}" value="${esc(ui.cpost||"")}"></label>${cc==="sg"?`<label class="f">${B("国家","Country")}<input id="c-state" value="Singapore 新加坡" readonly></label>`:cc==="cn"?`<label class="f">${B("省份和城市","Province & city")}<input id="c-state" required placeholder="例如 广东省 深圳市" value="${esc(STATES.includes(ui.cstate)?"":ui.cstate||"")}"></label>`:`<label class="f">${B("州属","State")}<select id="c-state">${STATES.map(s=>`<option ${ui.cstate===s?"selected":""}>${s}</option>`).join("")}</select></label>`}</div>${cc?`<p class="muted" style="margin:0">${B(cc==="sg"?"寄新加坡：一般 5 到 10 个工作天，进口税费（如有）由收件人支付。":"寄中国：一般 7 到 14 个工作天，进口税费（如有）由收件人支付。","International delivery; any import duties are paid by the recipient.")}</p>`:""}` })()}
+   <label class="f"><span>${B("寄送方式","Shipping")}${SHIPCFG.at?"":` <span class="chip tbd">运费待定 <span class="en">TBD</span></span>`}</span><select id="c-ship">${SHIP.filter(s=>s.on!==false).map(s=>`<option value="${s.k}" ${shipK()===s.k?"selected":""}>${shipOpt(s,cartTotals().sub)}</option>`).join("")}</select></label>${shipNote()}`}
    <label class="row" style="gap:8px;font-size:14px"><input type="checkbox" id="c-mkt" ${ME.mkt?"checked":""}> ${B("有新优惠或新货时，用电邮通知我（随时可以取消）","Email me about new deals and arrivals (unsubscribe any time)")}</label>
    <label class="f">${B("付款方式","Payment method")}<select id="c-pay">${PAY.map(p=>`<option ${ui.pay===p?"selected":""}>${esc(p)}</option>`).join("")}</select></label>
    ${cps.length?`<label class="f">${B("回购优惠码","Return coupon")}<select id="c-coupon"><option value="">不使用</option>${cps.map(c=>`<option value="${c.code}" ${ui.coupon===c.code?"selected":""}>${c.code}　满 ${rm(c.min)} 减 ${rm(c.amount)}</option>`).join("")}</select></label>`:""}
@@ -2810,7 +2810,7 @@ const profOK=()=>!!(ME.prof&&ME.prof.name&&ME.prof.phone), signedIn=()=>typeof X
 const myEmail=()=>{ try{ const u=window.HOLO_AUTH&&HOLO_AUTH.user(); return u&&u.email?String(u.email).slice(0,120):"" }catch(e){ return "" } };
 function profFields(pre,pf,withAddr){
   return `<div class="row"><label class="f">${B("姓名","Name")}<input id="${pre}-name" required maxlength="80" autocomplete="name" value="${esc(pf.name)}"></label><label class="f">${B("手机号码","Phone")}<input id="${pre}-phone" required maxlength="30" inputmode="tel" autocomplete="tel" placeholder="01x-xxxxxxx" value="${esc(pf.phone)}"></label></div>${!withAddr?"":`
-  <label class="f">${B("寄到哪里","Deliver to")}<select id="${pre}-ship">${SHIP.filter(z=>z.k!=="pickup").map(z=>`<option value="${z.k}" ${pf.ship===z.k?"selected":""}>${isEN()?({wm:"West Malaysia",em:"East Malaysia",sg:"Singapore",cn:"China"}[z.k]):({wm:"西马",em:"东马",sg:"新加坡",cn:"中国"}[z.k])}</option>`).join("")}</select></label>
+  <label class="f">${B("寄到哪里","Deliver to")}<select id="${pre}-ship">${SHIP.filter(z=>z.k!=="pickup"&&(z.on!==false||pf.ship===z.k)).map(z=>`<option value="${z.k}" ${pf.ship===z.k?"selected":""}>${isEN()?({wm:"West Malaysia",em:"East Malaysia",sg:"Singapore",cn:"China"}[z.k]||z.en):({wm:"西马",em:"东马",sg:"新加坡",cn:"中国"}[z.k]||z.n)}</option>`).join("")}</select></label>
   <label class="f">${B("收件地址","Delivery address")}<input id="${pre}-addr" maxlength="200" autocomplete="street-address" value="${esc(pf.addr)}"></label>
   <div class="row"><label class="f">${B("邮编","Postcode")}<input id="${pre}-post" maxlength="10" inputmode="numeric" autocomplete="postal-code" value="${esc(pf.post)}"></label><label class="f">${B("州属或城市","State or city")}<input id="${pre}-state" maxlength="40" list="stlist" value="${esc(pf.state)}"></label></div><datalist id="stlist">${STATES.map(z=>`<option value="${z}">`).join("")}</datalist>`}` }
 function readProf(pre){ const o=ME.prof||{}, has=!!document.getElementById(pre+"-addr"); return normProf({name:val(pre+"-name").trim(),phone:val(pre+"-phone").trim(),ship:has?val(pre+"-ship"):o.ship,addr:has?val(pre+"-addr").trim():o.addr,post:has?val(pre+"-post").trim():o.post,state:has?val(pre+"-state").trim():o.state,at:Date.now()}) }
@@ -3137,7 +3137,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
- ["v133","2026-11-24",["商品可以填重量（克），只有后台看得到，结账时按重量算运费","新增「设置 › 运费」：西马、东马、新加坡、中国各自设满多少免运、按重量区间收多少、超过最重一档每多 1 kg 加多少；同一张表填我们实际付的快递费，另设每个包裹的包装重量和包装成本","每张订单卡上直接显示这单的实收、商品成本、实际运费（免运时记为免运补贴）、包装成本和赚多少，每一项都标了分类；成本可以改成实际数字","订单页多了「本月利润」，导出的订单 CSV 多了成本、运费支出、免运补贴、包装、利润和重量几栏"]],
+ ["v133","2026-11-24",["商品可以填重量（克），只有后台看得到，结账时按重量算运费","新增「设置 › 运费」，全部自定义：寄送方式的名字、开关、寄到哪个国家，可以自己加新的方式；每个方式设满多少免运、按重量区间收多少、超过最重一档每多几克加多少；同一张表填我们实际付的快递费，另设每个包裹的包装重量和包装成本","每张订单卡上直接显示这单的实收、商品成本、实际运费（免运时记为免运补贴）、包装成本和赚多少，每一项都标了分类；成本可以改成实际数字","订单页多了「本月利润」，导出的订单 CSV 多了成本、运费支出、免运补贴、包装、利润和重量几栏","修好订单进度条（待付款、待审核……）在 v131 之后文字一圈套一圈重叠的问题"]],
  ["v132","2026-11-23",["夹娃娃机每次都一定夹到一颗扭蛋：爪子夹起来送到出货口，扭蛋掉出来再打开，显示夹到的奖品；没奖品的扭蛋是空的，显示「谢谢惠顾」","新增「再抽一次」：后台每台机可以设「再抽一次」的中奖率，夹到就送一次免费夹取，不扣积分","36 件旧系列日文商品换成自家高清图"]],
  ["v131","2026-11-23",["换语言只换文字、不换排版：中文和英文叠在同一个位置，按钮、标题、段落、商品名、卡组名的大小和位置在两种语言下都一样，切换后停在原来的位置","新闻加了英文摘要，英文模式不再少一段","比赛表格的「牌表 / 原页」和标题也跟着语言切换"]],
  ["v130","2026-11-23",["改版需求 3：其余 18 个日文版系列（SV1S/SV1V 到 SV8）的官方补充包盒和散包加进后台商品库，共 36 件，先只在后台，定价并上架后才在商店出现；名称和代号对过 Cardrush 商品页和官方网站","改版需求 3：后台编辑商品时显示 SKU、系列、类别、版本、发售日期、来源、启用状态，并可以勾选多个供应商或新增供应商","改版需求 5：行情页加「版本」切换（全部/英文版/日文版），每条价格带版本标记；日文版还没有可核实的价格来源，显示「暂无数据」，不拿英文版价格代替","改版需求 7：比赛牌表上写明印刷版本（这些国际赛事用英文版卡，卡图也是英文版）","首页轮播：新的一张停好后才显示文字，滑动途中不会从箭头底下经过"]],
@@ -3934,18 +3934,28 @@ if(matchMedia("(pointer:fine)").matches&&!matchMedia("(prefers-reduced-motion:re
 /* ---------- v133（2026-11-24 店主要）：运费按重量算；每张订单直接看到这单收多少、付出多少、赚多少 ----------
    顾客付的运费规则存在 site/ship（结账要算，所有人能读；前台只显示算好的运费，从不显示重量）。
    实际运费、包装成本和每张订单的成本记录存在 books/ship、books/orders，只有店主和管理员能读写。 */
-const SHZ=[["wm","西马","West Malaysia"],["em","东马","East Malaysia"],["sg","新加坡","Singapore"],["cn","中国","China"]];
-const SHIP0={pkgG:150,defG:250,z:{wm:[[1000,8]],em:[[1000,15]],sg:[[1000,35]],cn:[[1000,55]]}};
+/* 2026-11-24 店主要「全部自定义」：寄送方式（名字、开关、寄到哪个国家）、每个方式的免运门槛、重量区间、超重每多几克加多少，全部在后台改；可以自己加新的寄送方式 */
+const SHIPDEF=SHIP.map(x=>({k:x.k,n:x.n,en:x.en,cc:x.cc||"my",on:true,fee:x.fee}));
+const SHCC=[["my","马来西亚","Malaysia"],["sg","新加坡","Singapore"],["cn","中国","China"]];
+const SHIP0={pkgG:150,defG:250};
 const r2=n=>Math.round(n*100)/100;
-function normShipCfg(d){ d=d&&typeof d==="object"?d:{}; const z={};
-  SHZ.forEach(([k])=>{ const s=(d.z&&d.z[k])||{}; let br=arr(s.br).map(b=>[Math.round(num(arr(b)[0])),r2(num(arr(b)[1]))]).filter(b=>b[0]>0&&b[0]<=100000&&b[1]>=0).sort((a,b)=>a[0]-b[0]).slice(0,20);
-    if(!br.length) br=SHIP0.z[k].map(b=>b.slice()); const fr=num(s.free), ex=num(s.ex); z[k]={free:fr>0?r2(fr):0,br,ex:ex>0?r2(ex):0} });
-  const pg=num(d.pkgG), dg=num(d.defG); return {pkgG:pg>=0&&pg<=20000?Math.round(pg):SHIP0.pkgG,defG:dg>=0&&dg<=50000?Math.round(dg):SHIP0.defG,at:num(d.at)||0,z} }
+const shZones=()=>SHIPCFG.m.filter(x=>x.k!=="pickup");
+function normShipCfg(d){ d=d&&typeof d==="object"?d:{}; const z={}, seen=new Set(), m=[];
+  arr(d.m).forEach(x=>{ if(!x||typeof x!=="object") return; const k=String(x.k||""); if(!/^[a-z0-9]{1,10}$/.test(k)||seen.has(k)) return; const df=SHIPDEF.find(y=>y.k===k); if(!df&&m.filter(y=>!SHIPDEF.some(q=>q.k===y.k)).length>=12) return; seen.add(k);
+    m.push({k,n:cleanTxt(x.n,30)||(df?df.n:"寄送"),en:cleanTxt(x.en,40)||(df?df.en:"Delivery"),cc:k==="pickup"?"my":SHCC.some(c=>c[0]===x.cc)?x.cc:(df?df.cc:"my"),on:x.on!==false,cus:!df}) });
+  SHIPDEF.forEach(df=>{ if(!seen.has(df.k)) m.push({k:df.k,n:df.n,en:df.en,cc:df.cc,on:true,cus:false}) });
+  m.forEach(x=>{ if(x.k==="pickup") return; const s=(d.z&&d.z[x.k])||{}, df=SHIPDEF.find(y=>y.k===x.k);
+    let br=arr(s.br).map(b=>[Math.round(num(arr(b)[0])),r2(num(arr(b)[1]))]).filter(b=>b[0]>0&&b[0]<=100000&&b[1]>=0).sort((a,b)=>a[0]-b[0]).slice(0,20);
+    if(!br.length) br=[[1000,df?df.fee:0]]; const fr=num(s.free), ex=num(s.ex), st=num(s.st); z[x.k]={free:fr>0?r2(fr):0,br,ex:ex>0?r2(ex):0,st:st>=1&&st<=100000?Math.round(st):1000} });
+  const pg=num(d.pkgG), dg=num(d.defG); return {pkgG:pg>=0&&pg<=20000?Math.round(pg):SHIP0.pkgG,defG:dg>=0&&dg<=50000?Math.round(dg):SHIP0.defG,at:num(d.at)||0,m,z} }
 function normShipCost(d){ d=d&&typeof d==="object"?d:{}; const z={}, ok=v=>{ const n=num(v); return n>=0?r2(n):null };
-  SHZ.forEach(([k])=>{ const s=(d.z&&d.z[k])||{}; z[k]={br:arr(s.br).slice(0,20).map(ok),ex:ok(s.ex)} }); return {pack:ok(d.pack),z} }
+  Object.keys((d.z&&typeof d.z==="object")?d.z:{}).slice(0,40).forEach(k=>{ if(!/^[a-z0-9]{1,10}$/.test(k)) return; const s=d.z[k]||{}; z[k]={br:arr(s.br).slice(0,20).map(ok),ex:ok(s.ex)} }); return {pack:ok(d.pack),z} }
+/* 网站其他地方（结账、会员资料、订单）都读 SHIP；设定一变就把它换成店主的寄送方式。关掉的方式留在 SHIP 里给旧订单显示名字，只是结账不给选 */
+function applyShip(){ SHIP.splice(0,SHIP.length,...SHIPCFG.m.map(x=>({k:x.k,n:x.n,en:x.en,cc:x.cc==="my"?undefined:x.cc,on:x.on}))) }
+const shipK=()=>{ const on=SHIP.filter(s=>s.on!==false); return (on.find(s=>s.k===ui.ship)||on[0]||SHIP[0]).k };
 function normBooks(d){ const m=d&&typeof d==="object"&&d.m&&typeof d.m==="object"?d.m:{}, o={}, ok=v=>{ const n=num(v); return n>=0&&n<1e6?r2(n):undefined };
   Object.keys(m).slice(0,5000).forEach(id=>{ const x=m[id]; if(!x||typeof x!=="object") return; const r={}; ["cost","ship","pack"].forEach(k=>{ const v=ok(x[k]); if(v!==undefined) r[k]=v }); r.at=num(x.at)||0; o[cleanId(id)]=r }); return o }
-let SHIPCFG=normShipCfg(lsGet("shipcfg",null)), SHIPC=normShipCost(lsGet("shipcost",null)), BOOKS=normBooks(lsGet("books",null));
+let SHIPCFG=normShipCfg(lsGet("shipcfg",null)), SHIPC=normShipCost(lsGet("shipcost",null)), BOOKS=normBooks(lsGet("books",null)); applyShip();
 let bookQ=Promise.resolve();
 function bookSave(){ const d={m:JSON.parse(JSON.stringify(BOOKS))}; bookQ=bookQ.then(()=>XDB?XDB.doc("books/orders").set(d):lsSet("books",d)).catch(()=>toast("成本记录没有保存成功 Could not save")); return bookQ }
 function bookSet(oid,patch){ if(!owner) return Promise.resolve(); const id=cleanId(oid); BOOKS={...BOOKS,[id]:{...(BOOKS[id]||{}),...patch,at:Date.now()}}; render(); return bookSave() }
@@ -3956,12 +3966,12 @@ function shipQ(k,items,sub){ const Z=SHIPCFG.z[k]; let g=0; const miss=[];
   if(g>0) g+=SHIPCFG.pkgG;
   const br=Z.br, C=SHIPC.z[k]||{br:[],ex:null}; let i=br.findIndex(b=>g<=b[0]), fee, cost;
   if(i>=0){ fee=br[i][1]; cost=C.br[i] }
-  else { i=br.length-1; const over=Math.ceil((g-br[i][0])/1000); fee=br[i][1]+over*Z.ex; cost=C.br[i]==null?null:C.br[i]+over*(C.ex||0) }
+  else { i=br.length-1; const over=Math.ceil((g-br[i][0])/(Z.st||1000)); fee=br[i][1]+over*Z.ex; cost=C.br[i]==null?null:C.br[i]+over*(C.ex||0) }
   const free=Z.free>0&&sub>=Z.free; return {g,miss,fee:free?0:r2(fee),full:r2(fee),cost:cost==null?null:r2(cost),free,pickup:false,Z} }
 const kgT=g=>g>=1000?r2(g/1000)+" kg":Math.round(g)+" g";
 /* 结账页：运费选项的文字和免运提示 */
 function shipOpt(s,sub){ const q=shipQ(s.k,cart,sub), E=isEN(), tbd=!SHIPCFG.at;
-  return `${esc(s.n)} ${esc(s.en)}　${q.pickup?(E?"No fee":"免运费"):q.free?(E?"Free shipping":"免运费"):rm(q.fee)+(tbd?(E?" (provisional)":"（暂定）"):"")}` }
+  return `${esc(E?s.en:s.n)}　${q.pickup?(E?"No fee":"免运费"):q.free?(E?"Free shipping":"免运费"):rm(q.fee)+(tbd?(E?" (provisional)":"（暂定）"):"")}` }
 function freeHint(t){ if(!t||!t.q||t.q.pickup||!t.q.Z||!(t.q.Z.free>0)) return ""; return `<p class="note" style="margin:0">${t.q.free?B("这一单免运费。","Free shipping on this order."):B(`商品再买 ${rm(t.q.Z.free-t.sub)} 就免运费。`,`Add ${rm(t.q.Z.free-t.sub)} more for free shipping.`)}</p>` }
 /* 前台说明用：每个地区的运费怎么算（只写金额和门槛，不写商品重量） */
 function shipRuleTxt(k){ const Z=SHIPCFG.z[k]; if(!Z) return B("免运费","free"); const f=Z.br[0];
@@ -3978,20 +3988,20 @@ function bookSnap(o){ const k=bookOf(o), r={cost:k.cost}; if(k.ship!=null) r.shi
 function ordMoney(u,o){ if(!owner) return ""; if(!ui.pcAt){ ui.pcAt=1; loadRestock().then(()=>render()) }
   const k=bookOf(o), paid=["approved","shipped","delivered","done"].includes(o.status), id=o.id, open=ui.mopen===id;
   const tg=(z,e,c)=>`<i class="mtag ${c}">${B(z,e)}</i>`;
-  const ln=(tag,lab,v,note)=>`<tr><td>${tag}</td><td>${lab}${note?` <small class="muted">${note}</small>`:""}</td><td class="n">${v}</td></tr>`;
+  const ln=(tag,lab,v,note)=>`<tr><td><div>${lab}</div><div class="msub">${tag}${note?`<small class="muted">${note}</small>`:""}</div></td><td class="n">${v}</td></tr>`;
   const estN=x=>x?B("估算","estimate"):B("已记录","recorded");
   const rows=[
     ln(tg("商品收入","Sales","in"),B("商品","Goods"),rm(o.sub)),
     o.svcOnly?"":ln(tg("运费收入","Shipping income","in"),B("顾客付的运费","Shipping charged"),rm(o.fee),k.free?B("免运","free shipping"):k.q&&!k.pick?kgT(k.q.g):""),
     o.off?ln(tg("折扣","Discount","in"),B("优惠码 / 积分","Coupon / points"),"−"+rm(o.off)):"",
-    `<tr class="mtot"><td></td><td>${B("实收","Received")}</td><td class="n">${rm(o.total)}</td></tr>`,
+    `<tr class="mtot"><td>${B("实收","Received")}</td><td class="n">${rm(o.total)}</td></tr>`,
     ln(tg("商品成本","Cost of goods","out"),B("进货成本","Purchase cost"),"−"+rm(k.cost),k.gm?B(`${k.gm} 件没填成本`,`${k.gm} items have no cost`):estN(k.est.cost)),
     o.svcOnly?"":ln(tg(k.free?"免运补贴":"运费支出",k.free?"Free-shipping subsidy":"Shipping cost","out"),B("实际运费","Actual shipping"),k.ship==null?"—":"−"+rm(k.ship),k.ship==null?B("运费设置里还没填实际运费","Not set in shipping settings"):estN(k.est.ship)),
     o.svcOnly?"":ln(tg("包装成本","Packaging","out"),B("包装","Packing"),k.pack==null?"—":"−"+rm(k.pack),k.pack==null?B("运费设置里还没填包装成本","Not set in shipping settings"):estN(k.est.pack)),
-    `<tr class="mtot"><td></td><td>${B("这单赚","Profit")}</td><td class="n ${k.profit<0?"down":"up"}">${k.profit<0?"−":""}${rm(Math.abs(k.profit))}</td></tr>`].join("");
+    `<tr class="mtot"><td>${B("这单赚","Profit")}</td><td class="n ${k.profit<0?"down":"up"}">${k.profit<0?"−":""}${rm(Math.abs(k.profit))}</td></tr>`].join("");
   const miss=k.q&&k.q.miss.length?`<p class="note" style="margin:6px 0 0">${B(`${k.q.miss.length} 件商品还没填重量，运费按每件 ${SHIPCFG.defG} 克算。到「商品」里填上重量。`,`${k.q.miss.length} items have no weight; shipping uses ${SHIPCFG.defG} g each. Add weights in Products.`)}</p>`:"";
   return `<details class="panel money" data-mopen="${esc(id)}"${open?" open":""}><summary><span class="mhead"><b>${paid?B("这单赚","Profit"):B("预计赚","Expected profit")}</b> <b class="price ${k.profit<0?"down":"up"}">${k.profit<0?"−":""}${rm(Math.abs(k.profit))}</b></span><span class="muted mline">${B("实收","Received")} ${rm(o.total)} · ${B("付出","Costs")} ${rm(k.out)}${o.svcOnly?"":` · ${B("运费","Shipping")} ${rm(o.fee)}`}</span></summary>
-   <div class="tw"><table class="mtab"><thead><tr><th>${B("分类","Category")}</th><th>${B("项目","Item")}</th><th class="n">RM</th></tr></thead><tbody>${rows}</tbody></table></div>${miss}
+   <div class="tw"><table class="mtab"><thead><tr><th>${B("项目 · 分类","Item · category")}</th><th class="n">RM</th></tr></thead><tbody>${rows}</tbody></table></div>${miss}
    <div class="row" style="margin-top:8px;align-items:flex-end"><label class="f" style="flex:1 1 120px">${B("商品成本 RM","Cost of goods RM")}<input id="bk-cost-${esc(id)}" type="number" min="0" step="0.01" inputmode="decimal" value="${k.cost}"></label>${o.svcOnly?"":`<label class="f" style="flex:1 1 120px">${B("实际运费 RM","Actual shipping RM")}<input id="bk-ship-${esc(id)}" type="number" min="0" step="0.01" inputmode="decimal" value="${k.ship??""}"></label><label class="f" style="flex:1 1 120px">${B("包装成本 RM","Packaging RM")}<input id="bk-pack-${esc(id)}" type="number" min="0" step="0.01" inputmode="decimal" value="${k.pack??""}"></label>`}<button data-bksave="${esc(id)}">${B("保存这单成本","Save costs")}</button></div>
    <p class="muted" style="margin:6px 0 0">${B("只有店主和管理员看得到。通过审核时会按当时的进货成本和运费设置记一笔，寄出后可以改成快递单上的实际运费。","Only the owner and admins see this. Costs are recorded at approval from restock costs and shipping settings; edit them to the real courier fee after shipping.")}</p></details>` }
 document.addEventListener("toggle",e=>{ const d=e.target; if(d.classList&&d.classList.contains("money")){ const id=d.dataset.mopen; if(d.open) ui.mopen=id; else if(ui.mopen===id) ui.mopen=null } },true);
@@ -3999,42 +4009,55 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   for(const f of ["cost","ship","pack"]){ const el=document.getElementById("bk-"+f+"-"+id); if(!el) continue; const t=el.value.trim(); if(t==="") continue; const n=num(t); if(!isFinite(n)||n<0||n>=1e6) return toast("成本要填 0 或以上的数字"); r[f]=r2(n) }
   bookSet(id,r).then(()=>toast("已保存这单成本 Saved")) });
 
-/* 设置 › 运费：顾客付多少（按地区、重量区间、满额免运）＋ 我们实际付多少（快递费、包装） */
+/* 设置 › 运费：每个寄送方式自己的名字、开关、寄到哪里、免运门槛、重量区间（顾客付 / 我们实际付）、超重加价；另设包装重量和包装成本。全部店主自定义 */
 function admShipFee(){ const S=ui.shd||(ui.shd={cfg:JSON.parse(JSON.stringify(SHIPCFG)),cost:JSON.parse(JSON.stringify(SHIPC))}), E=isEN();
-  const noW=ALLP.filter(p=>listed(p)&&!p.svc&&!(num(p.wg)>0)).length;
-  const zone=([k,z,e])=>{ const Z=S.cfg.z[k], C=S.cost.z[k];
-    return `<div class="panel stack shz"><h3 style="margin:0">${B(z,e)}</h3>
-    <label class="f" style="max-width:260px">${B("商品满多少 RM 免运费（0 = 不免运）","Free shipping over RM (0 = never)")}<input id="sf-free-${k}" type="number" min="0" step="1" inputmode="decimal" value="${Z.free||0}"></label>
-    <div class="tw"><table class="shtab"><thead><tr><th>${B("重量到多少克","Up to (g)")}</th><th>${B("顾客付 RM","Customer pays RM")}</th><th>${B("我们实际付 RM","We pay RM")}</th><th></th></tr></thead><tbody>
-    ${Z.br.map((b,i)=>`<tr><td><input id="sf-g-${k}-${i}" type="number" min="1" step="1" inputmode="numeric" value="${b[0]}" aria-label="${E?"Up to grams":"重量上限（克）"}"></td><td><input id="sf-f-${k}-${i}" type="number" min="0" step="0.01" inputmode="decimal" value="${b[1]}" aria-label="${E?"Customer pays":"顾客付"}"></td><td><input id="sf-c-${k}-${i}" type="number" min="0" step="0.01" inputmode="decimal" value="${C.br[i]??""}" placeholder="${E?"not set":"未填"}" aria-label="${E?"We pay":"实际付"}"></td><td>${Z.br.length>1?`<button type="button" class="sm" data-sfdel="${k}:${i}">${B("删掉这行","Remove row")}</button>`:""}</td></tr>`).join("")}
-    <tr><td>${B(`超过 ${kgT(Z.br[Z.br.length-1][0])}，每多 1 kg 加`,`Over ${kgT(Z.br[Z.br.length-1][0])}, each extra kg`)}</td><td><input id="sf-ex-${k}" type="number" min="0" step="0.01" inputmode="decimal" value="${Z.ex||0}" aria-label="${E?"Customer extra per kg":"顾客每多 1kg"}"></td><td><input id="sf-cx-${k}" type="number" min="0" step="0.01" inputmode="decimal" value="${C.ex??""}" placeholder="${E?"not set":"未填"}" aria-label="${E?"We pay extra per kg":"实际每多 1kg"}"></td><td></td></tr></tbody></table></div>
+  const noW=ALLP.filter(p=>listed(p)&&!p.svc&&!(num(p.wg)>0)).length, nf=(id,v,step,ph,lab)=>`<input id="${id}" type="number" min="0" step="${step}" inputmode="decimal" value="${v??""}"${ph?` placeholder="${ph}"`:""} aria-label="${esc(lab)}">`;
+  const head=(x,i)=>`<div class="shhead"><label class="tchk"><input type="checkbox" id="sf-on-${x.k}" ${x.on!==false?"checked":""}> ${B("开放给顾客选","Offer at checkout")}</label>${x.cus?`<button type="button" class="sm" data-sfrm="${x.k}">${B("删除这个寄送方式","Delete this method")}</button>`:""}</div>
+    <div class="agrid"><label class="f">${B("中文名称","Chinese name")}<input id="sf-n-${x.k}" maxlength="30" value="${esc(x.n)}"></label><label class="f">${B("英文名称","English name")}<input id="sf-en-${x.k}" maxlength="40" value="${esc(x.en)}"></label>
+    ${x.k==="pickup"?"":`<label class="f">${B("寄到哪个国家","Destination country")}<select id="sf-cc-${x.k}">${SHCC.map(c=>`<option value="${c[0]}" ${x.cc===c[0]?"selected":""}>${E?c[2]:c[1]}</option>`).join("")}</select></label>`}</div>`;
+  const zone=x=>{ const k=x.k, Z=S.cfg.z[k], C=S.cost.z[k]||(S.cost.z[k]={br:[],ex:null}), last=Z.br[Z.br.length-1][0];
+    return `<div class="panel stack shz"><h3 style="margin:0">${esc(E?x.en:x.n)}</h3>${head(x)}
+    <div class="agrid"><label class="f">${B("商品满多少 RM 免运费（0 = 不免运）","Free shipping over RM (0 = never)")}${nf("sf-free-"+k,Z.free||0,"0.01","",BT("免运门槛","Free over"))}</label></div>
+    <div class="shrows">${Z.br.map((b,i)=>`<div class="shrow"><label class="f">${B("重量到（克）","Up to (g)")}${nf(`sf-g-${k}-${i}`,b[0],"1","",BT("重量上限","Up to grams"))}</label><label class="f">${B("顾客付 RM","Customer pays RM")}${nf(`sf-f-${k}-${i}`,b[1],"0.01","",BT("顾客付","Customer pays"))}</label><label class="f">${B("我们实际付 RM","We pay RM")}${nf(`sf-c-${k}-${i}`,C.br[i],"0.01",E?"not set":"未填",BT("实际付","We pay"))}</label>${Z.br.length>1?`<button type="button" class="sm" data-sfdel="${k}:${i}">${B("删掉这行","Remove")}</button>`:""}</div>`).join("")}
+    <div class="shrow"><div class="muted" style="grid-column:1/-1">${B(`超过 ${kgT(last)} 之后`,`Over ${kgT(last)}`)}</div><label class="f">${B("每多（克）","Every extra (g)")}${nf("sf-st-"+k,Z.st||1000,"1","",BT("每多几克","Every extra grams"))}</label><label class="f">${B("顾客多付 RM","Customer pays more RM")}${nf("sf-ex-"+k,Z.ex||0,"0.01","",BT("顾客多付","Customer extra"))}</label><label class="f">${B("我们多付 RM","We pay more RM")}${nf("sf-cx-"+k,C.ex,"0.01",E?"not set":"未填",BT("我们多付","We pay extra"))}</label></div></div>
     <div><button type="button" class="sm" data-sfadd="${k}">${B("加一行重量区间","Add a weight row")}</button></div></div>` };
-  return `${H2("运费","Shipping fees")}<p class="muted">${BL("顾客结账时，按购物车里商品的重量（在「商品」里填，只有后台看得到）加上包装重量，找到对应的重量区间算运费。「我们实际付」和包装成本只用来算每张订单赚多少，顾客看不到。"+(SHIPCFG.at?"":"现在的金额是网站原本的暂定运费，请按快递报价改好后保存。"),"At checkout the fee comes from the items' weights (set in Products, admin only) plus packing weight, matched to a weight row. What we pay and packaging cost are only used for each order's profit; customers never see them."+(SHIPCFG.at?"":" These are the site's provisional fees; update them from your courier quotes and save."))}</p>
-  ${noW?`<p class="note">${B(`在售商品里有 ${noW} 件还没填重量，结账时按每件 ${SHIPCFG.defG} 克算。`,`${noW} listed items have no weight and count as ${SHIPCFG.defG} g each.`)} <button type="button" class="linkbtn" data-atab="products">${B("去填重量","Add weights")}</button></p>`:""}
-  <div class="panel stack"><div class="agrid">
-   <label class="f">${B("每个包裹的包装重量（克）","Packing weight per parcel (g)")}<input id="sf-pkg" type="number" min="0" step="1" inputmode="numeric" value="${S.cfg.pkgG}"></label>
-   <label class="f">${B("没填重量的商品按几克算","Weight for items without one (g)")}<input id="sf-def" type="number" min="0" step="1" inputmode="numeric" value="${S.cfg.defG}"></label>
-   <label class="f">${B("每个包裹的包装成本 RM（箱子、泡泡纸等）","Packaging cost per parcel RM")}<input id="sf-pack" type="number" min="0" step="0.01" inputmode="decimal" value="${S.cost.pack??""}" placeholder="${E?"not set":"未填"}"></label>
-  </div><p class="muted" style="margin:0">${B("自取 / 面交不收运费，也不算包装成本。","Self pickup has no shipping fee or packaging cost.")}</p></div>
-  ${SHZ.map(zone).join("")}
+  const pk=S.cfg.m.find(x=>x.k==="pickup");
+  return `${H2("运费","Shipping fees")}<p class="muted">${BL("这里的每一项都可以自己改。顾客结账时，按购物车里商品的重量（在「商品」里填，只有后台看得到）加上包装重量，找到对应的重量区间算运费。「我们实际付」和包装成本只用来算每张订单赚多少，顾客看不到。"+(SHIPCFG.at?"":"现在的金额是网站原本的暂定运费，请按快递报价改好后保存。"),"Everything here is yours to set. At checkout the fee comes from the items' weights (set in Products, admin only) plus packing weight, matched to a weight row. What we pay and packaging cost are only used for each order's profit; customers never see them."+(SHIPCFG.at?"":" These are the site's provisional fees; update them from your courier quotes and save."))}</p>
+  ${noW?`<p class="note">${B(`在售商品里有 ${noW} 件还没填重量，结账时按每件 ${S.cfg.defG} 克算。`,`${noW} listed items have no weight and count as ${S.cfg.defG} g each.`)} <button type="button" class="linkbtn" data-atab="products">${B("去填重量","Add weights")}</button></p>`:""}
+  <div class="panel stack"><h3 style="margin:0">${B("每个包裹","Every parcel")}</h3><div class="agrid">
+   <label class="f">${B("包装重量（克）","Packing weight (g)")}${nf("sf-pkg",S.cfg.pkgG,"1","",BT("包装重量","Packing weight"))}</label>
+   <label class="f">${B("没填重量的商品按几克算","Weight for items without one (g)")}${nf("sf-def",S.cfg.defG,"1","",BT("默认重量","Default weight"))}</label>
+   <label class="f">${B("包装成本 RM（箱子、泡泡纸等）","Packaging cost RM")}${nf("sf-pack",S.cost.pack,"0.01",E?"not set":"未填",BT("包装成本","Packaging cost"))}</label>
+  </div></div>
+  ${S.cfg.m.filter(x=>x.k!=="pickup").map(zone).join("")}
+  <div><button type="button" data-sfnew="1">${B("加一个寄送方式","Add a delivery method")}</button></div>
+  ${pk?`<div class="panel stack shz"><h3 style="margin:0">${esc(E?pk.en:pk.n)}</h3>${head(pk)}<p class="muted" style="margin:0">${B("自取 / 面交不收运费，也不算包装成本。","No shipping fee or packaging cost.")}</p></div>`:""}
   <div class="row"><button class="pri" data-sfsave="1">${B("保存运费设置","Save shipping settings")}</button></div>` }
-/* 先把表单里的数字读进草稿，加行 / 删行时不会丢掉还没保存的数字 */
-function sfRead(){ const S=ui.shd; if(!S) return; const g=id=>{ const el=document.getElementById(id); return el?el.value.trim():null };
-  const v=g("sf-pkg"); if(v!=null) S.cfg.pkgG=v===""?0:num(v); const d=g("sf-def"); if(d!=null) S.cfg.defG=d===""?0:num(d); const pk=g("sf-pack"); if(pk!=null) S.cost.pack=pk===""?null:num(pk);
-  SHZ.forEach(([k])=>{ const Z=S.cfg.z[k], C=S.cost.z[k]; const fr=g("sf-free-"+k); if(fr!=null) Z.free=fr===""?0:num(fr); const ex=g("sf-ex-"+k); if(ex!=null) Z.ex=ex===""?0:num(ex); const cx=g("sf-cx-"+k); if(cx!=null) C.ex=cx===""?null:num(cx);
-    Z.br.forEach((b,i)=>{ const a=g(`sf-g-${k}-${i}`), f=g(`sf-f-${k}-${i}`), c=g(`sf-c-${k}-${i}`); if(a!=null) b[0]=num(a); if(f!=null) b[1]=num(f); if(c!=null) C.br[i]=c===""?null:num(c) }) }) }
-document.addEventListener("click",e=>{ const t=e.target.closest&&e.target.closest("[data-sfadd],[data-sfdel],[data-sfsave]"); if(!t||!owner) return; sfRead(); const S=ui.shd;
-  if(t.dataset.sfadd){ const k=t.dataset.sfadd, Z=S.cfg.z[k], L=Z.br[Z.br.length-1]; Z.br.push([L[0]+1000,L[1]]); S.cost.z[k].br[Z.br.length-1]=S.cost.z[k].br[Z.br.length-2]??null; return render() }
+/* 先把表单里的数字读进草稿，加行 / 删行 / 加方式时不会丢掉还没保存的内容 */
+function sfRead(){ const S=ui.shd; if(!S) return; const g=id=>{ const el=document.getElementById(id); return el?el.value.trim():null }, n0=v=>v===""?0:num(v), nn=v=>v===""?null:num(v);
+  const v=g("sf-pkg"); if(v!=null) S.cfg.pkgG=n0(v); const d=g("sf-def"); if(d!=null) S.cfg.defG=n0(d); const pk=g("sf-pack"); if(pk!=null) S.cost.pack=nn(pk);
+  S.cfg.m.forEach(x=>{ const k=x.k, on=document.getElementById("sf-on-"+k); if(on) x.on=on.checked; const n=g("sf-n-"+k); if(n!=null) x.n=n; const en=g("sf-en-"+k); if(en!=null) x.en=en; const cc=g("sf-cc-"+k); if(cc!=null) x.cc=cc;
+    if(k==="pickup") return; const Z=S.cfg.z[k], C=S.cost.z[k]||(S.cost.z[k]={br:[],ex:null});
+    const fr=g("sf-free-"+k); if(fr!=null) Z.free=n0(fr); const ex=g("sf-ex-"+k); if(ex!=null) Z.ex=n0(ex); const st=g("sf-st-"+k); if(st!=null) Z.st=num(st); const cx=g("sf-cx-"+k); if(cx!=null) C.ex=nn(cx);
+    Z.br.forEach((b,i)=>{ const a=g(`sf-g-${k}-${i}`), f=g(`sf-f-${k}-${i}`), c=g(`sf-c-${k}-${i}`); if(a!=null) b[0]=num(a); if(f!=null) b[1]=num(f); if(c!=null) C.br[i]=nn(c) }) }) }
+document.addEventListener("click",e=>{ const t=e.target.closest&&e.target.closest("[data-sfadd],[data-sfdel],[data-sfsave],[data-sfnew],[data-sfrm]"); if(!t||!owner) return; sfRead(); const S=ui.shd; if(!S) return;
+  if(t.dataset.sfadd){ const k=t.dataset.sfadd, Z=S.cfg.z[k], C=S.cost.z[k], L=Z.br[Z.br.length-1]; Z.br.push([L[0]+1000,L[1]]); C.br[Z.br.length-1]=C.br[Z.br.length-2]??null; return render() }
   if(t.dataset.sfdel){ const [k,i]=t.dataset.sfdel.split(":"); S.cfg.z[k].br.splice(+i,1); S.cost.z[k].br.splice(+i,1); return render() }
-  for(const [k] of SHZ){ const Z=S.cfg.z[k], C=S.cost.z[k];
-    if(Z.br.some(b=>!(b[0]>0)||!(b[1]>=0))) return toast("每一行都要填重量（克）和顾客付的运费");
-    if(new Set(Z.br.map(b=>Math.round(b[0]))).size!==Z.br.length) return toast("同一个地区的重量不能重复");
+  if(t.dataset.sfnew){ if(S.cfg.m.filter(x=>x.cus).length>=12) return toast("最多加 12 个寄送方式"); let i=1; while(S.cfg.m.some(x=>x.k==="x"+i)) i++; const k="x"+i, at=S.cfg.m.findIndex(x=>x.k==="pickup");
+    S.cfg.m.splice(at<0?S.cfg.m.length:at,0,{k,n:"新寄送方式",en:"New delivery method",cc:"my",on:false,cus:true}); S.cfg.z[k]={free:0,br:[[1000,0]],ex:0,st:1000}; S.cost.z[k]={br:[null],ex:null}; return render() }
+  if(t.dataset.sfrm){ const k=t.dataset.sfrm; S.cfg.m=S.cfg.m.filter(x=>x.k!==k); delete S.cfg.z[k]; delete S.cost.z[k]; return render() }
+  if(!S.cfg.m.some(x=>x.on!==false)) return toast("至少要开放一个寄送方式");
+  if(S.cfg.m.some(x=>!x.n.trim()||!x.en.trim())) return toast("每个寄送方式都要有中文和英文名称");
+  for(const x of S.cfg.m){ if(x.k==="pickup") continue; const k=x.k, Z=S.cfg.z[k], C=S.cost.z[k];
+    if(Z.br.some(b=>!(b[0]>0)||!(b[1]>=0))) return toast(`「${x.n}」每一行都要填重量（克）和顾客付的运费`);
+    if(new Set(Z.br.map(b=>Math.round(b[0]))).size!==Z.br.length) return toast(`「${x.n}」的重量不能重复`);
+    if(!(Z.st>=1)) return toast(`「${x.n}」超重后「每多几克」至少 1 克`);
     if(!(Z.free>=0)||!(Z.ex>=0)||C.br.some(v=>v!=null&&!(v>=0))||(C.ex!=null&&!(C.ex>=0))) return toast("金额要填 0 或以上的数字");
-    const ord=Z.br.map((b,i)=>[b,C.br[i]]).sort((a,b)=>a[0][0]-b[0][0]); Z.br=ord.map(x=>x[0]); C.br=ord.map(x=>x[1]??null) }
+    const ord=Z.br.map((b,i)=>[b,C.br[i]]).sort((a,b)=>a[0][0]-b[0][0]); Z.br=ord.map(y=>y[0]); C.br=ord.map(y=>y[1]??null) }
   if(!(S.cfg.pkgG>=0)||!(S.cfg.defG>=0)||(S.cost.pack!=null&&!(S.cost.pack>=0))) return toast("重量和包装成本要填 0 或以上的数字");
-  const cfg=normShipCfg({...S.cfg,at:Date.now()}), cost=normShipCost(S.cost); SHIPCFG=cfg; SHIPC=cost; ui.shd=null; render();
+  const cfg=normShipCfg({...S.cfg,at:Date.now()}), cost=normShipCost(S.cost); SHIPCFG=cfg; SHIPC=cost; applyShip(); ui.shd=null; render();
   Promise.all([XDB?XDB.doc("site/ship").set(JSON.parse(JSON.stringify(cfg))):lsSet("shipcfg",cfg),XDB?XDB.doc("books/ship").set(JSON.parse(JSON.stringify(cost))):lsSet("shipcost",cost)]).then(()=>toast("运费设置已保存 Saved"),()=>toast("运费设置没有保存成功 Could not save")) });
-function initShip(){ if(!XDB) return; XDB.doc("site/ship").onSnapshot(s=>{ SHIPCFG=normShipCfg(s.exists?s.data():null); render() },()=>{});
+function initShip(){ if(!XDB) return; XDB.doc("site/ship").onSnapshot(s=>{ SHIPCFG=normShipCfg(s.exists?s.data():null); applyShip(); render() },()=>{});
   if(XOWN){ XDB.doc("books/ship").onSnapshot(s=>{ SHIPC=normShipCost(s.exists?s.data():null); render() },()=>{}); XDB.doc("books/orders").onSnapshot(s=>{ BOOKS=normBooks(s.exists?s.data():null); render() },()=>{}) } }
 
 readHash(); initStore(); initExtra(); initLucky(); initFaq();
@@ -4083,6 +4106,7 @@ readHash(); initStore(); initExtra(); initLucky(); initFaq();
     ['[data-bksave]',["确认保存这张订单的成本（商品成本、实际运费、包装）？","Save the costs for this order?"]],
     ['[data-sfsave]',["确认保存运费设置？顾客结账时马上按新的运费算。","Save shipping settings? Checkout uses the new fees right away."]],
     ['[data-sfdel]',["确认删掉这一行重量区间？（按「保存运费设置」后才生效）","Remove this weight row? (Takes effect when you save.)"]],
+    ['[data-sfrm]',["确认删除这个寄送方式？（按「保存运费设置」后才生效）","Delete this delivery method? (Takes effect when you save.)"]],
     ['[data-rsdel]',["确认删除这笔测试进货？删除后不能恢复。","Delete this test restock? This can't be undone."]],
     ['form[data-rs] button[type=submit]',el=>{ const f=el.form, t=f&&f.test&&f.test.checked, st=f&&f.status&&f.status.value; return t?["确认保存这笔测试进货？测试进货不会动库存。","Save this test restock? It won't change stock."]:st==="已到货"?["确认这批货已经到了？数量会加进库存。","Confirm this stock has arrived? The quantity will be added to stock."]:["确认保存这笔进货？","Save this restock?"] }],
   ];
