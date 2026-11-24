@@ -1407,6 +1407,8 @@ footer .disc{text-align:center;font-size:12px;color:#3d4a50;border-top:1px solid
 .tvsum{margin:0;padding:12px 14px;border-radius:12px;background:#eef8f5;font-size:14px}.ctr{display:flex;justify-content:center}
 #pricearea .gtab td small.muted{display:block;margin-top:2px}
 @media (max-width:359px){#wishbtn{display:none!important}}
+/* v136.2 收藏已在右上角心形图标，头像菜单不重复；只有心形图标被藏起来的极窄手机才在菜单里显示 */
+@media (min-width:360px){a.umwish{display:none!important}}
 /* v135 改善方面 12 */
 .shopidx{display:flex;align-items:center;justify-content:space-between;gap:12px}.shopidx p{margin:0;flex:1 1 auto;min-width:0}
 .idxbtn{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;border:1.5px solid #0a3d45;border-radius:10px;padding:7px 14px;font-weight:700;color:#0a3d45;text-decoration:none;background:#fff}
@@ -1647,7 +1649,7 @@ window.HOLO_AUTH=(function(){
       document.addEventListener("keydown",function(e){ if(e.key==="Escape") m.hidden=true }); addEventListener("hashchange",function(){ m.hidden=true }); addEventListener("resize",function(){ m.hidden=true }) }
     var hi=(typeof window.hdrInfo==="function"&&window.hdrInfo())||{};
     var it=[["#orders","orders","我的订单","My orders",hi.unread],["#member","member","会员中心","Membership",0,hi.tier],["#wish","wish","收藏和提醒","Saved & alerts",hi.alerts],["#","prof","个人资料","My details"],["#","out","登出","Sign out"]];
-    m.innerHTML=(user.email?'<div class="umw">'+user.email.replace(/[&<>"]/g,"")+'</div>':"")+it.map(function(x){ return '<a role="menuitem" href="'+x[0]+'" data-um="'+x[1]+'"'+(x[1]==="out"?' class="umo"':"")+'>'+x[2]+' <span class="en">'+x[3]+'</span>'+(x[4]?'<b class="umc" aria-label="'+x[4]+' 条更新">'+x[4]+'</b>':x[5]?'<small class="umt">'+x[5]+'</small>':"")+'</a>' }).join("");
+    m.innerHTML=(user.email?'<div class="umw">'+user.email.replace(/[&<>"]/g,"")+'</div>':"")+it.map(function(x){ return '<a role="menuitem" href="'+x[0]+'" data-um="'+x[1]+'"'+(x[1]==="out"?' class="umo"':x[1]==="wish"?' class="umwish"':"")+'>'+x[2]+' <span class="en">'+x[3]+'</span>'+(x[4]?'<b class="umc" aria-label="'+x[4]+' 条更新">'+x[4]+'</b>':x[5]?'<small class="umt">'+x[5]+'</small>':"")+'</a>' }).join("");
     var r=btn.getBoundingClientRect(); m.style.top=(r.bottom+8)+"px"; m.style.right=Math.max(8,innerWidth-r.right)+"px"; m.hidden=false; btn.setAttribute("aria-expanded","true"); if(typeof applyLang==="function") applyLang() }
   var pendingOut=0; function confirmOut(){ if(Date.now()-pendingOut<4000) return true; pendingOut=Date.now(); if(typeof toast==="function") toast("再按一次就登出"); return false }
   async function anon(){ try{ if(!sb||!sb.auth.signInAnonymously) return false; var r=await sb.auth.signInAnonymously(); return !r.error }catch(e){ return false } }
@@ -3488,6 +3490,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
+ ["v136.2","2026-11-25",["头像菜单拿掉「收藏和提醒」，因为右上角已经有心形收藏图标"]],
  ["v136.1","2026-11-25",["右上角图标顺序改为：收藏 → 购物车 → 头像（头像放最右边）"]],
  ["v136","2026-11-24",["卡片弹窗的属性改成中文（例如「水属性」），PSA 9 / PSA 10 这类中英相同的字在英文模式不再重复显示","日文卡里 TCGdex 还没有卡图的 14 个系列（SV5M、SV8、SV10、SV11W/B、MEGA 全系列），卡片弹窗和单卡页加「看官方卡图」按钮，直接开宝可梦卡牌官网那张卡的页面（官网禁止转载图片，所以只放链接）。1,697 张里对上 1,693 张"]],
  ["v135","2026-11-24",["「系列和卡牌」全站改名「图鉴」；点图鉴直接进最新系列的卡表；商店商品列表旁边加图鉴入口；页脚店铺栏只留商品、图鉴、行情","电脑版首页左右留白；原创小鹿卡背在留白里跟着滚动卡同步移动；系列轮播两侧露出半透明的上一个、下一个系列，点一下就切过去；点系列画面直接进这个系列的商店；按钮「查看更多」改成「查看图鉴」","手机版：首页滚动卡一屏 5 张；系列展示一屏看完；商店一排 3 件；高价前 15 一次看 5 张；图鉴稀有度改成上面一行横滑标签、卡表一排 5 张；卡组牌表一排 4 张；比赛成绩改成一人一行，不再挤在一起","行情页重做：一句话看懂这一周多少张卡变贵、变便宜；涨最多 / 跌最多双栏各 10 张（手机用切换）；最贵 TOP 10 横排；说明收进「这些价格怎么来的？」","每张卡都能看属性、HP、特性、招式、弱点、抗性、撤退：英文卡 2,698 张、日文卡 4,484 张（日文原文加台湾官方繁体中文卡文）；点开卡就能一眼看到「看价格走势和相似卡」","英文版：标题、导航、按钮用 Title Case；中文加粗的地方英文也加粗"]],
