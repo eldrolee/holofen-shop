@@ -235,7 +235,7 @@ details.filt>.row{position:absolute;right:0;top:calc(100% + 6px);z-index:5;backg
 nav.btm{display:none}
 @media (max-width:640px){
   .bar:not(.adm) nav.tabs#tabs{display:none}
-  nav.btm{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:15;background:var(--surface);border-top:1px solid var(--line);padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px))}
+  nav.btm{display:grid;grid-template-columns:repeat(6,1fr);position:fixed;left:0;right:0;bottom:0;z-index:15;background:var(--surface);border-top:1px solid var(--line);padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px))}
   nav.btm[hidden]{display:none}
   nav.btm a{display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 0;font-size:11px;color:var(--muted);text-decoration:none;position:relative;min-height:48px;justify-content:center}
   nav.btm a.on{color:var(--red);font-weight:700}
@@ -415,7 +415,7 @@ nav.btm a.on::before{transform:translateY(5px);opacity:1}
 @media (max-width:640px){.topband .mas{display:none}}
 @media (prefers-reduced-motion:reduce){.topband .totop:hover{transform:none}}
 /* v20 改善方面 2 2026-11-12 */
-@media (max-width:640px){ nav.btm{grid-template-columns:repeat(5,minmax(0,1fr))} nav.btm a{font-size:11px;min-width:0} .dkg{grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:8px 6px} .dkc figcaption{font-size:9.5px} .dkc small{font-size:8.5px} #cartbtn{display:inline-flex} #cartbtn[hidden]{display:none} .bar .wrap{gap:8px} }
+@media (max-width:640px){ nav.btm{grid-template-columns:repeat(6,minmax(0,1fr))} nav.btm a{font-size:11px;min-width:0} .dkg{grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:8px 6px} .dkc figcaption{font-size:9.5px} .dkc small{font-size:8.5px} #cartbtn{display:inline-flex} #cartbtn[hidden]{display:none} .bar .wrap{gap:8px} }
 button.lang{display:inline-flex;gap:0;padding:3px;align-items:center}
 button.lang span{padding:4px 9px;border-radius:99px;font-size:12px;line-height:1}
 button.lang span.on{background:var(--ink);color:var(--surface)}
@@ -912,7 +912,7 @@ nav.tabs a.on{background:color-mix(in srgb,var(--red) 8%,transparent)}
 @media (prefers-reduced-motion:reduce){.bar:not(.adm) nav.tabs a .nh,.nhint{transition:none}}
 /* 店主自己的后台捷径（只有店主登录才出现） */
 .ownbtn[hidden]{display:none!important}.hcur[hidden]{display:none!important}
-.hcur{position:relative;display:inline-flex;align-items:center;flex:none;font-family:var(--display);font-weight:800;font-size:13px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:99px;min-height:36px;padding:4px 26px 4px 12px;white-space:nowrap;cursor:pointer}.hcur::after{content:"";position:absolute;right:10px;top:50%;width:6px;height:6px;border-right:1.8px solid currentColor;border-bottom:1.8px solid currentColor;transform:translateY(-70%) rotate(45deg)}.bar.tight3 .ownbtn .ot{display:none}.bar.tight3 .ownbtn .oi{display:block}.bar.tight3 .ownbtn{padding:6px 9px!important}.bar.tight3 button.lang span{padding-inline:6px}.bar.tight3:not(.stack) nav.tabs a{padding:8px 3px;font-size:13.5px}.bar.tight2 .hcur .cc{display:none}.bar.tight2 .hcur{padding-left:10px;padding-right:22px}.bar.tight2 .hcur::after{right:8px}.bar.tight2:not(.stack) nav.tabs a{padding:8px 4px;font-size:14px}.bar.tight2 .wrap{gap:6px}.hcur:hover,.hcur:focus-within{border-color:#0a3d45}.hcur select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px}.trialrow{display:flex;align-items:stretch;background:var(--note)}.trialrow>.trial{flex:1;min-width:0}.hcurm{display:none!important}@media (max-width:640px){.bar .hcur{display:none!important}.hcurm:not([hidden]){display:inline-flex!important;align-self:center;margin-right:8px;min-height:28px;font-size:12px;padding:2px 22px 2px 9px}.hcurm::after{right:8px}}
+.hcur{position:relative;display:inline-flex;align-items:center;flex:none;font-family:var(--display);font-weight:800;font-size:13px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:99px;min-height:36px;padding:4px 26px 4px 12px;white-space:nowrap;cursor:pointer}.hcur::after{content:"";position:absolute;right:10px;top:50%;width:6px;height:6px;border-right:1.8px solid currentColor;border-bottom:1.8px solid currentColor;transform:translateY(-70%) rotate(45deg)}.bar.tight3 .ownbtn .ot{display:none}.bar.tight3 .ownbtn .obi{display:block}.bar.tight3 .ownbtn{padding:6px 9px!important}.bar.tight3 button.lang span{padding-inline:6px}.bar.tight3:not(.stack) nav.tabs a{padding:8px 3px;font-size:13.5px}.bar.tight2 .hcur .cc{display:none}.bar.tight2 .hcur{padding-left:10px;padding-right:22px}.bar.tight2 .hcur::after{right:8px}.bar.tight2:not(.stack) nav.tabs a{padding:8px 4px;font-size:14px}.bar.tight2 .wrap{gap:6px}.hcur:hover,.hcur:focus-within{border-color:#0a3d45}.hcur select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px}.trialrow{display:flex;align-items:stretch;background:var(--note)}.trialrow>.trial{flex:1;min-width:0}.hcurm{display:none!important}@media (max-width:640px){.bar .hcur{display:none!important}.hcurm:not([hidden]){display:inline-flex!important;align-self:center;margin-right:8px;min-height:28px;font-size:12px;padding:2px 22px 2px 9px}.hcurm::after{right:8px}}
 .bar.pt2 .hcur select{width:74px;padding-left:8px;padding-right:20px;background-position:right 7px center}
 
 .ownbtn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;min-height:36px;border-radius:99px;background:var(--ink);color:#fff;font-size:13px;font-weight:700;text-decoration:none}
@@ -1079,7 +1079,7 @@ header.bar::after{margin-top:8px}
 .rvmed{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}.rvmed img{width:84px;height:84px;object-fit:cover;border-radius:10px;display:block}.rvmed video{width:min(240px,100%);max-height:240px;border-radius:10px;background:#000}
 .upshot{display:inline-flex;align-items:center;gap:6px;border:1px dashed var(--line,#d6dbe6);border-radius:12px;padding:8px 12px;cursor:pointer;font-size:14px;background:#fff}.upshot img,.shotlink img{width:34px;height:34px;object-fit:cover;border-radius:6px}.shotlink{display:inline-flex;align-items:center;gap:6px;margin-left:8px;vertical-align:middle}
 .lgoutb{display:block;margin:14px auto 0;background:none;border:0;color:var(--muted);text-decoration:underline;font-size:13px;min-height:36px;cursor:pointer}
-.ownbtn{white-space:nowrap}.ownbtn .oi{display:none}.bar.pt1 .ownbtn .ot{display:none}.bar.pt1 .ownbtn .oi{display:block}.bar.pt1 .ownbtn{padding:6px 9px!important}.bar.pt2 .wrap{gap:4px!important}.bar.pt2 .kfbtn,.bar.pt2 .langbtn{padding-inline:7px!important}.bar.pt2 .cartbtn{padding:9px 10px!important}.bar.pt3 .brand{font-size:16px!important}.bar.pt3 .brand img{width:26px!important;height:auto!important}.bar.pt4 .brand img{display:none!important}
+.ownbtn{white-space:nowrap}.ownbtn .obi{display:none}.bar.pt1 .ownbtn .ot{display:none}.bar.pt1 .ownbtn .obi{display:block}.bar.pt1 .ownbtn{padding:6px 9px!important}.bar.pt2 .wrap{gap:4px!important}.bar.pt2 .kfbtn,.bar.pt2 .langbtn{padding-inline:7px!important}.bar.pt2 .cartbtn{padding:9px 10px!important}.bar.pt3 .brand{font-size:16px!important}.bar.pt3 .brand img{width:26px!important;height:auto!important}.bar.pt4 .brand img{display:none!important}
 @media (max-width:640px){.bar:not(.adm) .brand{flex:none}}
 @media (max-width:640px){.ownbtn{font-size:12px;padding:6px 9px}}
 .trkbtn{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:99px;background:var(--teal);color:#fff;font-weight:700;text-decoration:none;font-size:13px}
@@ -1320,7 +1320,7 @@ html[data-lang="zh"] nav.tabs .lgp>:not(.lpz),html[data-lang="en"] nav.tabs .lgp
 .fbr .ctc{justify-content:flex-start;padding:6px 0;flex-direction:column;align-items:flex-start;gap:6px}.fbr .ctc a{display:inline-flex;flex-direction:row;align-items:center;gap:8px;font-size:13.5px}
 footer .disc{text-align:center;font-size:12px;color:#3d4a50;border-top:1px solid var(--line);padding-top:14px;margin-top:8px}
 @media (max-width:860px){.fcols{grid-template-columns:repeat(3,minmax(0,1fr))}.fbr{grid-column:1/-1}}
-@media (max-width:520px){.fcols{grid-template-columns:1fr 1fr;gap:18px}.fcols nav:last-child{grid-column:1/-1}}
+@media (max-width:640px){.fcols{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 10px}.fbr{grid-column:1/-1}.fcols nav:last-child{grid-column:auto}.fcols h3{font-size:14px;margin-bottom:6px}.fcols nav a{font-size:13px;padding:4px 0;min-height:30px;overflow-wrap:anywhere}}
 
 /* 3.3 / 4 会员中心 */
 .mtop .mstat{margin-left:auto;display:flex;gap:10px}
@@ -1474,13 +1474,13 @@ footer .disc{text-align:center;font-size:12px;color:#3d4a50;border-top:1px solid
 .fsc .fsl.on{cursor:pointer}.fsc .fsl.on a,.fsc .fsl.on button{cursor:pointer}
 /* v135 二：手机版一屏看完、网格列数 */
 @media (max-width:640px){
- /* 首页滚动卡：一屏 5 张 */
- .hero{--mqh:calc((100vw - 56px)/5/.7174)}
+ /* v138 2.8：首页滚动卡一屏 3 张 */
+ .hero{--mqh:calc((100vw - 52px)/3/.7174)}
  .mq .track{gap:0}.mq figure{margin-right:6px}
  .mq img{border-radius:5px;box-shadow:0 2px 6px rgba(20,37,74,.18)}
  .hero .mq figure::after{border-radius:5px}
- .mq figcaption{font-size:9px;line-height:1.25;padding-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
- .mq .bdg{top:3px;left:3px;font-size:8.5px;padding:1px 4px}
+ .mq figcaption{font-size:11px;line-height:1.3;padding-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+ .mq .bdg{top:4px;left:4px;font-size:10.5px;padding:2px 6px}
  .mqa{width:30px;height:30px;font-size:16px}
  /* 系列展示：名称、商品、按钮一屏看完 */
  .fsl .fin{display:grid;grid-template-columns:minmax(0,1fr) 38%;grid-template-rows:auto;gap:8px 10px;padding-top:46px;padding-bottom:50px;min-height:0}
@@ -1499,29 +1499,31 @@ footer .disc{text-align:center;font-size:12px;color:#3d4a50;border-top:1px solid
  .fsc .sarr svg{width:16px;height:16px}
  .fsc .sarr.l{left:12px}.fsc .sarr.r{right:12px}
  .fsc .sbars{bottom:18px}
- /* 商店：一排 3 个 */
- .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+ /* v138 2.10 商店：店主要回一排 2 个，但每张卡比原来矮约 2cm（图片框改 5:4、内部间距收紧） */
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .grid .prod .pic{aspect-ratio:5/4}
  .prod{border-radius:10px}
  .prod .pic a{padding:4px}
  .prod .info{padding:6px;gap:2px}
- .prod .nm{font-size:11.5px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
- .prod .set{font-size:9.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.prod .set>*{min-width:0;overflow:hidden;text-overflow:ellipsis}.prod .set .lgp{display:grid;grid-template-columns:minmax(0,1fr)}.prod .set .lgp>*{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.prod .set .lpz>span{display:block;overflow:hidden;text-overflow:ellipsis}.prod .set img{display:none}
+ .prod .nm{font-size:13px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+ .prod .set{font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.prod .set>*{min-width:0;overflow:hidden;text-overflow:ellipsis}.prod .set .lgp{display:grid;grid-template-columns:minmax(0,1fr)}.prod .set .lgp>*{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.prod .set .lpz>span{display:block;overflow:hidden;text-overflow:ellipsis}.prod .set img{display:none}
  .prod .cno,.prod .lgc{font-size:9px}
- .bigp{font-size:13.5px}.prod .bigp .np{font-size:11px}
- .prod .foot{padding-top:4px}.prod .foot button,.prod .foot .btnl{font-size:11px;padding:6px 2px;min-height:32px;border-radius:8px}
+ .bigp{font-size:15px}.prod .bigp .np{font-size:11.5px}
+ .prod .foot{padding-top:4px}.prod .foot button,.prod .foot .btnl{font-size:12.5px;padding:6px 4px;min-height:36px;border-radius:9px}
  .prod .qv{display:none}
  .prod .prebdg{font-size:9px;padding:2px 5px}
  .prod .wish,.prod [data-wish]{transform:scale(.8);transform-origin:top right}
- /* 卡表、相似卡：一排 5 张；高价前 15：一次 5 张 */
- .cgrid{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
- .crow{gap:6px}.crow .ctl{flex:0 0 calc((100% - 24px)/5)}
- .cgrid .ctl,.crow .ctl{padding:3px;gap:3px;border-radius:7px}
- .cgrid .ctl .ctop,.crow .ctl .ctop{font-size:9.5px;gap:2px;font-weight:700}
- .cgrid .ctl .rb,.crow .ctl .rb{font-size:9.5px}
+ /* v138 改善13 2.3/2.9：行情和图鉴卡表一排 3 张大卡；卡名一行省略，价格永远在格子里 */
+ .cgrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+ .crow{gap:8px}.crow .ctl{flex:0 0 calc((100% - 16px)/3)}
+ .cgrid .ctl,.crow .ctl{padding:6px;gap:4px;border-radius:10px;min-width:0}
+ .cgrid .ctl .ctop,.crow .ctl .ctop{font-size:10.5px;gap:3px;font-weight:700;min-width:0}
+ .cgrid .ctl .rb,.crow .ctl .rb{font-size:10px}
  .cgrid .ctl .rb i,.crow .ctl .rb i{display:none}
- .cgrid .ctl .nm,.crow .ctl .nm{font-size:11px;font-weight:700;line-height:1.25}
+ .cgrid .ctl .nm,.crow .ctl .nm{font-size:12px;font-weight:700;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
  .cgrid .ctl .kt,.crow .ctl .kt,.cgrid .ctl .cpr>:not(.np),.crow .ctl .cpr>:not(.np){display:none}
- .cgrid .ctl .cpr,.crow .ctl .cpr{font-size:11px;gap:0;font-weight:800}
+ .cgrid .ctl .cpr,.crow .ctl .cpr{font-size:12.5px;gap:0;font-weight:800;min-width:0;max-width:100%;overflow:hidden}
+ .cgrid .ctl .cpr .np,.crow .ctl .cpr .np{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;display:block;font-size:clamp(11px,3.3vw,13px)}
  .crow .ctl .rk{font-size:8.5px;padding:1px 4px;top:-4px;left:-4px}
  /* 稀有度：上面一行横滑标签 */
  .legend.chk{padding:10px;gap:8px}
@@ -1570,8 +1572,36 @@ footer .disc{text-align:center;font-size:12px;color:#3d4a50;border-top:1px solid
  .kbtab button{min-height:38px;border-radius:10px;font-weight:700;font-size:13.5px}
  .kbtab button.on{background:#0a3d45;color:#fff;border-color:#0a3d45}
  .kbcols{grid-template-columns:1fr}.kbc{display:none}.kbc.on{display:block}.kbc .ch{display:none}
- .kt10{flex:0 0 calc((100% - 24px)/4);font-size:10.5px}.kt10 small{display:none}.ktp{font-size:11px}.kti i{font-size:10px;padding:2px 5px;left:3px;top:3px}
+ .kt10{flex:0 0 calc((100% - 20px)/3);font-size:12px;min-width:0}.kt10 small{display:none}.ktp{font-size:12.5px;white-space:nowrap}.kti i{font-size:10px;padding:2px 5px;left:3px;top:3px}
 }
+.dn .dnim{display:inline-flex;border-radius:6px;transition:transform .15s,box-shadow .15s;cursor:pointer}.dn .dnim:hover{transform:translateY(-1px) scale(1.04);box-shadow:0 4px 10px rgba(16,38,55,.18)}
+@media(min-width:1100px){.hero-shell.fb{margin-left:calc(50% - var(--vw,100vw)/2 + var(--gut) + clamp(0px,(100vw - 1100px)*.42,115px));margin-right:calc(50% - var(--vw,100vw)/2 + var(--gut) + clamp(0px,(100vw - 1100px)*.42,115px))}}
+/* v138 改善13 1.2/2.7：系列展示背景加星芒、卡牌轮廓、能量几何暗纹和光斑，不再空 */
+.fsl::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;background:radial-gradient(28% 40% at 12% 18%,rgba(255,255,255,.55),transparent 70%),radial-gradient(22% 30% at 92% 88%,rgba(255,255,255,.45),transparent 70%),url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22520%22%20height%3D%22360%22%20viewBox%3D%220%200%20520%20360%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%222%22%20opacity%3D%22.55%22%3E%3Crect%20x%3D%2238%22%20y%3D%2240%22%20width%3D%2262%22%20height%3D%2286%22%20rx%3D%227%22%20transform%3D%22rotate%28-12%2069%2083%29%22/%3E%3Crect%20x%3D%22402%22%20y%3D%22232%22%20width%3D%2254%22%20height%3D%2275%22%20rx%3D%226%22%20transform%3D%22rotate%2814%20429%20270%29%22/%3E%3Crect%20x%3D%22250%22%20y%3D%22292%22%20width%3D%2240%22%20height%3D%2256%22%20rx%3D%225%22%20transform%3D%22rotate%28-6%20270%20320%29%22/%3E%3Ccircle%20cx%3D%22470%22%20cy%3D%2270%22%20r%3D%2226%22/%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22300%22%20r%3D%2214%22/%3E%3Cpath%20d%3D%22M300%2040l30%2018v36l-30%2018-30-18V58z%22/%3E%3C/g%3E%3Cg%20fill%3D%22%23ffffff%22%20opacity%3D%22.8%22%3E%3Cpath%20d%3D%22M200%2070l4%2012%2012%204-12%204-4%2012-4-12-12-4%2012-4z%22/%3E%3Cpath%20d%3D%22M360%20150l3%209%209%203-9%203-3%209-3-9-9-3%209-3z%22/%3E%3Cpath%20d%3D%22M90%20200l2.5%207%207%202.5-7%202.5-2.5%207-2.5-7-7-2.5%207-2.5z%22/%3E%3Cpath%20d%3D%22M480%20170l2%206%206%202-6%202-2%206-2-6-6-2%206-2z%22/%3E%3Ccircle%20cx%3D%22240%22%20cy%3D%22190%22%20r%3D%222.5%22/%3E%3Ccircle%20cx%3D%22420%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%22250%22%20r%3D%222%22/%3E%3Ccircle%20cx%3D%22330%22%20cy%3D%22250%22%20r%3D%222.5%22/%3E%3C/g%3E%3C/svg%3E") 0 0/520px 360px repeat;opacity:.9;border-radius:inherit}
+.fsl>*{position:relative;z-index:1}.fsl>.fmark{position:absolute;z-index:2}
+@media(min-width:1100px){.fsc .ftrk{margin:0 calc(var(--gut) + 38px + clamp(0px,(100vw - 1100px)*.42,115px))}.fsc .sarr.l{left:calc(var(--gut) + 38px + clamp(0px,(100vw - 1100px)*.42,115px) - 26px)}.fsc .sarr.r{right:calc(var(--gut) + 38px + clamp(0px,(100vw - 1100px)*.42,115px) - 26px)}.fsl .fin{min-height:0;padding-top:44px;padding-bottom:30px}.fsl .fpic{height:min(360px,46vh)}.fsl .lg{max-height:92px}.fsl .sd{margin:8px 0 10px}.fsl .fpr{gap:6px;margin-bottom:12px}.fsl .fpr a{grid-template-columns:52px minmax(0,1fr);padding:5px 8px}.fsl .fpr img{width:52px;height:52px}.fsl .fmore{min-height:42px}}
+@media(max-width:640px){.fsl .fin{padding-top:64px;padding-bottom:68px}}
+/* v138 2.1 手机顶部：品牌和右边图标平均分布，不再中间突然空一大段 */
+@media(max-width:640px){.bar>.wrap{justify-content:space-between!important;column-gap:4px!important}.bar>.wrap>*{margin-left:0!important;margin-right:0!important}#cartbtn{padding-inline:6px;justify-content:center}}
+/* v138 2.2 版本筛选：三个选项等分铺满外框 */
+.seg.edseg{display:flex!important;width:100%}.seg.edseg>button{flex:1 1 0;text-align:center;white-space:nowrap}
+/* v138 2.5 手机系列筛选栏缩小，首屏多露出下面的内容 */
+@media(max-width:640px){.serstrip{gap:8px;padding-bottom:6px}.serstrip button{width:92px;height:56px;padding:4px;border-radius:12px;font-size:10px;gap:2px}.serstrip button img{height:26px}.serstrip button.all{font-size:12px}}
+/* v138 2.3 「本系列完整卡表 ›」文字和箭头紧挨，不再中间空一段、下面一条孤立的线 */
+.sethd>a{display:inline-flex;align-items:center;gap:2px;white-space:nowrap;text-decoration:none;flex:none}.sethd>a:hover{text-decoration:underline}
+/* v138 2.4 升跌榜切换：股票式红（涨）青（跌），用柔和的品牌色调，不用刺眼纯色 */
+.kbtab button[data-mcol]{border:1.5px solid transparent;font-weight:800;transition:background .2s,color .2s,box-shadow .2s}
+.kbtab button[data-mcol="up"]{background:#fcebe6;color:#b4432e;border-color:#f3c9bd}
+.kbtab button[data-mcol="dn"]{background:#e2f3f1;color:#0b6672;border-color:#b9e0dc}
+.kbtab button[data-mcol="up"].on{background:linear-gradient(135deg,#e0705a,#b4432e);color:#fff;border-color:#b4432e;box-shadow:0 3px 10px rgba(180,67,46,.28)}
+.kbtab button[data-mcol="dn"].on{background:linear-gradient(135deg,#1c9ba3,#0b6672);color:#fff;border-color:#0b6672;box-shadow:0 3px 10px rgba(11,102,114,.28)}
+/* v138 2.12 双语占位：以前隐藏的另一种语言仍占宽度，造成「来源　：」「卡表　›」、标签字偏一边、页脚错行等空隙。顶部导航以外改成不占位 */
+html[data-lang="en"] .lgp>.lpz:not(#bar *),html[data-lang="zh"] .lgp>.en:not(#bar *),html[data-lang="zh"] .lgp>.tr:not(#bar *),html[data-lang="zh"] .lgp>small:not(#bar *),html[data-lang="zh"] .lgp>i:not(#bar *){display:none}
+/* v138 2.12 最新消息等卡片：标签、标题、正文、来源之间留呼吸空间，文字不贴线 */
+article.ri>div:last-child>.row{margin-bottom:6px}article.ri h3{margin:0 0 6px;line-height:1.35}article.ri p{margin:0 0 8px;line-height:1.6}
+.chip{padding:3px 10px;line-height:1.4;text-align:center}
+.nthumb.ndt{padding:6px 4px}
+.cinfo .hdr{display:flex;align-items:center;gap:10px}.cinfo .ctxt{display:inline-flex;border:1px solid var(--line);border-radius:99px;overflow:hidden;background:var(--surface)}.cinfo .ctxt button{border:0;background:none;padding:4px 10px;font-size:12px;font-weight:700;color:var(--muted);min-height:28px;border-radius:0;box-shadow:none}.cinfo .ctxt button[aria-pressed="true"]{background:var(--teal,#0b6672);color:#fff}.cinfo .rulebox p{margin:0}.cinfo .rtag{display:inline-block;font-size:11px;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:1px 8px;margin-bottom:6px}
 .cinfo .zt{display:block;color:var(--muted);font-size:12px;font-weight:500;margin-top:2px}
 .cinfo p.zt{margin-top:2px}
 .cmtrend{display:flex;justify-content:center;width:100%}
@@ -1590,7 +1620,7 @@ html[data-lang="en"] .lgp>.en,html[data-lang="en"] .lgp>i,html[data-lang="en"] .
   <button class="lang" id="langbtn" aria-label="显示或隐藏英文 Show or hide English">EN</button>
   <label class="hcur" id="hcur" title="货币 Currency"><b class="cv" aria-hidden="true"><span class="cs">RM</span><span class="cc"> MYR</span></b><select data-cur="1" id="cur-top" aria-label="货币 Currency"></select></label>
   <a class="mebtn" id="mebtn" href="#member" hidden></a>
-  <a class="ownbtn" id="ownbtn" href="#admin" hidden aria-label="店主后台 Admin"><svg class="oi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V9l9-6 9 6v12M9 21v-7h6v7"/></svg><span class="ot">店主后台</span></a><a class="wishbtn hicon" id="wishbtn" href="#wish" aria-label="收藏 Wishlist" title="收藏 Wishlist"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.3A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.9c0 5.7-7.5 10.3-7.5 10.3z"/></svg></a><button class="cartbtn hicon" id="cartbtn" data-go="cart" aria-label="购物车 Cart" title="购物车 Cart"></button>
+  <a class="ownbtn" id="ownbtn" href="#admin" hidden aria-label="店主后台 Admin"><svg class="obi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V9l9-6 9 6v12M9 21v-7h6v7"/></svg><span class="ot">店主后台</span></a><a class="wishbtn hicon" id="wishbtn" href="#wish" aria-label="收藏 Wishlist" title="收藏 Wishlist"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.3A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.9c0 5.7-7.5 10.3-7.5 10.3z"/></svg></a><button class="cartbtn hicon" id="cartbtn" data-go="cart" aria-label="购物车 Cart" title="购物车 Cart"></button>
   <button class="loginbtn hicon wait" id="loginbtn" type="button" aria-haspopup="dialog" aria-label="登录 Sign in"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg><span class="lt">登录 <span class="en">Sign in</span></span></button>
   <a class="backbtn" id="backbtn" href="#home" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></svg><span class="bl">回到顾客前台 <span class="en">Back to storefront</span></span><span class="bs">前台 <span class="en">Shop</span></span></a>
 </div></header>
@@ -2142,10 +2172,10 @@ const TILES=[["single","单卡","Singles","#ffe3d1"],["box","补充包盒","Boos
 const BTM=[["home","首页",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>`],["news","消息",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>`],["shop","商店",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16l-1.5 12a1 1 0 0 1-1 .9H6.5a1 1 0 0 1-1-.9z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>`],["about","关于",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>`],["cart","购物车",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2.5 3h3l2.6 12.2a1.5 1.5 0 0 0 1.5 1.2h8.3a1.5 1.5 0 0 0 1.5-1.1L21.5 8H6.4"/></svg>`]];
 (()=>{ const I=Object.fromEntries(BTM.map(t=>[t[0],t[2]])), sv=d=>`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
   BTM.splice(0,BTM.length,["home","首页",I.home],["series","图鉴",sv('<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>')],["market","行情",sv('<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>')],["decks","卡组",sv('<rect x="4" y="6" width="11" height="15" rx="2"/><path d="M9 3h9a2 2 0 0 1 2 2v12"/>')],["shop","商店",I.shop],["news","消息",I.news],["about","关于",sv('<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>')]);
-  /* 手机底部只放 5 格：首页、行情、商店、卡组、更多；其余放进「更多」 */
+  /* v138 2.6 手机底部 6 格：首页、商店、图鉴、行情、卡组、更多（和电脑导航顺序一致）；其余放进「更多」 */
   const M=Object.fromEntries(BTM.map(t=>[t[0],t]));
-  window.BTM_MORE=[M.series,M.news,M.about,["member","会员中心",sv('<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>')],["orders","我的订单",sv('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>')]];
-  BTM.splice(0,BTM.length,M.home,M.shop,M.market,M.decks,["more","更多",sv('<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>')]) })();
+  window.BTM_MORE=[M.news,M.about,["member","会员中心",sv('<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>')],["orders","我的订单",sv('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>')]];
+  BTM.splice(0,BTM.length,M.home,M.shop,M.series,M.market,M.decks,["more","更多",sv('<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>')]) })();
 const CARTICON=`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 8h15l-1.3 11.3a1.5 1.5 0 0 1-1.5 1.2H7.3a1.5 1.5 0 0 1-1.5-1.2z"/><path d="M8.5 8V6.5a3.5 3.5 0 0 1 7 0V8"/></svg>`;
 const DECKIMG=(()=>{ const d=n=>"deck/"+n+".jpg", m={"Dragapult ex":d("dragapult"),"Basic Box":d("kangaskhan"),"Basic Box (Ogerpon)":d("kangaskhan"),"Slowking Seek Inspiration":d("slowking"),"Slowking":d("slowking"),"N's Zoroark ex":d("zoroark"),"Alakazam Powerful Hand":d("alakazam"),"Festival Lead":d("dipplin"),"Hydrapple ex":d("hydrapple"),"Dhelmise Hide n' Sneak":d("dhelmise"),"Mega Lopunny ex":d("lopunny"),"Crustle Mysterious Rock Inn":d("crustle"),"Crustle":d("crustle"),"Mega Excadrill ex":d("excadrill"),"Rocket's Honchkrow":d("honchkrow"),"Mega Sharpedo ex":d("sharpedo")}; if(PM.p113) m["Mega Lucario ex"]="big/"+PM.p113.img+".jpg"; return m })();
 const NEWSIMG={"tournaments/574":"N's Zoroark ex","tournaments/584":"Slowking","tournaments/583":"Dragapult ex","tournaments/582":"Basic Box (Ogerpon)","tournaments/581":"Dragapult ex","06-November-2026":"img:p001:big","pokemon-tcg-november-2026-releases":"img:p006","auraseeker":"","63514":"img:p009","63295":"img:p064:big"};
@@ -2235,7 +2265,7 @@ const cEd=c=>c.ed||"en";
 const edTag=c=>`<span class="edtag">${cEd(c)==="jp"?B("日","JP"):B("英","EN")}</span>`;
 V.market=()=>{
   const med=ui.med||"";
-  const edbar=`<div class="seg" role="group" aria-label="${BT("版本","Edition")}" style="margin:4px 0 8px">${[["","全部版本","All editions"],["en","英文版","English"],["jp","日文版","Japanese"]].map(r=>`<button data-med="${r[0]}" class="${med===r[0]?"on":""}" aria-pressed="${med===r[0]}">${B(r[1],r[2])}</button>`).join("")}</div>`;
+  const edbar=`<div class="seg edseg" role="group" aria-label="${BT("版本","Edition")}" style="margin:4px 0 8px">${[["","全部版本","All editions"],["en","英文版","English"],["jp","日文版","Japanese"]].map(r=>`<button data-med="${r[0]}" class="${med===r[0]?"on":""}" aria-pressed="${med===r[0]}">${B(r[1],r[2])}</button>`).join("")}</div>`;
   if(med==="jp") return `<section class="mhero"><div class="mh1"><span class="tag live">${isEN()?"MARKET":"行情"}</span><h1>${B("卡价雷达","Card price radar")}</h1>${edbar}</div></section>
   <div class="panel stack" style="gap:8px"><h3 style="margin:0">${B("日文版市价：暂无数据","Japanese prices: no data yet")}</h3><p style="margin:0">${B("我们现在用的价格来源（TCGdex 读取的 TCGplayer 和 Cardmarket）都是英文版市场，没有日文版成交价。日文版和英文版价格差很多，所以这里不拿英文版价格代替。等找到可以核实的日文版来源再补上。","Our current price sources (TCGplayer and Cardmarket via TCGdex) only cover the English market. Japanese prints sell at very different prices, so we do not show English prices in their place. We will add Japanese prices once there is a source we can verify.")} ${OWNER_TBD()}</p><p class="muted" style="margin:0">${B("日文版完整卡表在这里：","Japanese card lists:")} <a href="${setUrl(JSETS[0])}">${B("日文版卡表","Japanese card lists")} ›</a></p></div>`;
   const sel=ui.mser, callp=Object.values(CARDS).filter(c=>(!sel||c.s===sel)&&(!med||cEd(c)===med)), priced=callp.filter(c=>cRM(c)!=null);
@@ -2267,7 +2297,7 @@ V.market=()=>{
   <details class="note mhow" style="font-size:12.5px"><summary>${B("这些价格怎么来的？","Where do these prices come from?")}</summary>${B(`涨跌是 Cardmarket 近 7 天平均成交价对比近 30 天，只算 RM20 以上、有涨跌数据的 ${mov.length} 张卡。价格是 TCGplayer 市场价，都经 TCGdex 读取；本店跟踪的 73 张卡用 PriceCharting。美元按 1 USD = RM${FX.toFixed(4)}、欧元按 1 EUR = RM${FX_EUR.toFixed(4)}（${FX_DATE}）换成马币。这些都是第三方参考价，不是本店收购价或售价，也不是投资建议；每周一更新一次。`,`Change = Cardmarket 7-day vs 30-day average, for the ${mov.length} cards over RM20 with data. Prices are TCGplayer market via TCGdex; the 73 cards we track use PriceCharting. 1 USD = RM${FX.toFixed(4)}, 1 EUR = RM${FX_EUR.toFixed(4)} (${FX_DATE}). Third-party reference prices, not our buy or sell price, and not investment advice. Updated every Monday.`)}</details>
   
   <section class="stack sec" style="gap:16px">${H2(sel?"高价前 15":"各系列高价前 15","Top 15 by value per set")}
-   ${sets.map(s=>{ const l=(CBYSET[s]||[]).filter(c=>cRM(c)!=null).sort((a,b)=>cRM(b)-cRM(a)).slice(0,15); return l.length?`<div class="stack" style="gap:8px"><div class="sethd"><div class="l">${slogo(s,"")}<b>${esc(s)}</b><span class="muted">${SI[s].date}</span></div><a href="${setUrl(s)}">${B("本系列完整卡表","This set's full card list")} ›</a></div><div class="crow">${l.map((c,i)=>ctile(c).replace('<div class="ctop">',`<span class="rk">#${i+1}</span><div class="ctop">`)).join("")}</div></div>`:"" }).join("")}
+   ${sets.map(s=>{ const l=(CBYSET[s]||[]).filter(c=>cRM(c)!=null).sort((a,b)=>cRM(b)-cRM(a)).slice(0,15); return l.length?`<div class="stack" style="gap:8px"><div class="sethd"><div class="l">${slogo(s,"")}<b>${esc(s)}</b><span class="muted">${SI[s].date}</span></div><a href="${setUrl(s)}">${isEN()?"This set's full card list":"本系列完整卡表"} ›</a></div><div class="crow">${l.map((c,i)=>ctile(c).replace('<div class="ctop">',`<span class="rk">#${i+1}</span><div class="ctop">`)).join("")}</div></div>`:"" }).join("")}
    ${!sel&&!ui.mallsets?`<div><button data-mallsets="1">${B("展开全部 "+SETS.length+" 个系列","Show all "+SETS.length+" sets")}</button></div>`:""}</section>
   <section class="stack sec" style="gap:12px">${H2("全部卡牌价格","Every card's price")}${results}</section>`}`;
 };
@@ -2663,17 +2693,32 @@ const CTX={}, CTXL={};
 function ctxGet(c){ const L=c.ja?"ja":"en"; if(CTXL[L]==="ok") return (CTX[L]||{})[c.k]||null;
   if(!CTXL[L]){ CTXL[L]="loading"; fetch("ctx/"+L+".json").then(r=>r.ok?r.json():Promise.reject(r.status)).then(j=>{ CTX[L]=j; CTXL[L]="ok"; render() }).catch(()=>{ CTXL[L]="err"; render() }) }
   return CTXL[L]==="err"?null:undefined }
+/* v138 1.4：卡面说明区可切「中文 / EN 原文」，默认跟全站语言。英文卡没有官方中文卡文，中文模式只翻译栏目名和规则框（本店译），招式原文照旧；日文卡中文模式显示台湾官方繁体中文卡文 */
+const RULEZ=[[/^Pokémon ex rule:\s*/i,"宝可梦ex规则："],[/^Mega Evolution ex Rule:\s*/i,"超级进化宝可梦ex规则："],[/^Tera:\s*/i,"太晶："],
+ [/When your Mega Evolution Pokémon ex is Knocked Out, your opponent takes (\d) Prize cards\./,"你的超级进化宝可梦ex昏厥时，对手拿取$1张奖赏卡。"],
+ [/When (?:your )?(Pokémon ex|Pokémon-ex|Pokémon-EX|a Pokémon-EX|Pokémon-GX|TAG TEAM|Pokémon V|Pokémon VMAX|Pokémon VSTAR|this Pokémon) (?:is|has been) Knocked Out, your opponent takes (\d) Prize cards\./g,(m,a,n)=>`${({"Pokémon ex":"你的宝可梦ex","Pokémon-ex":"宝可梦ex","Pokémon-EX":"宝可梦EX","a Pokémon-EX":"宝可梦EX","Pokémon-GX":"你的宝可梦GX","TAG TEAM":"你的TAG TEAM","Pokémon V":"你的宝可梦V","Pokémon VMAX":"你的宝可梦VMAX","Pokémon VSTAR":"你的宝可梦VSTAR","this Pokémon":"这只宝可梦"})[a]}昏厥时，对手拿取${n}张奖赏卡。`],
+ [/As long as this Pokémon is on your Bench, prevent all damage done to this Pokémon by attacks \(both yours and your opponent[’']s\)\./,"只要这只宝可梦在备战区，招式对它造成的伤害全部无效（我方和对手的招式都算）。"],
+ [/When 1 of your Pokémon becomes a Mega Evolution Pokémon, your turn ends\./,"你的宝可梦变成超级进化宝可梦时，你的回合结束。"],
+ [/Put this card from your hand onto your Bench only with the other half of (.+?)\./,"只能和 $1 的另一半一起从手牌放到备战区。"],
+ [/You can't have more than 1 (.+?) in your deck\./,"卡组里最多只能放 1 张 $1。"],
+ [/(.+?) retains the attacks, Abilities, Weakness, Resistance, and Retreat Cost of its previous Evolution\./,"$1 保留进化前的招式、特性、弱点、抗性和撤退费用。"],
+ [/This Pokémon is both (\w+) (\w+) type\./,(m,a,b)=>`这只宝可梦同时是${(TYPEC[a]||[,a])[1]}和${(TYPEC[b]||[,b])[1]}属性。`]];
+const ruleZh=t=>{ let z=t; RULEZ.forEach(([r,v])=>{ z=z.replace(r,v) }); return z };
+const ABLK={"Poké-POWER":["宝可梦力量","Poké-Power"],"Poké-BODY":["宝可梦躯体","Poké-Body"],"Pokémon Power":["宝可梦能力","Pokémon Power"],"Ancient Trait":["古代能力","Ancient Trait"]};
 function ctxPanel(c){ const x=ctxGet(c);
   if(x===undefined) return `<div class="cinfo"><div class="sec2 muted">${B("正在载入招式资料…","Loading card text…")}</div></div>`;
   if(!x) return `<div class="cinfo"><div class="sec2 muted">${B("这张卡的招式资料还没收录。","Card text not available for this card yet.")}</div></div>`;
-  const ty=TYPEC[x.type], poke=x.kind==="Pokémon", J=!!c.ja;
-  const nm=(a,b)=>`<b>${esc(a)}</b>${J&&b?`<small class="zt">${esc(b)}</small>`:""}`, tx=(a,b)=>`${a?`<p>${eText(a)}</p>`:""}${J&&b?`<p class="zt">${eText(b)}</p>`:""}`;
-  const head=`<div class="hd"><span>${esc(isEN()?x.kind:(KIND[x.kind]||x.kind))}${x.stage?` · ${esc(isEN()?x.stage:(STAGE[x.stage]||x.stage))}`:""}${ty?` · ${ecIcon(x.type)} ${isEN()?esc(x.type):ty[1]+"属性"}`:""}</span>${x.hp?`<span class="hp"><small>HP</small>${esc(x.hp)}</span>`:""}</div>`;
-  const abl=(x.abilities||[]).map(a=>`<div class="sec2"><div><span class="abl">${B("特性","Ability")}</span>${nm(a.n,a.nz)}</div>${tx(a.t,a.tz)}</div>`).join("");
+  const ty=TYPEC[x.type], poke=x.kind==="Pokémon", J=!!c.ja, Z=(ui.ctxL||(isEN()?"en":"zh"))==="zh", T=(z,e)=>Z?z:e;
+  const hasZ=J&&[...(x.abilities||[]),...(x.attacks||[])].some(a=>a.nz||a.tz)||!!x.textz;
+  const nm=(a,b)=>Z&&J&&b?`<b>${esc(b)}</b><small class="zt">${esc(a)}</small>`:`<b>${esc(a)}</b>`, tx=(a,b)=>Z&&J&&b?`<p>${eText(b)}</p>${a?`<p class="zt">${eText(a)}</p>`:""}`:(a?`<p>${eText(a)}</p>`:"");
+  const tabs=`<span class="ctxt" role="group" aria-label="${T("卡面说明语言","Card text language")}"><button type="button" data-ctxl="zh" aria-pressed="${Z}">中文</button><button type="button" data-ctxl="en" aria-pressed="${!Z}">${J?"原文":"EN"}</button></span>`;
+  const head=`<div class="hd"><span>${esc(Z?(KIND[x.kind]||x.kind):x.kind)}${x.stage?` · ${esc(Z?(STAGE[x.stage]||x.stage):x.stage)}`:""}${ty?` · ${ecIcon(x.type)} ${Z?ty[1]+"属性":esc(x.type)}`:""}</span><span class="hdr">${x.hp?`<span class="hp"><small>HP</small>${esc(x.hp)}</span>`:""}${tabs}</span></div>`;
+  const abl=(x.abilities||[]).map(a=>`<div class="sec2"><div><span class="abl">${esc(T((ABLK[a.k]||["特性"])[0],(ABLK[a.k]||[,"Ability"])[1]))}</span>${nm(a.n,a.nz)}</div>${tx(a.t,a.tz)}</div>`).join("");
   const atk=(x.attacks||[]).map(a=>`<div class="sec2 atk"><span class="ecost">${(a.cost||"").split(",").filter(Boolean).map(ecIcon).join("")}</span>${nm(a.n,a.nz)}<span class="dmg">${esc(a.dmg||"")}</span>${tx(a.t,a.tz)}</div>`).join("");
-  const txt=x.text?`<div class="sec2">${tx(x.text,x.textz)}</div>`:"", rule=x.rule?`<div class="sec2"><p class="muted" style="margin:0">${eText(x.rule)}</p></div>`:"";
-  const wrr=poke?`<div class="sec2" style="padding:0"><div class="wrr"><div><small>${B("弱点","Weakness")}</small>${x.weak?ecIcon(x.weak)+" ×2":"—"}</div><div><small>${B("抗性","Resistance")}</small>${x.resist?ecIcon(x.resist)+" −30":"—"}</div><div><small>${B("撤退","Retreat")}</small>${+x.retreat?Array(+x.retreat).fill(ecIcon("Colorless")).join(""):"0"}</div></div></div>`:"";
-  const note=`<div class="sec2 muted" style="font-size:11.5px">${J?B("日文版卡面原文；灰色小字是台湾官方繁体中文版卡文。来源 TCGdex。","Japanese card text; grey lines are the official Traditional Chinese text. Source: TCGdex."):B("英文版卡面原文，来源 Pokémon TCG API。","English card text from the Pokémon TCG API.")}</div>`;
+  const txt=x.text?`<div class="sec2">${tx(x.text,x.textz)}</div>`:"";
+  const rz=x.rule&&Z&&!J?ruleZh(x.rule):"", rule=x.rule?`<div class="sec2 rulebox"><span class="rtag">${T("规则","Rule")}</span><p>${eText(rz&&rz!==x.rule?rz:x.rule)}</p>${rz&&rz!==x.rule?`<p class="zt">${eText(x.rule)}</p>`:""}</div>`:"";
+  const wrr=poke?`<div class="sec2" style="padding:0"><div class="wrr"><div><small>${T("弱点","Weakness")}</small>${x.weak?ecIcon(x.weak)+" "+esc(x.wv||"×2"):"—"}</div><div><small>${T("抗性","Resistance")}</small>${x.resist?ecIcon(x.resist)+" "+esc((x.rv||"−30").replace("-","−")):"—"}</div><div><small>${T("撤退","Retreat")}</small>${+x.retreat?Array(+x.retreat).fill(ecIcon("Colorless")).join(""):"0"}</div></div></div>`:"";
+  const note=`<div class="sec2 muted" style="font-size:11.5px">${J?(Z?(hasZ?"台湾官方繁体中文卡文，灰色小字是日文原文。来源 TCGdex。":"这张卡暂时没有中文卡文，下面是日文原文。来源 TCGdex。"):"Japanese card text. Source: TCGdex."):(Z?"英文版卡面没有官方中文卡文：栏目名和规则框是本店翻译，招式和特性保留英文原文。来源 Pokémon TCG API。":"English card text from the Pokémon TCG API.")}</div>`;
   return `<div class="cinfo">${head}${abl}${atk}${txt}${rule}${wrr}${note}</div>` }
 function cardModal(k){ const c=CARDS[k]; if(!c) return ""; const p=c.p;
   return `<div class="modal"><div class="box cm" role="dialog" aria-label="${esc(cN(c))}"><div class="cmimg">${cImg(c,1)}</div>
@@ -2897,7 +2942,7 @@ V.decks=()=>`${H1("比赛卡组","Tournament decks")}
   <p>只收官方比赛：下面是 Play! Pokémon 的一场国际锦标赛（International Championship）和四场区域锦标赛（Regional Championships），不含店铺自办的普通比赛。数据来自 Limitless TCG，读取于 ${DATA_DATE}。<span class="en"> Official events only: one Play! Pokémon International Championship and four Regional Championships. Data from Limitless TCG.</span></p>
   ${H2("使用率排名（标准赛制 TEF–DLR）","Most-played decks, Standard")}
   <div class="note" style="font-size:12.5px">${B(`统计范围：Limitless TCG 收录的全球标准赛制（TEF–DLR）比赛，不含马来西亚本地赛。百分比是 Limitless 算的积分占比。统计起止日期和分母（多少场比赛、多少副卡组）Limitless 页面没有写。读取日期 ${DATA_DATE}。`,`Scope: Standard (TEF–DLR) events tracked by Limitless TCG worldwide, not Malaysian local events. Percentages are the share of points as Limitless calculates it. The date range and denominator (events, decks) are not shown on the page. Retrieved ${DATA_DATE}.`)} ${OWNER_TBD()}</div><p class="muted">来源 Source: ${src("limitlesstcg.com/decks","https://limitlesstcg.com/decks")}</p>
-  <div class="panel"><div class="share">${META.map((m,i)=>`<div style="min-width:0" class="dn">${dkIm(m[0])}<span>${i+1}. ${`<a href="${esc("https://limitlesstcg.com/decks/"+m[2])}" target="_blank" rel="noopener">${dkNH(m[0])}</a>`}</span></div><div><div class="b${i?"":" top"}" style="width:${(m[1]/META[0][1]*100).toFixed(1)}%"></div></div><div class="price" style="text-align:right">${m[1].toFixed(2)}%</div>`).join("")}</div></div>
+  <div class="panel"><div class="share">${META.map((m,i)=>`<div style="min-width:0" class="dn"><a class="dnim" href="${esc("https://limitlesstcg.com/decks/"+m[2])}" target="_blank" rel="noopener" aria-label="${esc(dkNH(m[0]).replace(/<[^>]+>/g,""))}" tabindex="-1">${dkIm(m[0])}</a><span>${i+1}. ${`<a href="${esc("https://limitlesstcg.com/decks/"+m[2])}" target="_blank" rel="noopener">${dkNH(m[0])}</a>`}</span></div><div><div class="b${i?"":" top"}" style="width:${(m[1]/META[0][1]*100).toFixed(1)}%"></div></div><div class="price" style="text-align:right">${m[1].toFixed(2)}%</div>`).join("")}</div></div>
   ${top3Decks()}
   ${H2("谁在哪场比赛用什么拿了第几名","Who placed where, with what")}
   <p class="muted">比赛页上卡组只显示图标，卡组名是按 Limitless 的卡组编号对应的。有「牌表」按钮的可以直接展开 60 张；其余的点「原页」看。<span class="en"> Rows with a "List" button expand the full 60 cards.</span></p>
@@ -3057,11 +3102,11 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
 const TRK_IC={unpaid:'<rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18M16 15h2"/>',review:'<circle cx="11" cy="11" r="6"/><path d="m20 20-4.2-4.2M8.5 11l1.8 1.8 3.4-3.6"/>',approved:'<path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>',shipped:'<path d="M2 6h11v10H2zM13 9h4.5l3.5 3.5V16h-8z"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',delivered:'<path d="M3 11 12 4l9 7v9H3z"/><path d="m9 15 2 2 4-4"/>',done:'<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>'};
 const TRK_H={unpaid:["等你付款","WAITING FOR YOUR PAYMENT"],review:["店主正在核对你的付款","CHECKING YOUR PAYMENT"],approved:["你的卡正在打包","YOUR CARDS ARE BEING PACKED"],shipped:["包裹正在路上","YOUR PARCEL IS ON THE WAY"],delivered:["包裹送到啦！","YOUR PARCEL HAS ARRIVED"],done:["订单完成，谢谢你","ALL DONE. THANK YOU!"]};
 function tracker(o){ if(o.status==="rejected") return `<div class="buddy">${buddy(44,"zzz")}<div><b>${B("这张订单没有通过审核。","This order was not approved.")}</b>${o.reason?`<br>${esc(o.reason)}`:""}</div></div>`;
-  const idx=Math.max(0,FLOW.findIndex(f=>f[0]===o.status)), st=FLOW[idx][0], last=idx===FLOW.length-1, m=MOOD[st]||MOOD.review, h=TRK_H[st]||TRK_H.review;
-  const parts=[]; FLOW.forEach((f,i)=>{ if(i) parts.push(`<i class="tseg${i<=idx?" f":i===idx+1?" go":""}" style="--d:${i}"></i>`); parts.push(`<b class="tdot${i<idx||(last&&i===idx)?" ok":i===idx?" now":""}" style="--d:${i}" title="${esc(isEN()?f[2]:f[1])}">${i<idx||(last&&i===idx)?"✓":""}</b>`) });
+  const idx=Math.max(0,FLOW.findIndex(f=>f[0]===o.status)), st=FLOW[idx][0], last=idx===FLOW.length-1, m=o._nq?[,"店主看完你的需求，会在这里报价；同意报价后才付款。","We will quote here after reviewing your request. Pay only if you agree."]:(MOOD[st]||MOOD.review), h=o._nq?["等待店主报价","WAITING FOR OUR QUOTE"]:(TRK_H[st]||TRK_H.review), FL=o._nq?[["unpaid","待报价","To quote"],...FLOW.slice(1)]:FLOW;
+  const parts=[]; FLOW.forEach((f,i)=>{ if(i) parts.push(`<i class="tseg${i<=idx?" f":i===idx+1?" go":""}" style="--d:${i}"></i>`); parts.push(`<b class="tdot${i<idx||(last&&i===idx)?" ok":i===idx?" now":""}" style="--d:${i}" title="${esc(isEN()?FL[i][2]:FL[i][1])}">${i<idx||(last&&i===idx)?"✓":""}</b>`) });
   return `<div class="trk t-${st}"><div class="trk-ic" aria-hidden="true"><img class="trk-art" src="trk/trk-${st}.webp" alt="" width="150" height="150"></div>
-  <div class="trk-bar" role="img" aria-label="${esc((isEN()?"Step ":"第 ")+(idx+1)+" / "+FLOW.length+(isEN()?": ":"步：")+(isEN()?FLOW[idx][2]:FLOW[idx][1]))}">${parts.join("")}</div>
-  <div class="trk-lab">${FLOW.map((f,i)=>`<span class="${i===idx?"on":""}">${isEN()?f[2]:f[1]}</span>`).join("")}</div>
+  <div class="trk-bar" role="img" aria-label="${esc((isEN()?"Step ":"第 ")+(idx+1)+" / "+FLOW.length+(isEN()?": ":"步：")+(isEN()?FL[idx][2]:FL[idx][1]))}">${parts.join("")}</div>
+  <div class="trk-lab">${FL.map((f,i)=>`<span class="${i===idx?"on":""}">${isEN()?f[2]:f[1]}</span>`).join("")}</div>
   <h3 class="trk-h">${isEN()?h[1]:h[0]}</h3><p class="trk-s">${isEN()?m[2]:m[1]}</p></div>` }
 function stepBar(o){
   if(o.status==="rejected") return `<span class="chip bad">审核未通过 <span class="en">Not approved</span>${o.reason?"："+esc(o.reason):""}</span>`;
@@ -3069,10 +3114,10 @@ function stepBar(o){
   return `<div class="steps sx" style="--p:${FLOW.length>1?Math.max(0,idx)/(FLOW.length-1):0}">${FLOW.map((f,i)=>`<span class="${i<idx?"done":i===idx?"now":""}" style="--i:${i}">${i<idx?'<b class="ck" aria-hidden="true">✓</b>':""}${f[1]}<i>${f[2]}</i></span>`).join("")}</div>`;
 }
 function orderLines(o){ return `<div class="olist">${o.items.map(c=>{const p=PM[c.id];return `<div class="oi">${p?`<img src="${simg(p)}" alt="" loading="lazy">`:buddy(34)}<span>${esc(c.name)} <b>× ${c.qty}</b>${p&&isPre(p)?` <span class="chip">${B("预购","Pre-order")} ${preTxt(p)}</span>`:""}</span></div>`}).join("")}</div>
-  <div class="sum" style="max-width:340px"><span>${B("小计","Subtotal")}</span><span class="price">${rm(o.sub)}</span><span>${B("运费","Shipping")}（${esc(o.shipName)}）</span><span class="price">${rm(o.fee)}</span>${o.off-o.ptsOff>0?`<span>${B("回购优惠","Coupon")}</span><span class="price">−${rm(o.off-o.ptsOff)}</span>`:""}${o.ptsOff?`<span>${B("积分抵扣","Points")} (${o.pts})</span><span class="price">−${rm(o.ptsOff)}</span>`:""}<b>${B("合计","Total")}</b><b class="price">${rm(o.total)}</b></div>` }
+  <div class="sum" style="max-width:340px"><span>${B("小计","Subtotal")}</span><span class="price">${o._nq?B("待报价","To be quoted"):rm(o.sub)}</span><span>${B("运费","Shipping")}（${esc(o.shipName)}）</span><span class="price">${rm(o.fee)}</span>${o.off-o.ptsOff>0?`<span>${B("回购优惠","Coupon")}</span><span class="price">−${rm(o.off-o.ptsOff)}</span>`:""}${o.ptsOff?`<span>${B("积分抵扣","Points")} (${o.pts})</span><span class="price">−${rm(o.ptsOff)}</span>`:""}<b>${B("合计","Total")}</b><b class="price">${o._nq?B("待报价","To be quoted"):rm(o.total)}</b></div>` }
 const OFL={unpaid:["待付款","To pay"],review:["待审核","In review"],approved:["备货中","Packing"],shipped:["已寄出","Shipped"],delivered:["待评价","To review"]};
 V.orders=()=>{
-  const os0=liveO(uid,mine.orders).map(o=>eff(uid,o)).sort((a,b)=>b.at-a.at), fl=OFL[ui.ofl]?ui.ofl:"", os=fl?os0.filter(o=>o.status===fl):os0;
+  const os0=liveO(uid,mine.orders).map(o=>{ const x=eff(uid,o); x._nq=x.status==="unpaid"&&needQuote(uid,x); return x }).sort((a,b)=>b.at-a.at), fl=OFL[ui.ofl]?ui.ofl:"", os=fl?os0.filter(o=>o.status===fl):os0;
   if(fl&&!os.length) return `${H1("我的订单","My orders")}<div class="row" style="gap:8px"><span class="chip">${B("只看："+OFL[fl][0],"Showing: "+OFL[fl][1])}</span><a href="#orders" data-ofl="">${B("看全部订单","All orders")} ›</a></div><p class="muted">${B("这个状态下没有订单。","No orders in this status.")}</p>`;
   if(!os.length) return `${H1("我的订单","My orders")}<div class="buddy">${buddy(52,"zzz")}<div>你还没有订单。下单后可以在这里付款、看审核和寄送进度、写评价。<br><span class="en">No orders yet. After you order, you can pay, follow progress and leave a review here.</span></div></div><div><button class="pri" data-go="shop">去逛商店 <span class="en">Go to shop</span></button></div>`;
   { const un=unreadOrders(); if(un.length){ const ids=un.map(x=>x[0]); ui.hl=[...new Set((ui.hl||[]).concat(ids))]; ui.hlScroll=ids[0]; setTimeout(markSeen,0) } }
@@ -3571,6 +3616,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
+ ["v138","2026-11-25",["电脑首页：主视觉和行情走马灯左右各收窄约 3cm；系列展示左右各收窄约 3cm、高度矮约 4cm，背景加星芒、卡牌轮廓和能量几何暗纹（手机系列展示同步加装饰并加高约 1cm）","组牌代组先报价后付款：店主报价前，订单显示「等待店主报价」、金额写「待报价」、不显示付款按钮；网页端再挡一次，没报价或金额是 0 不能按「我已付款」","单卡弹窗：卡面说明右上角可切「中文 / EN」（默认跟全站语言），中文模式翻译栏目名和规则框；点弹窗外的黑色区域或按 Esc 就能关；弱点抗性照卡面写（例如 −20）","补齐 31 张缺招式资料的卡：30 周年经典收藏 30 张（例如皮卡丘 & 捷克罗姆 GX）和 Black Bolt 的 Escavalier","卡组排行：点左边的卡图也能打开卡组卡表","手机：顶部图标平均分布，店主后台按钮的房子图标恢复正常（之前显示成黑底圆点）；版本筛选三格等分铺满；系列筛选卡片缩小；行情、图鉴卡表、最贵 TOP 10、首页走马灯都改成一屏 3 张，价格不会超出格子；「本系列完整卡表 ›」不再中间空一段","手机：升跌榜「涨最多」红色、「跌最多」青色；底部栏加「图鉴」（首页、商店、图鉴、行情、卡组、更多）；商店保持一排 2 个，每张卡矮约 2cm；页脚「店铺 / 客户服务 / 信息」三栏并排","全站：隐藏的另一种语言不再占位，消息卡、页脚、链接不再出现莫名空隙；标签和消息卡加内边距，文字不贴线"]],
  ["v137.11","2026-11-25",["电子收据抬头加上营业地址（只放在收据上，网站其他地方不写）"]],
  ["v137.10","2026-11-25",["公司资料：法律资料、电子收据和页脚写上经营者 ARROKOTH PARTNERSHIP 和商业登记号码 202603312891 (003912333-M)；营业地址先不放"]],
  ["v137.9","2026-11-25",["进货单导出 CSV：只列要买的货（待进货、已下单和勾了「要进货」的商品），每行带商品图片（Excel 365 和 Google 表格直接显示）和图片链接，最后一行是合计","电脑版页头：位置不够时先把货币按钮缩成只显示符号、店主按钮只留图标，导航尽量留在同一行；导航排到第二行时，英文版的提示泡泡也照常出现","电脑版首页系列展示：内容收在中间、左右两栏等宽，不再左边挤、中间空；按钮文字置中；左右箭头不再超出画面或压到商品"]],
@@ -4355,11 +4401,12 @@ document.addEventListener("click",async e=>{
   const ms=e.target.closest&&e.target.closest("[data-msheet]"); if(ms){ e.preventDefault(); ui.msheet=!ui.msheet; return render() }
   if(ui.msheet&&!(e.target.closest&&e.target.closest(".msheet"))){ ui.msheet=false; render() }
   if(e.target.classList&&e.target.classList.contains("aedit-bg")){ ui.aedit=null; return render() }
-  if(e.target.classList&&e.target.classList.contains("modal")){ ui.pid=null; ui.mid=null; ui.avPick=false; return render() }
+  if(e.target.classList&&e.target.classList.contains("modal")){ ui.pid=null; ui.mid=null; ui.cid=null; ui.kf=false; ui.avPick=false; return render() }
   const a=e.target.closest("a[data-atab]"); if(a){ ui.atab=a.dataset.atab; if(route==="admin"){ e.preventDefault(); render() } return }
   const b=e.target.closest("button,[data-go],a[data-tbd],a[data-ser],a[data-mser],.ctl[data-cid]");
   if(!b){ if(e.target.closest(".totopw")) return window.scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"}); const pc=e.target.closest(".prod[data-goitem]"); if(pc&&!e.target.closest("a")) openItem(pc.dataset.goitem); return }
   const ds=b.dataset;
+  if(ds.ctxl){ ui.ctxL=ds.ctxl; return render() }
   if(ds.close){ ui.pid=null; ui.mid=null; ui.kf=false; ui.cid=null; return render() }
   if(ds.mid){ const pp=PM[ds.mid]; if(pp&&pp.ck){ ui.cid=pp.ck; return render() } ui.mid=ds.mid; return render() }
   if(ds.dk!=null){ ui.dk=+ds.dk; return render() }
@@ -4383,7 +4430,7 @@ document.addEventListener("click",async e=>{
   if(ds.tbd){ e.preventDefault(); return toast(ds.tbd+" 账号还在开通中，开通后这里会直接跳转") }
   if("ser" in ds){ e.preventDefault(); ui.series=ds.ser; ui.shown=24; if(route!=="shop") return go("shop"); return render() }
   if(ds.go){ ui.pid=null; return go(ds.go) }
-  if(b.id==="langbtn"){ lang=lang==="zh"?"en":"zh"; try{localStorage.setItem("lang",lang)}catch(e){} const y=scrollY; render(); /* 换语言后停在原来的位置 */ document.documentElement.style.scrollBehavior="auto"; scrollTo(0,y); requestAnimationFrame(()=>{ scrollTo(0,y); document.documentElement.style.scrollBehavior="" }); return }
+  if(b.id==="langbtn"){ ui.ctxL=null; lang=lang==="zh"?"en":"zh"; try{localStorage.setItem("lang",lang)}catch(e){} const y=scrollY; render(); /* 换语言后停在原来的位置 */ document.documentElement.style.scrollBehavior="auto"; scrollTo(0,y); requestAnimationFrame(()=>{ scrollTo(0,y); document.documentElement.style.scrollBehavior="" }); return }
   if(ds.mtab){ ui.mtab=ds.mtab; return render() }
   if(ds.gocat){ ui.cat=ds.gocat; ui.series=""; ui.q=""; ui.shown=24; return go("shop") }
   if(ds.open){ return openItem(ds.open) }
@@ -4403,7 +4450,7 @@ document.addEventListener("click",async e=>{
   if(ds.qty){ const c=cart[+ds.qty]; c.qty+=+ds.d; if(c.qty<1) cart.splice(+ds.qty,1); return render() }
   if(ds.rm){ cart.splice(+ds.rm,1); return render() }
   if(ds.copy) return copy(ds.copy,"运单号已复制 Copied");
-  if(ds.paid){ const via=val("pv-"+ds.paid), shot=(ui.pshot||{})[ds.paid]||""; if(!PAYVIA.some(g=>g[2].includes(via))) return toast(isEN()?"Choose how you paid":"请选你用的付款平台"); if(!shot) return toast(isEN()?"Upload a payment screenshot":"请上传付款截图"); if(stOf(ds.paid)!=="unpaid") return; return patch(uid,ds.paid,{ref:cleanTxt(via,60),payShot:shot,paidAt:Date.now()}).then(()=>toast("已提交，等待店主审核 Submitted")) }
+  if(ds.paid){ const via=val("pv-"+ds.paid), shot=(ui.pshot||{})[ds.paid]||""; if(!PAYVIA.some(g=>g[2].includes(via))) return toast(isEN()?"Choose how you paid":"请选你用的付款平台"); if(!shot) return toast(isEN()?"Upload a payment screenshot":"请上传付款截图"); if(stOf(ds.paid)!=="unpaid") return; { const oo=liveO(uid,mine.orders).map(x=>eff(uid,x)).find(x=>cleanId(x.id)===ds.paid); if(!oo||needQuote(uid,oo)||!(num(oo.total)>0)) return toast(isEN()?"Please wait for our quote before paying":"店主还没报价，报价后才能付款") } return patch(uid,ds.paid,{ref:cleanTxt(via,60),payShot:shot,paidAt:Date.now()}).then(()=>toast("已提交，等待店主审核 Submitted")) }
   if(ds.cancel){ if(stOf(ds.cancel)!=="unpaid") return toast("已付款的订单请联系店主取消"); return saveDoc(uid,{orders:mine.orders.filter(o=>cleanId(o.id)!==ds.cancel)}).then(()=>toast("订单已取消 Cancelled")) }
   if(ds.recv){ if(stOf(ds.recv)!=="shipped") return; return patch(uid,ds.recv,{receivedAt:Date.now()}) }
   if(ds.star){ ui.stars[ds.star]=+ds.n; const keep=val("rv-"+ds.star); render(); const el=document.getElementById("rv-"+ds.star); if(el) el.value=keep; return }
