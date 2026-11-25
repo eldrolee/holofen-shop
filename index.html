@@ -3037,12 +3037,12 @@ const rcptBtn=(u,o)=>PAID.includes(o.status)?`<button type="button" data-rcpt="$
 function receiptHTML(o){ const E=isEN(), L=(z,e)=>E?e:z, d=x=>new Date(x).toLocaleString(E?"en-MY":"zh-CN",{timeZone:"Asia/Kuala_Lumpur"}), m=v=>"RM"+(+v).toFixed(2);
   return `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${L("收据","Receipt")} ${esc(o.id)}</title><style>
 body{font-family:system-ui,"PingFang SC","Microsoft YaHei",sans-serif;color:#102637;margin:0;background:#f8f2e4}.r{max-width:640px;margin:20px auto;background:#fff;border-radius:14px;padding:28px 30px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
-h1{font-size:22px;margin:0}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:2px solid #0b6672;padding-bottom:14px}.mut{color:#55606f;font-size:13px}
+h1{font-size:22px;margin:0}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:2px solid #0b6672;padding-bottom:14px}.mut{color:#55606f;font-size:13px}@media(max-width:480px){.top{flex-direction:column}.top>div:last-child{text-align:left!important}}
 table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th,td{padding:8px 4px;border-bottom:1px solid #eee;text-align:left}td.n,th.n{text-align:right;white-space:nowrap}
 .tot td{border:0;padding:4px}.tot tr:last-child td{font-weight:800;font-size:17px;border-top:2px solid #102637;padding-top:8px}.paid{display:inline-block;background:#dcefe6;color:#0b6672;font-weight:800;padding:4px 12px;border-radius:99px}
 .tbd{background:#fdf0cf;border-radius:6px;padding:1px 6px;font-size:12px}.bar{max-width:640px;margin:0 auto 20px;text-align:center}button{font:inherit;padding:10px 18px;border-radius:99px;border:0;background:#0b6672;color:#fff;font-weight:700;cursor:pointer}
 @media print{body{background:#fff}.r{box-shadow:none;margin:0}.bar{display:none}}</style>
-<div class="r"><div class="top"><div><h1>Holofen</h1><div class="mut">${L("宝可梦卡牌店 · 马来西亚","Pokémon card shop · Malaysia")}</div><div class="mut">ARROKOTH PARTNERSHIP · ${L("商业登记号码","Business reg. no.")}: 202603312891 (003912333-M)</div></div>
+<div class="r"><div class="top"><div><h1>Holofen</h1><div class="mut">${L("宝可梦卡牌店 · 马来西亚","Pokémon card shop · Malaysia")}</div><div class="mut">ARROKOTH PARTNERSHIP · ${L("商业登记号码","Business reg. no.")}: 202603312891 (003912333-M)</div><div class="mut">NO 2, JALAN BANGAU 3, BANDAR PUCHONG JAYA, 47100 PUCHONG, SELANGOR, MALAYSIA</div></div>
 <div style="text-align:right"><b style="font-size:18px">${L("电子收据","E-RECEIPT")}</b><div class="mut">${esc(o.id)}</div><div class="mut">${L("下单","Ordered")}: ${d(o.at)}</div>${o.approvedAt?`<div class="mut">${L("收款确认","Payment confirmed")}: ${d(o.approvedAt)}</div>`:""}</div></div>
 <p><b>${L("顾客","Customer")}</b><br>${esc(o.name)} · ${esc(o.phone)}${o.email?" · "+esc(o.email):""}${o.svcOnly?"":`<br>${esc(o.addr)}, ${esc(o.post)} ${esc(o.state)}`}</p>
 <table><thead><tr><th>${L("商品","Item")}</th><th class="n">${L("单价","Price")}</th><th class="n">${L("数量","Qty")}</th><th class="n">${L("小计","Amount")}</th></tr></thead><tbody>${o.items.map(c=>`<tr><td>${esc(c.name)}</td><td class="n">${m(c.price)}</td><td class="n">${c.qty}</td><td class="n">${m(c.price*c.qty)}</td></tr>`).join("")}</tbody></table>
@@ -3571,6 +3571,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
+ ["v137.11","2026-11-25",["电子收据抬头加上营业地址（只放在收据上，网站其他地方不写）"]],
  ["v137.10","2026-11-25",["公司资料：法律资料、电子收据和页脚写上经营者 ARROKOTH PARTNERSHIP 和商业登记号码 202603312891 (003912333-M)；营业地址先不放"]],
  ["v137.9","2026-11-25",["进货单导出 CSV：只列要买的货（待进货、已下单和勾了「要进货」的商品），每行带商品图片（Excel 365 和 Google 表格直接显示）和图片链接，最后一行是合计","电脑版页头：位置不够时先把货币按钮缩成只显示符号、店主按钮只留图标，导航尽量留在同一行；导航排到第二行时，英文版的提示泡泡也照常出现","电脑版首页系列展示：内容收在中间、左右两栏等宽，不再左边挤、中间空；按钮文字置中；左右箭头不再超出画面或压到商品"]],
  ["v137.8","2026-11-25",["货币切换从页脚搬到页面最上方（语言按钮旁边），一进网站就看得到","隐私：会员的夹取记录、签到记录和礼物寄出标记搬离公开资料，改成只有本人和店主、员工读得到；旧资料由店主后台自动搬过去","夹娃娃机上方加「最近中奖」：名字只显示第一个字（例如「李**」），让其他会员看到有人中奖"]],
