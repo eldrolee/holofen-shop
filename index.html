@@ -912,7 +912,7 @@ nav.tabs a.on{background:color-mix(in srgb,var(--red) 8%,transparent)}
 @media (prefers-reduced-motion:reduce){.bar:not(.adm) nav.tabs a .nh,.nhint{transition:none}}
 /* 店主自己的后台捷径（只有店主登录才出现） */
 .ownbtn[hidden]{display:none!important}.hcur[hidden]{display:none!important}
-.hcur{position:relative;display:inline-flex;align-items:center;flex:none;font-family:var(--display);font-weight:800;font-size:13px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:99px;min-height:36px;padding:4px 26px 4px 12px;white-space:nowrap;cursor:pointer}.hcur::after{content:"";position:absolute;right:10px;top:50%;width:6px;height:6px;border-right:1.8px solid currentColor;border-bottom:1.8px solid currentColor;transform:translateY(-70%) rotate(45deg)}.hcur:hover,.hcur:focus-within{border-color:#0a3d45}.hcur select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px}.trialrow{display:flex;align-items:stretch;background:var(--note)}.trialrow>.trial{flex:1;min-width:0}.hcurm{display:none!important}@media (max-width:640px){.bar .hcur{display:none!important}.hcurm:not([hidden]){display:inline-flex!important;align-self:center;margin-right:8px;min-height:28px;font-size:12px;padding:2px 22px 2px 9px}.hcurm::after{right:8px}}
+.hcur{position:relative;display:inline-flex;align-items:center;flex:none;font-family:var(--display);font-weight:800;font-size:13px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:99px;min-height:36px;padding:4px 26px 4px 12px;white-space:nowrap;cursor:pointer}.hcur::after{content:"";position:absolute;right:10px;top:50%;width:6px;height:6px;border-right:1.8px solid currentColor;border-bottom:1.8px solid currentColor;transform:translateY(-70%) rotate(45deg)}.bar.tight3 .ownbtn .ot{display:none}.bar.tight3 .ownbtn .oi{display:block}.bar.tight3 .ownbtn{padding:6px 9px!important}.bar.tight3 button.lang span{padding-inline:6px}.bar.tight3:not(.stack) nav.tabs a{padding:8px 3px;font-size:13.5px}.bar.tight2 .hcur .cc{display:none}.bar.tight2 .hcur{padding-left:10px;padding-right:22px}.bar.tight2 .hcur::after{right:8px}.bar.tight2:not(.stack) nav.tabs a{padding:8px 4px;font-size:14px}.bar.tight2 .wrap{gap:6px}.hcur:hover,.hcur:focus-within{border-color:#0a3d45}.hcur select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px}.trialrow{display:flex;align-items:stretch;background:var(--note)}.trialrow>.trial{flex:1;min-width:0}.hcurm{display:none!important}@media (max-width:640px){.bar .hcur{display:none!important}.hcurm:not([hidden]){display:inline-flex!important;align-self:center;margin-right:8px;min-height:28px;font-size:12px;padding:2px 22px 2px 9px}.hcurm::after{right:8px}}
 .bar.pt2 .hcur select{width:74px;padding-left:8px;padding-right:20px;background-position:right 7px center}
 
 .ownbtn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;min-height:36px;border-radius:99px;background:var(--ink);color:#fff;font-size:13px;font-weight:700;text-decoration:none}
@@ -1266,7 +1266,7 @@ header.bar::after{margin-top:8px}
 /* v96 页头防重叠：放不下就把导航移到第二行（fitBar 量真实宽度决定）；提示气泡放在彩色线下面，触屏不显示 */
 @media (min-width:641px){
  .bar.stack .wrap{flex-wrap:wrap;row-gap:0}
- .bar.stack:not(.adm) nav.tabs{order:9;flex:1 0 100%;justify-content:space-between;border-top:1px solid var(--line);margin-top:6px;padding-top:2px;overflow-x:auto}
+ .bar.stack:not(.adm) nav.tabs{order:9;flex:1 0 100%;justify-content:space-between;border-top:1px solid var(--line);margin-top:6px;padding-top:2px;overflow:visible}
  .bar.stack:not(.adm) nav.tabs a{padding:8px 6px;font-size:14px}
  .bar.stack .wrap .lang{margin-left:auto}
  .bar.stack .brand small{display:none}
@@ -1399,6 +1399,12 @@ footer .disc{text-align:center;font-size:12px;color:#3d4a50;border-top:1px solid
 @media (max-width:900px){.sbars i{width:16px}}
 @media (max-width:767px){.fsl .fin{grid-template-columns:1fr;gap:12px;min-height:0;padding-top:58px;padding-bottom:44px}.fsl .fpic{height:240px;order:-1}.fsl .lg{max-height:76px}.fpr{max-width:none}.fpr a{grid-template-columns:56px minmax(0,1fr)}.fpr img{width:56px;height:56px}.fsc .sarr{width:40px;height:40px;top:150px}.fsl .fmark{height:26px;top:12px}.sbars i{width:10px}}
 @media (prefers-reduced-motion:reduce){.fsl,.fsl.on{transition:none}}
+/* 2026-11-25 店主：电脑版系列展示中间太空。内容收在 1120px 内居中，左右两栏等宽，按钮文字置中，箭头不出画面 */
+@media (min-width:768px){.fsl .fin{max-width:1120px;margin:0 auto;box-sizing:border-box;padding-left:clamp(76px,7vw,96px);padding-right:clamp(76px,7vw,96px);grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px)}
+ .fsl .fpic{width:100%;max-width:540px;justify-self:center}.fsl .fpic .c1{right:4%}.fsl .fpic .c2{right:42%}
+ .fpr{max-width:460px}.fbtns .fmore{min-width:150px}}
+.fmore .lgp{justify-items:center;text-align:center}
+.fsc .sarr.l{left:max(8px,calc(var(--gut,0px) + 12px))}.fsc .sarr.r{right:max(8px,calc(var(--gut,0px) + 12px))}
 /* 2.2 首页其余区块：全宽色带 */
 .hero-shell.fb .cbks{display:none}
 .hero-shell.fb .hero{border-radius:0;border-left:0;border-right:0;box-shadow:none;border-top:0}
@@ -1576,13 +1582,13 @@ html[data-lang="en"] .lgp>.en,html[data-lang="en"] .lgp>i,html[data-lang="en"] .
 
 <div class="bgfx" aria-hidden="true"></div>
 <div class="nhint" id="nhint" hidden role="status"><img src="intro/holofen-mark.webp" alt=""><span></span></div>
-<div class="trialrow"><div class="trial" id="trialbar">网站刚上线：线上付款还在接通中，现在下单不会扣款，店主会联系你确认。<span class="en"> Just launched: online payment is being set up, so no money is taken yet. We will contact you to confirm your order.</span></div><label class="hcur hcurm" id="hcurm" title="货币 Currency"><b class="cv" aria-hidden="true">RM MYR</b><select data-cur="1" id="cur-topm" aria-label="货币 Currency"></select></label></div>
+<div class="trialrow"><div class="trial" id="trialbar">网站刚上线：线上付款还在接通中，现在下单不会扣款，店主会联系你确认。<span class="en"> Just launched: online payment is being set up, so no money is taken yet. We will contact you to confirm your order.</span></div><label class="hcur hcurm" id="hcurm" title="货币 Currency"><b class="cv" aria-hidden="true"><span class="cs">RM</span><span class="cc"> MYR</span></b><select data-cur="1" id="cur-topm" aria-label="货币 Currency"></select></label></div>
 <header class="bar" id="bar"><div class="wrap">
   <div class="brand" id="brand"></div>
   <nav class="tabs" id="tabs"></nav>
   <button class="kfbtn hicon" data-contact="1" aria-label="联系客服 Customer service" title="客服 Customer service"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="2.5" y="12.5" width="4" height="6" rx="1.6"/><rect x="17.5" y="12.5" width="4" height="6" rx="1.6"/><path d="M19.5 18.5c0 1.6-2 2.5-5.5 2.5"/></svg><span>客服</span></button>
   <button class="lang" id="langbtn" aria-label="显示或隐藏英文 Show or hide English">EN</button>
-  <label class="hcur" id="hcur" title="货币 Currency"><b class="cv" aria-hidden="true">RM MYR</b><select data-cur="1" id="cur-top" aria-label="货币 Currency"></select></label>
+  <label class="hcur" id="hcur" title="货币 Currency"><b class="cv" aria-hidden="true"><span class="cs">RM</span><span class="cc"> MYR</span></b><select data-cur="1" id="cur-top" aria-label="货币 Currency"></select></label>
   <a class="mebtn" id="mebtn" href="#member" hidden></a>
   <a class="ownbtn" id="ownbtn" href="#admin" hidden aria-label="店主后台 Admin"><svg class="oi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V9l9-6 9 6v12M9 21v-7h6v7"/></svg><span class="ot">店主后台</span></a><a class="wishbtn hicon" id="wishbtn" href="#wish" aria-label="收藏 Wishlist" title="收藏 Wishlist"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.3A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.9c0 5.7-7.5 10.3-7.5 10.3z"/></svg></a><button class="cartbtn hicon" id="cartbtn" data-go="cart" aria-label="购物车 Cart" title="购物车 Cart"></button>
   <button class="loginbtn hicon wait" id="loginbtn" type="button" aria-haspopup="dialog" aria-label="登录 Sign in"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg><span class="lt">登录 <span class="en">Sign in</span></span></button>
@@ -2078,7 +2084,7 @@ function renderCore(){
   applyLang();
   $("#cartbtn").hidden=adm; { const bb=$("#backbtn"); if(bb) bb.hidden=!adm } { const ob=$("#ownbtn"); if(ob) ob.hidden=adm||!owner } { const lb=$("#loginbtn"); if(lb){ lb.hidden=adm; if(window.HOLO_AUTH) HOLO_AUTH.paint() } } { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm||!CONTACT.some(c=>c[3]) } { const wb=$("#wishbtn"); if(wb){ wb.hidden=adm; const wn=arr(ME.wish).length, al=alerts().length; wb.innerHTML=wb.innerHTML.replace(/<b class="hb"[^>]*>.*?<\/b>/,"")+(al||wn?`<b class="hb" aria-hidden="true">${al||wn}</b>`:""); wb.setAttribute("aria-label",isEN()?`Wishlist${wn?" ("+wn+")":""}`:`收藏${wn?"（"+wn+" 件）":""}`); if(route==="wish") wb.setAttribute("aria-current","page"); else wb.removeAttribute("aria-current") } } { const mb=$("#mebtn"); if(mb){ mb.hidden=true; if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
   setHTML("#band",adm?"":band());
-  { const want=Object.keys(CURS).map(k=>`<option value="${k}" ${k===CUR?"selected":""}>${CURS[k][0]} ${k} · ${isEN()?CURS[k][4]:CURS[k][3]}</option>`).join(""); ["hcur","hcurm"].forEach(id=>{ const hc=$("#"+id); if(!hc) return; hc.hidden=adm; const cs=hc.querySelector("select"); if(cs._h!==want){ cs.innerHTML=want; cs._h=want } cs.value=CUR; const cv=hc.querySelector(".cv"); if(cv) cv.textContent=CURS[CUR][0]+" "+CUR; cs.setAttribute("aria-label",isEN()?"Currency":"货币") }) }
+  { const want=Object.keys(CURS).map(k=>`<option value="${k}" ${k===CUR?"selected":""}>${CURS[k][0]} ${k} · ${isEN()?CURS[k][4]:CURS[k][3]}</option>`).join(""); ["hcur","hcurm"].forEach(id=>{ const hc=$("#"+id); if(!hc) return; hc.hidden=adm; const cs=hc.querySelector("select"); if(cs._h!==want){ cs.innerHTML=want; cs._h=want } cs.value=CUR; const cv=hc.querySelector(".cv"); if(cv) cv.innerHTML=`<span class="cs">${esc(CURS[CUR][0])}</span><span class="cc"> ${CUR}</span>`; cs.setAttribute("aria-label",isEN()?"Currency":"货币") }) }
   $("#foot").innerHTML=adm?`<a href="#home">${BL("回到顾客前台","Back to storefront")}</a>`:`${DOTS}<span class="muted" style="font-size:13px">© ${new Date().getFullYear()} Holofen ${B("版权所有","All rights reserved")}</span>`;
   const keep=document.activeElement&&document.activeElement.id, pos=keep&&document.activeElement.selectionStart;
   /* v86 内容没变就不重画：刷新后资料一份份载入时，首页不会一直闪 */
@@ -2412,11 +2418,11 @@ document.addEventListener("click",e=>{ const a=e.target.closest&&e.target.closes
     const clip=()=>br.scrollWidth>br.clientWidth+1||bar.querySelector(".wrap").scrollWidth>bar.querySelector(".wrap").clientWidth+1;
     for(const c of ["pt1","pt2","pt3","pt4"]){ if(!clip()) break; bar.classList.add(c) } return }
   if(bar.classList.contains("adm")){ bar.classList.remove("stack","tight"); return }
-  bar.classList.remove("stack","tight");
+  bar.classList.remove("stack","tight","tight2","tight3");
   const over=()=>{ const tr=t.getBoundingClientRect(), as=t.querySelectorAll(":scope>a"); if(!as.length) return false; const lr=as[as.length-1].getBoundingClientRect().right; if(lr-as[0].getBoundingClientRect().left>tr.width-8) return true;
     return [...wrap.children].some(k=>k!==t&&k.offsetParent!==null&&getComputedStyle(k).position!=="absolute"&&(r=>r.left>tr.left&&r.left<lr+6)(k.getBoundingClientRect())) };
   const wrap=bar.querySelector(".wrap");
-  if(over()){ bar.classList.add("tight"); if(over()) bar.classList.add("stack") }
+  if(over()){ bar.classList.add("tight"); if(over()){ bar.classList.add("tight2"); if(over()){ bar.classList.add("tight3"); if(over()) bar.classList.add("stack") } } }
   const on=t.querySelector("a.on")||t.querySelector("a"); if(on){ const gap=Math.max(8,Math.round(bar.getBoundingClientRect().bottom-on.getBoundingClientRect().bottom+6)); bar.style.setProperty("--nhgap",gap+"px") } }
   window.fitBar=fitBar; addEventListener("resize",fitBar); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitBar);
   if(window.ResizeObserver) new ResizeObserver(()=>fitBar()).observe(document.documentElement); setTimeout(fitBar,300) })();
@@ -3565,6 +3571,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
+ ["v137.9","2026-11-25",["进货单导出 CSV：只列要买的货（待进货、已下单和勾了「要进货」的商品），每行带商品图片（Excel 365 和 Google 表格直接显示）和图片链接，最后一行是合计","电脑版页头：位置不够时先把货币按钮缩成只显示符号、店主按钮只留图标，导航尽量留在同一行；导航排到第二行时，英文版的提示泡泡也照常出现","电脑版首页系列展示：内容收在中间、左右两栏等宽，不再左边挤、中间空；按钮文字置中；左右箭头不再超出画面或压到商品"]],
  ["v137.8","2026-11-25",["货币切换从页脚搬到页面最上方（语言按钮旁边），一进网站就看得到","隐私：会员的夹取记录、签到记录和礼物寄出标记搬离公开资料，改成只有本人和店主、员工读得到；旧资料由店主后台自动搬过去","夹娃娃机上方加「最近中奖」：名字只显示第一个字（例如「李**」），让其他会员看到有人中奖"]],
  ["v137.7","2026-11-25",["自己收款：后台新增「设置 › 收款户口」（只有店主能改），填银行户口或上传 DuitNow QR 后，顾客在「我的订单」直接看到户口和 QR 转账给本店，不经过第三方支付平台；结账页、客服和顶部提示跟着改；拿掉 FPX 选项","页脚加上「© Holofen 版权所有」和不得转载、复制、截图散布的声明","后台防泄密：每页铺上登录者电邮的「内部资料」水印；成本、利润、单价、供应商默认打码，点一下显示 8 秒；电脑按截图键或切到别的窗口时后台整页变模糊"]],
  ["v137.6","2026-11-25",["截图追踪：商店、行情、图鉴、单卡和卡组页铺一层很淡的编号水印（登录会员是自己的 HF- 编号，访客显示「访客」），截图流到网上可以在后台「用户」搜编号查到是谁","安全：网站加上防嵌入、防内容嗅探、HTTPS 强制等安全标头；数据库删掉旧的进货函数，未登录的人不能调用进货和用户名单"]],
@@ -4037,7 +4044,7 @@ function admStock(){ if(!ui.rstAt){ ui.rstAt=1; loadRestock().then(()=>render())
     <div class="row" style="gap:10px;align-items:center"><button class="pri" type="submit">保存</button><label class="tchk"><input type="checkbox" name="test" ${r.is_test?"checked":""}> 测试进货（不动库存）</label>${r.is_test&&!r.stock_applied?`<button type="button" class="linkbtn tdel" data-rsdel="${r.id}">删除</button>`:""}</div></form>`;
   return `<p class="muted">${B("勾「要进货」会出现在下面，填数量和成本后保存。状态改成「已到货」才把数量加进现在的库存，再保存一次不会再加。订单审核通过时扣的也是这个库存。","Tick Restock to add a line. Stock increases only when the status becomes Arrived, and saving again does not add it twice. Order approval deducts this same stock.")}</p>
   ${ui.rstErr?`<p class="note">${B(esc(ui.rstErr)+"。请先在 Supabase 执行进货迁移。","Database error: "+esc(ui.rstErr)+". Run the restock migration in Supabase first.")}</p>`:""}
-  <div class="row"><input id="stq" type="search" placeholder="${BT("搜索商品","Search products")}" value="${esc(ui.stq||"")}" style="flex:1"><button data-rexp="1">导出 CSV</button></div>
+  <div class="row"><input id="stq" type="search" placeholder="${BT("搜索商品","Search products")}" value="${esc(ui.stq||"")}" style="flex:1"><button data-rexp="1">${B("导出进货单 CSV","Export purchase list CSV")}</button></div>
   ${stv}
   ${stc}
   ${sstrip}
@@ -4075,9 +4082,20 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   if(b.dataset.stl!=null){ ui.stl=b.dataset.stl; ui.sts=""; ui.stn=40; return render() }
   if(b.dataset.sts!=null){ ui.sts=b.dataset.sts; ui.stn=40; return render() }
   if(b.dataset.stmore){ ui.stn=(ui.stn||40)+40; return render() }
-  const rows=stockRows(), cell=v=>{ let t=v==null?"":String(v); if(/^[=+\-@]/.test(t)) t="'"+t; return /[",\n]/.test(t)?'"'+t.replace(/"/g,'""')+'"':t };
-  const csv="\uFEFF"+[["商品","系列","库存","售价 RM","成本 RM","单件利润 RM","要进货"]].concat(rows.map(x=>{ const profit=x.p.price?Math.round(x.p.price*100)-x.cost:""; return [PN(x.p),x.p.s||"",x.p.stock==null?"":x.p.stock,x.p.price||"",sen(x.cost),profit===""?"":sen(profit),x.need?"是":"否"] })).concat([[],["进货记录"],["商品","数量","单价 RM","供应商","状态","已计入","测试","创建人","最后修改"]]).concat(RST.map(r=>[nmId(r.product_id),r.qty,sen(r.unit_cost_cents),r.supplier||"",r.status,r.stock_applied,r.is_test?"是":"否",r.created_by||"",r.updated_by||""])).map(r=>r.map(cell).join(",")).join("\r\n");
-  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"})); a.download="holofen-stock.csv"; a.click(); toast("已导出") });
+  /* 2026-11-25 店主：进货单 CSV 只列要买的货，并带图片（Excel 365 / Google 表格会用 IMAGE 公式显示图片，另附图片链接） */
+  const cell=v=>{ let t=v==null?"":String(v); if(/^[=+\-@]/.test(t)) t="'"+t; return /[",\n]/.test(t)?'"'+t.replace(/"/g,'""')+'"':t };
+  const q=t=>/[",\n]/.test(t)?'"'+t.replace(/"/g,'""')+'"':t;
+  const abs=p=>{ if(!p) return ""; const u=simg(p); if(!u||/^data:/.test(u)) return ""; try{ return new URL(u,location.origin+"/").href }catch(_){ return "" } };
+  const img=u=>u&&/^https:\/\/[^"\s]+$/.test(u)?q('=IMAGE("'+u+'")'):"";
+  const open=RST.filter(r=>r.status!=="已到货"&&!r.is_test), ids=new Set(open.map(r=>r.product_id));
+  const list=open.map(r=>{ const p=PM[r.product_id]||null; return {p,id:r.product_id,qty:r.qty,cost:r.unit_cost_cents,sup:r.supplier||"",st:r.status} })
+    .concat(stockRows().filter(x=>x.need&&!ids.has(x.p.id)).map(x=>({p:x.p,id:x.p.id,qty:"",cost:x.cost,sup:(x.p.sup||[]).join(" / "),st:"要进货（还没开单）"})));
+  if(!list.length) return toast("现在没有要买的货");
+  const head=["图片","商品","系列","数量","单价 RM","小计 RM","供应商","状态","图片链接"].map(cell).join(",");
+  const body=list.map(x=>{ const u=abs(x.p); return [img(u),cell(x.p?PN(x.p):x.id),cell(x.p&&x.p.s||""),cell(x.qty),cell(x.cost?sen(x.cost):""),cell(x.cost&&x.qty?sen(x.cost*x.qty):""),cell(x.sup),cell(x.st),cell(u)].join(",") });
+  const tot=list.reduce((t,x)=>t+(x.cost&&x.qty?x.cost*x.qty:0),0);
+  const csv="\uFEFF"+[head].concat(body,["",",,,,"+cell("合计")+","+cell(sen(tot))]).join("\r\n");
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"})); a.download="holofen-purchase-list-"+dayStr(Date.now())+".csv"; a.click(); toast(BT(`已导出 ${list.length} 项要买的货`,`Exported ${list.length} items to buy`)) });
 function nmId(id){ const p=PM[id]; return p?PN(p):id }
 { const _adm=V.admin; V.admin=()=>owner&&ui.atab==="lucky"?admLucky():_adm() }
 /* ---------- 后台精简（v69）：一件事只在一个地方。5 页：订单、商品、用户、审核、设置 ----------
