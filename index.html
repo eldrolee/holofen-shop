@@ -146,7 +146,9 @@ td.th img{width:40px;height:56px;object-fit:contain;background:var(--tile);borde
 @media (max-width:640px){.sgr{flex-direction:column;align-items:flex-start;gap:4px}.sgl{flex:none}}
 /* v137.2 积分规则分区 */
 .rsec{border:1px solid var(--line);border-radius:14px;padding:12px 14px 14px;margin:0;min-width:0;display:grid;gap:10px}.rsec legend{font-weight:800;font-size:15px;padding:0 6px}.rtier{width:100%}.rtier input{width:9em;max-width:100%}
-#wm{position:fixed;inset:0;z-index:9000;pointer-events:none;background-repeat:repeat}#wm[hidden]{display:none}@media print{#wm{background-size:260px 150px;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.paybox button{min-height:30px;padding:3px 10px;font-size:13px;border-radius:9px;margin-left:4px}.paybox{gap:8px;border:1.5px solid var(--accent,#0b6672)}.pbx{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start}.pqr{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px;max-width:200px}.pqr img{width:180px;height:180px;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:12px}.pqr figcaption{font-size:12px;color:var(--mut,#667);text-align:center}.pacc{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;margin:0;min-width:0}.pacc dt{color:var(--mut,#667);font-size:13px}.pacc dd{margin:0;overflow-wrap:anywhere}
+.secv:not(.shown){filter:blur(6px);cursor:pointer;user-select:none;-webkit-user-select:none}.secv.shown{filter:none}body.veil #view,body.veil #foot{filter:blur(14px);pointer-events:none}
+#wm{position:fixed;inset:0;z-index:9000;pointer-events:none;background-repeat:repeat}#wm[hidden]{display:none}@media print{#wm{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 /* v137.5 店主：不让人随便存图（挡不了截图） */
 img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}
 .nthumb.ndt{background:var(--surface);border:2px solid var(--nc);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;line-height:1}.nthumb.ndt b{font-family:var(--display);font-size:30px;color:var(--ink)}.nthumb.ndt small{font-size:12px;font-weight:700;color:var(--muted);margin-top:2px}
@@ -1570,7 +1572,7 @@ html[data-lang="en"] .lgp>.en,html[data-lang="en"] .lgp>i,html[data-lang="en"] .
 
 <div class="bgfx" aria-hidden="true"></div>
 <div class="nhint" id="nhint" hidden role="status"><img src="intro/holofen-mark.webp" alt=""><span></span></div>
-<div class="trial">网站刚上线：线上付款还在接通中，现在下单不会扣款，店主会联系你确认。<span class="en"> Just launched: online payment is being set up, so no money is taken yet. We will contact you to confirm your order.</span></div>
+<div class="trial" id="trialbar">网站刚上线：线上付款还在接通中，现在下单不会扣款，店主会联系你确认。<span class="en"> Just launched: online payment is being set up, so no money is taken yet. We will contact you to confirm your order.</span></div>
 <header class="bar" id="bar"><div class="wrap">
   <div class="brand" id="brand"></div>
   <nav class="tabs" id="tabs"></nav>
@@ -1881,7 +1883,21 @@ const SERVICES = {
  "svc-pro":{id:"svc-pro",n:"组牌服务：进阶版",en:"Deck building: Pro",zh:"旧方案",price:59,svc:1,old:1}};
 const SHIP = [{k:"wm",n:"西马快递",en:"West Malaysia courier",fee:8},{k:"em",n:"东马快递",en:"East Malaysia courier",fee:15},{k:"pickup",n:"自取 / 面交",en:"Self pickup",fee:0},{k:"sg",n:"寄新加坡",en:"To Singapore",fee:35,cc:"sg"},{k:"cn",n:"寄中国",en:"To China",fee:55,cc:"cn"}];
 /* 海外运费（新加坡、中国）是建议值，待店主按快递报价确认。 */
-const PAY = ["FPX 网上银行 Online banking","Touch 'n Go eWallet","DuitNow QR","银行转账 Bank transfer"];
+/* 2026-11-25 店主：自己收款，不借用第三方支付平台。顾客转账到店主在「设置 › 收款户口」填的户口或 DuitNow QR，上传截图，店主核对后才备货。 */
+const PAY = ["DuitNow QR","银行转账 Bank transfer"];
+let PAYINFO={bank:"",holder:"",acct:"",qr:"",note:""};
+const normPay=d=>({bank:cleanTxt(d&&d.bank,60).trim(),holder:cleanTxt(d&&d.holder,80).trim(),acct:String((d&&d.acct)||"").replace(/[^0-9 -]/g,"").slice(0,30).trim(),qr:(d&&typeof d.qr==="string"&&/^[A-Za-z0-9._\/-]{1,200}$/.test(d.qr))?d.qr:"",note:cleanTxt(d&&d.note,300).trim()});
+const payReady=()=>!!((PAYINFO.acct&&PAYINFO.holder)||PAYINFO.qr);
+async function initPay(){ try{ if(window.claude&&window.claude.use){ const d=await window.claude.use("db"); if(d){ d.doc("site/pay").onSnapshot(s=>{ PAYINFO=normPay(s.exists?s.data():null); updTrial(); render() },()=>{}); return } } }catch(e){}
+  PAYINFO=normPay(lsGet("payinfo",null)); updTrial(); render() }
+function updTrial(){ const t=document.getElementById("trialbar"); if(t&&payReady()) t.innerHTML=`网站刚上线：付款直接转账给本店（DuitNow QR 或银行转账），不经过第三方支付平台。<span class="en"> Just launched: pay us directly by DuitNow QR or bank transfer, no payment platform in between.</span>` }
+function payBox(o){ const P=PAYINFO; if(!payReady()) return "";
+  return `<div class="panel paybox stack"><div class="row" style="justify-content:space-between;gap:8px"><b>${B("转账到本店","Pay the shop directly")}</b>${o?`<b class="price">${rm(o.total)}</b>`:""}</div>
+  <div class="pbx">${P.qr?`<figure class="pqr"><img src="${esc(BLOB(P.qr))}" alt="DuitNow QR" loading="lazy"><figcaption>${B("用银行 App 或电子钱包扫 DuitNow QR","Scan with any bank app or e-wallet (DuitNow QR)")}</figcaption></figure>`:""}
+  ${P.acct?`<dl class="pacc"><dt>${B("银行","Bank")}</dt><dd>${esc(P.bank||"—")}</dd><dt>${B("户口名字","Account name")}</dt><dd>${esc(P.holder)}</dd><dt>${B("户口号码","Account no.")}</dt><dd><span class="price">${esc(P.acct)}</span> <button data-copy="${esc(P.acct.replace(/[ -]/g,""))}">${B("复制","Copy")}</button></dd></dl>`:""}</div>
+  ${o?`<p class="muted" style="margin:0">${B("转账备注请写订单号 ","Put your order number in the transfer reference: ")}<b>${esc(o.id)}</b> <button data-copy="${esc(o.id)}">${B("复制","Copy")}</button></p>`:""}
+  ${P.note?`<p class="muted" style="margin:0">${esc(P.note)}</p>`:""}
+  <p class="muted" style="margin:0">${B("钱直接进本店户口，不经过任何第三方支付平台。店主核对收到钱后才会备货。","Money goes straight to our own account, not through any payment platform. We pack your order once we see the payment.")}</p></div>` }
 const STATES = ["Johor","Kedah","Kelantan","Melaka","Negeri Sembilan","Pahang","Perak","Perlis","Pulau Pinang","Sabah","Sarawak","Selangor","Terengganu","Kuala Lumpur","Labuan","Putrajaya"];
 const FLOW = [["unpaid","待付款","To pay"],["review","等待审核","In review"],["approved","备货中","Packing"],["shipped","已寄出","Shipped"],["delivered","已送达","Delivered"],["done","已评价","Reviewed"]];
 const MOOD = {unpaid:["zzz","等你付款，我先帮你留着。","Waiting for your payment."],review:["smile","店主在核对到账和库存。","The shop is checking your payment."],approved:["smile","审核通过，正在准备！","Approved. Getting it ready!"],shipped:["wow","包裹出发了！","Your parcel is on its way!"],delivered:["smile","到了！给我们打个分吧。","Delivered! Tell us how it went."],done:["smile","谢谢你，下次见。","Thank you, see you again."],rejected:["zzz","这张订单没有通过审核。","This order was not approved."]};
@@ -2057,7 +2073,7 @@ function renderCore(){
   applyLang();
   $("#cartbtn").hidden=adm; { const bb=$("#backbtn"); if(bb) bb.hidden=!adm } { const ob=$("#ownbtn"); if(ob) ob.hidden=adm||!owner } { const lb=$("#loginbtn"); if(lb){ lb.hidden=adm; if(window.HOLO_AUTH) HOLO_AUTH.paint() } } { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm||!CONTACT.some(c=>c[3]) } { const wb=$("#wishbtn"); if(wb){ wb.hidden=adm; const wn=arr(ME.wish).length, al=alerts().length; wb.innerHTML=wb.innerHTML.replace(/<b class="hb"[^>]*>.*?<\/b>/,"")+(al||wn?`<b class="hb" aria-hidden="true">${al||wn}</b>`:""); wb.setAttribute("aria-label",isEN()?`Wishlist${wn?" ("+wn+")":""}`:`收藏${wn?"（"+wn+" 件）":""}`); if(route==="wish") wb.setAttribute("aria-current","page"); else wb.removeAttribute("aria-current") } } { const mb=$("#mebtn"); if(mb){ mb.hidden=true; if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
   setHTML("#band",adm?"":band());
-  $("#foot").innerHTML=adm?`<a href="#home">${BL("回到顾客前台","Back to storefront")}</a>`:`${DOTS}${curSel("cur-foot")}<span class="muted" style="font-size:13px">© ${new Date().getFullYear()} Holofen</span>`;
+  $("#foot").innerHTML=adm?`<a href="#home">${BL("回到顾客前台","Back to storefront")}</a>`:`${DOTS}${curSel("cur-foot")}<span class="muted" style="font-size:13px">© ${new Date().getFullYear()} Holofen ${B("版权所有","All rights reserved")}</span>`;
   const keep=document.activeElement&&document.activeElement.id, pos=keep&&document.activeElement.selectionStart;
   /* v86 内容没变就不重画：刷新后资料一份份载入时，首页不会一直闪 */
   const vch=setHTML("#view",subnav()+(V[route]||V.home)());
@@ -2372,7 +2388,7 @@ function band(){
    <nav aria-label="${BT("店铺","Shop")}"><h3>${B("店铺","Shop")}</h3><a href="#shop" data-fcat="">${B("商品","Products")}</a><a href="#series">${B("图鉴","Card Index")}</a><a href="#market">${B("行情","Market")}</a></nav>
    <nav aria-label="${BT("客户服务","Customer service")}"><h3>${B("客户服务","Customer service")}</h3><a href="#help">${B("常见问题","FAQ")}</a><a href="#shipping">${B("运费和寄送","Shipping")}</a><a href="#returns">${B("退货与退款","Returns &amp; refunds")}</a><a href="#terms">${B("条款与细则","Terms &amp; conditions")}</a><a href="#orders">${B("订单状态","Order status")}</a><a href="#" data-contact="1">${B("联系我们","Contact us")}</a></nav>
    <nav aria-label="${BT("信息","Information")}"><h3>${B("信息","Information")}</h3><a href="#about">${B("关于我们","About us")}</a><a href="#news">${B("最新消息","News")}</a><a href="#fake">${B("防伪指南","Spot fakes")}</a><a href="#wall">${B("晒卡墙","Pull wall")}</a><a href="#lucky">${B("签到和抽奖","Check-in &amp; draw")}</a><a href="#privacy">${B("隐私声明","Privacy notice")}</a></nav>
-  </div><div class="fin"><p class="disc">${B("Holofen 是独立卡牌店，不是 The Pokémon Company 的官方商店。Pokémon 及相关名称和图片的商标归各自权利人所有。","Holofen is an independent card shop, not an official store of The Pokémon Company. Pokémon and related names and images are trademarks of their respective owners.")}</p></div>`;
+  </div><div class="fin"><p class="disc cpy"><b>${B("© "+new Date().getFullYear()+" Holofen 版权所有。","© "+new Date().getFullYear()+" Holofen. All rights reserved.")}</b> ${B("本站原创的文字、照片、设计和资料整理，未经 Holofen 书面同意，不得转载、复制、截图散布或用于商业用途。","Our original text, photos, design and compiled data may not be reposted, copied, shared as screenshots or used commercially without Holofen's written permission.")}</p><p class="disc">${B("Holofen 是独立卡牌店，不是 The Pokémon Company 的官方商店。Pokémon 及相关名称和图片的商标归各自权利人所有。","Holofen is an independent card shop, not an official store of The Pokémon Company. Pokémon and related names and images are trademarks of their respective owners.")}</p></div>`;
 }
 /* v134 页脚「客户服务」三页：常见问题、运费和寄送、退货与退款。内容都从现有资料生成（FAQ、后台运费设置、条款），不另写一套，免得两边不一致 */
 ROUTES.add("help"); ROUTES.add("shipping"); ROUTES.add("returns");
@@ -2468,7 +2484,7 @@ function FAQ(){ const R=rules(), shp=SHIP.filter(x=>x.on!==false).map(x=>`${B(x.
   ["order","怎么下单？要先注册吗？","How do I order? Do I need an account?","下单 买 购买 注册 登录 账号 访客 结账 order buy account checkout",
    ()=>`${B("不用注册也能下单。把商品加进购物车，结账时再填名字、电话和地址就可以。注册会员的话可以累积积分、签到、玩夹娃娃机。","You can order without an account. Add items to the cart and fill in your name, phone and address at checkout. Members also earn points and can check in and play the claw machine.")}<br>${kfA("shop","去商店","Shop")}`],
   ["pay","怎么付款？","How do I pay?","付款 付钱 支付 转账 银行 tng boost grab duitnow 电子钱包 pay payment bank",
-   ()=>`${B("线上付款还在接通，下单时不会扣钱。店主确认订单后会联系你付款。付完在「我的订单」选你用的付款平台并上传截图。","Online payment is still being set up, so ordering doesn't charge you. Once we confirm your order we'll contact you about payment. After paying, choose the platform in My orders and upload a screenshot.")}<br><small class="muted">${esc(PAYVIA.map(g=>g[2].join("、")).join("、"))}</small><br>${kfA("orders","我的订单","My orders")}`],
+   ()=>payReady()?`${B("下单后在「我的订单」会看到本店的 DuitNow QR 和银行户口，直接转账给我们，不经过第三方支付平台。付完选你用的付款平台并上传截图，店主核对后备货。","After ordering, My orders shows our DuitNow QR and bank account. Pay us directly, no payment platform in between. Then choose how you paid and upload the receipt; we pack once we see it.")}<br>${kfA("orders","我的订单","My orders")}`:`${B("线上付款还在接通，下单时不会扣钱。店主确认订单后会联系你付款。付完在「我的订单」选你用的付款平台并上传截图。","Online payment is still being set up, so ordering doesn't charge you. Once we confirm your order we'll contact you about payment. After paying, choose the platform in My orders and upload a screenshot.")}<br><small class="muted">${esc(PAYVIA.map(g=>g[2].join("、")).join("、"))}</small><br>${kfA("orders","我的订单","My orders")}`],
   ["ship","运费多少？寄哪里？","Shipping cost and destinations?","运费 寄 快递 邮费 新加坡 中国 东马 西马 自取 面交 ship shipping delivery singapore china",
    ()=>`${B("马来西亚、新加坡、中国都寄：","We ship within Malaysia and to Singapore and China: ")}${shp}${B("。","." )} ${SHIPCFG.at?B("运费按商品重量算，结账时会直接显示。","Shipping is based on weight and shown at checkout."):B("这些运费是暂定值，店主确认订单时会告诉你实际运费。","These are provisional; we confirm the actual fee with your order.")} ${OWNER_TBD()}`],
   ["track","多久收到？怎么查订单？","How long until it arrives? Tracking?","多久 几天 什么时候 到 追踪 运单 物流 订单状态 track tracking status arrive",
@@ -2997,7 +3013,7 @@ function shipNote(){ return `<details class="note shipnote"><summary><b>${B("配
  <li>${B("怎么追踪包裹：","Tracking: ")}${OWNER_TBD()}</li>
  <li>${B("寄新加坡、中国的关税和进口费由谁付：","Who pays import duty for Singapore and China: ")}${OWNER_TBD()}</li>
  <li>${B("取消、退换和瑕疵处理：","Cancellations, returns and damaged items: ")}${OWNER_TBD()}</li></ul></details>` }
-function payNote(short){ return `<div class="note paynote"><b>${B("线上付款还没接通，现在下单不会扣款。","Online payment is not connected yet. Placing an order does not charge you.")}</b>${short?"":`<br>${B("提交后店主会联系你确认库存、运费和付款方式，你同意了才需要付款。","After you order, the shop contacts you to confirm stock, shipping and how to pay. You only pay once you agree.")}<br>${B("联系渠道和多久内联系：","How and how soon we contact you: ")}${OWNER_TBD()}　${B("没确认或取消的订单怎么处理：","What happens to unconfirmed or cancelled orders: ")}${OWNER_TBD()}`}</div>` }
+function payNote(short){ if(payReady()) return `<div class="note paynote"><b>${B("付款：下单后转账到本店户口（DuitNow QR 或银行转账），不经过第三方支付平台。","Payment: after ordering, transfer to our own account (DuitNow QR or bank transfer). No third-party payment platform.")}</b>${short?"":`<br>${B("下单后在「我的订单」会看到户口和 QR，付完上传截图，店主核对收款后备货。","After ordering, My orders shows our account and QR. Upload your receipt after paying and we pack once we see the money.")}`}</div>`; return `<div class="note paynote"><b>${B("线上付款还没接通，现在下单不会扣款。","Online payment is not connected yet. Placing an order does not charge you.")}</b>${short?"":`<br>${B("提交后店主会联系你确认库存、运费和付款方式，你同意了才需要付款。","After you order, the shop contacts you to confirm stock, shipping and how to pay. You only pay once you agree.")}<br>${B("联系渠道和多久内联系：","How and how soon we contact you: ")}${OWNER_TBD()}　${B("没确认或取消的订单怎么处理：","What happens to unconfirmed or cancelled orders: ")}${OWNER_TBD()}`}</div>` }
 /* v83 快递公司：后台下拉选，顾客订单里按运单号直接去该快递官网查件（打开前先把运单号复制好，官网没自动带入时直接贴上） */
 const COURIERS=[["jt","J&T Express","https://www.jtexpress.my/tracking/{n}"],["pos","Pos Laju","https://tracking.pos.com.my/tracking/{n}"],["ninja","Ninja Van","https://www.ninjavan.co/en-my/tracking?id={n}"],["spx","SPX Express","https://spx.com.my/track?{n}"],["citylink","City-Link Express","https://www.citylinkexpress.com/tracking-result/?track0={n}"],["gdex","GDex","https://gdexpress.com/tracking/"],["flash","Flash Express","https://www.flashexpress.my/fle/tracking?se={n}"],["dhl","DHL eCommerce","https://www.dhl.com/my-en/home/tracking.html?tracking-id={n}&submit=1"],["other","其他","" ]];
 const courierOf=name=>COURIERS.find(c=>c[1]===name||c[0]===name);
@@ -3050,7 +3066,7 @@ V.orders=()=>{
   { const un=unreadOrders(); if(un.length){ const ids=un.map(x=>x[0]); ui.hl=[...new Set((ui.hl||[]).concat(ids))]; ui.hlScroll=ids[0]; setTimeout(markSeen,0) } }
   return `${H1("我的订单","My orders")}${fl?`<div class="row" style="gap:8px"><span class="chip">${B("只看："+OFL[fl][0],"Showing: "+OFL[fl][1])}</span><a href="#orders" data-ofl="">${B("看全部订单","All orders")} ›</a></div>`:""}${os.map(o=>{const m=MOOD[o.status]||MOOD.review, hl=(ui.hl||[]).includes(o.id);return `<div class="panel order${hl?" upd":""}" id="ord-${o.id}"><div class="row" style="justify-content:space-between"><h3 class="price">${o.id}${hl?` <span class="updchip">${B("有更新","Updated")}</span>`:""}</h3><span class="muted">${new Date(o.at).toLocaleString(isEN()?"en-MY":"zh-CN")} ${rcptBtn(uid,o)}</span></div>
   ${tracker(o)}<div class="note" style="margin:0"><b>${B("收件资料","Delivery details")}</b>${isEN()?": ":"："}${esc(o.name)} · ${esc(o.phone)}${o.svcOnly?"":` · ${esc(o.addr)}${isEN()?", ":"，"}${esc(o.post)} ${esc(o.state)}`}</div>${orderLines(o)}
-  ${o.status==="unpaid"&&needQuote(uid,o)?`<div class="note">${B("店主正在看你的需求，1 天内会把报价显示在这里，你同意再付款。不想做了可以取消订单。","We are preparing your quote. It will show here within 1 day; pay only if you agree.")}</div><div><button data-cancel="${o.id}">取消订单 <span class="en">Cancel</span></button></div>`:o.status==="unpaid"?`<div class="note">${quoted(uid,o)?`${B("店主报价","Our quote")}：<b>${rm(quoted(uid,o))}</b>。`:""}${BL(`订单已收到，应付 <b>${rm(o.total)}</b>（${esc(o.pay)}）。线上付款还在接通中，现在不用付款，店主会用你留的手机号码联系你确认订单和付款方式。付款后在下面选你用的付款平台，再上传付款截图。`,`We have your order. Total <b>${rm(o.total)}</b> (${esc(o.pay)}). Online payment is still being set up, so don't pay yet: we will contact you on the phone number you gave to confirm the order and how to pay. After paying, choose how you paid and upload a screenshot below.`)}</div>
+  ${o.status==="unpaid"&&needQuote(uid,o)?`<div class="note">${B("店主正在看你的需求，1 天内会把报价显示在这里，你同意再付款。不想做了可以取消订单。","We are preparing your quote. It will show here within 1 day; pay only if you agree.")}</div><div><button data-cancel="${o.id}">取消订单 <span class="en">Cancel</span></button></div>`:o.status==="unpaid"?`<div class="note">${quoted(uid,o)?`${B("店主报价","Our quote")}：<b>${rm(quoted(uid,o))}</b>。`:""}${payReady()?BL(`订单已收到，应付 <b>${rm(o.total)}</b>。请用下面的 DuitNow QR 或户口转账，付完选你用的付款平台、上传付款截图，再按「我已付款」。`,`We have your order. Total <b>${rm(o.total)}</b>. Pay with the DuitNow QR or account below, then choose how you paid, upload the receipt and tap "I've paid".`)+"</div>"+payBox(o)+"<div hidden>":BL(`订单已收到，应付 <b>${rm(o.total)}</b>（${esc(o.pay)}）。线上付款还在接通中，现在不用付款，店主会用你留的手机号码联系你确认订单和付款方式。付款后在下面选你用的付款平台，再上传付款截图。`,`We have your order. Total <b>${rm(o.total)}</b> (${esc(o.pay)}). Online payment is still being set up, so don't pay yet: we will contact you on the phone number you gave to confirm the order and how to pay. After paying, choose how you paid and upload a screenshot below.`)}</div>
    <div class="row">${payViaSel(o.id)}<label class="upshot">${(ui.pshot||{})[o.id]?`<img src="${esc(BLOB(ui.pshot[o.id]))}" alt="">${BL("换一张截图","Change")}`:`📎 ${BL("上传付款截图","Upload receipt")}`}<input type="file" accept="image/*" data-payshot="${o.id}" hidden></label><button class="pri" data-paid="${o.id}">我已付款 <span class="en">I've paid</span></button><button data-cancel="${o.id}">取消订单 <span class="en">Cancel</span></button></div>`:""}
   ${o.status==="review"?`<p>${BL("已收到你的付款，付款平台：","Payment received via")} <span class="price">${esc(o.ref)}</span>${isEN()?". We are checking it.":"。店主核对中。"}</p>`:""}
   ${o.tracking?`<p>${esc(o.courier||"快递")} ${B("运单号","Tracking no.")} <span class="price">${esc(o.tracking)}</span> <button data-copy="${esc(o.tracking)}">复制 <span class="en">Copy</span></button>${trackUrl(o)?` <a class="trkbtn" href="${esc(trackUrl(o))}" target="_blank" rel="noopener" data-trk="${esc(o.tracking)}">${B("去 "+esc(o.courier)+" 官网查件","Track on "+esc(o.courier))} ↗</a>`:""}${o.shippedAt?` <span class="muted">寄出于 ${new Date(o.shippedAt).toLocaleDateString("zh-CN")}</span>`:""}</p><p class="muted">${trackUrl(o)?B("按上面的按钮会打开快递官网，运单号也会帮你复制好。","The button opens the courier's site and copies your tracking number."):B("把运单号贴到快递公司官网可以查实时位置。","Paste it on the courier's site for live tracking.")}</p>`:""}
@@ -3543,6 +3559,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
+ ["v137.7","2026-11-25",["自己收款：后台新增「设置 › 收款户口」（只有店主能改），填银行户口或上传 DuitNow QR 后，顾客在「我的订单」直接看到户口和 QR 转账给本店，不经过第三方支付平台；结账页、客服和顶部提示跟着改；拿掉 FPX 选项","页脚加上「© Holofen 版权所有」和不得转载、复制、截图散布的声明","后台防泄密：每页铺上登录者电邮的「内部资料」水印；成本、利润、单价、供应商默认打码，点一下显示 8 秒；电脑按截图键或切到别的窗口时后台整页变模糊"]],
  ["v137.6","2026-11-25",["截图追踪：商店、行情、图鉴、单卡和卡组页铺一层很淡的编号水印（登录会员是自己的 HF- 编号，访客显示「访客」），截图流到网上可以在后台「用户」搜编号查到是谁","安全：网站加上防嵌入、防内容嗅探、HTTPS 强制等安全标头；数据库删掉旧的进货函数，未登录的人不能调用进货和用户名单"]],
  ["v137.5","2026-11-25",["防爬：网站前面加一道关卡，挡掉 AI 爬虫、抓数据工具和无头浏览器（搜索引擎和 WhatsApp / Facebook 分享预览照常）；加 robots.txt 和 noai 标记；图片不能右键另存、不能拖走、手机长按不弹存图"]],
  ["v137.4","2026-11-25",["首页滚动卡牌：只先载入前 6 张图，其余滑到才载入，手机网络慢时首页更快出来"]],
@@ -3862,6 +3879,29 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   if(list.find(x=>x.q.trim()&&!x.a.trim())) return toast("每个问题都要写回答");
   FAQX=normFaq({list}); render(); const d=JSON.parse(JSON.stringify(FAQX));
   (XDB?XDB.doc("site/faq").set(d):Promise.resolve(lsSet("faq",d))).then(()=>toast("已保存 Saved"),()=>toast("没有保存成功，请再试一次")) });
+/* 2026-11-25 店主：自己收款。只有店主能改（钱进哪个户口），存在 site/pay，所有顾客结账时看得到 */
+function admPay(){ const P=PAYINFO, banks=PAYVIA[1][2], E=isEN();
+  return `${H2("收款户口","Payment account")}<p class="muted">${B("顾客下单后，「我的订单」会显示这里的户口和 DuitNow QR，让顾客直接转账给你，不经过第三方支付平台。顾客付完会上传截图，你在「订单」核对收到钱后再按通过。","After ordering, customers see this account and DuitNow QR in My orders and pay you directly. They upload a receipt; you approve the order in Orders once the money is in.")}</p>
+  <div class="panel stack" id="payf" style="gap:10px">
+  <label class="f">${B("银行","Bank")}<select id="py-bank"><option value="">${E?"Choose bank…":"选银行…"}</option>${banks.map(b=>`<option ${P.bank===b?"selected":""}>${esc(b)}</option>`).join("")}</select></label>
+  <label class="f">${B("户口名字（和银行登记的一样）","Account name (as registered with the bank)")}<input id="py-holder" maxlength="80" autocomplete="off" value="${esc(P.holder)}"></label>
+  <label class="f">${B("户口号码","Account number")}<input id="py-acct" inputmode="numeric" maxlength="30" autocomplete="off" value="${esc(P.acct)}"></label>
+  <div class="f"><span>${B("DuitNow QR 图片","DuitNow QR image")}</span><div class="row">${P.qr?`<img src="${esc(BLOB(P.qr))}" alt="" style="width:120px;height:120px;object-fit:contain;border:1px solid var(--line);border-radius:10px;background:#fff">`:""}<label class="upshot">📎 ${P.qr?B("换一张","Replace"):B("上传 QR","Upload QR")}<input type="file" accept="image/*" data-pyqr="1" hidden></label>${P.qr?`<button data-pyqrdel="1">${B("拿掉 QR","Remove QR")}</button>`:""}</div></div>
+  <label class="f">${B("给顾客的备注（可不填）","Note for customers (optional)")}<input id="py-note" maxlength="300" value="${esc(P.note)}" placeholder="${E?"e.g. Please pay within 24 hours":"例如：请在 24 小时内付款"}"></label>
+  <p class="muted" style="margin:0">${B("户口号码和户口名字都填，或上传 QR，顾客那边才会出现付款资料；都没填时网站照旧显示「付款还在接通」。","Fill in account name and number, or upload a QR, for payment details to show. Until then the site keeps saying payment is being set up.")}</p>
+  <div><button class="pri" data-pysave="1">${B("保存收款户口","Save payment account")}</button></div></div>` }
+function savePay(d){ PAYINFO=normPay(d); updTrial(); render(); const v=JSON.parse(JSON.stringify(PAYINFO));
+  return (XDB?XDB.doc("site/pay").set(v):Promise.resolve(lsSet("payinfo",v))).then(()=>toast(BT("已保存","Saved")),()=>toast(BT("没有保存成功，请再试一次","Not saved, please try again"))) }
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-pysave],[data-pyqrdel]"); if(!b||!(window.HOLO_AUTH?HOLO_AUTH.role()==="owner":owner)) return;
+  if(b.dataset.pyqrdel) return savePay({...PAYINFO,qr:""});
+  const g=id=>(document.getElementById(id)||{}).value||"", acct=g("py-acct").replace(/[^0-9 -]/g,"");
+  if(acct&&!g("py-holder").trim()) return toast(BT("请填户口名字","Please fill in the account name"));
+  if(acct&&acct.replace(/\D/g,"").length<6) return toast(BT("户口号码好像不完整","Account number looks incomplete"));
+  savePay({bank:g("py-bank"),holder:g("py-holder"),acct,qr:PAYINFO.qr,note:g("py-note")}) });
+document.addEventListener("change",async e=>{ const t=e.target; if(!t||!t.dataset||!t.dataset.pyqr) return; const f=t.files&&t.files[0]; if(!f) return;
+  if(!f.type.startsWith("image/")) return toast(BT("请选图片文件","Please choose an image")); if(f.size>8e6) return toast(BT("图片太大，请小于 8MB","Image too large (max 8MB)"));
+  if(!assets) return toast(BT("这里暂时收不了图片","Uploads are unavailable here")); toast(BT("上传中…","Uploading…"));
+  try{ const r=await assets.upload(f); const id=aid(r&&r.id); if(!id) throw 0; savePay({...PAYINFO,qr:id}) }catch(_){ toast(BT("上传失败，请再试一次","Upload failed")) } });
 function admTiers(){ const TP=LUCKY.tierPerks||{m:[],s:[],g:[]}, R=rules();
   return `${H2("等级福利","Tier perks")}<p class="muted">每个等级的专属福利，一行写一条（例如：免运费、新品优先预订、生日礼物）。会员福利页会按等级并排显示。升级金额和积分倍数在「积分规则」改。</p>
   <div class="panel stack">${[["m","小鹿（注册就是）"],["s",`银鹿（近 12 个月满 ${rm(R.silver)}）`],["g",`金鹿（近 12 个月满 ${rm(R.gold)}）`],["b",`黑鹿（${R.black>0?"近 12 个月满 "+rm(R.black):"门槛还没设，在「积分规则」填"}）`],["r",`至尊黑鹿（${R.royal>0?"近 12 个月满 "+rm(R.royal):"门槛还没设，在「积分规则」填"}）`]].map(t=>`<label class="f">${t[1]}<textarea id="tp-${t[0]}" rows="3" placeholder="一行一条，留空就是没有">${esc((TP[t[0]]||[]).join("\n"))}</textarea></label>`).join("")}
@@ -4026,11 +4066,11 @@ function nmId(id){ const p=PM[id]; return p?PN(p):id }
     if(ui.atab==="stock") return H1("进货","Restock")+off+admStock();
     if(ui.atab==="users") return off+admUsers();
     if(ui.atab==="review") return H1("审核","Approve")+off+part("reviews")+part("wall",1);
-    if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=[["shipfee","运费","Shipping fees"],["rules","积分规则","Points rules"],["tiers","等级福利","Tier perks"],["stamp","集章卡","Stamp card"],["freeplay","购物送夹取","Free plays"],["rewards","会员奖励","Member rewards"],["lucky","夹娃娃机","Claw machines"],["faq","客服问答","Help Q&A"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"],["log","版本记录","Change log"]]);
+    if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=(boss?[["pay","收款户口","Payment account"]]:[]).concat([["shipfee","运费","Shipping fees"],["rules","积分规则","Points rules"],["tiers","等级福利","Tier perks"],["stamp","集章卡","Stamp card"],["freeplay","购物送夹取","Free plays"],["rewards","会员奖励","Member rewards"],["lucky","夹娃娃机","Claw machines"],["faq","客服问答","Help Q&A"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"],["log","版本记录","Change log"]]));
       const st=tabs.some(t=>t[0]===ui.stab)?ui.stab:"rules";
-      const body=st==="shipfee"?admShipFee():st==="rules"?admMembers().split("<h2>")[0]+"<h2>"+admMembers().split("<h2>")[1]:st==="tiers"?admTiers():st==="faq"?admFaq():st==="stamp"?admStamp():st==="freeplay"?admFree():st==="rewards"?admRewards():st==="lucky"?part("lucky",1):st==="staff"?admStaff().replace(/^\s*<h1>[\s\S]*?<\/h1>/,""):st==="log"?admChangelog():part("launch");
+      const body=st==="pay"?admPay():st==="shipfee"?admShipFee():st==="rules"?admMembers().split("<h2>")[0]+"<h2>"+admMembers().split("<h2>")[1]:st==="tiers"?admTiers():st==="faq"?admFaq():st==="stamp"?admStamp():st==="freeplay"?admFree():st==="rewards"?admRewards():st==="lucky"?part("lucky",1):st==="staff"?admStaff().replace(/^\s*<h1>[\s\S]*?<\/h1>/,""):st==="log"?admChangelog():part("launch");
       /* 2026-11-25 店主：设置分页太乱，按用途分组。每个机制仍是自己的分页（admin-settings-independence） */
-      const SG=[["运送","Shipping",["shipfee"]],["会员和积分","Members & points",["rules","tiers","stamp","rewards"]],["活动","Events",["freeplay","lucky"]],["客服","Help",["faq"]],["店铺管理","Store admin",["staff","launch","log"]]];
+      const SG=[["运送","Shipping",["shipfee"]],["会员和积分","Members & points",["rules","tiers","stamp","rewards"]],["活动","Events",["freeplay","lucky"]],["客服","Help",["faq"]],["店铺管理","Store admin",["pay","staff","launch","log"]]];
       const grp=`<div class="sgrp">${SG.map(g=>{ const l=tabs.filter(t=>g[2].includes(t[0])); return l.length?`<div class="sgr"><span class="sgl">${B(g[0],g[1])}</span>${seg("data-stab",st,l)}</div>`:"" }).join("")}</div>`;
       return H1("设置","Settings")+off+grp+body }
     const rows=[]; Object.entries(all).forEach(([u,d])=>liveO(u,d.orders).forEach(o=>rows.push([u,eff(u,o)]))); rows.sort((a,b)=>b[1].at-a[1].at);
@@ -4562,7 +4602,7 @@ document.addEventListener("click",e=>{ const t=e.target.closest&&e.target.closes
 function initShip(){ if(!XDB) return; XDB.doc("site/ship").onSnapshot(s=>{ SHIPCFG=normShipCfg(s.exists?s.data():null); applyShip(); render() },()=>{});
   if(XOWN){ XDB.doc("books/ship").onSnapshot(s=>{ SHIPC=normShipCost(s.exists?s.data():null); render() },()=>{}); XDB.doc("books/orders").onSnapshot(s=>{ BOOKS=normBooks(s.exists?s.data():null); render() },()=>{}) } }
 
-readHash(); initStore(); initExtra(); initLucky(); initFaq();
+readHash(); initStore(); initExtra(); initLucky(); initFaq(); initPay();
 </script>
 <script>
 /* 滚动浮现和换页动画 */
@@ -4667,10 +4707,25 @@ readHash(); initStore(); initExtra(); initLucky(); initFaq();
 <script>
 /* v137.6 店主：截图要追踪得到是谁。重要页面铺一层很淡的追踪编号（不挡点击、不进后台）。浏览器没法让截图变黑，只能做到可追踪。 */
 (function(){ const R=new Set(["shop","market","card","series","set","prices","trends","decks","item"]); let el=null, last="";
-  function tile(t){ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="260" height="150"><text x="20" y="90" transform="rotate(-24 130 75)" font-family="system-ui,sans-serif" font-size="14" font-weight="700" fill="#0a3d45" fill-opacity=".07">${t}</text></svg>`; return 'url("data:image/svg+xml,'+encodeURIComponent(svg)+'")' }
-  function upd(){ try{ const on=typeof route!=="undefined"&&(R.has(route)||(typeof ui!=="undefined"&&ui.pid)); if(!el){ el=document.createElement("div"); el.id="wm"; el.setAttribute("aria-hidden","true"); document.body.appendChild(el) }
+  function tile(t){ const w=Math.max(260,Math.round([...t].reduce((n,c)=>n+(c.charCodeAt(0)>255?14:8),0)*0.95)+60), hh=Math.round(w*0.55); const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${hh}"><text x="20" y="${Math.round(hh*0.6)}" transform="rotate(-24 ${w/2} ${hh/2})" font-family="system-ui,sans-serif" font-size="14" font-weight="700" fill="#0a3d45" fill-opacity=".07">${t}</text></svg>`; return 'url("data:image/svg+xml,'+encodeURIComponent(svg)+'")' }
+  function upd(){ try{ const adm=typeof route!=="undefined"&&route==="admin"; if(adm) secPass(); const on=adm||(typeof route!=="undefined"&&(R.has(route)||(typeof ui!=="undefined"&&ui.pid))); if(!el){ el=document.createElement("div"); el.id="wm"; el.setAttribute("aria-hidden","true"); document.body.appendChild(el) }
       el.hidden=!on; if(!on) return; const d=new Date(), ds=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-      const who=(typeof signedIn==="function"&&signedIn())?wmCode(XU):(typeof isEN==="function"&&isEN()?"Guest":"访客"); const t="Holofen · "+who+" · "+ds; if(t!==last){ last=t; el.style.backgroundImage=tile(t) } }catch(e){} }
-  addEventListener("hashchange",()=>setTimeout(upd,30)); const mo=new MutationObserver(()=>{ clearTimeout(mo.t); mo.t=setTimeout(upd,80) });
+      const who=adm?((typeof myEmail==="function"&&myEmail())||wmCode(XU))+" · "+(isEN()?"Internal":"内部资料"):(typeof signedIn==="function"&&signedIn())?wmCode(XU):(typeof isEN==="function"&&isEN()?"Guest":"访客"); const t="Holofen · "+who+" · "+ds; if(t!==last){ last=t; el.style.backgroundImage=tile(t) } }catch(e){} }
+  /* 后台防泄密：成本、利润、供应商默认打码，点一下显示 8 秒；电脑按截图键或切走窗口时后台整页变模糊（挡不住手机拍屏幕，所以还有水印） */
+  const SK=/成本|利润|单价|供应商|这单赚|赚|Cost|Profit|Supplier|Unit/i;
+  function secPass(){ const v=document.getElementById("view"); if(!v) return;
+    v.querySelectorAll("table").forEach(t=>{ const hs=[...t.querySelectorAll("thead th")]; const ix=hs.map((h,i)=>SK.test(h.textContent)?i:-1).filter(i=>i>=0); if(!ix.length) return;
+      t.querySelectorAll("tbody tr").forEach(r=>ix.forEach(i=>{ const c=r.children[i]; if(c&&!c.querySelector("select,button,input[type=checkbox]")) c.classList.add("secv") })) });
+    v.querySelectorAll(".money .mhead b, .money table").forEach(e=>e.classList.add("secv"));
+    v.querySelectorAll(".kpi").forEach(k=>{ const l=k.querySelector(".muted"); if(l&&SK.test(l.textContent)){ const b=k.querySelector("b"); if(b) b.classList.add("secv") } }) }
+  document.addEventListener("click",e=>{ const c=e.target.closest&&e.target.closest(".secv:not(.shown)"); if(!c) return; e.preventDefault(); e.stopPropagation(); c.classList.add("shown"); const hide=()=>{ if(c.contains(document.activeElement)) return setTimeout(hide,3000); c.classList.remove("shown") }; setTimeout(hide,8000) },true);
+  const isAdm=()=>typeof route!=="undefined"&&route==="admin"; let sh=0;
+  function veil(ms){ if(!isAdm()) return; document.body.classList.add("veil"); clearTimeout(sh); if(ms) sh=setTimeout(()=>document.body.classList.remove("veil"),ms) }
+  addEventListener("keydown",e=>{ if(e.key==="PrintScreen"||(e.metaKey&&e.shiftKey)||(e.key==="s"&&e.shiftKey&&e.metaKey)) veil(2500) },true);
+  addEventListener("keyup",e=>{ if(e.key==="PrintScreen"){ veil(2500); try{ navigator.clipboard.writeText("") }catch(_){} } },true);
+  addEventListener("blur",()=>veil(0)); addEventListener("focus",()=>{ document.body.classList.remove("veil") });
+  document.addEventListener("visibilitychange",()=>{ if(document.hidden) veil(0); else document.body.classList.remove("veil") });
+  addEventListener("hashchange",()=>{ if(!isAdm()) document.body.classList.remove("veil") });
+  addEventListener("hashchange",()=>setTimeout(upd,30)); const mo=new MutationObserver(()=>{ clearTimeout(mo.t); mo.t=setTimeout(upd,80) }); document.addEventListener("toggle",()=>{ if(isAdm()) secPass() },true);
   addEventListener("load",()=>{ upd(); const v=document.getElementById("view"); if(v) mo.observe(v,{childList:true}) }); setTimeout(upd,600); setInterval(upd,15000) })();
 </script>
