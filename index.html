@@ -146,6 +146,7 @@ td.th img{width:40px;height:56px;object-fit:contain;background:var(--tile);borde
 @media (max-width:640px){.sgr{flex-direction:column;align-items:flex-start;gap:4px}.sgl{flex:none}}
 /* v137.2 积分规则分区 */
 .rsec{border:1px solid var(--line);border-radius:14px;padding:12px 14px 14px;margin:0;min-width:0;display:grid;gap:10px}.rsec legend{font-weight:800;font-size:15px;padding:0 6px}.rtier{width:100%}.rtier input{width:9em;max-width:100%}
+.wins{display:flex;gap:8px 16px;flex-wrap:wrap;align-items:center;background:var(--note);color:var(--note-ink);border-radius:12px;padding:8px 12px;font-size:13px}.wins .wt{flex:none}.wins span{min-width:0;overflow-wrap:anywhere}.wins i{font-style:normal;opacity:.7;font-size:12px}
 .paybox button{min-height:30px;padding:3px 10px;font-size:13px;border-radius:9px;margin-left:4px}.paybox{gap:8px;border:1.5px solid var(--accent,#0b6672)}.pbx{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start}.pqr{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px;max-width:200px}.pqr img{width:180px;height:180px;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:12px}.pqr figcaption{font-size:12px;color:var(--mut,#667);text-align:center}.pacc{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;margin:0;min-width:0}.pacc dt{color:var(--mut,#667);font-size:13px}.pacc dd{margin:0;overflow-wrap:anywhere}
 .secv:not(.shown){filter:blur(6px);cursor:pointer;user-select:none;-webkit-user-select:none}.secv.shown{filter:none}body.veil #view,body.veil #foot{filter:blur(14px);pointer-events:none}
 #wm{position:fixed;inset:0;z-index:9000;pointer-events:none;background-repeat:repeat}#wm[hidden]{display:none}@media print{#wm{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
@@ -910,7 +911,10 @@ nav.tabs a.on{background:color-mix(in srgb,var(--red) 8%,transparent)}
 @media (min-width:641px){.nhint{display:none}}
 @media (prefers-reduced-motion:reduce){.bar:not(.adm) nav.tabs a .nh,.nhint{transition:none}}
 /* 店主自己的后台捷径（只有店主登录才出现） */
-.ownbtn[hidden]{display:none!important}
+.ownbtn[hidden]{display:none!important}.hcur[hidden]{display:none!important}
+.hcur{position:relative;display:inline-flex;align-items:center;flex:none;font-family:var(--display);font-weight:800;font-size:13px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:99px;min-height:36px;padding:4px 26px 4px 12px;white-space:nowrap;cursor:pointer}.hcur::after{content:"";position:absolute;right:10px;top:50%;width:6px;height:6px;border-right:1.8px solid currentColor;border-bottom:1.8px solid currentColor;transform:translateY(-70%) rotate(45deg)}.hcur:hover,.hcur:focus-within{border-color:#0a3d45}.hcur select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px}.trialrow{display:flex;align-items:stretch;background:var(--note)}.trialrow>.trial{flex:1;min-width:0}.hcurm{display:none!important}@media (max-width:640px){.bar .hcur{display:none!important}.hcurm:not([hidden]){display:inline-flex!important;align-self:center;margin-right:8px;min-height:28px;font-size:12px;padding:2px 22px 2px 9px}.hcurm::after{right:8px}}
+.bar.pt2 .hcur select{width:74px;padding-left:8px;padding-right:20px;background-position:right 7px center}
+
 .ownbtn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;min-height:36px;border-radius:99px;background:var(--ink);color:#fff;font-size:13px;font-weight:700;text-decoration:none}
 /* 首页名卡标签不被裁掉 */
 .mqlab{padding-left:clamp(12px,2vw,20px)}
@@ -1572,12 +1576,13 @@ html[data-lang="en"] .lgp>.en,html[data-lang="en"] .lgp>i,html[data-lang="en"] .
 
 <div class="bgfx" aria-hidden="true"></div>
 <div class="nhint" id="nhint" hidden role="status"><img src="intro/holofen-mark.webp" alt=""><span></span></div>
-<div class="trial" id="trialbar">网站刚上线：线上付款还在接通中，现在下单不会扣款，店主会联系你确认。<span class="en"> Just launched: online payment is being set up, so no money is taken yet. We will contact you to confirm your order.</span></div>
+<div class="trialrow"><div class="trial" id="trialbar">网站刚上线：线上付款还在接通中，现在下单不会扣款，店主会联系你确认。<span class="en"> Just launched: online payment is being set up, so no money is taken yet. We will contact you to confirm your order.</span></div><label class="hcur hcurm" id="hcurm" title="货币 Currency"><b class="cv" aria-hidden="true">RM MYR</b><select data-cur="1" id="cur-topm" aria-label="货币 Currency"></select></label></div>
 <header class="bar" id="bar"><div class="wrap">
   <div class="brand" id="brand"></div>
   <nav class="tabs" id="tabs"></nav>
   <button class="kfbtn hicon" data-contact="1" aria-label="联系客服 Customer service" title="客服 Customer service"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="2.5" y="12.5" width="4" height="6" rx="1.6"/><rect x="17.5" y="12.5" width="4" height="6" rx="1.6"/><path d="M19.5 18.5c0 1.6-2 2.5-5.5 2.5"/></svg><span>客服</span></button>
   <button class="lang" id="langbtn" aria-label="显示或隐藏英文 Show or hide English">EN</button>
+  <label class="hcur" id="hcur" title="货币 Currency"><b class="cv" aria-hidden="true">RM MYR</b><select data-cur="1" id="cur-top" aria-label="货币 Currency"></select></label>
   <a class="mebtn" id="mebtn" href="#member" hidden></a>
   <a class="ownbtn" id="ownbtn" href="#admin" hidden aria-label="店主后台 Admin"><svg class="oi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V9l9-6 9 6v12M9 21v-7h6v7"/></svg><span class="ot">店主后台</span></a><a class="wishbtn hicon" id="wishbtn" href="#wish" aria-label="收藏 Wishlist" title="收藏 Wishlist"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.3A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.9c0 5.7-7.5 10.3-7.5 10.3z"/></svg></a><button class="cartbtn hicon" id="cartbtn" data-go="cart" aria-label="购物车 Cart" title="购物车 Cart"></button>
   <button class="loginbtn hicon wait" id="loginbtn" type="button" aria-haspopup="dialog" aria-label="登录 Sign in"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg><span class="lt">登录 <span class="en">Sign in</span></span></button>
@@ -2073,7 +2078,8 @@ function renderCore(){
   applyLang();
   $("#cartbtn").hidden=adm; { const bb=$("#backbtn"); if(bb) bb.hidden=!adm } { const ob=$("#ownbtn"); if(ob) ob.hidden=adm||!owner } { const lb=$("#loginbtn"); if(lb){ lb.hidden=adm; if(window.HOLO_AUTH) HOLO_AUTH.paint() } } { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm||!CONTACT.some(c=>c[3]) } { const wb=$("#wishbtn"); if(wb){ wb.hidden=adm; const wn=arr(ME.wish).length, al=alerts().length; wb.innerHTML=wb.innerHTML.replace(/<b class="hb"[^>]*>.*?<\/b>/,"")+(al||wn?`<b class="hb" aria-hidden="true">${al||wn}</b>`:""); wb.setAttribute("aria-label",isEN()?`Wishlist${wn?" ("+wn+")":""}`:`收藏${wn?"（"+wn+" 件）":""}`); if(route==="wish") wb.setAttribute("aria-current","page"); else wb.removeAttribute("aria-current") } } { const mb=$("#mebtn"); if(mb){ mb.hidden=true; if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
   setHTML("#band",adm?"":band());
-  $("#foot").innerHTML=adm?`<a href="#home">${BL("回到顾客前台","Back to storefront")}</a>`:`${DOTS}${curSel("cur-foot")}<span class="muted" style="font-size:13px">© ${new Date().getFullYear()} Holofen ${B("版权所有","All rights reserved")}</span>`;
+  { const want=Object.keys(CURS).map(k=>`<option value="${k}" ${k===CUR?"selected":""}>${CURS[k][0]} ${k} · ${isEN()?CURS[k][4]:CURS[k][3]}</option>`).join(""); ["hcur","hcurm"].forEach(id=>{ const hc=$("#"+id); if(!hc) return; hc.hidden=adm; const cs=hc.querySelector("select"); if(cs._h!==want){ cs.innerHTML=want; cs._h=want } cs.value=CUR; const cv=hc.querySelector(".cv"); if(cv) cv.textContent=CURS[CUR][0]+" "+CUR; cs.setAttribute("aria-label",isEN()?"Currency":"货币") }) }
+  $("#foot").innerHTML=adm?`<a href="#home">${BL("回到顾客前台","Back to storefront")}</a>`:`${DOTS}<span class="muted" style="font-size:13px">© ${new Date().getFullYear()} Holofen ${B("版权所有","All rights reserved")}</span>`;
   const keep=document.activeElement&&document.activeElement.id, pos=keep&&document.activeElement.selectionStart;
   /* v86 内容没变就不重画：刷新后资料一份份载入时，首页不会一直闪 */
   const vch=setHTML("#view",subnav()+(V[route]||V.home)());
@@ -3559,6 +3565,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
+ ["v137.8","2026-11-25",["货币切换从页脚搬到页面最上方（语言按钮旁边），一进网站就看得到","隐私：会员的夹取记录、签到记录和礼物寄出标记搬离公开资料，改成只有本人和店主、员工读得到；旧资料由店主后台自动搬过去","夹娃娃机上方加「最近中奖」：名字只显示第一个字（例如「李**」），让其他会员看到有人中奖"]],
  ["v137.7","2026-11-25",["自己收款：后台新增「设置 › 收款户口」（只有店主能改），填银行户口或上传 DuitNow QR 后，顾客在「我的订单」直接看到户口和 QR 转账给本店，不经过第三方支付平台；结账页、客服和顶部提示跟着改；拿掉 FPX 选项","页脚加上「© Holofen 版权所有」和不得转载、复制、截图散布的声明","后台防泄密：每页铺上登录者电邮的「内部资料」水印；成本、利润、单价、供应商默认打码，点一下显示 8 秒；电脑按截图键或切到别的窗口时后台整页变模糊"]],
  ["v137.6","2026-11-25",["截图追踪：商店、行情、图鉴、单卡和卡组页铺一层很淡的编号水印（登录会员是自己的 HF- 编号，访客显示「访客」），截图流到网上可以在后台「用户」搜编号查到是谁","安全：网站加上防嵌入、防内容嗅探、HTTPS 强制等安全标头；数据库删掉旧的进货函数，未登录的人不能调用进货和用户名单"]],
  ["v137.5","2026-11-25",["防爬：网站前面加一道关卡，挡掉 AI 爬虫、抓数据工具和无头浏览器（搜索引擎和 WhatsApp / Facebook 分享预览照常）；加 robots.txt 和 noai 标记；图片不能右键另存、不能拖走、手机长按不弹存图"]],
@@ -3758,7 +3765,9 @@ function normLucky(d){ d=d&&typeof d==="object"?d:{};
   const tp0=d.tierPerks&&typeof d.tierPerks==="object"?d.tierPerks:{}, tierPerks={}; ["m","s","g","b","r"].forEach(k=>{ tierPerks[k]=arr(tp0[k]).map(x=>cleanTxt(x,80)).filter(Boolean).slice(0,10) });
   /* 2026-11-24 改善方面 11 第 4 项：会员奖励。店主在「设置 › 会员奖励」放奖励（名字、所需积分、图片），顾客用积分兑换 */
   const rewards=arr(d.rewards).slice(0,40).map(x=>x&&typeof x==="object"?{id:cleanId(x.id),name:cleanTxt(x.name,60),en:cleanTxt(x.en,60),pts:clampN(x.pts,1,1e7),img:x.img&&typeof x.img==="object"?{k:x.img.k==="up"?"up":"p",id:cleanId(x.img.id)}:null,on:x.on!==false}:null).filter(r=>r&&r.id&&r.name&&r.pts>0);
-  return {on:d.on===true,rounds,log,sent,ci,free,stamp,tierPerks,rewards} }
+  /* 2026-11-25 店主：有人夹到奖品时，名字打码后公开给其他会员看 */
+  const wins=arr(d.wins).slice(0,20).map(w=>w&&typeof w==="object"?{k:cleanId(w.k),nm:cleanTxt(w.nm,12),p:cleanTxt(w.p,60),at:num(w.at)||0}:null).filter(w=>w&&w.k&&w.p);
+  return {on:d.on===true,rounds,log,sent,ci,free,stamp,tierPerks,rewards,wins} }
 function normDraw(x){ if(!x||typeof x!=="object") return null; const n=clampN(x.n,0,1e6); if(!n) return null; return {n,r:cleanId(x.r),m:cleanId(x.m||""),cost:clampN(x.cost,0,1e6),free:x.free===1?1:0,at:num(x.at)||0} }
 function h01(str){ let h=2166136261>>>0; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619)>>>0 }
   h^=h>>>16; h=Math.imul(h,0x85ebca6b)>>>0; h^=h>>>13; h=Math.imul(h,0xc2b2ae35)>>>0; h^=h>>>16; return (h>>>0)/4294967296 }
@@ -3784,16 +3793,35 @@ function luckyDraws(u){ const me=(typeof MEALL!=="undefined"&&MEALL[u])||{}, log
   let fe=freeEarned(u), fu=0;
   return Object.values(by).sort((a,b)=>a.n-b.n).map(d=>{ const r=LUCKY.rounds.find(x=>x.id===d.r), mc=machOf(r,d.m); const fr=d.free===1&&d.cost===0&&fu<fe; if(fr) fu++; const ok=!!r&&!!mc&&(fr||(!d.free&&d.cost===mc.cost))&&(d.logged||(cur&&r.id===cur.id)); const res=ok?drawRes(u,d.n,r,mc):"", again=res==="+again", win=again?"":res; if(again) fe++; const pz=win?mc.prizes.find(p=>p.id===win):null;
     return {...d,ok,round:r,mach:mc,win,again,prize:pz?pz.name:"",key:u+":"+d.n} }) }
-function saveLucky(){ if(!owner) return Promise.resolve(); const d=JSON.parse(JSON.stringify(LUCKY));
+/* 2026-11-25 店主：每个会员的夹取记录、签到记录、礼物寄出标记不再放公开的 site/lucky，改存 lucky/<会员>，只有本人和店主、员工读得到 */
+let PL={log:{},sent:{},ci:{}}, plDirty=new Set(), plT=null;
+function mergePL(){ Object.keys(PL.log).forEach(u=>{ LUCKY.log[u]=PL.log[u] }); Object.keys(PL.ci).forEach(u=>{ LUCKY.ci[u]=PL.ci[u] }); Object.keys(PL.sent).forEach(u=>{ Object.keys(LUCKY.sent).forEach(k=>{ if(k.split(":")[1]===u) delete LUCKY.sent[k] }); Object.assign(LUCKY.sent,PL.sent[u]) }) }
+function readPL(u,d){ d=d&&typeof d==="object"?d:{}; PL.log[u]=arr(d.log).slice(-300).map(normDraw).filter(Boolean); const s={}; const s0=d.sent&&typeof d.sent==="object"?d.sent:{}; Object.keys(s0).slice(0,500).forEach(k=>{ if(s0[k]===true&&k.split(":")[1]===u) s[k]=true }); PL.sent[u]=s;
+  const c=d.ci&&typeof d.ci==="object"?d.ci:null; if(c) PL.ci[u]={seen:arr(c.seen).filter(v=>typeof v==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(v)).slice(-400),at:num(c.at)||0}; else delete PL.ci[u] }
+const uOfKey=k=>String(k||"").split(":")[1]||"";
+function markPL(u){ if(!u) return; plDirty.add(u); clearTimeout(plT); plT=setTimeout(flushPL,1500) }
+function flushPL(){ if(!owner) return; const us=[...plDirty]; plDirty.clear(); us.forEach(u=>{ const sent={}; Object.keys(LUCKY.sent).forEach(k=>{ if(uOfKey(k)===u) sent[k]=true }); const v=JSON.parse(JSON.stringify({log:arr(LUCKY.log[u]),sent,ci:LUCKY.ci[u]||null}));
+  PL.log[u]=v.log; PL.sent[u]=sent; if(v.ci) PL.ci[u]=v.ci; (XDB?XDB.doc("lucky/"+u).set(v):Promise.resolve(lsSet("lucky_"+u,v))).catch(()=>{}) }) }
+function saveLucky(){ if(!owner) return Promise.resolve(); const d=JSON.parse(JSON.stringify(LUCKY)); delete d.log; delete d.sent; delete d.ci; delete d._legacy;
   luckyQ=luckyQ.then(()=>XDB?XDB.doc("site/lucky").set(d):lsSet("lucky",d)).catch(()=>toast("抽奖设定没有保存成功")); return luckyQ }
 /* 店主端：把看到的抽奖记录抄进 site/lucky（有变化才写，合并 2 秒内的变化） */
 function syncLog(){ if(!owner||typeof MEALL==="undefined") return; let ch=false; const log={...LUCKY.log};
-  Object.entries(MEALL).forEach(([u,m])=>{ const have=new Set(arr(log[u]).map(d=>d.n)); const add=arr(m&&m.draws).filter(d=>!have.has(d.n)&&LUCKY.rounds.some(r=>r.id===d.r)); if(add.length){ log[u]=arr(log[u]).concat(add).sort((a,b)=>a.n-b.n).slice(-300); ch=true } });
-  const ci={...(LUCKY.ci||{})}; Object.keys(MEALL).forEach(u=>{ const ok=ciValid(u), old=ci[u]?ci[u].seen:[]; if(ok.some(d=>!old.includes(d))){ ci[u]={seen:ok.slice(-400),at:Date.now()}; ch=true } }); LUCKY.ci=ci;
-  if(!ch) return; LUCKY.log=log; clearTimeout(luckyT); luckyT=setTimeout(saveLucky,2000) }
+  Object.entries(MEALL).forEach(([u,m])=>{ const have=new Set(arr(log[u]).map(d=>d.n)); const add=arr(m&&m.draws).filter(d=>!have.has(d.n)&&LUCKY.rounds.some(r=>r.id===d.r)); if(add.length){ log[u]=arr(log[u]).concat(add).sort((a,b)=>a.n-b.n).slice(-300); ch=true; markPL(u) } });
+  const ci={...(LUCKY.ci||{})}; Object.keys(MEALL).forEach(u=>{ const ok=ciValid(u), old=ci[u]?ci[u].seen:[]; if(ok.some(d=>!old.includes(d))){ ci[u]={seen:ok.slice(-400),at:Date.now()}; markPL(u) } }); LUCKY.ci=ci;
+  LUCKY.log=log; const wl=arr(LUCKY.wins).slice(), seen=new Set(wl.map(w=>w.k)); let wch=false;
+  Object.keys(log).forEach(u=>{ luckyDraws(u).forEach(d=>{ if(!d.ok||!d.win||!d.prize) return; const k=wmCode(d.key).slice(3); if(seen.has(k)) return; seen.add(k); wch=true; wl.push({k,nm:maskNm(u),p:d.prize,at:d.at||Date.now()}) }) });
+  /* 旧资料搬家：site/lucky 里还有个人记录时，全部写到 lucky/<会员>，再把公开的那份清掉 */
+  const legacy=!!LUCKY._legacy; if(legacy){ LUCKY._legacy=0; Object.keys(LUCKY.log).concat(Object.keys(LUCKY.ci||{}),Object.keys(LUCKY.sent).map(uOfKey)).forEach(markPL) }
+  if(wch) LUCKY.wins=wl.sort((a,b)=>b.at-a.at).slice(0,20);
+  if(!ch&&!wch&&!legacy) return; clearTimeout(luckyT); luckyT=setTimeout(()=>{ flushPL(); saveLucky() },2000) }
+function maskNm(u){ const me=(typeof MEALL!=="undefined"&&MEALL[u])||{}, n=String((me.nick)||(me.prof&&me.prof.name)||"").trim(); return n?[...n][0]+"**":"" }
 async function initLucky(){
   try{ if(window.claude&&window.claude.use){ const d=await window.claude.use("db"), us=await window.claude.use("user");
-    if(d&&us){ d.doc("site/lucky").onSnapshot(s=>{ LUCKY=normLucky(s.exists?s.data():null); syncLog(); render() },()=>{}); return } } }catch(e){}
+    if(d&&us){ let me0="", own0=false; try{ me0=await us.id(); own0=await us.isOwner() }catch(_){}
+      d.doc("site/lucky").onSnapshot(s=>{ const raw=s.exists?s.data():null; LUCKY=normLucky(raw); LUCKY._legacy=!!(raw&&(raw.log||raw.sent||raw.ci)&&(Object.keys(raw.log||{}).length||Object.keys(raw.sent||{}).length||Object.keys(raw.ci||{}).length)); mergePL(); syncLog(); render() },()=>{});
+      if(own0) d.collection("lucky").onSnapshot(s=>{ PL={log:{},sent:{},ci:{}}; s.docs.forEach(x=>readPL(x.id,x.data())); mergePL(); render() },()=>{});
+      else if(me0&&me0!=="local"&&me0!=="guest") d.doc("lucky/"+me0).onSnapshot(s=>{ readPL(me0,s.exists?s.data():null); mergePL(); render() },()=>{});
+      return } } }catch(e){}
   LUCKY=normLucky(lsGet("lucky",null)); render() }
 function doDraw(mid){ if(needLogin("要先登录或注册才能玩夹娃娃机","Please sign in or register to play the claw machine")) return; if(ui.clawBusy) return; const r=curRound(); if(!LUCKY.on||!r) return toast("夹娃娃机还没开放");
   const mc=machOf(r,mid==null?(ui.clawM||(r.machines[0]||{}).id||""):mid); if(!mc) return toast("请先选一台机"); const m=member(uid);
@@ -3856,7 +3884,9 @@ function freeNote(){ const F=LUCKY.free||{}; if(!F.n||!F.at.length) return ""; c
 function luckyBody(){ const r=curRound(), m=member(uid), mine=luckyDraws(XU).slice().reverse(), last=ui.lastDraw?mine.find(d=>d.n===ui.lastDraw):null;
   if(!LUCKY.on||!r||!r.machines.length) return `${H2("夹娃娃机","Claw machines")}<p class="muted">${B("夹娃娃机还没开放，开放后会在这里公布每台机的奖品、中奖率和要几分。","The claw machines aren't open yet.")}</p>`;
   const sel=machOf(r,ui.clawM)||r.machines[0], tot=sel.prizes.reduce((a,p)=>a+p.w,0)+(sel.again||0)+sel.miss, pct=w=>tot?pctF(w/tot*100):"—", busy=!!ui.clawBusy;
+  const wn=arr(LUCKY.wins).slice(0,10);
   return `${H2("夹娃娃机","Claw machines")}
+  ${wn.length?`<div class="wins" role="list" aria-label="${BT("最近中奖","Recent winners")}"><b class="wt">🎉 ${B("最近中奖","Recent winners")}</b>${wn.map(w=>`<span role="listitem">${esc(w.nm||BT("会员**","Member**"))} ${B("夹到","won")} <b>${esc(w.p)}</b> <i>${(()=>{ const d=Math.floor((Date.now()-w.at)/864e5); return d<=0?BT("今天","today"):d===1?BT("昨天","yesterday"):BT(d+" 天前",d+" days ago") })()}</i></span>`).join("")}</div>`:""}
   <p class="muted" style="margin:0">${B("选一台机，用积分投币，爪子每次都会夹一颗扭蛋送到出货口，打开看看是什么。每台机的奖品和中奖率都公开在旁边。","Pick a machine and insert points. The claw always grabs a capsule and drops it in the chute; open it to see what you got. Each machine's prizes and odds are shown.")}</p>
   ${r.machines.length>1?`<div class="clawpick" role="group" aria-label="${BT("选机台","Choose a machine")}">${r.machines.map(mc=>`<button data-clawm="${esc(mc.id)}" class="${mc===sel?"on":""}" aria-pressed="${mc===sel}" ${busy?"disabled":""}><b>${esc(mc.name||BT("夹娃娃机","Claw machine"))}</b><small>${mc.cost} ${B("分一次","pts a go")}</small></button>`).join("")}</div>`:""}
   <div class="two clawwrap"><div class="stack" style="gap:12px;align-items:center">${clawBox(sel,1)}
@@ -3932,7 +3962,7 @@ function admRewards(){ const L=ui.rwD||(LUCKY.rewards||[]).map(r=>({...r})); con
   ${H2(`兑换名单（${rows.length}）`,"Redemptions")}${rows.length?`<div class="tw"><table><thead><tr><th>顾客</th><th>奖励</th><th>积分</th><th>时间</th><th></th></tr></thead><tbody>${rows.map(({u,x,ok})=>{ const k="rw:"+u+":"+x.n, r=(LUCKY.rewards||[]).find(y=>y.id===x.r); return `<tr><td>${nm(u)}</td><td>${r?esc(r.name):esc(x.nm||"")}</td><td class="n">${x.pts}</td><td>${new Date(x.at).toLocaleString("zh-CN")}</td><td>${!ok?`<span class="chip">无效：积分不够</span>`:LUCKY.sent[k]?`<button class="sm" data-rwsent="0" data-k="${esc(k)}">已安排 ✓</button>`:`<button class="sm pri" data-rwsent="1" data-k="${esc(k)}">标记已安排</button>`}</td></tr>` }).join("")}</tbody></table></div>`:`<p class="muted">还没有人兑换。</p>`}` }
 function rwDraft(){ return [...document.querySelectorAll("#rwform .rwrow")].map((f,i)=>{ const q=c=>f.querySelector(c), old=(ui.rwD||LUCKY.rewards||[])[i]||{}, sel=q(".rw-img").value, up=q(".rw-up"); return {id:old.id||("r"+Date.now().toString(36)+i),name:q(".rw-n").value,en:q(".rw-e").value,pts:q(".rw-p").value,img:sel?{k:"p",id:sel}:up?{k:"up",id:up.value}:null,on:q(".rw-on").checked} }) }
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-rwadd],[data-rwdel],[data-rwsave],[data-rwsent]"); if(!b||!owner) return; const ds=b.dataset;
-  if(ds.rwsent!=null){ const s0={...LUCKY.sent}; if(ds.rwsent==="1") s0[ds.k]=true; else delete s0[ds.k]; LUCKY.sent=s0; render(); return saveLucky() }
+  if(ds.rwsent!=null){ const s0={...LUCKY.sent}; if(ds.rwsent==="1") s0[ds.k]=true; else delete s0[ds.k]; LUCKY.sent=s0; render(); markPL(uOfKey(ds.k)); return }
   const d=rwDraft();
   if(ds.rwadd){ if(d.length>=40) return toast("最多 40 个奖励"); d.push({id:"",name:"",en:"",pts:"",img:null,on:true}); ui.rwD=d; return render() }
   if(ds.rwdel!=null){ d.splice(+ds.rwdel,1); ui.rwD=d; return render() }
@@ -4145,7 +4175,7 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   if(ds.lkdel!=null){ d.splice(+ds.lkdel,1); ui.lkM=d; return render() } });
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ldraw],[data-lsave],[data-lsent]"); if(!b) return; const ds=b.dataset;
   if(ds.ldraw) return doDraw(ds.m);
-  if(ds.lsent){ if(!owner) return; const s={...LUCKY.sent}; if(ds.v==="1") s[ds.lsent]=true; else delete s[ds.lsent]; LUCKY.sent=s; render(); return saveLucky() }
+  if(ds.lsent){ if(!owner) return; const s={...LUCKY.sent}; if(ds.v==="1") s[ds.lsent]=true; else delete s[ds.lsent]; LUCKY.sent=s; render(); markPL(uOfKey(ds.lsent)); return }
   if(ds.lsave){ if(!owner) return; const ms=lkRead(); if(typeof ms==="string"){ ui.lkM=lkDraft(); ui.lkErr=ms; render(); return toast(ms) } if(!ms.length) return toast("请至少设一台机");
     const c=curRound(), sig=x=>JSON.stringify(x.map(m=>[m.name,m.cost,m.miss,m.again||0,m.prizes.map(p=>[p.name,p.w])])), same=c&&c.pct&&!c.machines.some(m=>m.legacy)&&sig(c.machines)===sig(ms);
         if(!same){ const rb=new Uint8Array(8); crypto.getRandomValues(rb); LUCKY.rounds=LUCKY.rounds.concat({id:"r"+Date.now().toString(36),at:Date.now(),cost:ms[0].cost,miss:ms[0].miss,seed:[...rb].map(x=>x.toString(16).padStart(2,"0")).join(""),prizes:ms[0].prizes,machines:ms,pct:1}).slice(-20) }
