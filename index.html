@@ -3694,6 +3694,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
+ ["v140","2026-11-26",["店主订单通知：顾客下单或自己取消订单时，系统马上寄电邮给店主（订单号、顾客、商品、合计、后台链接），每张订单每种通知只寄一次","后台新增「设置 › 订单通知」：填收通知的邮箱（最多 5 个），分别开关「新订单」「顾客取消」","顾客取消未付款订单改由服务器确认是本人、还没付款后才删除"]],
  ["v139","2026-11-25",["我的订单改成 Shopee 式：上方分栏（全部、待报价、待付款、待出货、待收货、已完成、已取消，有数量），每张订单卡显示商品照片、规格、数量和单价，多件商品可「查看更多」展开，底部写「共 N 件商品」和总额，右边是「查看订单详情」","新增订单详情页：进度条、该做的操作（付款、确认收货、评价等）、运送信息（快递、运单号可复制和查件、时间线）、收件信息、购买商品、费用明细；底部固定电子收据、再买一次、联系客服；会员中心的购买记录表改成最近 3 张订单卡","代组报价闭环：后台订单有「待报价」筛选，店主填报价金额、推荐配置和留言后按「确认并发送报价」（报价不再限制 RM130–250）；顾客收到电邮和网站提示，订单显示「已报价 · 待你确认」，可以「接受报价并付款」「联系客服调整」或「取消需求」；接受前付款按钮不出现","单卡说明不再有「中文 / EN」切换，跟全站语言走。中文：官方中文卡文（台湾繁体转简体），没有官方卡文的约 1,000 句卡文、900 个招式名和规则框由本店翻译并在卡下注明；英文：英文卡原文，日文卡用对应英文版卡文，没有英文版的日文卡暂时显示日文原文并注明","电脑首页系列轮播下方的小圆点可以直接点选跳到该系列","代组需求的预算选项拿掉 RM600–1,000 和 RM1,000 以上"]],
  ["v138","2026-11-25",["电脑首页：主视觉和行情走马灯左右各收窄约 3cm；系列展示左右各收窄约 3cm、高度矮约 4cm，背景加星芒、卡牌轮廓和能量几何暗纹（手机系列展示同步加装饰并加高约 1cm）","组牌代组先报价后付款：店主报价前，订单显示「等待店主报价」、金额写「待报价」、不显示付款按钮；网页端再挡一次，没报价或金额是 0 不能按「我已付款」","单卡弹窗：卡面说明右上角可切「中文 / EN」（默认跟全站语言），中文模式翻译栏目名和规则框；点弹窗外的黑色区域或按 Esc 就能关；弱点抗性照卡面写（例如 −20）","补齐 31 张缺招式资料的卡：30 周年经典收藏 30 张（例如皮卡丘 & 捷克罗姆 GX）和 Black Bolt 的 Escavalier","卡组排行：点左边的卡图也能打开卡组卡表","手机：顶部图标平均分布，店主后台按钮的房子图标恢复正常（之前显示成黑底圆点）；版本筛选三格等分铺满；系列筛选卡片缩小；行情、图鉴卡表、最贵 TOP 10、首页走马灯都改成一屏 3 张，价格不会超出格子；「本系列完整卡表 ›」不再中间空一段","手机：升跌榜「涨最多」红色、「跌最多」青色；底部栏加「图鉴」（首页、商店、图鉴、行情、卡组、更多）；商店保持一排 2 个，每张卡矮约 2cm；页脚「店铺 / 客户服务 / 信息」三栏并排","全站：隐藏的另一种语言不再占位，消息卡、页脚、链接不再出现莫名空隙；标签和消息卡加内边距，文字不贴线"]],
  ["v137.11","2026-11-25",["电子收据抬头加上营业地址（只放在收据上，网站其他地方不写）"]],
@@ -4043,6 +4044,24 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   if(list.find(x=>x.q.trim()&&!x.a.trim())) return toast("每个问题都要写回答");
   FAQX=normFaq({list}); render(); const d=JSON.parse(JSON.stringify(FAQX));
   (XDB?XDB.doc("site/faq").set(d):Promise.resolve(lsSet("faq",d))).then(()=>toast("已保存 Saved"),()=>toast("没有保存成功，请再试一次")) });
+/* v140 2026-11-26 店主：有人下单或取消订单时，店主也要收到电邮。设置存在 books/notify（顾客读不到）；
+   sent 是服务器记的「已寄过」名单，保存设置时要保留。电邮由 send-mail 服务寄出。 */
+let NOTIFY={to:["holofenn@gmail.com"],onNew:true,onCancel:true,sent:[]};
+function normNotify(d){ d=d||{}; const to=arr(d.to).map(x=>String(x).trim().toLowerCase()).filter(x=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(x)).slice(0,5); return {to:to.length?to:["holofenn@gmail.com"],onNew:d.onNew!==false,onCancel:d.onCancel!==false,sent:arr(d.sent).slice(0,400)} }
+function initNotify(){ if(XDB&&XOWN) XDB.doc("books/notify").onSnapshot(s=>{ NOTIFY=normNotify(s.exists?s.data():null); if(ui.stab==="notify") render() },()=>{}) }
+function admNotify(){ const N=NOTIFY;
+  return `${H2("订单通知","Order alerts")}<p class="muted">${B("顾客下单或自己取消订单时，系统马上寄电邮到下面的邮箱。每张订单每种通知只寄一次。顾客看不到这些邮箱。","When a customer places or cancels an order, we email the addresses below right away. One email per order per event. Customers can't see these addresses.")}</p>
+  <div class="panel stack" style="gap:10px">
+  <label class="f">${B("收通知的邮箱（最多 5 个，用逗号分开）","Send alerts to (up to 5, separated by commas)")}<input id="nt-to" maxlength="400" autocomplete="off" value="${esc(N.to.join(", "))}"></label>
+  <label class="ck"><input type="checkbox" id="nt-new" ${N.onNew?"checked":""}> ${B("有新订单时通知我","Email me about new orders")}</label>
+  <label class="ck"><input type="checkbox" id="nt-cx" ${N.onCancel?"checked":""}> ${B("顾客取消订单时通知我","Email me when a customer cancels")}</label>
+  <p class="muted" style="margin:0">${B("测试订单也会寄（下单那一刻系统还不知道它是测试）。付款截图、审核、寄出这些步骤照旧在「订单」页看。","Test orders are emailed too, since we can't tell yet at checkout. Payments, approvals and shipping are still handled on the Orders page.")}</p>
+  <div><button class="pri" data-ntsave="1">${B("保存订单通知","Save order alerts")}</button></div></div>` }
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ntsave]"); if(!b||!owner) return;
+  const raw=((document.getElementById("nt-to")||{}).value||"").split(/[,，;\s]+/).filter(Boolean), bad=raw.filter(x=>!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(x));
+  if(bad.length) return toast(BT("这个邮箱格式不对：","This email looks wrong: ")+bad[0]); if(raw.length>5) return toast(BT("最多 5 个邮箱","Up to 5 emails"));
+  const v=normNotify({to:raw,onNew:(document.getElementById("nt-new")||{}).checked,onCancel:(document.getElementById("nt-cx")||{}).checked,sent:NOTIFY.sent}); NOTIFY=v; render();
+  (XDB?XDB.doc("books/notify").set(JSON.parse(JSON.stringify(v))):Promise.resolve(lsSet("notify",v))).then(()=>toast(BT("已保存","Saved")),()=>toast(BT("没有保存成功，请再试一次","Not saved, please try again"))) });
 /* 2026-11-25 店主：自己收款。只有店主能改（钱进哪个户口），存在 site/pay，所有顾客结账时看得到 */
 function admPay(){ const P=PAYINFO, banks=PAYVIA[1][2], E=isEN();
   return `${H2("收款户口","Payment account")}<p class="muted">${B("顾客下单后，「我的订单」会显示这里的户口和 DuitNow QR，让顾客直接转账给你，不经过第三方支付平台。顾客付完会上传截图，你在「订单」核对收到钱后再按通过。","After ordering, customers see this account and DuitNow QR in My orders and pay you directly. They upload a receipt; you approve the order in Orders once the money is in.")}</p>
@@ -4241,11 +4260,11 @@ function nmId(id){ const p=PM[id]; return p?PN(p):id }
     if(ui.atab==="stock") return H1("进货","Restock")+off+admStock();
     if(ui.atab==="users") return off+admUsers();
     if(ui.atab==="review") return H1("审核","Approve")+off+part("reviews")+part("wall",1);
-    if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=(boss?[["pay","收款户口","Payment account"]]:[]).concat([["shipfee","运费","Shipping fees"],["rules","积分规则","Points rules"],["tiers","等级福利","Tier perks"],["stamp","集章卡","Stamp card"],["freeplay","购物送夹取","Free plays"],["rewards","会员奖励","Member rewards"],["lucky","夹娃娃机","Claw machines"],["faq","客服问答","Help Q&A"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["launch","上线清单","Launch list"],["log","版本记录","Change log"]]));
+    if(ui.atab==="settings"){ const boss=window.HOLO_AUTH&&HOLO_AUTH.role()==="owner", tabs=(boss?[["pay","收款户口","Payment account"]]:[]).concat([["shipfee","运费","Shipping fees"],["rules","积分规则","Points rules"],["tiers","等级福利","Tier perks"],["stamp","集章卡","Stamp card"],["freeplay","购物送夹取","Free plays"],["rewards","会员奖励","Member rewards"],["lucky","夹娃娃机","Claw machines"],["faq","客服问答","Help Q&A"]].concat(boss?[["staff","员工权限","Staff"]]:[],[["notify","订单通知","Order alerts"],["launch","上线清单","Launch list"],["log","版本记录","Change log"]]));
       const st=tabs.some(t=>t[0]===ui.stab)?ui.stab:"rules";
-      const body=st==="pay"?admPay():st==="shipfee"?admShipFee():st==="rules"?admMembers().split("<h2>")[0]+"<h2>"+admMembers().split("<h2>")[1]:st==="tiers"?admTiers():st==="faq"?admFaq():st==="stamp"?admStamp():st==="freeplay"?admFree():st==="rewards"?admRewards():st==="lucky"?part("lucky",1):st==="staff"?admStaff().replace(/^\s*<h1>[\s\S]*?<\/h1>/,""):st==="log"?admChangelog():part("launch");
+      const body=st==="pay"?admPay():st==="notify"?admNotify():st==="shipfee"?admShipFee():st==="rules"?admMembers().split("<h2>")[0]+"<h2>"+admMembers().split("<h2>")[1]:st==="tiers"?admTiers():st==="faq"?admFaq():st==="stamp"?admStamp():st==="freeplay"?admFree():st==="rewards"?admRewards():st==="lucky"?part("lucky",1):st==="staff"?admStaff().replace(/^\s*<h1>[\s\S]*?<\/h1>/,""):st==="log"?admChangelog():part("launch");
       /* 2026-11-25 店主：设置分页太乱，按用途分组。每个机制仍是自己的分页（admin-settings-independence） */
-      const SG=[["运送","Shipping",["shipfee"]],["会员和积分","Members & points",["rules","tiers","stamp","rewards"]],["活动","Events",["freeplay","lucky"]],["客服","Help",["faq"]],["店铺管理","Store admin",["pay","staff","launch","log"]]];
+      const SG=[["运送","Shipping",["shipfee"]],["会员和积分","Members & points",["rules","tiers","stamp","rewards"]],["活动","Events",["freeplay","lucky"]],["客服","Help",["faq"]],["店铺管理","Store admin",["pay","notify","staff","launch","log"]]];
       const grp=`<div class="sgrp">${SG.map(g=>{ const l=tabs.filter(t=>g[2].includes(t[0])); return l.length?`<div class="sgr"><span class="sgl">${B(g[0],g[1])}</span>${seg("data-stab",st,l)}</div>`:"" }).join("")}</div>`;
       return H1("设置","Settings")+off+grp+body }
     const rows=[]; Object.entries(all).forEach(([u,d])=>liveO(u,d.orders).forEach(o=>rows.push([u,eff(u,o)]))); rows.sort((a,b)=>b[1].at-a[1].at);
@@ -4533,7 +4552,11 @@ document.addEventListener("click",async e=>{
   if(ds.rm){ cart.splice(+ds.rm,1); return render() }
   if(ds.copy) return copy(ds.copy,"运单号已复制 Copied");
   if(ds.paid){ const via=val("pv-"+ds.paid), shot=(ui.pshot||{})[ds.paid]||""; if(!PAYVIA.some(g=>g[2].includes(via))) return toast(isEN()?"Choose how you paid":"请选你用的付款平台"); if(!shot) return toast(isEN()?"Upload a payment screenshot":"请上传付款截图"); if(stOf(ds.paid)!=="unpaid") return; { const oo=liveO(uid,mine.orders).map(x=>eff(uid,x)).find(x=>cleanId(x.id)===ds.paid); if(!oo||needQuote(uid,oo)||!(num(oo.total)>0)||(quoted(uid,oo)&&!num(oo.qAcc))) return toast(isEN()?"Please wait for our quote before paying":"店主还没报价，报价后才能付款") } return patch(uid,ds.paid,{ref:cleanTxt(via,60),payShot:shot,paidAt:Date.now()}).then(()=>toast("已提交，等待店主审核 Submitted")) }
-  if(ds.cancel){ if(stOf(ds.cancel)!=="unpaid") return toast("已付款的订单请联系店主取消"); return saveDoc(uid,{orders:mine.orders.filter(o=>cleanId(o.id)!==ds.cancel)}).then(()=>toast("订单已取消 Cancelled")) }
+  if(ds.cancel){ if(stOf(ds.cancel)!=="unpaid") return toast("已付款的订单请联系店主取消"); const cid=ds.cancel, rest=()=>mine.orders.filter(o=>cleanId(o.id)!==cid), done=()=>toast("订单已取消 Cancelled");
+    /* v140：上线后由服务器删订单（确认是本人、还没付款）并电邮提醒店主；连不上服务器时照旧在这里删 */
+    if(mode==="db"&&window.HOLO_SB&&HOLO_AUTH.mail){ const raw=mine.orders.find(o=>cleanId(o.id)===cid), x=raw?eff(uid,raw):null;
+      return HOLO_AUTH.mail({kind:"cancel",orderId:raw?raw.id:cid,lines:x?x.items.map(c=>({n:c.name,q:c.qty,p:c.price})):[]}).then(r=>{ if(r&&r.ok){ mine={orders:rest()}; all[uid]=mine; render(); return done() } if(r&&r.error==="paid") return toast("已付款的订单请联系店主取消"); if(r&&r.error==="no_order") return toast("找不到这张订单，可能已经取消了"); return saveDoc(uid,{orders:rest()}).then(done) }) }
+    return saveDoc(uid,{orders:rest()}).then(done) }
   if(ds.recv){ if(stOf(ds.recv)!=="shipped") return; return patch(uid,ds.recv,{receivedAt:Date.now()}) }
   if(ds.star){ ui.stars[ds.star]=+ds.n; const keep=val("rv-"+ds.star); render(); const el=document.getElementById("rv-"+ds.star); if(el) el.value=keep; return }
   if(ds.review){ if(needLogin("要先登录或注册才能评价","Please sign in or register to leave a review")) return; const n=ui.stars[ds.review]; if(!n) return toast("请先点星星打分 Pick a star rating first");
@@ -4639,7 +4662,7 @@ document.addEventListener("submit",e=>{
     if(signedIn()){ const pf=normProf({name:o.name,phone:o.phone,ship:t.onlySvc?ME.prof.ship:(t.sh.k==="pickup"?ME.prof.ship:t.sh.k),addr:o.addr||ME.prof.addr,post:o.post||ME.prof.post,state:t.onlySvc?ME.prof.state:(o.state||ME.prof.state),at:Date.now()}); ME.prof=pf; saveMe() }
     { const mk=!!(document.getElementById("c-mkt")||{}).checked; if(mk!==ME.mkt||(o.email&&o.email!==ME.email)){ ME.mkt=mk; ME.mktAt=Date.now(); if(o.email) ME.email=o.email } }
     cart=[]; ui.coupon=""; ui.pts=0; saveCart();
-    saveDoc(uid,{orders:arr(mine.orders).concat(o)}).then(()=>{ toast(isEN()?"Order "+id+" placed":"订单 "+id+" 已提交"); go("orders"); if(o.email&&window.HOLO_SB&&HOLO_AUTH.mail){ const x=eff(uid,o); HOLO_AUTH.mail({kind:"placed",orderId:id,lines:x.items.map(c=>({n:c.name,q:c.qty,p:c.price})),sub:x.sub,fee:x.fee,off:x.off}) } });
+    saveDoc(uid,{orders:arr(mine.orders).concat(o)}).then(()=>{ toast(isEN()?"Order "+id+" placed":"订单 "+id+" 已提交"); go("orders"); if(window.HOLO_SB&&HOLO_AUTH.mail){ const x=eff(uid,o); HOLO_AUTH.mail({kind:"placed",orderId:id,lines:x.items.map(c=>({n:c.name,q:c.qty,p:c.price})),sub:x.sub,fee:x.fee,off:x.off}) } });
   }
 });
 document.addEventListener("pointermove",e=>{
@@ -4781,7 +4804,7 @@ document.addEventListener("click",e=>{ const t=e.target.closest&&e.target.closes
 function initShip(){ if(!XDB) return; XDB.doc("site/ship").onSnapshot(s=>{ SHIPCFG=normShipCfg(s.exists?s.data():null); applyShip(); render() },()=>{});
   if(XOWN){ XDB.doc("books/ship").onSnapshot(s=>{ SHIPC=normShipCost(s.exists?s.data():null); render() },()=>{}); XDB.doc("books/orders").onSnapshot(s=>{ BOOKS=normBooks(s.exists?s.data():null); render() },()=>{}) } }
 
-readHash(); initStore(); initExtra(); initLucky(); initFaq(); initPay();
+readHash(); initStore(); initExtra(); initLucky(); initFaq(); initPay(); setTimeout(initNotify,1500);
 </script>
 <script>
 /* 滚动浮现和换页动画 */
