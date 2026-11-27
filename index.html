@@ -1656,6 +1656,245 @@ html[data-lang="en"] .lgp>.en,html[data-lang="en"] .lgp>i,html[data-lang="en"] .
 .obar>*{min-height:44px}
 button.mini{padding:2px 10px;font-size:12px;min-height:28px}
 @media(max-width:640px){.oline{grid-template-columns:56px 1fr auto;gap:10px}.oline img,.oline>svg{width:56px;height:56px}.ocard>footer{flex-direction:column;align-items:stretch}.oacts{justify-content:stretch;margin-left:0}.oacts>*{flex:1 1 0;justify-content:center;text-align:center}.obar{bottom:calc(var(--btmh,60px) + env(safe-area-inset-bottom,0px));padding:8px 0}.obar>*{flex:1 1 0;padding:8px 6px;font-size:13px}}
+/* ===== v141 改善报告 15：日系克制版（深松石绿 #0F5E63、暖米白、浅天蓝） ===== */
+:root{--hf-teal:#0F5E63;--hf-sun:#F6C744;--hf-sky:#DDF0F8;--hf-heart:#EF4444;--hf-ease:cubic-bezier(.22,.8,.24,1)}
+/* 1 商品卡：圆角细描边、底部左价格右小圆 + */
+.prod{border:1px solid color-mix(in srgb,var(--hf-teal) 14%,#e8e2d4)!important;border-radius:16px!important;box-shadow:none!important;background:#fffdf8}
+.prod:hover,.prod:focus-within{box-shadow:0 10px 28px -14px rgba(15,94,99,.32)!important;transform:translateY(-2px)}
+.prod .pic img{transition:transform .5s var(--hf-ease)}
+.prod:hover .pic img{transform:scale(1.03)}
+.prod .info{display:flex;flex-direction:column}
+.prod .pf{position:relative;margin-top:auto;padding-top:8px;min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.prod .pfp{font:800 18px/1.1 var(--display,inherit);color:var(--hf-teal);letter-spacing:-.01em;transition:opacity .22s ease .08s,transform .3s var(--hf-ease);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.prod .pfp .np{font-size:13px;font-weight:700;color:#5c6b74}
+.prod .padd{position:absolute;right:0;bottom:2px;width:40px;height:40px;min-height:0;padding:0;border-radius:99px!important;border:0!important;box-shadow:0 2px 8px -2px rgba(15,94,99,.35)!important;
+ background:linear-gradient(90deg,var(--hf-teal) 0%,var(--hf-teal) 45%,var(--hf-sun) 100%) right center/260% 100% no-repeat;color:#14254a;overflow:hidden;cursor:pointer;
+ transition:width .5s var(--hf-ease),background-position .5s var(--hf-ease),color .3s ease,box-shadow .3s ease;display:flex;align-items:center;justify-content:center}
+.prod .padd .pfx{position:absolute;left:0;top:0;width:40px;height:40px;display:grid;place-items:center;border-radius:99px;background:var(--hf-sun);color:#14254a;transition:transform .5s var(--hf-ease),background .4s ease}
+.prod .padd .pfl{opacity:0;white-space:nowrap;font-weight:700;font-size:14px;color:#fff;padding-left:34px;transition:opacity .2s ease;pointer-events:none;display:inline-flex;gap:4px}
+.prod .padd .pfl .en{color:inherit}
+.prod .pmore{font-size:13px;font-weight:700;color:var(--hf-teal);text-decoration:none;white-space:nowrap}
+.prod .pso{font-size:12px;font-weight:700;color:#6b7280;background:#f1efe9;border-radius:99px;padding:5px 10px;white-space:nowrap}
+@media (hover:hover){
+ .prod:hover .padd,.prod:focus-within .padd{width:100%;background-position:left center;color:#fff}
+ .prod:hover .padd .pfx,.prod:focus-within .padd .pfx{transform:rotate(-360deg) scale(.82);background:rgba(255,255,255,.18);color:#fff}
+ .prod:hover .padd .pfl,.prod:focus-within .padd .pfl{opacity:1;transition-delay:.18s}
+ .prod:hover .pfp,.prod:focus-within .pfp{opacity:0;transform:translateX(-8px);transition-delay:0s}
+}
+@media (hover:none){
+ .prod .padd:active,.prod .padd.go{width:100%;background-position:left center}
+ .prod .padd:active .pfx,.prod .padd.go .pfx{transform:rotate(-360deg) scale(.82);background:rgba(255,255,255,.18);color:#fff}
+ .prod .padd:active .pfl,.prod .padd.go .pfl{opacity:1}
+}
+.prod .padd:focus-visible{outline:3px solid color-mix(in srgb,var(--hf-teal) 45%,transparent);outline-offset:2px}
+.prod .bigp,.prod .foot{display:none!important}
+@media (max-width:640px){
+ .prod .pf{min-height:38px;padding-top:6px}
+ .prod .pfp{font-size:15px}
+ .prod .padd{width:34px;height:34px}.prod .padd .pfx{width:34px;height:34px}
+ .prod .padd .pfx svg{width:15px;height:15px}
+ .prod .padd .pfl{font-size:12.5px;padding-left:28px}
+}
+/* 1 右侧滑出购物车 */
+#cdov{position:fixed;inset:0;z-index:180;background:rgba(16,38,55,.28);opacity:0;pointer-events:none;transition:opacity .3s ease}
+#cdov.open{opacity:1;pointer-events:auto}
+#cdraw{position:fixed;top:0;right:0;bottom:0;z-index:181;width:min(420px,100vw);background:#fffdf9;display:flex;flex-direction:column;box-shadow:-16px 0 40px -20px rgba(16,38,55,.35);transform:translateX(102%);transition:transform .42s var(--hf-ease);outline:none;border-radius:18px 0 0 18px;overflow:hidden}
+#cdraw.open{transform:none}
+html.cdon{overflow:hidden}
+#cdraw .cdh{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;background:linear-gradient(180deg,#d9eef8,#e9f6fb)}
+#cdraw .cdh h2{margin:0;font-size:18px;color:#14254a}#cdraw .cdh h2 .cdn{font-size:14px;color:#5c6b74;font-weight:600}
+#cdraw .cdx{width:36px;height:36px;min-height:0;padding:0;border-radius:99px;border:0;background:#fff;color:#14254a;font-size:22px;line-height:1;box-shadow:0 2px 8px -3px rgba(0,0,0,.2)}
+#cdraw .cdl{list-style:none;margin:0;padding:6px 18px;overflow:auto;flex:1}
+#cdraw .cdi{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:start;padding:14px 0;border-bottom:1px solid #eee6d6;transition:background .6s ease}
+#cdraw .cdi.hi{background:color-mix(in srgb,var(--hf-sky) 70%,transparent);border-radius:12px}
+#cdraw .cdt{width:64px;height:64px;border-radius:12px;background:#f6f1e6;display:grid;place-items:center;overflow:hidden}
+#cdraw .cdt img{width:100%;height:100%;object-fit:contain}
+#cdraw .cdb{display:flex;flex-direction:column;gap:2px;min-width:0}
+#cdraw .cdb b{font-size:14px;line-height:1.35;color:#14254a;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#cdraw .cdb small{font-size:12px}
+#cdraw .cdr{display:flex;align-items:center;gap:12px;margin-top:6px}
+#cdraw .cdq{display:inline-flex;align-items:center;border:1px solid #d9d2c2;border-radius:99px;overflow:hidden}
+#cdraw .cdq button{width:32px;height:30px;min-height:0;padding:0;border:0;background:transparent;font-size:16px;color:#14254a}
+#cdraw .cdq button:disabled{opacity:.35}
+#cdraw .cdq span{min-width:22px;text-align:center;font-weight:700;font-size:14px}
+#cdraw .cdrm{border:0;background:none;padding:0;min-height:0;font-size:12.5px;color:#6b7280;text-decoration:underline;text-underline-offset:3px}
+#cdraw .cdp{display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-weight:800;color:var(--hf-teal);white-space:nowrap}
+#cdraw .cdp small{font-weight:500;font-size:11.5px}
+#cdraw .cdf{padding:14px 18px 18px;border-top:1px solid #eee6d6;background:#fffdf9;display:flex;flex-direction:column;gap:10px}
+#cdraw .cdsum{display:flex;justify-content:space-between;align-items:baseline;font-size:15px}
+#cdraw .cdsum b{font-size:19px;color:#14254a}
+#cdraw .cdf p{margin:0;font-size:12.5px}
+#cdraw .cdgo{width:100%;min-height:48px;border-radius:99px;border:0;background:var(--hf-sun);color:#14254a;font-weight:800;font-size:16px;box-shadow:0 3px 0 #d9a91c}
+#cdraw .cdview{width:100%;min-height:44px;border-radius:99px;border:1.5px solid #14254a;background:#fff;color:#14254a;font-weight:700}
+#cdraw .cdempty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}
+#cdraw .cdempty .cdgo{max-width:240px}
+@media (max-width:640px){#cdraw{width:min(380px,92vw)}}
+@media (prefers-reduced-motion:reduce){#cdraw,#cdov,.prod .padd,.prod .padd .pfx,.prod .pfp{transition:none!important}}
+/* 2 首页四入口：全圆角磨砂白胶囊，去掉说明小字 */
+.hero-cta4{gap:12px!important}
+.hero-cta4 .hgo,.hero-cta4 .hgo.main{border-radius:9999px!important;border:1px solid color-mix(in srgb,var(--hf-teal) 16%,transparent)!important;background:rgba(255,255,255,.62)!important;-webkit-backdrop-filter:blur(10px) saturate(1.1);backdrop-filter:blur(10px) saturate(1.1);
+ box-shadow:0 6px 18px -12px rgba(15,94,99,.35)!important;color:#14254a!important;padding:10px 18px 10px 10px!important;min-height:58px;justify-content:flex-start;gap:12px;transition:transform .25s var(--hf-ease),box-shadow .25s ease,background .25s ease}
+.hero-cta4 .hgo .hi{width:40px;height:40px;border-radius:99px!important;background:color-mix(in srgb,var(--hc) 13%,#fff)!important;color:var(--hc)!important;flex:none;display:grid;place-items:center}
+.hero-cta4 .hgo .hi svg{width:21px;height:21px}
+.hero-cta4 .hgo .ht b{font-size:16.5px;font-weight:800;letter-spacing:.02em;color:#14254a}
+.hero-cta4 .hgo .ht small,.hero-cta4 .hgo .ha{display:none!important}
+.hero-cta4 .hgo:hover,.hero-cta4 .hgo:focus-visible{transform:translateY(-2px);background:rgba(255,255,255,.86)!important;box-shadow:0 14px 26px -14px rgba(15,94,99,.42)!important}
+.hero-cta4 .hgo:active{transform:translateY(0) scale(.98);transition-duration:.08s}
+@media (max-width:640px){.hero-cta4{gap:8px!important}.hero-cta4 .hgo,.hero-cta4 .hgo.main{min-height:50px;padding:7px 12px 7px 7px!important;gap:8px;display:flex!important;flex-direction:row!important;align-items:center!important;text-align:left!important}.hero-cta4 .hgo .ht{display:block!important}.hero-cta4 .hgo .hi{width:34px;height:34px}.hero-cta4 .hgo .ht b{font-size:15px}}
+/* 9 导航当前页横线：短、圆头、离字远一点 */
+.bar nav.tabs a.on{box-shadow:none!important;background:transparent!important;color:var(--hf-teal)!important}
+.bar nav.tabs a.on::before{content:"";position:absolute;left:50%;bottom:-1px;width:22px;height:3px;border-radius:99px;background:var(--hf-teal);transform:translateX(-50%)}
+/* 11 收藏：红心、轻弹；右上角图标不再有深色底线 */
+.hicon[aria-current]{box-shadow:none!important;border-radius:50%!important;background:color-mix(in srgb,var(--hf-teal) 9%,transparent)!important}
+.wbtn{color:#8a93ad}
+.wbtn.on,.wbtn[aria-pressed="true"]{color:var(--hf-heart)!important;border-color:#fbcaca!important}
+.wbtn.pop svg{animation:hfpop .45s var(--hf-ease)}
+@keyframes hfpop{0%{transform:scale(1)}35%{transform:scale(1.35)}70%{transform:scale(.92)}100%{transform:scale(1)}}
+#wishbtn.has svg{color:var(--hf-heart);fill:var(--hf-heart)}
+#wishbtn.bump svg{animation:hfpop .45s var(--hf-ease)}
+.hicon .hb,.bar:not(.adm) .wishbtn .hb{background:var(--hf-heart)!important}
+@media (prefers-reduced-motion:reduce){.wbtn.pop svg,#wishbtn.bump svg{animation:none}}
+/* 3 首屏：标题第一次看到时柔和浮现；两侧淡淡虚化的卡牌；副标题换行平衡 */
+.hero h1.tag .sub{text-wrap:balance;max-width:34em;margin-inline:auto}
+.hero .hdeco{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.hero .hdeco img{position:absolute;width:clamp(90px,11vw,150px);aspect-ratio:63/88;object-fit:cover;border-radius:10px;opacity:.16;filter:blur(3px) saturate(.8);box-shadow:0 10px 30px rgba(15,94,99,.25)}
+.hero .hdeco .hd0{left:3%;top:9%;transform:rotate(-12deg)}.hero .hdeco .hd1{left:9%;top:34%;transform:rotate(7deg);opacity:.1}
+.hero .hdeco .hd2{right:3%;top:8%;transform:rotate(11deg)}.hero .hdeco .hd3{right:9%;top:33%;transform:rotate(-6deg);opacity:.1}
+.hero .hero-in{z-index:1}
+@media (max-width:900px){.hero .hdeco{display:none}}
+.hero-in.first .hlogo{animation:hfIn .9s var(--hf-ease) both;animation-delay:calc(0ms - var(--el,0ms))}
+.hero-in.first h1.tag .htl{display:inline-block;animation:hfIn .9s var(--hf-ease) both;animation-delay:calc(160ms - var(--el,0ms));background:linear-gradient(90deg,#14254a 0%,#14254a 40%,var(--hf-teal) 50%,#14254a 60%,#14254a 100%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-in.first h1.tag .htl{animation:hfIn .9s var(--hf-ease) both,hfSheen 1.8s ease-out both;animation-delay:calc(160ms - var(--el,0ms)),calc(700ms - var(--el,0ms))}
+.hero-in.first h1.tag .sub{animation:hfIn .9s var(--hf-ease) both;animation-delay:calc(320ms - var(--el,0ms))}
+.hero-in.first .hero-cta4 .hgo{animation:hfIn .8s var(--hf-ease) both}
+.hero-in.first .hero-cta4 .hgo:nth-child(1){animation-delay:calc(440ms - var(--el,0ms))}.hero-in.first .hero-cta4 .hgo:nth-child(2){animation-delay:calc(510ms - var(--el,0ms))}
+.hero-in.first .hero-cta4 .hgo:nth-child(3){animation-delay:calc(580ms - var(--el,0ms))}.hero-in.first .hero-cta4 .hgo:nth-child(4){animation-delay:calc(650ms - var(--el,0ms))}
+@keyframes hfIn{from{opacity:0;transform:translateY(14px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+@keyframes hfSheen{from{background-position:100% 0}to{background-position:0 0}}
+@media (prefers-reduced-motion:reduce){.hero-in.first *{animation:none!important}.hero-in.first h1.tag .htl{color:#14254a;background:none}}
+/* 3 横向滚动：间距一致、两边柔和渐隐，不刺眼 */
+.hero .mq,.ktrow,.sprow,.serstrip,.crow{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 28px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 28px),transparent 100%)}
+.hero .mq figure{margin-right:14px}
+/* 4 情报：杂志卡 */
+.panel.news.mag{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;background:transparent;border:0;box-shadow:none;padding:0}
+.panel.news.mag .nmag{display:flex!important;flex-direction:column;gap:0!important;padding:0!important;border:1px solid color-mix(in srgb,var(--hf-teal) 12%,#ebe4d4)!important;border-radius:18px!important;background:#fffdf9;overflow:hidden;transition:transform .3s var(--hf-ease),box-shadow .3s ease!important}
+.panel.news.mag .nmag:hover,.panel.news.mag .nmag:focus-within{transform:translateY(-3px)!important;box-shadow:0 16px 32px -18px rgba(15,94,99,.4)!important}
+.nmag .ncov{display:block!important;width:100%;height:0!important;padding-top:56.25%!important;overflow:hidden;position:relative;background:var(--nc,#eef6f7);flex:none;border-radius:0!important;margin:0!important}
+.nmag .ncv{position:absolute;inset:0;display:grid;place-items:center;transition:transform .5s var(--hf-ease);background:radial-gradient(120% 90% at 30% 20%,#fff 0%,var(--nc,#eef6f7) 70%)}
+.nmag:hover .ncv,.nmag:focus-within .ncv{transform:scale(1.03)}
+.nmag .ncv .nbg{position:absolute;inset:-10%;width:120%!important;height:120%!important;max-width:none!important;object-fit:cover;filter:blur(18px) saturate(1.1);opacity:.55}
+.nmag .ncv .nfg{position:relative;width:auto!important;height:84%!important;max-width:84%!important;object-fit:contain;filter:drop-shadow(0 8px 16px rgba(0,0,0,.18))}
+.nmag .ncv.logo{background:radial-gradient(110% 90% at 50% 30%,#fff 0%,color-mix(in srgb,var(--sc) 22%,#fff) 75%)}
+.nmag .ncv .nlg{max-width:64%;max-height:58%;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,.12))}
+.nmag .ncv.ic{grid-auto-flow:column;gap:16px}
+.nmag .ncv.ic svg{opacity:.55}
+.nmag .ncv .ndate{display:flex;flex-direction:column;align-items:center;font:800 34px/1 var(--display,inherit);color:#14254a}
+.nmag .ncv .ndate small{font-size:13px;font-weight:700;margin-top:4px;color:#5c6b74}
+.nmag .nbd{display:flex;flex-direction:column;gap:8px;padding:16px 18px 18px}
+.nmag .nmeta{display:flex;align-items:center;gap:10px}
+.nmag .nchip{display:inline-flex;align-items:center;padding:3px 11px;border-radius:99px;border:1px solid color-mix(in srgb,var(--hf-teal) 28%,transparent);color:var(--hf-teal);font-size:12px;font-weight:700;background:#fff}
+.nmag time{font-size:12.5px;color:#7a8590;font-variant-numeric:tabular-nums}
+.nmag h3{margin:0;font-size:17px;line-height:1.45;font-weight:800}
+.nmag h3 a{color:#14254a;text-decoration:none;transition:color .2s}
+.nmag:hover h3 a,.nmag h3 a:focus-visible{color:var(--hf-teal)}
+.nmag .nlead{margin:0;font-size:14px;line-height:1.7;color:#4b5866;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.nmag .nsrc2{margin:auto 0 0;font-size:12px;color:#8a93a0}
+@media (max-width:900px){.panel.news.mag{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}}
+@media (max-width:640px){.panel.news.mag{grid-template-columns:1fr;gap:14px}.nmag h3{font-size:16px}.nmag .nbd{padding:14px 16px 16px}}
+@media (prefers-reduced-motion:reduce){.nmag .ncv,.panel.news.mag .nmag{transition:none!important}}
+/* 5 今日焦点 & 卡牌聚光灯 */
+.mspot .bandh{align-items:baseline;flex-wrap:wrap}.mspot .msub{font-size:12.5px}
+.mspot .sph{margin-top:30px}
+.fgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.fcard{position:relative;display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:18px;background:#fff;border:1px solid #e3eef2;text-decoration:none;color:#14254a;overflow:hidden;transition:transform .3s var(--hf-ease),box-shadow .3s ease}
+.fcard:hover,.fcard:focus-visible{transform:translateY(-3px);box-shadow:0 18px 34px -18px color-mix(in srgb,var(--gl) 70%,transparent)}
+.fcard .fwm{position:absolute;right:-6px;top:30px;font:900 64px/1 var(--display,inherit);letter-spacing:-.04em;color:var(--hf-teal);opacity:.06;pointer-events:none;white-space:nowrap}
+.fcard.dn .fwm{color:#c2410c}
+.fcard .fhd{display:flex;justify-content:space-between;align-items:center;gap:8px;position:relative}
+.fcard .fbdg{font-size:12px;font-weight:800;padding:4px 10px;border-radius:99px;background:#e7f4ef;color:#0f6e4c}
+.fcard.dn .fbdg{background:#fdeee6;color:#b5461d}.fcard.nw .fbdg{background:#e6f1fb;color:#1d5fa8}
+.fcard .f7{font-size:11px;font-weight:800;color:#7a8590;border:1px solid #e3e8ec;border-radius:6px;padding:2px 6px;max-width:55%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fcard .fim{display:grid;place-items:center;height:170px;position:relative}
+.fcard .fim img{height:170px;width:auto;max-width:100%;object-fit:contain;border-radius:8px;box-shadow:0 10px 20px -10px rgba(0,0,0,.35)}.fcard .fim .spr{display:block;height:170px;width:122px;border-radius:8px;box-shadow:0 10px 20px -10px rgba(0,0,0,.35)}
+.fcard .fbd{display:flex;flex-direction:column;gap:4px;position:relative}
+.fcard b{font-size:15px;line-height:1.35}.fcard small{color:#7a8590;font-size:12px}
+.frow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.fpr{font-weight:800;color:var(--hf-teal);font-size:16px}
+.fpct{font-size:12px;font-weight:800;padding:3px 9px;border-radius:99px;background:#eef1f4;color:#55606f;white-space:nowrap}
+.fpct.up{background:#e6f5ee;color:#0f7a4f}.fpct.dn{background:#fdeeea;color:#c0392b}
+.fspk{width:100%;height:34px;color:#0f7a4f;margin-top:2px}.fcard.dn .fspk{color:#c0392b}
+.spt{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 16px}
+.spt button{min-height:36px;padding:6px 16px;border-radius:99px;border:1px solid #d6e6ec;background:#fff;color:#33475b;font-weight:700;font-size:13.5px;transition:background .2s,color .2s,border-color .2s}
+.spt button.on{background:var(--hf-teal);border-color:var(--hf-teal);color:#fff}
+.sprow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;-webkit-mask-image:none;mask-image:none}
+.spc{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:16px;background:#fff;border:1px solid #e3eef2;text-decoration:none;color:#14254a;transition:transform .3s var(--hf-ease),box-shadow .35s ease}
+.spc .spi{display:grid;place-items:center;aspect-ratio:63/88;border-radius:10px;overflow:hidden}
+.spc .spi img{width:100%;height:100%;object-fit:contain}.spc .spi .spr{display:block;width:100%;height:100%}
+.spc b{font-size:13px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.spc small{font-size:11.5px;color:#7a8590;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.spc .fpr{font-size:14px}.spc .fpct{font-size:11px;padding:2px 7px}
+.spc:hover,.spc:focus-visible{transform:translateY(-6px);box-shadow:0 0 0 1px color-mix(in srgb,var(--gl) 35%,transparent),0 18px 36px -10px color-mix(in srgb,var(--gl) 60%,transparent),0 0 42px -6px color-mix(in srgb,var(--gl) 45%,transparent)}
+.mspot .ctr{display:flex;justify-content:center;margin-top:20px}
+@media (max-width:1024px){.sprow{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:640px){
+ .fgrid{grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:78%;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;padding-bottom:6px;scrollbar-width:none}
+ .fgrid>*{scroll-snap-align:start}.fcard .fim{height:140px}.fcard .fim img{height:140px}.fcard .fim .spr{height:140px;width:100px}
+ .sprow{grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:calc((100% - 20px)/3);overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;scrollbar-width:none}
+ .sprow>*{scroll-snap-align:start}.spc{padding:8px}.spc .frow{flex-direction:column;align-items:flex-start;gap:3px}
+ .spt{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.spt button{flex:none}
+}
+@media (prefers-reduced-motion:reduce){.fcard,.spc{transition:none}}
+/* 6 页脚第 4 栏：购物保障（保留原来的页脚底色） */
+.fcols{grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,.8fr)) minmax(0,1.15fr)!important}
+.ftrust h3{margin:0 0 12px}
+.ftrust ul{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-direction:column;gap:10px}
+.ftrust li{display:flex;align-items:center;gap:9px;font-size:13.5px;color:#33475b}
+.ftrust li svg{color:var(--hf-teal);flex:none}
+.fpay{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.fpay>span{background:#fff;border:1px solid #e2dccd;border-radius:8px;padding:5px 10px;font-size:12px;font-weight:800;color:#14254a;letter-spacing:.02em}
+.fsoc{display:flex;gap:10px}
+.fsoc a{width:36px;height:36px;border-radius:99px;display:grid;place-items:center;background:color-mix(in srgb,var(--hf-teal) 10%,#fff);color:var(--hf-teal);transition:background .2s,color .2s}
+.fsoc a:hover{background:var(--hf-teal);color:#fff}
+@media (max-width:1100px){.fcols{grid-template-columns:repeat(3,minmax(0,1fr))!important}.fcols .fbr,.fcols .ftrust{grid-column:1/-1}}
+/* 10 关于我们：三张卡缓慢上下漂浮 */
+.vis .fan img{animation:gentleFloat 4.5s ease-in-out infinite}
+.vis .fan img:nth-child(2){animation-delay:-1.5s}.vis .fan img:nth-child(3){animation-delay:-3s}
+@keyframes gentleFloat{0%,100%{translate:0 0}50%{translate:0 -6px}}
+@media (prefers-reduced-motion:reduce){.vis .fan img{animation:none}}
+/* 7 图鉴：一行日系极简工具栏 */
+.ixbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px;border:1px solid color-mix(in srgb,var(--hf-teal) 12%,#e8e2d4);border-radius:16px;background:#fffdf9;margin:6px 0 4px}
+.ixseg{display:inline-flex;padding:3px;border-radius:99px;background:#f1ede3}
+.ixseg button{min-height:34px;padding:5px 14px;border-radius:99px;border:0;background:transparent;font-weight:700;font-size:13.5px;color:#4b5866;white-space:nowrap}
+.ixseg button small{font-weight:600;color:#8a93a0;margin-left:2px}
+.ixseg button.on{background:#fff;color:var(--hf-teal);box-shadow:0 1px 4px rgba(15,94,99,.18)}
+.ixq{flex:1 1 200px;min-width:160px;display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-radius:99px;border:1px solid #e2dccd;background:#fff;color:#7a8590}
+.ixq input{flex:1;min-width:0;border:0!important;outline:0;background:transparent;font-size:14px;padding:0;box-shadow:none!important;min-height:0;height:100%}
+.ixq:focus-within{border-color:var(--hf-teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--hf-teal) 15%,transparent)}
+.ixbar select{height:40px;min-height:40px;border-radius:99px;border:1px solid #e2dccd;background:#fff;padding:0 30px 0 14px;font-size:13.5px;color:#14254a;max-width:190px}
+.ixv{display:inline-flex;gap:2px;padding:3px;border-radius:99px;background:#f1ede3;margin-left:auto}
+.ixv button{width:34px;height:34px;min-height:0;padding:0;border-radius:99px;border:0;background:transparent;color:#7a8590;display:grid;place-items:center}
+.ixv button.on{background:#fff;color:var(--hf-teal);box-shadow:0 1px 4px rgba(15,94,99,.18)}
+.ixn{margin:6px 0 0;font-size:13px}
+.clist{display:flex;flex-direction:column;border:1px solid #ece5d6;border-radius:16px;overflow:hidden;background:#fffdf9}
+.crw{display:grid;grid-template-columns:46px 64px minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px 14px;text-decoration:none;color:#14254a;border-bottom:1px solid #f0eadd;transition:background .2s}
+.crw:last-child{border-bottom:0}.crw:hover{background:#f6fafb}
+.crwi{width:46px;height:64px;display:grid;place-items:center}.crwi img,.crwi .spr{width:46px!important;height:64px!important;object-fit:contain;border-radius:4px}
+.crwn{font:700 12.5px/1 ui-monospace,monospace;color:#7a8590}
+.crwb{display:flex;align-items:center;gap:8px;min-width:0}.crwb b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crwp{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--hf-teal);white-space:nowrap}
+@media (max-width:640px){
+ .ixbar{gap:8px;padding:8px}.ixseg{order:0}.ixv{order:1}.ixq{order:2;flex:1 1 100%}
+ .ixbar select{order:3;flex:1 1 calc(33% - 8px);max-width:none;padding:0 18px 0 8px;font-size:12px;min-width:0;background-position:right 4px center}
+ .crw{grid-template-columns:40px minmax(0,1fr) auto;gap:10px;padding:8px 10px}.crwn{display:none}.crwi,.crwi img,.crwi .spr{width:40px!important;height:56px!important}
+ .crwb{flex-direction:column;align-items:flex-start;gap:2px}.crwp{flex-direction:column;align-items:flex-end;gap:3px;font-size:13px}
+}
+/* 8 行情：照 kado.hk/market 收窄居中版心，两侧留白 */
+@media (min-width:1100px){html[data-route="market"] #view{max-width:1040px}}
+@media (min-width:1360px){html[data-route="market"] #view{max-width:1000px}}
+html[data-route="market"] .mhero{border-radius:24px;border:0;background:linear-gradient(180deg,#e9f5fa,#f7fbfc);box-shadow:none}
+html[data-route="market"] .mhero h1{letter-spacing:.04em}
+html[data-route="market"] .kboard,html[data-route="market"] .ktop{border-radius:20px;border:1px solid #ebe4d4;box-shadow:none}
+.kbc .col{width:100%}
 </style>
 
 <div class="bgfx" aria-hidden="true"></div>
@@ -2123,7 +2362,7 @@ const NAVZH={home:"欢迎来 Holofen！新品和热门都在这里",shop:"补充
 const NAVEN={home:"Welcome to Holofen! New and popular items are here",shop:"Booster boxes, ETBs and collections. Order here",series:"Full card lists and rarities for every set",market:"Check card prices and see what's rising or falling",decks:"Winning tournament decks, or let us build one for you",news:"New releases, tournament results and Malaysia events",about:"Who we are, and how to spot genuine cards"};
 /* 导航小提示：跟着当前语言走 */
 const NAVHINT=window.NAVHINT=new Proxy({}, {get:(_,k)=>(lang==="en"?NAVEN:NAVZH)[k]});
-const TABS=[["home","首页","Home"],["shop","商店","Shop"],["series","图鉴","Card Index"],["market","卡牌行情","Card market"],["decks","卡组和代组","Decks & building"],["news","最新消息","News"],["about","关于我们","About us"]];
+const TABS=[["home","首页","Home"],["shop","商店","Shop"],["series","图鉴","Card Index"],["market","行情","Market"],["decks","卡组和代组","Decks & building"],["news","情报","News"],["about","关于我们","About us"]];
 /* 二级导航：每个顶部栏目下面的分页。购物车和我的订单放在一起，从右上角的按钮进。 */
 const GROUPS={decks:[["decks","比赛卡组","Tournament decks"],["build","代组服务","Deck building"]],cart:[["cart","购物车","Cart"]]};
 const PARENT={}; Object.entries(GROUPS).forEach(([g,l])=>l.forEach(t=>PARENT[t[0]]=g));
@@ -2149,7 +2388,7 @@ function render(){ const keep={}; try{ document.querySelectorAll(HS_SEL).forEach
   renderCore();
   try{ document.querySelectorAll(HS_SEL).forEach((el,i)=>{ const k=(el.classList[0]||"")+"#"+i; if(keep[k]!=null) el.scrollTo({left:keep[k],behavior:"instant"}); else { const on=el.querySelector(".on"); if(on&&(on.offsetLeft+on.offsetWidth>el.clientWidth)) el.scrollTo({left:on.offsetLeft-12,behavior:"instant"}) } }) }catch(e){} }
 function renderCore(){
-  const adm=route==="admin"&&owner;
+  const adm=route==="admin"&&owner; document.documentElement.dataset.route=route;
   { const fb=document.getElementById("fbadge"); if(fb) fb.remove(); document.documentElement.classList.remove("forest") }
   $("#bar").className="bar"+(adm?" adm":"");
   $("#brand").innerHTML=buddy(26)+(adm?`店主后台<small>Admin</small>`:`Holofen`);
@@ -2160,7 +2399,7 @@ function renderCore(){
   $("#btm").hidden=adm; { const cur=PARENT[route]||route, inMore=BTM_MORE.some(t=>t[0]===cur||t[0]===route);
   $("#btm").innerHTML=adm?"":BTM.map(t=>t[0]==="more"?`<a href="#" data-msheet="1" class="${inMore||ui.msheet?"on":""}" aria-expanded="${!!ui.msheet}">${t[2]}<span>${t[1]}</span></a>`:`<a href="#${t[0]}" class="${cur===t[0]?"on":""}">${t[2]}<span>${t[1]}</span>${t[0]==="cart"&&cq?`<b>${cq}</b>`:""}</a>`).join("")+(ui.msheet?`<div class="msheet" role="menu">${BTM_MORE.map(t=>`<a href="#${t[0]}" role="menuitem" class="${cur===t[0]||route===t[0]?"on":""}">${t[2]}<span>${t[1]}</span></a>`).join("")}</div>`:""); }
   applyLang();
-  $("#cartbtn").hidden=adm; { const bb=$("#backbtn"); if(bb) bb.hidden=!adm } { const ob=$("#ownbtn"); if(ob) ob.hidden=adm||!owner } { const lb=$("#loginbtn"); if(lb){ lb.hidden=adm; if(window.HOLO_AUTH) HOLO_AUTH.paint() } } { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm||!CONTACT.some(c=>c[3]) } { const wb=$("#wishbtn"); if(wb){ wb.hidden=adm; const wn=arr(ME.wish).length, al=alerts().length; wb.innerHTML=wb.innerHTML.replace(/<b class="hb"[^>]*>.*?<\/b>/,"")+(al||wn?`<b class="hb" aria-hidden="true">${al||wn}</b>`:""); wb.setAttribute("aria-label",isEN()?`Wishlist${wn?" ("+wn+")":""}`:`收藏${wn?"（"+wn+" 件）":""}`); if(route==="wish") wb.setAttribute("aria-current","page"); else wb.removeAttribute("aria-current") } } { const mb=$("#mebtn"); if(mb){ mb.hidden=true; if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
+  $("#cartbtn").hidden=adm; { const bb=$("#backbtn"); if(bb) bb.hidden=!adm } { const ob=$("#ownbtn"); if(ob) ob.hidden=adm||!owner } { const lb=$("#loginbtn"); if(lb){ lb.hidden=adm; if(window.HOLO_AUTH) HOLO_AUTH.paint() } } { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm||!CONTACT.some(c=>c[3]) } { const wb=$("#wishbtn"); if(wb){ wb.hidden=adm; const wn=arr(ME.wish).length, al=alerts().length; wb.classList.toggle("has",wn>0); wb.innerHTML=wb.innerHTML.replace(/<b class="hb"[^>]*>.*?<\/b>/,"")+(al||wn?`<b class="hb" aria-hidden="true">${al||wn}</b>`:""); wb.setAttribute("aria-label",isEN()?`Wishlist${wn?" ("+wn+")":""}`:`收藏${wn?"（"+wn+" 件）":""}`); if(route==="wish") wb.setAttribute("aria-current","page"); else wb.removeAttribute("aria-current") } } { const mb=$("#mebtn"); if(mb){ mb.hidden=true; if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
   setHTML("#band",adm?"":band());
   { const want=Object.keys(CURS).map(k=>`<option value="${k}" ${k===CUR?"selected":""}>${CURS[k][0]} ${k} · ${isEN()?CURS[k][4]:CURS[k][3]}</option>`).join(""); ["hcur","hcurm"].forEach(id=>{ const hc=$("#"+id); if(!hc) return; hc.hidden=adm; const cs=hc.querySelector("select"); if(cs._h!==want){ cs.innerHTML=want; cs._h=want } cs.value=CUR; const cv=hc.querySelector(".cv"); if(cv) cv.innerHTML=`<span class="cs">${esc(CURS[CUR][0])}</span><span class="cc"> ${CUR}</span>`; cs.setAttribute("aria-label",isEN()?"Currency":"货币") }) }
   $("#foot").innerHTML=adm?`<a href="#home">${BL("回到顾客前台","Back to storefront")}</a>`:`${DOTS}<span class="muted" style="font-size:13px">© ${new Date().getFullYear()} Holofen ${B("版权所有","All rights reserved")}</span>`;
@@ -2180,14 +2419,17 @@ const banner=()=>"";
 
 function svcCard(){ return `<div class="prod svcc"><div class="pic"><a href="#build" aria-label="${isEN()?"Deck building service":"代组服务"}">${buddy(150,"wow")}</a><span class="prebdg" style="background:#0e7c86">${B("服务","Service")}</span></div>
   <div class="info"><a class="nm" href="#build">${B("私人订制组牌","Custom deck building")}</a><div class="muted set">${B("说预算和打法，我们帮你配好 60 张，1 天内报价","Tell us your budget and style. We build the 60 cards and quote within 1 day")}</div>
-  <div class="bigp" style="font-size:18px">${B("按牌表报价","Quoted per list")}</div><div class="foot"><button class="sun" data-go="build">${B("填需求","Start")}</button></div></div></div>` }
+  ${pfoot(`<span class="np">${B("按牌表报价","Quoted per list")}</span>`,padd(`data-go="build"`,["填写需求","Start a request"],BT("私人订制组牌","Custom deck building")))}</div></div>` }
+/* v141 改善报告 15 第 1 项（参考 Myu Collectibles）：卡片底部「左下价格 + 右下小圆 +」。
+   电脑鼠标移到卡片上、手机碰到卡片时，小圆一边转一边向左滚到价格那边，滚过的地方由黄渐变成深松石绿，变成「+ 加入购物车」胶囊。 */
+function pfoot(price,act){ return `<div class="pf"><span class="pfp">${price}</span>${act}</div>` }
+function padd(attr,l,name){ return `<button type="button" class="padd" ${attr} aria-label="${esc(BT(l[0],l[1])+(name?" "+name:""))}"><span class="pfx" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="pfl">${B(l[0],l[1])}</span></button>` }
 const LNGEN={"英文版":"English","日文版":"Japanese","中文版":"Chinese"}, lngT=l=>isEN()?(LNGEN[l]||l):l;
 function prodCard(p){
   const c=CI[p.id], tc=c&&TYPEC[c.type];
   return `<div class="prod" data-goitem="${p.id}"${tc?` style="--glow:${tc[0]}99"`:""}><div class="pic"><a href="#p/${p.id}" aria-label="${esc(pname(p))} ${BT("快速查看","Quick view")}"><img loading="lazy" src="${simg(p)}" alt=""></a><button class="qv" data-open="${p.id}">快速查看 <span class="en">Quick view</span></button>${wishBtn(p)}${isPre(p)?`<span class="prebdg">${B("预购","Pre-order")} · ${preTxt(p)}</span>`:""}</div>
   <div class="info">${p.no?`<div class="cno">${esc(numTxt(p))}</div>`:""}${p.lng?`<span class="lgc lg-${{"日文版":"ja","中文版":"zh"}[p.lng]||"en"}">${esc(lngT(p.lng))}</span>`:""}<a class="nm" href="#p/${p.id}">${PZH(p)}</a><div class="muted set">${slogo(p.s)}<span>${esc(p.s)}</span></div>
-  <div class="bigp">${p.price>0?rm(p.price):`<span class="np">${B("价格待定","Price TBD")}</span>`}</div>
-  <div class="foot">${tbdShow(p)?`<button disabled>${B("价格待定","Price TBD")}</button>`:p.c==="single"&&!listed(p)?(p.ck?`<a class="btnl" href="#card/${esc(p.ck)}">${B("看卡价","Card prices")} ›</a>`:""):p.stock===0&&!isPre(p)?`<button disabled>缺货 <span class="en">Sold out</span></button>`:isPre(p)?`<button class="sun" data-add="${p.id}">预购 <span class="en">Pre-order</span></button>`:`<button class="sun" data-add="${p.id}">加入购物车 <span class="en">Add</span></button>`}</div></div></div>`;
+  ${pfoot(p.price>0?rm(p.price):`<span class="np">${B("价格待定","Price TBD")}</span>`,tbdShow(p)?"":p.c==="single"&&!listed(p)?(p.ck?`<a class="pmore" href="#card/${esc(p.ck)}">${B("看卡价","Card prices")} ›</a>`:""):p.stock===0&&!isPre(p)?`<span class="pso">${B("缺货","Sold out")}</span>`:padd(`data-add="${p.id}"`,isPre(p)?["预购","Pre-order"]:["加入购物车","Add to cart"],pname(p)))}</div></div>`;
 }
 /* v94 没有独立商品页：点商品就开这个快速查看面板，关掉后留在原来的列表、筛选和位置 */
 function buyRow(p){ return `<div class="row">${tbdShow(p)?`<button disabled>${B("价格待定，店主定价后就能买","Price TBD, available once priced")}</button>`:!listed(p)?(p.c==="single"&&p.ck?`<a class="btnl" href="#card/${esc(p.ck)}" data-close="1">${B("看这张卡的价格","See card prices")} ›</a>`:`<button disabled>已下架 <span class="en">Not for sale</span></button>`):isPre(p)?`<button class="pri" data-add="${p.id}">预购 <span class="en">Pre-order</span></button>`:p.stock===0?`<button disabled>缺货 <span class="en">Out of stock</span></button>`:p.loose?(()=>{ const k=p.id, cap=p.stock>0?Math.min(99,p.stock):99; return `<div class="lq lcus"><span class="row" style="gap:4px;flex-wrap:nowrap"><button type="button" data-lstep="${k}" data-d="-1" aria-label="${BT("少一包","One less")}">−</button><input id="lq-${k}" type="number" min="1" max="${cap}" step="1" inputmode="numeric" value="1" aria-label="${BT("要几包","Number of packs")}" data-lprice="${p.price||0}"><button type="button" data-lstep="${k}" data-d="1" aria-label="${BT("多一包","One more")}">+</button></span><button class="pri" data-addq="${k}">${B("加入购物车","Add to cart")}<small id="lqt-${k}">${p.price>0?`1 ${B("包","pack")} · ${rm(p.price)}`:B("价格待定","Price TBD")}</small></button></div>` })():`<button class="pri" data-add="${p.id}">加入购物车 <span class="en">Add to cart</span></button>`}${listed(p)?wishBtn(p,1):""}<span class="muted">${isPre(p)||!listed(p)?"":p.stock>0?`${B("现货","In stock")} ${p.stock}`:p.stock===0?"":B("库存待店主录入","Stock TBD")}</span></div>` }
@@ -2219,7 +2461,7 @@ const LAUNCH=[
 const TILES=[["single","单卡","Singles","#ffe3d1"],["box","补充包盒","Booster boxes","#dcebff"],["etb","ETB 训练家盒","Elite Trainer Boxes","#ddf3da"],["build","帮我组牌","Deck building help","#fff1b8"]];
 const BTM=[["home","首页",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>`],["news","消息",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>`],["shop","商店",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16l-1.5 12a1 1 0 0 1-1 .9H6.5a1 1 0 0 1-1-.9z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>`],["about","关于",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>`],["cart","购物车",`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2.5 3h3l2.6 12.2a1.5 1.5 0 0 0 1.5 1.2h8.3a1.5 1.5 0 0 0 1.5-1.1L21.5 8H6.4"/></svg>`]];
 (()=>{ const I=Object.fromEntries(BTM.map(t=>[t[0],t[2]])), sv=d=>`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
-  BTM.splice(0,BTM.length,["home","首页",I.home],["series","图鉴",sv('<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>')],["market","行情",sv('<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>')],["decks","卡组",sv('<rect x="4" y="6" width="11" height="15" rx="2"/><path d="M9 3h9a2 2 0 0 1 2 2v12"/>')],["shop","商店",I.shop],["news","消息",I.news],["about","关于",sv('<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>')]);
+  BTM.splice(0,BTM.length,["home","首页",I.home],["series","图鉴",sv('<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>')],["market","行情",sv('<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>')],["decks","卡组",sv('<rect x="4" y="6" width="11" height="15" rx="2"/><path d="M9 3h9a2 2 0 0 1 2 2v12"/>')],["shop","商店",I.shop],["news","情报",I.news],["about","关于",sv('<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>')]);
   /* v138 2.6 手机底部 6 格：首页、商店、图鉴、行情、卡组、更多（和电脑导航顺序一致）；其余放进「更多」 */
   const M=Object.fromEntries(BTM.map(t=>[t[0],t]));
   window.BTM_MORE=[M.news,M.about,["member","会员中心",sv('<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>')],["orders","我的订单",sv('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>')]];
@@ -2314,7 +2556,7 @@ const edTag=c=>`<span class="edtag">${cEd(c)==="jp"?B("日","JP"):B("英","EN")}
 V.market=()=>{
   const med=ui.med||"";
   const edbar=`<div class="seg edseg" role="group" aria-label="${BT("版本","Edition")}" style="margin:4px 0 8px">${[["","全部版本","All editions"],["en","英文版","English"],["jp","日文版","Japanese"]].map(r=>`<button data-med="${r[0]}" class="${med===r[0]?"on":""}" aria-pressed="${med===r[0]}">${B(r[1],r[2])}</button>`).join("")}</div>`;
-  if(med==="jp") return `<section class="mhero"><div class="mh1"><span class="tag live">${isEN()?"MARKET":"行情"}</span><h1>${B("卡价雷达","Card price radar")}</h1>${edbar}</div></section>
+  if(med==="jp") return `<section class="mhero"><div class="mh1"><span class="tag live">MARKET</span><h1>${B("行情","Market")}</h1>${edbar}</div></section>
   <div class="panel stack" style="gap:8px"><h3 style="margin:0">${B("日文版市价：暂无数据","Japanese prices: no data yet")}</h3><p style="margin:0">${B("我们现在用的价格来源（TCGdex 读取的 TCGplayer 和 Cardmarket）都是英文版市场，没有日文版成交价。日文版和英文版价格差很多，所以这里不拿英文版价格代替。等找到可以核实的日文版来源再补上。","Our current price sources (TCGplayer and Cardmarket via TCGdex) only cover the English market. Japanese prints sell at very different prices, so we do not show English prices in their place. We will add Japanese prices once there is a source we can verify.")} ${OWNER_TBD()}</p><p class="muted" style="margin:0">${B("日文版完整卡表在这里：","Japanese card lists:")} <a href="${setUrl(JSETS[0])}">${B("日文版卡表","Japanese card lists")} ›</a></p></div>`;
   const sel=ui.mser, callp=Object.values(CARDS).filter(c=>(!sel||c.s===sel)&&(!med||cEd(c)===med)), priced=callp.filter(c=>cRM(c)!=null);
   const mov=priced.filter(c=>c.tr!=null&&cRM(c)>=20);
@@ -2333,7 +2575,7 @@ V.market=()=>{
     <div class="seg" role="group" aria-label="排序">${[["hi","价格高","High"],["up","7 天涨幅","7d up"],["new","最新","Newest"],["lo","价格低","Low"],["no","编号","Number"]].map(r=>`<button data-msort="${r[0]}" class="${(so||"hi")===r[0]?"on":""}">${B(r[1],r[2])}</button>`).join("")}</div></div>
    <p class="muted">${B(`找到 ${all.length} / ${callp.length} 张`,`${all.length} of ${callp.length}`)}${q?` · <button class="lnk" data-mclear="1">${B("清除搜索","Clear search")}</button>`:""}</p>
    <div class="cgrid">${all.slice(0,ui.mshown||24).map(ctile).join("")||`<p class="muted">${B("没有符合的卡","No cards match")}</p>`}</div>${all.length>(ui.mshown||24)?`<div><button data-mmore="1">${B("再显示 24 张","Show 24 more")}</button></div>`:""}</section>`;
-  return `<section class="mhero"><div class="mh1"><span class="tag live">${isEN()?"MARKET":"行情"}</span><h1>${B("卡价雷达","Card price radar")}</h1>${edbar}<div class="msearch">${ic("search",20)}<input id="mq" type="search" placeholder="输入卡名或编号，例如 月亮伊布 161、Pikachu" value="${esc(ui.mq)}" aria-label="搜索卡牌 Search cards"></div>
+  return `<section class="mhero"><div class="mh1"><span class="tag live">MARKET</span><h1>${B("行情","Market")}</h1>${edbar}<div class="msearch">${ic("search",20)}<input id="mq" type="search" placeholder="输入卡名或编号，例如 月亮伊布 161、Pikachu" value="${esc(ui.mq)}" aria-label="搜索卡牌 Search cards"></div>
     <p class="msay">${BL(`这一周 <b class="up">▲ ${up} 张卡变贵</b>，<b class="down">▼ ${dn} 张卡变便宜</b>。`,`This week <b class="up">▲ ${up} cards went up</b>, <b class="down">▼ ${dn} went down</b>.`)}<small>${B(`价格 ${TD.date} 更新 · 只算 RM20 以上的卡`,`Prices updated ${TD.date} · cards over RM20 only`)}</small></p></div></section>
   ${q?results:`<div class="tape"><div class="track">${tape}${tape}</div></div>
   <div class="serstrip" role="group" aria-label="选择系列 Set">${`<button class="all${!sel?" on":""}" data-mser="">${B("全部系列","All sets")}</button>`}${SETS.map(s=>`<button data-mser="${esc(s)}" class="${sel===s?"on":""}" aria-pressed="${sel===s}">${slogo(s,"")}<span>${esc(s)}</span></button>`).join("")}</div>
@@ -2373,7 +2615,7 @@ Object.assign(TR,{
 "开放抽奖（顾客看得到、能抽）":"Open the lucky draw (customers can see and play)","抽一次要几分":"Points per draw","「没中」的权重":"Weight for \"no prize\"","奖品，一行一个：名字, 权重（权重越大越容易抽中；中奖率 = 权重 ÷ 全部权重加起来）":"Prizes, one per line: name, weight (higher weight = more likely; win chance = weight ÷ total of all weights)","按「保存」会开新的一期：之后的抽奖用新的奖品和中奖率，已经抽过的结果不会变。":"Saving starts a new round: later draws use the new prizes and odds, and past results don't change.","标记已安排":"Mark as arranged","已安排 ✓":"Arranged ✓",
 "我的资料 ":"My details ","确定删除你的个人资料、签到、收藏和活跃记录？删除后不能恢复。订单记录会保留。":"Delete your profile, check-ins, saved items and activity? This cannot be undone. Order records are kept.","登录功能还在接通中，很快就能用。":"Sign-in is being set up and will be ready soon.","登录后可以看订单、收集积分和每日签到。":"Sign in to see your orders, collect points and check in daily.","不用设密码：我们会寄一封邮件给你，按里面的链接就登录了。":"No password needed: we'll email you a link, and tapping it signs you in.","正在打开 Google…":"Opening Google…","Google 登录还在设定中，请先用电子邮件登录。":"Google sign-in is still being set up. Please use email for now.","请填一个正确的电子邮件地址。":"Please enter a valid email address.","寄出中…":"Sending…","店主与员工 ":"Owner & staff ","登录 Holofen ":"Sign in to Holofen ","（再按一下可以登出）":" (tap again to sign out)",
 "员工权限":"Staff access","这里加的管理员，用他们的邮箱登录网站后，就能进店主后台。每个管理员可以单独勾选能进哪些后台页面，勾掉就看不到那一页。只有店主能加人、移除人和改权限。":"Admins added here can open the admin pages after signing in with their email. Tick which admin pages each admin can open. Only the owner can add or remove people and change access.","只有店主能管理员工。":"Only the owner can manage staff.","读取中…":"Loading…","店主":"Owner","管理员":"Admin","还没有管理员。":"No admins yet.","现有名单":"Current list","加一个管理员":"Add an admin","对方的邮箱":"Their email","加入":"Add","对方要先用这个邮箱登录网站一次，之后才能进后台。":"They need to sign in to the site once with this email before they can open the admin pages.","确定移除这位管理员？":"Remove this admin?",
-"上传中…":"Uploading…","上传失败，请再试一次":"Upload failed, please try again","今天已经签到了":"Already checked in today","再按一次就登出":"Tap again to sign out","售价要填数字":"Price must be a number","奖品的权重不能全是 0":"Prize weights can't all be 0","已付款的订单请联系店主取消":"To cancel a paid order, please contact us","已加入管理员":"Admin added","已标记寄出":"Marked as shipped","已登出":"Signed out","已移除":"Removed","已通过审核":"Approved","库存要填 0 或以上的整数":"Stock must be a whole number, 0 or more","投稿最多 30 张":"Up to 30 submissions","报价已发给顾客":"Quote sent to the customer","抽奖设定没有保存成功":"Lucky draw settings weren't saved","抽奖还没开始":"The lucky draw hasn't started","新商品要有英文名和售价，才会在前台出现":"A new item needs an English name and price before it shows in the shop","有商品缺货或库存不足，购物车已更新，请再确认一次":"Some items are out of stock or low on stock. Your cart was updated, please check it again.","照片上传失败，请再试一次":"Photo upload failed, please try again","照片太大，请小于 8MB":"Photo too large, please keep it under 8MB","牌表已保存":"Deck list saved","规则要填 0 或以上的数字":"Rules must be numbers, 0 or more","评价没有保存成功，请再试一次":"Review wasn't saved, please try again","请先登录再下单，订单会存进你的账号。购物车会保留。":"Please sign in to order so it's saved to your account. Your cart is kept.","请先登录，签到和积分才会记在你的账号":"Please sign in so check-ins and points are saved to your account","请先贴上牌表":"Please paste a deck list first","请写卡名":"Please enter the card name","请填一个正确的邮箱":"Please enter a valid email","请填报价":"Please enter a quote","请填要几包":"Please enter how many packs","请填运单号":"Please enter the tracking number","请至少写一个奖品":"Please add at least one prize","请选一张照片":"Please choose a photo","请选图片文件":"Please choose an image file","请选月份":"Please choose a month","这里暂时收不了照片":"Photos can't be uploaded here yet","这里暂时收不了照片，请用文字清单":"Photos can't be uploaded here yet, please use a text list","「多少分起换」至少 1 分":"Minimum points to redeem must be at least 1","请先登录 Please sign in":"Please sign in","今天还没签到":"Not checked in today","待定":"To be confirmed","选择":"Select","近 7 天均价对比近 30 天均价":"7-day average vs 30-day average","主导航":"Main navigation","分页":"Sections","产品类别":"Product category","关闭":"Close","减少":"Decrease","增加":"Increase","切换到中文":"Switch to Chinese","排序":"Sort","稀有度":"Rarity","鉴定公司":"Grading company","首页主视觉":"Home banner","Holofen 开场动画":"Holofen intro animation","选择系列":"Choose set","不填＝未录入":"Empty = not entered","例如：实拍卡况、边角、是否有白边、附送卡套等":"e.g. real condition, corners, whitening, sleeves included","搜索卡名或编号":"Search name or number","搜索名字、系列、编号":"Search name, set or number","ETB 一盒, 1":"ETB box, 1","客服":"Help","首页":"Home","商店":"Shop","行情":"Prices","卡组":"Decks","更多":"More","消息":"News","关于":"About","推荐（RM50–300 优先）":"Recommended (RM50–300 first)","价格从高到低":"Price: high to low","价格从低到高":"Price: low to high","按名称":"By name","帮我推荐":"Recommend one for me","其他，写在下一题":"Other (write it in the next question)","换多少令吉 RM":"Worth how much, RM","近 12 个月消费满多少升银鹿 RM":"12-month spend for Silver Deer, RM","近 12 个月消费满多少升金鹿 RM":"12-month spend for Gold Deer, RM","不通过的原因":"Reason for rejecting","顾客端金额和目录价不符，以这里显示的为准":"The customer's total doesn't match the catalogue; the amount shown here is what counts","优惠码无效，已不计入金额":"Invalid coupon, not applied","积分不够或无效，已不计入金额":"Not enough or invalid points, not applied","免运费":"Free shipping","书":"XHS"
+"上传中…":"Uploading…","上传失败，请再试一次":"Upload failed, please try again","今天已经签到了":"Already checked in today","再按一次就登出":"Tap again to sign out","售价要填数字":"Price must be a number","奖品的权重不能全是 0":"Prize weights can't all be 0","已付款的订单请联系店主取消":"To cancel a paid order, please contact us","已加入管理员":"Admin added","已标记寄出":"Marked as shipped","已登出":"Signed out","已移除":"Removed","已通过审核":"Approved","库存要填 0 或以上的整数":"Stock must be a whole number, 0 or more","投稿最多 30 张":"Up to 30 submissions","报价已发给顾客":"Quote sent to the customer","抽奖设定没有保存成功":"Lucky draw settings weren't saved","抽奖还没开始":"The lucky draw hasn't started","新商品要有英文名和售价，才会在前台出现":"A new item needs an English name and price before it shows in the shop","有商品缺货或库存不足，购物车已更新，请再确认一次":"Some items are out of stock or low on stock. Your cart was updated, please check it again.","照片上传失败，请再试一次":"Photo upload failed, please try again","照片太大，请小于 8MB":"Photo too large, please keep it under 8MB","牌表已保存":"Deck list saved","规则要填 0 或以上的数字":"Rules must be numbers, 0 or more","评价没有保存成功，请再试一次":"Review wasn't saved, please try again","请先登录再下单，订单会存进你的账号。购物车会保留。":"Please sign in to order so it's saved to your account. Your cart is kept.","请先登录，签到和积分才会记在你的账号":"Please sign in so check-ins and points are saved to your account","请先贴上牌表":"Please paste a deck list first","请写卡名":"Please enter the card name","请填一个正确的邮箱":"Please enter a valid email","请填报价":"Please enter a quote","请填要几包":"Please enter how many packs","请填运单号":"Please enter the tracking number","请至少写一个奖品":"Please add at least one prize","请选一张照片":"Please choose a photo","请选图片文件":"Please choose an image file","请选月份":"Please choose a month","这里暂时收不了照片":"Photos can't be uploaded here yet","这里暂时收不了照片，请用文字清单":"Photos can't be uploaded here yet, please use a text list","「多少分起换」至少 1 分":"Minimum points to redeem must be at least 1","请先登录 Please sign in":"Please sign in","今天还没签到":"Not checked in today","待定":"To be confirmed","选择":"Select","近 7 天均价对比近 30 天均价":"7-day average vs 30-day average","主导航":"Main navigation","分页":"Sections","产品类别":"Product category","关闭":"Close","减少":"Decrease","增加":"Increase","切换到中文":"Switch to Chinese","排序":"Sort","稀有度":"Rarity","鉴定公司":"Grading company","首页主视觉":"Home banner","Holofen 开场动画":"Holofen intro animation","选择系列":"Choose set","不填＝未录入":"Empty = not entered","例如：实拍卡况、边角、是否有白边、附送卡套等":"e.g. real condition, corners, whitening, sleeves included","搜索卡名或编号":"Search name or number","搜索名字、系列、编号":"Search name, set or number","ETB 一盒, 1":"ETB box, 1","客服":"Help","首页":"Home","商店":"Shop","行情":"Prices","卡组":"Decks","更多":"More","消息":"News","情报":"News","代组":"Deck building","关于":"About","推荐（RM50–300 优先）":"Recommended (RM50–300 first)","价格从高到低":"Price: high to low","价格从低到高":"Price: low to high","按名称":"By name","帮我推荐":"Recommend one for me","其他，写在下一题":"Other (write it in the next question)","换多少令吉 RM":"Worth how much, RM","近 12 个月消费满多少升银鹿 RM":"12-month spend for Silver Deer, RM","近 12 个月消费满多少升金鹿 RM":"12-month spend for Gold Deer, RM","不通过的原因":"Reason for rejecting","顾客端金额和目录价不符，以这里显示的为准":"The customer's total doesn't match the catalogue; the amount shown here is what counts","优惠码无效，已不计入金额":"Invalid coupon, not applied","积分不够或无效，已不计入金额":"Not enough or invalid points, not applied","免运费":"Free shipping","书":"XHS"
 });
 const TRX=[
  [/^(.+)（使用率 ([\d.]+%)）$/,"$1 ($2 usage)"],[/^(\d{1,2}) 月$/,(m,n)=>["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][n-1]],
@@ -2477,7 +2719,8 @@ function band(){
    <div class="fbr"><span class="fbn">${buddy(30)}Holofen</span><p>${B("中文、英文和日文版宝可梦卡牌，马来西亚发货，也寄新加坡和中国。","Chinese, English &amp; Japanese Pokémon cards, shipped from Malaysia to MY, SG &amp; China.")}</p>${CONTACT.some(c=>c[3])?`<div class="ctc" id="contact">${CONTACT.filter(c=>c[3]).map(c=>`<a href="${c[3]||"#"}" ${c[3]?'target="_blank" rel="noopener"':`data-tbd="${c[1]}"`}><span class="ic" style="background:${c[2]}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${c[4]}</svg></span>${c[1]}</a>`).join("")}</div>`:""}</div>
    <nav aria-label="${BT("店铺","Shop")}"><h3>${B("店铺","Shop")}</h3><a href="#shop" data-fcat="">${B("商品","Products")}</a><a href="#series">${B("图鉴","Card Index")}</a><a href="#market">${B("行情","Market")}</a></nav>
    <nav aria-label="${BT("客户服务","Customer service")}"><h3>${B("客户服务","Customer service")}</h3><a href="#help">${B("常见问题","FAQ")}</a><a href="#shipping">${B("运费和寄送","Shipping")}</a><a href="#returns">${B("退货与退款","Returns &amp; refunds")}</a><a href="#terms">${B("条款与细则","Terms &amp; conditions")}</a><a href="#orders">${B("订单状态","Order status")}</a><a href="#" data-contact="1">${B("联系我们","Contact us")}</a></nav>
-   <nav aria-label="${BT("信息","Information")}"><h3>${B("信息","Information")}</h3><a href="#about">${B("关于我们","About us")}</a><a href="#news">${B("最新消息","News")}</a><a href="#fake">${B("防伪指南","Spot fakes")}</a><a href="#wall">${B("晒卡墙","Pull wall")}</a><a href="#lucky">${B("签到和抽奖","Check-in &amp; draw")}</a><a href="#privacy">${B("隐私声明","Privacy notice")}</a></nav>
+   <nav aria-label="${BT("信息","Information")}"><h3>${B("信息","Information")}</h3><a href="#about">${B("关于我们","About us")}</a><a href="#news">${B("情报","News")}</a><a href="#fake">${B("防伪指南","Spot fakes")}</a><a href="#wall">${B("晒卡墙","Pull wall")}</a><a href="#lucky">${B("签到和抽奖","Check-in &amp; draw")}</a><a href="#privacy">${B("隐私声明","Privacy notice")}</a></nav>
+   ${trustCol()}
   </div><div class="fin"><p class="disc cpy"><b>${B("© "+new Date().getFullYear()+" Holofen 版权所有。","© "+new Date().getFullYear()+" Holofen. All rights reserved.")}</b> <span class="reg" style="display:block;margin:2px 0 4px">ARROKOTH PARTNERSHIP · 202603312891 (003912333-M)</span> ${B("本站原创的文字、照片、设计和资料整理，未经 Holofen 书面同意，不得转载、复制、截图散布或用于商业用途。","Our original text, photos, design and compiled data may not be reposted, copied, shared as screenshots or used commercially without Holofen's written permission.")}</p><p class="disc">${B("Holofen 是独立卡牌店，不是 The Pokémon Company 的官方商店。Pokémon 及相关名称和图片的商标归各自权利人所有。","Holofen is an independent card shop, not an official store of The Pokémon Company. Pokémon and related names and images are trademarks of their respective owners.")}</p></div>`;
 }
 /* v134 页脚「客户服务」三页：常见问题、运费和寄送、退货与退款。内容都从现有资料生成（FAQ、后台运费设置、条款），不另写一套，免得两边不一致 */
@@ -2508,13 +2751,13 @@ V.item=()=>V.shop();
 
 /* ---------- v30：改善方面 3 ---------- */
 const HERO_GO=[
- ["shop","买盒买包","Buy boxes & packs","补充包、ETB、礼盒都在这里下单","Booster boxes, ETBs and gift sets",
+ ["shop","商店","Shop","补充包、ETB、礼盒都在这里下单","Booster boxes, ETBs and gift sets",
   "#0e7c86",'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16l-1.5 12a1 1 0 0 1-1 .9H6.5a1 1 0 0 1-1-.9z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>'],
- ["market","卡价雷达","Price radar","查每张卡现在值多少、谁在涨","What every card is worth today",
+ ["market","行情","Market","查每张卡现在值多少、谁在涨","What every card is worth today",
   "#1f6fd1",'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>'],
  ["series","图鉴","Card Index","每个系列的完整卡表和稀有度","Every card in every set",
   "#2f9e5b",'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="11" height="15" rx="2"/><path d="M9 3h9a2 2 0 0 1 2 2v12"/></svg>'],
- ["build","帮我组卡组","Build my deck","说预算和打法，我们帮你配好 60 张","Tell us your budget, we build the 60",
+ ["build","代组","Deck building","说预算和打法，我们帮你配好 60 张","Tell us your budget, we build the 60",
   "#d99a00",'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0 5 5L12 19l-4 1 1-4z"/><path d="M5 5l3 3"/></svg>']];
 /* 原创卡背：不用官方卡背图（精灵球和 Pokémon 字样受版权和商标保护），只取「蓝色漩涡 + 金边」的感觉，中间是本店的闪电徽章 */
 const CBK_SVG=`<svg viewBox="0 0 63 88" aria-hidden="true"><defs><radialGradient id="cbg" cx="50%" cy="46%" r="72%"><stop offset="0" stop-color="#46bdb6"/><stop offset=".45" stop-color="#12808a"/><stop offset="1" stop-color="#0a4a55"/></radialGradient><linearGradient id="cbe" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe37a"/><stop offset=".5" stop-color="#f5b800"/><stop offset="1" stop-color="#ffd84a"/></linearGradient></defs><rect x=".5" y=".5" width="62" height="87" rx="4" fill="url(#cbe)"/><rect x="3" y="3" width="57" height="82" rx="3" fill="url(#cbg)"/><g fill="none" stroke="#a8ece4" stroke-width=".7" stroke-opacity=".38">${[0,30,60,90,120,150].map(a=>`<ellipse cx="31.5" cy="44" rx="27" ry="11" transform="rotate(${a} 31.5 44)"/>`).join("")}</g><g fill="none" stroke="#d4f5ef" stroke-opacity=".22"><path d="M31.5 44m-34 0a34 34 0 1 0 68 0" stroke-width="5"/></g><ellipse cx="31.5" cy="44" rx="14" ry="16.5" fill="#f6b93b"/><ellipse cx="31.5" cy="44" rx="11.2" ry="13.6" fill="#13245c"/><path d="M34 34.5l-7.2 10.3h5l-2.4 8.7 7.8-11.1h-5.2z" fill="#f6b93b"/></svg>`;
@@ -2841,7 +3084,9 @@ V.card=()=>{ const c=CARDS[ui.card]; if(!c) return V.market(); const p=c.p, h=HI
 V.set=()=>{
   const s=ui.set, st=SI[s], d=SC[s]; if(!st) return V.series();
   const all=CBYSET[s]||[], rset=RORD.filter(r=>all.some(c=>c.r===r)), fr=ui.crar||"", fk=ui.ckind||"";
-  const list=all.filter(c=>(!fr||c.r===fr)&&(!fk||kindKey(c)===fk));
+  const qw=(ui.cq||"").trim().toLowerCase().split(/\s+/).filter(Boolean), so=ui.csort||"", vw=ui.cview||"g", mode=ui.ixm==="p"?"p":"c";
+  const list0=all.filter(c=>(!fr||c.r===fr)&&(!fk||kindKey(c)===fk)&&(!qw.length||qw.every(w=>(c.n+" "+(c.zh||"")+" "+c.num+" "+String(c.num).replace(/^0+/,"")).toLowerCase().includes(w))));
+  const pv=c=>cRM(c)==null?-1:cRM(c), list=so==="hi"?list0.slice().sort((a,b)=>pv(b)-pv(a)):so==="lo"?list0.slice().sort((a,b)=>(cRM(a)==null?1e9:cRM(a))-(cRM(b)==null?1e9:cRM(b))):list0;
   const ccl=list.filter(c=>c.r==="CC"), main=list.filter(c=>c.r!=="CC"&&(!/^\d+$/.test(c.num)||+c.num<=d.printed)), sec=list.filter(c=>c.r!=="CC"&&/^\d+$/.test(c.num)&&+c.num>d.printed);
   const prods=P.filter(p=>listed(p)&&p.s===s).sort((a,b)=>b.price-a.price);
   const promo=PROMOS[s]||[];
@@ -2849,19 +3094,27 @@ V.set=()=>{
   <div class="row sethead"><h1 style="margin:0"><span>${esc(s)}</span> ${B("卡牌列表","card list")}</h1></div><p class="muted" style="margin:0">${B(st.date+" 发售","Released "+st.date)} · ${setCnt(s)}</p>
   <div class="seg2 slang" role="group" aria-label="版本 Edition">${[["",B("英文版","English"),SETS[0]],["ja",B("日文版","Japanese"),JSETS[0]]].filter(x=>x[2]).map(x=>`<a href="${setUrl(x[2])}" class="${(st.ja?"ja":"")===x[0]?"on":""}">${x[1]}</a>`).join("")}</div>
   <nav class="serstrip setsw" aria-label="切换系列 Other sets">${(st.ja?JSETS:SETS).map(x=>`<a href="${setUrl(x)}" class="${x===s?"on":""}" ${x===s?'aria-current="page"':""} style="--sc:${SETC[x]||"#1c8fc4"}">${slogo(x,"")}<span>${esc(x)}</span></a>`).join("")}</nav>
-  ${prods.length?`<section class="stack" style="gap:10px"><div class="row" style="justify-content:space-between">${H2("本店的 "+s+" 商品","Our "+s+" products")}<a href="#shop" data-ser="${esc(s)}">${B("全部 "+prods.length+" 件","All "+prods.length)} ›</a></div>${marquee(prods.map(p=>({id:p.id,href:"#p/"+p.id,n:PN(p),nh:PZH(p)+(p.no?" #"+esc(p.no):""),s:rm(p.price),src:simg(p)})))}</section>`:""}
   <a class="svcstrip" href="#build">${buddy(44,"wow")}<span><b>${B("想要一副用 "+s+" 卡牌组成的卡组？","Want a deck with "+s+" cards?")}</b><small>${B("代组服务：说预算和打法，我们帮你配好 60 张，1 天内报价","Deck building: tell us your budget and style, we build the 60 cards and quote within 1 day")}</small></span><span class="go">${B("填需求","Start")} ›</span></a>
-  <div class="legend chk"><div class="lgh"><b>${B("稀有度标志","Rarity symbols")}</b><span class="muted">${B("点一下只看这种稀有度，再点一下取消","Tap a symbol to filter; tap again to clear")}</span></div>
-   <div class="lgg">${rset.map(r=>`<button data-crar="${fr===r?"":r}" class="${fr===r?"on":""}" aria-pressed="${fr===r}"><span class="sym" style="color:${RARX[r][3]}">${RARX[r][2]}</span><span class="eq">=</span><span class="nm">${B(RARX[r][0],RARX[r][1])}<small class="en2">${RARX[r][1]}</small></span><span class="cnt">${all.filter(c=>c.r===r).length}</span></button>`).join("")}</div>
-   <div class="row" style="gap:6px">${[["","全部","All"]].concat(Object.entries(KCAT).map(([k,v])=>[k,v[0],v[1]])).map(k=>{ const n=k[0]?all.filter(c=>kindKey(c)===k[0]).length:all.length; return n?`<button data-ckind="${k[0]}" class="${fk===k[0]?"on":""}">${B(k[1],k[2])} <small class="muted">${n}</small></button>`:"" }).join("")}${fr||fk?`<button data-crar="" data-ckind="">${B("清除筛选","Clear")}</button>`:""}</div>
-   <p class="muted" style="margin:0">${st.ja?B("日文版卡表，"+all.length+" 张。编号超过 "+d.printed+" 的是隐藏稀有卡。卡名先显示中文（繁体官方卡名转简体），没有中文的保留日文原名；稀有度标「?」的是资料库还没写，待核对。","Japanese card list, "+all.length+" cards. Numbers above "+d.printed+" are secret rares. Names show Chinese where an official name exists, otherwise the Japanese original; rarity \"?\" means not yet listed in the source.")+(all.some(c=>!c.im)?" "+B("这个系列的卡图资料库还没收录，先显示卡名。","Card images for this set aren't in the source yet, so names are shown."):""):B("编号超过 "+d.printed+" 的是隐藏稀有卡（Secret Rare），卡面编号会写成像 "+(d.printed+5)+"/"+d.printed+" 这样。卡表按两个来源核对过（Pokémon TCG API 和 TCGdex），张数一致。把鼠标移到卡上看大图和价格，点卡片看完整资料。","Numbers above "+d.printed+" are secret rares. Card list checked against two sources (Pokémon TCG API and TCGdex). Hover for a preview; tap for details.")}</p></div>
-  ${main.length?`<section class="stack" style="gap:10px">${H2(B2("主系列","Main set")+` <span class="muted" style="font-size:15px">${main.length}</span>`,"")}<div class="cgrid">${main.map(ctile).join("")}</div></section>`:""}
-  ${sec.length?`<section class="stack" style="gap:10px">${H2(B2("隐藏稀有","Secret rares")+` <span class="muted" style="font-size:15px">${sec.length}</span>`,"")}<div class="cgrid">${sec.map(ctile).join("")}</div></section>`:""}
-  ${ccl.length?`<section class="stack" style="gap:10px">${H2(B2("经典典藏 Classic Collection","")+` <span class="muted" style="font-size:15px">${ccl.length}</span>`,"")}<p class="muted">${B("30 张重印的历代名卡，编号 001 到 030，卡面印有 ★C。卡表和价格来自 TCGdex，卡图还没收录。","30 reprinted classic cards (001–030), marked ★C. List and prices from TCGdex; images not yet added.")}</p><div class="cgrid">${ccl.map(ctile).join("")}</div></section>`:""}
-  ${!main.length&&!sec.length&&!ccl.length?`<p class="muted">${B("没有符合筛选的卡。","No cards match.")}</p>`:""}
+  <div class="ixbar" role="toolbar" aria-label="${BT("图鉴筛选","Card index filters")}">
+   <div class="ixseg" role="group">${[["c","单卡","Cards",all.length],["p","密封产品","Sealed",prods.length]].map(x=>`<button type="button" data-ixm="${x[0]}" class="${mode===x[0]?"on":""}" aria-pressed="${mode===x[0]}">${B(x[1],x[2])} <small>${x[3]}</small></button>`).join("")}</div>
+   ${mode==="c"?`<label class="ixq">${ic("search",17)}<input id="cq" type="search" value="${esc(ui.cq||"")}" placeholder="${isEN()?"Name or number":"卡名或编号"}" aria-label="${BT("搜索这个系列的卡","Search this set")}"></label>
+   <select id="ix-r" aria-label="${BT("稀有度","Rarity")}"><option value="">${isEN()?"All rarities":"所有稀有度"}</option>${rset.map(r=>`<option value="${r}" ${fr===r?"selected":""}>${RARX[r][2]} ${isEN()?RARX[r][1]:RARX[r][0]} (${all.filter(c=>c.r===r).length})</option>`).join("")}</select>
+   <select id="ix-k" aria-label="${BT("种类","Card type")}"><option value="">${isEN()?"All types":"所有种类"}</option>${Object.entries(KCAT).map(([k,v])=>{ const n=all.filter(c=>kindKey(c)===k).length; return n?`<option value="${k}" ${fk===k?"selected":""}>${isEN()?v[1]:v[0]} (${n})</option>`:"" }).join("")}</select>
+   <select id="ix-s" aria-label="${BT("排序","Sort")}">${[["","编号顺序","By number"],["hi","价格高到低","Price: high to low"],["lo","价格低到高","Price: low to high"]].map(x=>`<option value="${x[0]}" ${so===x[0]?"selected":""}>${isEN()?x[2]:x[1]}</option>`).join("")}</select>
+   <div class="ixv" role="group" aria-label="${BT("显示方式","View")}"><button type="button" data-cview="g" class="${vw==="g"?"on":""}" aria-pressed="${vw==="g"}" aria-label="${BT("网格","Grid")}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></button><button type="button" data-cview="l" class="${vw==="l"?"on":""}" aria-pressed="${vw==="l"}" aria-label="${BT("列表","List")}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></button></div>`:""}
+  </div>
+  ${mode==="p"?(prods.length?`<div class="grid">${prods.map(prodCard).join("")}</div>`:`<p class="muted">${B("本店暂时没有这个系列的商品。","We have no products from this set yet.")}</p>`):`${(fr||fk||qw.length)?`<p class="muted ixn">${B(`找到 ${list.length} / ${all.length} 张`,`${list.length} of ${all.length} cards`)} · <button type="button" class="lnk" data-crar="" data-ckind="" data-cqclr="1">${B("清除筛选","Clear")}</button></p>`:""}
+  ${so?`<div class="${vw==="l"?"clist":"cgrid"}">${list.map(vw==="l"?crow2:ctile).join("")||`<p class="muted">${B("没有符合的卡","No cards match")}</p>`}</div>`:`  ${main.length?`<section class="stack" style="gap:10px">${H2(B2("主系列","Main set")+` <span class="muted" style="font-size:15px">${main.length}</span>`,"")}<div class="${vw==="l"?"clist":"cgrid"}">${main.map(vw==="l"?crow2:ctile).join("")}</div></section>`:""}
+  ${sec.length?`<section class="stack" style="gap:10px">${H2(B2("隐藏稀有","Secret rares")+` <span class="muted" style="font-size:15px">${sec.length}</span>`,"")}<div class="${vw==="l"?"clist":"cgrid"}">${sec.map(vw==="l"?crow2:ctile).join("")}</div></section>`:""}
+  ${ccl.length?`<section class="stack" style="gap:10px">${H2(B2("经典典藏 Classic Collection","")+` <span class="muted" style="font-size:15px">${ccl.length}</span>`,"")}<p class="muted">${B("30 张重印的历代名卡，编号 001 到 030，卡面印有 ★C。卡表和价格来自 TCGdex，卡图还没收录。","30 reprinted classic cards (001–030), marked ★C. List and prices from TCGdex; images not yet added.")}</p><div class="${vw==="l"?"clist":"cgrid"}">${ccl.map(vw==="l"?crow2:ctile).join("")}</div></section>`:""}
+  ${!main.length&&!sec.length&&!ccl.length?`<p class="muted">${B("没有符合筛选的卡。","No cards match.")}</p>`:""}`}`}
   ${promo.length?`<section class="stack sec" style="gap:10px">${H2("促销卡在哪里拿","Where to get the promo cards")}<p class="muted">${B("这些是和这个系列一起推出的黑星促销卡（Black Star Promo），不在补充包里，要买指定的礼盒才拿得到。资料来自官方系列卡表小册子。","Black Star Promos released alongside this set. They aren't in booster packs; each comes in a specific product. From the official set checklist booklet.")}</p><div class="promos">${promo.map(x=>`<div class="pm"><b>${esc(x[0])}</b><span>${B(x[1],x[2])}</span></div>`).join("")}</div></section>`:""}
   <p class="muted" style="font-size:12px">${st.ja?B("日文卡表和卡图来自 TCGdex 日文资料库，2026-11-19 下载；中文、英文卡名对照 PokeAPI。日文卡暂时没有价格。","Japanese list and images from the TCGdex database (2026-11-19); name lookups via PokeAPI. No prices for Japanese cards yet."):B("卡表和图片来自 Pokémon TCG API（pokemontcg.io），2026-11-14 下载；价格来自 TCGdex，"+TD.date+"。","Card list and images from the Pokémon TCG API (2026-11-14); prices from TCGdex, "+TD.date+".")}</p>`;
 };
+/* v141 图鉴列表模式：一行一张卡（缩图、编号、卡名、稀有度、参考价、涨跌） */
+function crow2(c){ return `<a class="crw" href="#card/${c.k}"><span class="crwi">${cImg(c)}</span><span class="crwn">Nº ${esc(String(c.num).padStart(3,"0"))}</span><span class="crwb"><b>${cNH(c)}</b>${rarB(c.r)}</span><span class="crwp">${cPriceTxt(c)}${trPill(c)}</span></a>` }
+document.addEventListener("change",e=>{ const t=e.target; if(!t||!t.id) return; if(t.id==="ix-r"){ ui.crar=t.value; render() } else if(t.id==="ix-k"){ ui.ckind=t.value; render() } else if(t.id==="ix-s"){ ui.csort=t.value; render() } });
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ixm],[data-cview],[data-cqclr]"); if(!b) return; if(b.dataset.ixm){ ui.ixm=b.dataset.ixm; return render() } if(b.dataset.cview){ ui.cview=b.dataset.cview; return render() } if(b.dataset.cqclr){ ui.cq=""; render() } });
 const backBtn=fb=>`<button type="button" class="backbtn" data-back="${esc(fb)}" aria-label="${BT("返回","Back")}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>${B("返回","Back")}</button>`;
 let navN=0; window.addEventListener("hashchange",()=>{ navN++ });
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-back]"); if(!b) return; e.stopPropagation(); if(navN>0){ navN-=2; history.back() } else location.hash=b.dataset.back.replace(/^#/,"") },true);
@@ -2878,6 +3131,31 @@ const PROMOS={"30th Celebration":[
  ["Ditto","在《30th Celebration》百变怪高级礼盒里","Ditto Premium Collection"],
  ["Pikachu ex、Espeon ex、Umbreon ex","在《30th Celebration》UPC 大礼盒（Ultra-Premium Collection）里","Ultra-Premium Collections"]]};
 function marquee(list,rev){ let l=list.slice(); while(l.length&&l.length<16) l=l.concat(list); const one=l.map((c,i)=>`<figure>${c.id||c.href?`<a href="${c.href||"#card/"+((PM[c.id]&&PM[c.id].ck)||c.id)}" tabindex="-1">`:""}<img src="${c.src}" alt="${esc(c.n)}"${i>=6?' loading="lazy"':""} decoding="async">${c.id?"</a>":""}${c.b||""}<figcaption>${c.nh||esc(c.n)}<br>${esc(c.s)}</figcaption></figure>`).join(""); return `<div class="mqw"><button type="button" class="mqa l" data-mq="-1" aria-label="${isEN()?"Scroll left":"向左看"}">‹</button><div class="mq${rev?" rev":""}"><div class="track" style="animation-duration:${l.length*3.75}s">${one}${one}</div></div><button type="button" class="mqa r" data-mq="1" aria-label="${isEN()?"Scroll right":"向右看"}">›</button></div>` }
+/* v141 改善报告 15 第 5 项：首页「今日焦点 & 卡牌聚光灯」，数据和「行情」页同一份（TCGdex 价格、Cardmarket 近 7 天对比近 30 天均价）。
+   没有成交量和 PSA 价格的来源，所以不做「一周成交王」和 PSA 切换；「新晋热门」= 最新一个英文系列里最贵的卡。 */
+function mktSpot(){ const all=Object.values(CARDS).filter(c=>cEd(c)!=="jp"&&cRM(c)!=null), mov=all.filter(c=>c.tr!=null&&cRM(c)>=20);
+  if(!mov.length) return "";
+  const byP=(a,b)=>cRM(b)-cRM(a), up=mov.filter(c=>c.tr>0).sort((a,b)=>b.tr-a.tr||byP(a,b)), dn=mov.filter(c=>c.tr<0).sort((a,b)=>a.tr-b.tr||byP(a,b)), nw=all.filter(c=>c.s===SETS[0]).sort(byP), top=all.slice().sort(byP);
+  const glow=c=>(TYPEC[c.ty]||["#9fb8c0"])[0];
+  const spark=c=>{ if(c.tr==null) return ""; const u=c.tr>=0, y0=u?30:8, y1=u?8:30; return `<svg class="fspk" viewBox="0 0 120 38" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="fsg${u?"u":"d"}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity=".22"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs><path d="M2 ${y0} C 40 ${y0}, 80 ${y1}, 118 ${y1} L118 38 L2 38 Z" fill="url(#fsg${u?"u":"d"})"/><path d="M2 ${y0} C 40 ${y0}, 80 ${y1}, 118 ${y1}" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>` };
+  const pct=c=>c.tr==null?"":`<span class="fpct ${c.tr>0?"up":c.tr<0?"dn":""}">${c.tr>0?"▲":c.tr<0?"▼":"–"} ${Math.abs(c.tr)}%</span>`;
+  const focus=(c,k,z,e,tag)=>c?`<a class="fcard ${k}" href="#card/${c.k}" style="--gl:${glow(c)}"><span class="fwm" aria-hidden="true">${c.tr!=null?(c.tr>0?"+":"")+c.tr+"%":"NEW"}</span><span class="fhd"><span class="fbdg">${B(z,e)}</span><span class="f7">${tag}</span></span><span class="fim">${cImg(c,true)}</span><span class="fbd"><b>${cNH(c)}</b><small>${esc(c.s)} · #${esc(c.num)}</small><span class="frow"><span class="fpr">${rm(cRM(c))}</span>${pct(c)}</span>${spark(c)}</span></a>`:"";
+  const T=[["new","新弹热门","New set",nw],["up","本周上涨","Up this week",up],["dn","本周下跌","Down this week",dn],["top","殿堂精品","Hall of fame",top]];
+  const cur=T.find(t=>t[0]===ui.spot)||T[0], six=cur[3].slice(0,6);
+  return `<section class="fb band sky mspot" aria-label="${BT("今日焦点和卡牌聚光灯","Today's focus and spotlight")}"><div class="fin">
+   <div class="bandh">${H2("今日焦点","Today's Focus")}<span class="muted msub">${B("近 7 天对比近 30 天均价 · "+TD.date,"7-day vs 30-day average · "+TD.date)}</span></div>
+   <div class="fgrid">${focus(up[0],"up","涨幅王","Top gainer","7D")}${focus(dn[0],"dn","跌幅王","Top loser","7D")}${focus(nw[0],"nw","新晋热门","Newly hot",esc(SETS[0]))}</div>
+   <div class="bandh sph">${H2("卡牌聚光灯","Spotlight")}</div>
+   <div class="spt" role="tablist" aria-label="${BT("聚光灯分类","Spotlight filter")}">${T.map(t=>`<button type="button" role="tab" data-spot="${t[0]}" class="${cur===t?"on":""}" aria-selected="${cur===t}">${B(t[1],t[2])}</button>`).join("")}</div>
+   <div class="sprow">${six.map(c=>`<a class="spc" href="#card/${c.k}" style="--gl:${glow(c)}"><span class="spi">${cImg(c,true)}</span><b>${cNH(c)}</b><small>${esc(c.s)}</small><span class="frow"><span class="fpr">${rm(cRM(c))}</span>${pct(c)}</span></a>`).join("")}</div>
+   <div class="ctr"><a class="morebtn" href="#market">${B("查看完整行情榜","See the full market")} →</a></div></div></section>` }
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-spot]"); if(!b) return; ui.spot=b.dataset.spot; render() });
+/* v141 改善报告 15 第 6 项：页脚第 4 栏「购物保障」。只写真的：本店只收银行转账和 DuitNow（直接进本店户口），所以不放 VISA、MC、FPX、TNG；社交只放有链接的。 */
+function trustCol(){ const so=CONTACT.filter(c=>c[3]&&c[0]!=="mail");
+  const li=(d,z,e)=>`<li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>${B(z,e)}</li>`;
+  return `<div class="ftrust"><h3>${B("购物保障","Why shop with us")}</h3><ul>${li('<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/>',"100% 正品保证","100% authentic products")}${li('<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>',"付款直接进本店户口","Pay straight to our own account")}${li('<path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/>',"马来西亚本地发货","Shipped from Malaysia")}</ul>
+   <div class="fpay" aria-label="${BT("付款方式","Payment methods")}"><span>DuitNow</span><span>${B("银行转账","Bank transfer")}</span></div>
+   ${so.length?`<div class="fsoc">${so.map(c=>`<a href="${c[3]}" target="_blank" rel="noopener" aria-label="${esc(c[1])}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${c[4].replace(/fill="#fff"/g,'fill="currentColor"')}</svg></a>`).join("")}</div>`:""}</div>` }
 function homeCi(){ const g=isGuest(), d=!g&&ciDone(), R=rules(), st=g?0:ciStreak(XU);
   if(d) return `<div class="hci ok"><span class="hci-t"><b>${B("✓ 今天已签到","✓ Checked in today")}</b><small>${B("已连续 "+st+" / 7 天，明天再来","Day "+st+" of 7. Come back tomorrow")}</small></span><a class="hci-b" href="#lucky">${B("去抽奖","Lucky draw")}</a></div>`;
   return `<div class="hci"><span class="hci-t"><b>${B("每日签到领 "+R.ciPts+" 分","Check in daily for "+R.ciPts+" pts")}</b><small>${B("连续第 3、7 天和月度、年度都有加送"+(g?"（要先登录）":""),"Extra points on day 3, day 7, monthly and yearly"+(g?" (sign in first)":""))}</small></span><button class="hci-b" type="button" data-ci="1">${B("立即签到","Check in")}</button></div>` }
@@ -2892,17 +3170,18 @@ V.home=()=>{
    ["contact","客服","Customer service","WhatsApp、IG、FB、小红书都能找到我们","Talk to us","#ffe3d1",`<span style="margin-top:auto;align-self:flex-end;transform:translateY(6px)">${ic("chat",86,"#0e7c86")}</span>`]];
   return `${banner()}
   <div class="hero-shell fb">${[0,1].map(r=>cbkStrip("l",r)+cbkStrip("r",r)).join("")}<section class="hero" aria-label="首页主视觉"><div class="aur" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="leaves" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="spot" aria-hidden="true"></div>
-  <div class="stack hero-in" style="gap:14px">
+  <div class="hdeco" aria-hidden="true">${GALLERY.slice(0,4).map(id=>PM[id]).filter(Boolean).map((p,k)=>`<img class="hd${k}" src="${simg(p)}" alt="" loading="lazy">`).join("")}</div>${(el=>`<div class="stack hero-in${el!=null?" first":""}" style="gap:14px${el!=null?";--el:"+el+"ms":""}">`)(heroFirst())}
     <img class="hlogo" src="intro/holofen-logo.webp" width="756" height="900" alt="Holofen">
-    <h1 class="tag">${B("马来西亚的宝可梦卡牌店","A Pokémon card shop in Malaysia")}<small class="sub">${B("原盒、补充包和礼盒，中文、英文、日文版都有，不登录也能下单。","Sealed boxes, packs and gift sets in Chinese, English and Japanese. No account needed to order.")}</small></h1>
-    <div class="hero-cta4">${HERO_GO.map((g,k)=>`<a class="hgo${k?"":" main"}" href="#${g[0]}" style="--hc:${g[5]}"><span class="hi" aria-hidden="true">${g[6]}</span><span class="ht"><b>${B(g[1],g[2])}</b><small>${B(g[3],g[4])}</small></span><span class="ha" aria-hidden="true">›</span></a>`).join("")}</div></div>
+    <h1 class="tag"><span class="htl">${B("马来西亚的宝可梦卡牌店","A Pokémon card shop in Malaysia")}</span><small class="sub">${B("原盒、补充包和礼盒，中文、英文、日文版都有，不登录也能下单。","Sealed boxes, packs and gift sets in Chinese, English and Japanese. No account needed to order.")}</small></h1>
+    <div class="hero-cta4">${HERO_GO.map((g,k)=>`<a class="hgo${k?"":" main"}" href="#${g[0]}" style="--hc:${g[5]}"><span class="hi" aria-hidden="true">${g[6]}</span><span class="ht"><b>${B(g[1],g[2])}</b></span></a>`).join("")}</div></div>
   <div class="hero-mq" aria-label="名卡展览 Famous cards"><div class="hm1"><div class="mqlab">${B("涨幅前 5 · 跌幅前 5","Top 5 up · top 5 down")} <span>${B("PriceCharting 最近一次价格变动，"+PC_DATE,"PriceCharting latest move, "+PC_DATE)}</span></div>${marquee(row1)}</div><div class="hm2"><div class="mqlab">${B("名卡巡礼","Grail cards")} <span>${B("全球最贵、最受追捧的宝可梦卡，只供欣赏","The most wanted Pokémon cards in the world, just for looking")}</span></div>${marquee(row2,1)}</div></div></section></div>
   ${serCarousel()}
   ${pubRev.length?`<section class="stack sec">${H2("顾客评价","Customer reviews")}${reviewList()}</section>`:""}
   <section class="fb band mint" aria-label="${BT("每日签到","Daily check-in")}"><div class="fin">${homeCi()}</div></section>
+  ${mktSpot()}
   ${WALL.length?`<section class="stack sec">${H2("晒卡墙","Pull wall")}<div class="wgrid">${WALL.slice(0,4).map(wallItem).join("")}</div><a class="morebtn" href="#wall">${B("看晒卡墙、我也要晒","See the wall and share yours")}</a></section>`:""}
-  <section class="fb band cream"><div class="fin"><div class="bandh">${H2("最近的宝可梦新闻","Latest Pokémon news")}</div>
-    <div class="panel news">${NEWS.filter(n=>n.d&&n.d<=DATA_DATE&&!n.h).sort((a,b)=>b.d.localeCompare(a.d)).slice(0,3).map(newsItem).join("")}</div><a class="morebtn" href="#news">${B("查看全部新闻","See all news")}</a></div></section>`;
+  <section class="fb band cream"><div class="fin"><div class="bandh">${H2("情报","News")}</div>
+    <div class="panel news mag">${NEWS.filter(n=>n.d&&n.d<=DATA_DATE&&!n.h).sort((a,b)=>b.d.localeCompare(a.d)).slice(0,3).map(newsItem).join("")}</div><a class="morebtn" href="#news">${B("查看全部情报","See all news")}</a></div></section>`;
 };
 /* 2026-11-19 用户要：评价可以附照片和 15 秒以内的视频。最多 4 张照片 + 1 段视频；照片 8MB 内，视频 50MB 内、15 秒内。文件放 Supabase photos 桶 */
 const rvMed=l=>arr(l).slice(0,5).map(m=>({id:aid(m&&m.id),k:m&&m.k==="vid"?"vid":"img"})).filter(m=>m.id);
@@ -2941,7 +3220,7 @@ V.shop=()=>{
   <div class="row"><input id="q" type="search" placeholder="搜索卡名或编号" value="${esc(ui.q)}" style="flex:1 1 220px">
    <details class="filt" ${ui.fopen?"open":""}><summary>排序 <span class="en">Sort</span>${(ui.sort||"rec")!=="rec"?" ·":""}</summary><div class="row">
    <select id="sort" aria-label="排序"><option value="rec" ${(ui.sort||"rec")==="rec"?"selected":""}>推荐（RM50–300 优先）</option><option value="hi" ${ui.sort==="hi"?"selected":""}>价格从高到低</option><option value="lo" ${ui.sort==="lo"?"selected":""}>价格从低到高</option><option value="az" ${ui.sort==="az"?"selected":""}>按名称</option></select></div></details></div>
-  <div class="shopidx"><p class="muted">${BL(`共 ${list.length} 件，点图片看详情。本店不卖单卡；想知道单卡值多少，去 <a href="#market">卡价雷达</a>。`,`${list.length} items. Tap a picture for details. We don't sell singles; see the <a href="#market">price radar</a> for card values.`)}</p><a class="idxbtn" href="${ui.series&&SI[ui.series]?setUrl(ui.series):"#series"}">${ic("cards",18)}${B("图鉴","Card Index")}</a></div>
+  <div class="shopidx"><p class="muted">${BL(`共 ${list.length} 件，点图片看详情。本店不卖单卡；想知道单卡值多少，去 <a href="#market">行情</a>。`,`${list.length} items. Tap a picture for details. We don't sell singles; see the <a href="#market">price radar</a> for card values.`)}</p><a class="idxbtn" href="${ui.series&&SI[ui.series]?setUrl(ui.series):"#series"}">${ic("cards",18)}${B("图鉴","Card Index")}</a></div>
   ${list.length?`<div class="grid">${svcCard()}${list.slice(0,ui.shown).map(prodCard).join("")}</div>`:`<div class="grid">${svcCard()}</div><p class="muted">没有符合的商品，换个关键词试试。 No items match.</p>`}
   ${list.length>ui.shown?`<div><button data-more="1">再显示 24 件 <span class="en">Show 24 more</span></button></div>`:""}`;
 };
@@ -2973,12 +3252,24 @@ V.trends=()=>{
   <div class="tw"><table class="mob"><thead><tr><th></th>${TH("卡牌","Card")}${TH("涨跌幅","% Chg",1)}${TH("本店售价","Our price",1)}<th></th></tr></thead><tbody>
   ${list.map(m=>`<tr><td class="th">${m.p?`<img loading="lazy" src="${simg(m.p)}" alt="">`:""}</td><td><b>${esc(m.n)}</b><div class="muted">${esc(m.s)}</div></td><td class="n"><span class="pill ${sg(m)}">${ar(m)} ${Math.abs(m.pct).toFixed(2)}%</span></td><td class="n">${m.p?`<b style="color:var(--red)">${rm(m.p.price)}</b>`:`<span class="muted">暂无</span>`}</td><td>${m.p?`<button data-add="${m.p.id}">加入购物车</button>`:""}</td></tr>`).join("")}</tbody></table></div>`;
 };
-const newsItem=n=>`<article>${newsThumb(n)}<div><div class="row" style="gap:8px"><span class="chip">${NCAT[n.c][0]} <span class="en">${NCAT[n.c][1]}</span></span><time>${n.d||B("官网未标日期","undated")}</time></div><h3>${src(n.t,n.u)}</h3><p class="en">${esc(n.e)}</p><p class="zh${n.h?" muted":""}">${esc(n.b)}${n.u2?" "+src("国际官网玩法教学",n.u2):""}</p>${n.eb?`<p class="en${n.h?" muted":""}">${esc(n.eb)}</p>`:""}<p class="muted">${B("来源","Source")}: ${esc(n.s)}${n.u?` · <a class="nsrc" href="${esc(n.u)}" target="_blank" rel="noopener">${B("看原文","Read source")} ↗</a>`:""}</p></div></article>`;
+/* v141 改善报告 15 第 4 项：情报改成杂志卡（16:9 封面、圆角分类标签、日期、标题、导语）。
+   封面只用本店有权用的图：系列 logo、本店商品照片、卡组小图；都没有时用分类色块和图标，不转载新闻原文的图片。 */
+function newsCover(n){ const k=Object.keys(NEWSIMG).find(k=>n.u&&n.u.includes(k)); let v=k?NEWSIMG[k]:"", src="";
+  if(v.startsWith("img:")){ const [,id,big]=v.split(":"); const p=PM[id]; if(p) src=(big&&p.big?"big/":"img/")+p.img+".jpg" } else if(v) src=deckImg(v);
+  const hay=(n.e||"")+" "+(n.t||""), sk=Object.keys(SI).filter(x=>SI[x].logo&&!SI[x].ja&&x.length>3&&hay.includes(x)).sort((a,b)=>b.length-a.length)[0];
+  const col=CATCOL[n.c]||"#e9f3f4";
+  if(src) return `<span class="ncv img" style="--nc:${col}"><img class="nbg" src="${src}" alt="" loading="lazy" aria-hidden="true"><img class="nfg" src="${src}" alt="" loading="lazy"></span>`;
+  if(sk) return `<span class="ncv logo" style="--nc:${col};--sc:${SETC[sk]||"#1c8fc4"}"><img class="nlg" src="${SI[sk].logo}" alt="${esc(sk)}" loading="lazy"></span>`;
+  return `<span class="ncv ic" style="--nc:${col}"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#14254a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${CATICON[n.c]}</svg>${n.d?`<b class="ndate">${+n.d.slice(8,10)}<small>${B(+n.d.slice(5,7)+" 月","JanFebMarAprMayJunJulAugSepOctNovDec".substr((+n.d.slice(5,7)-1)*3,3))}</small></b>`:""}</span>` }
+/* v141 第 3 项：首屏标题只在这次打开网站的第一次看到时做入场动画，之后回首页不再重播 */
+let HF0=null;
+function heroFirst(){ if(HF0==null){ try{ if(sessionStorage.getItem("hfIn")) HF0=-1; else { HF0=Date.now(); sessionStorage.setItem("hfIn","1") } }catch(e){ HF0=-1 } } if(HF0<0) return null; const el=Date.now()-HF0; return el<2600?el:null }
+const newsItem=n=>`<article class="nmag">${n.u?`<a class="ncov" href="${esc(n.u)}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">${newsCover(n)}</a>`:`<span class="ncov">${newsCover(n)}</span>`}<div class="nbd"><div class="nmeta"><span class="nchip">${B(NCAT[n.c][0],NCAT[n.c][1])}</span><time>${n.d||B("官网未标日期","Undated")}</time></div><h3>${n.u?`<a href="${esc(n.u)}" target="_blank" rel="noopener">${B(esc(n.t),esc(n.e))}</a>`:B(esc(n.t),esc(n.e))}</h3><p class="nlead">${B(esc(n.b)+(n.u2?" ":""),esc(n.eb||""))}${n.u2?src(isEN()?"Official how-to-play guide":"国际官网玩法教学",n.u2):""}</p><p class="nsrc2">${B("来源","Source")} · ${esc(n.s)}</p></div></article>`;
 V.news=()=>{
   const list=NEWS.filter(n=>ui.ncat==="all"||n.c===ui.ncat).sort((a,b)=>(b.d||"0").localeCompare(a.d||"0"));
-  return `${H1("宝可梦新闻","Pokémon news")}<p>赢了比赛的玩家和他们的套牌、新品发售、马来西亚的官方活动、怎么入门。每条都链接到原文，${DATA_DATE} 手动整理，不会自动更新。<span class="en"> Winning players and decks, new releases, official Malaysia events and how to start. Every item links to its source.</span></p>
+  return `${H1("情报","News")}<p>赢了比赛的玩家和他们的套牌、新品发售、马来西亚的官方活动、怎么入门。每条都链接到原文，${DATA_DATE} 手动整理，不会自动更新。<span class="en"> Winning players and decks, new releases, official Malaysia events and how to start. Every item links to its source.</span></p>
   <div class="row ncrow" role="group">${Object.entries(NCAT).map(([k,v])=>`<button data-ncat="${k}" class="${ui.ncat===k?"on":""}">${v[0]} <span class="en">${v[1]}</span></button>`).join("")}</div>
-  <div class="panel news">${list.map(newsItem).join("")}</div>`;
+  <div class="panel news mag">${list.map(newsItem).join("")}</div>`;
 };
 function deckGrid(id){ const L=LISTS[id]; if(!L) return ""; const H=[["宝可梦","Pokémon"],["训练家","Trainer"],["能量","Energy"]];
   return H.map((h,i)=>`<div class="dkh">${B(h[0],h[1])} <span class="muted">(${cnt(L[i])})</span></div><div class="dkg">${L[i].split("; ").map(x=>{ const m=x.match(/^(\d+) (.+) ([A-Z0-9]{2,4}) (\d+)$/); if(!m) return ""; return `<figure class="dkc" title="${esc(m[2])} ${m[3]} ${m[4]}"><span class="im"><img loading="lazy" src="deckimg/${m[3]}_${m[4]}.png" alt="${esc(m[2])}" data-alt="https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/${m[3]}/${m[3]}_${m[4].padStart(3,"0")}_R_EN_SM.png" onerror="if(this.dataset.alt){this.src=this.dataset.alt;this.dataset.alt=''}else this.style.visibility='hidden'"><b>×${m[1]}</b></span><figcaption>${esc(nZ(m[2]))}<small>${m[3]} ${m[4]}</small></figcaption></figure>` }).join("")}</div>`).join("") }
@@ -3070,7 +3361,7 @@ V.about=()=>`${H1("关于我们","About us")}
     <ul>${TRUST.map(t=>`<li>${B(t[0],t[1])}${t[2]?" "+OWNER_TBD():""}</li>`).join("")}</ul>
     <a class="go" href="#fake">${B("教你怎么分辨盗版卡","How to spot a fake card")} ›</a></div>
     <div class="shield" aria-hidden="true"><svg width="120" height="140" viewBox="0 0 24 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 3.5v7.5c0 6-4 10.5-9 13-5-2.5-9-7-9-13V5.5z" fill="rgba(255,203,5,.18)"/><path d="M7.5 14l3 3 6-6.5" stroke-width="2.2"/></svg></div></section>
-  <div class="row"><button class="pri" data-go="shop">去商店 <span class="en">Go to shop</span></button><button data-go="news">看最新消息 <span class="en">Latest news</span></button></div>`;
+  <div class="row"><button class="pri" data-go="shop">去商店 <span class="en">Go to shop</span></button><button data-go="news">看情报 <span class="en">Latest news</span></button></div>`;
 const TRUST=[
  ["进货：每批货记录供应商和单据。供应商名单：","Sourcing: we keep the supplier and invoice for every batch. Supplier list:",1],
  ["收货核对：语言版、系列、包装规格和出厂收缩膜，和商品名称一致才上架。","On arrival: language, set, packaging size and factory wrap must match the listing."],
@@ -3080,7 +3371,7 @@ const VALUES=[
  ["定价清楚","Clear pricing","标价就是售价，没有隐藏费用；运费在结账前清楚列出。","The price you see is the price you pay, with shipping shown before checkout.","var(--water)"],
  ["正品核对","Authenticity checks","每件按语言、版本和包装核对后才寄出；实拍图陆续补上。","Each item is checked for language, version and packaging before it ships. Our own photos are being added.","var(--red)"],
  ["懂卡","Card know-how","我们每周看官方比赛结果和卡价，可以帮你组卡组、决定先收哪张。","We follow official results and card prices every week, so we can help you build a deck or decide what to collect first.","var(--grass)"],
- ["消息集中","News in one place","比赛结果和新系列消息每周整理在「最新消息」，不用到处找。","Tournament results and new-set news are rounded up weekly in Latest News.","#d9a400"]];
+ ["消息集中","News in one place","比赛结果和新系列消息每周整理在「情报」，不用到处找。","Tournament results and new-set news are rounded up weekly in Latest News.","#d9a400"]];
 const ROAD=[
  ["阶段一","线上起步","Online launch","先在 Instagram 和这个网店卖中文、英文和日文版的原盒、补充包和礼盒，价格写清楚，每批货都核对。","Sell Chinese, English and Japanese sealed boxes, packs and gift sets on Instagram and this shop, with clear prices and every batch checked."],
  ["阶段二","线下门店与赛事","Store and events","开实体门店，定期办比赛和新手教学，在网上买卡的人也能见面一起玩。","Open a physical store with regular tournaments and beginner sessions, so people who buy online can meet and play."],
@@ -3255,7 +3546,7 @@ function admRow(p){ const x=own(CAT.items,p.id)?CAT.items[p.id]:{}, ch=Object.ke
   return `<div class="panel arow${p.hidden?" off":""}" id="ar-${k}"><div class="aph"><img src="${simg(p)}" alt=""><label class="btn sm">${p.photo?"换照片":"上传照片"}<input type="file" accept="image/*" data-aphoto="${k}" hidden></label>${p.photo?`<button class="sm" data-aphotorm="${k}">用回参考图</button>`:""}</div>
   <div class="stack" style="gap:8px;flex:1;min-width:0">
    <div class="row" style="justify-content:space-between"><b>${esc(p.n||"（新商品）")}</b><span class="muted">${esc(p.s)} · ${CATS[p.c][isEN()?1:0]}${p.no?" · "+esc(numTxt(p)):""}${p.added?(isEN()?" · Added by you":" · 自己新增"):""}${ch?` · <span style="color:var(--red)">${isEN()?"Edited":"已改动"}</span>`:""}</span></div>
-   ${!listed(p)?`<div class="note">${BL("这件现在是「已下架」：顾客在商店看不到，也买不到。"+(p.c==="single"?"单卡默认下架，只在卡牌行情和系列卡表里显示市价。":""),"This item is unlisted: customers can't see or buy it in the shop."+(p.c==="single"?" Singles are unlisted by default and only show market prices on the price and set pages.":""))}</div>`:""}
+   ${!listed(p)?`<div class="note">${BL("这件现在是「已下架」：顾客在商店看不到，也买不到。"+(p.c==="single"?"单卡默认下架，只在行情和系列卡表里显示市价。":""),"This item is unlisted: customers can't see or buy it in the shop."+(p.c==="single"?" Singles are unlisted by default and only show market prices on the price and set pages.":""))}</div>`:""}
    <div class="agrid">
     <label class="f">英文名<input id="a-n-${k}" value="${esc(p.n)}" maxlength="120"></label>
     <label class="f">中文名<input id="a-zh-${k}" value="${esc(p.zh)}" maxlength="120"></label>
@@ -3430,7 +3721,7 @@ function isPre(p){ const x=p&&own(CAT.items,p.id)?CAT.items[p.id]:null, v=x&&typ
 const preTxt=p=>{ const v=isPre(p); if(!v) return ""; const [y,m]=v.split("-"); return `${y} 年 ${+m} 月` };
 const stK=p=>p&&listed(p)&&(p.stock!==0||isPre(p))?"on":"off";
 const wished=id=>ME.wish.includes(id);
-function toggleWish(id){ const p=PM[id]; if(!p) return; if(wished(id)){ ME.wish=ME.wish.filter(x=>x!==id); delete ME.seen[id]; toast("已取消收藏 Removed") } else { ME.wish=[id].concat(ME.wish).slice(0,200); ME.seen[id]={st:stK(p),pr:p.price}; toast(stK(p)==="on"?"已收藏，降价会提醒你 Saved":"已收藏，到货会提醒你 Saved") } saveMe() }
+function toggleWish(id){ const p=PM[id]; if(!p) return; ui.wpop=wished(id)?null:id; clearTimeout(toggleWish.t); toggleWish.t=setTimeout(()=>{ ui.wpop=null; document.querySelectorAll(".wbtn.pop").forEach(b=>b.classList.remove("pop")) },700); setTimeout(()=>{ const w=document.getElementById("wishbtn"); if(w){ w.classList.remove("bump"); void w.offsetWidth; w.classList.add("bump") } },30); if(wished(id)){ ME.wish=ME.wish.filter(x=>x!==id); delete ME.seen[id]; toast("已取消收藏 Removed") } else { ME.wish=[id].concat(ME.wish).slice(0,200); ME.seen[id]={st:stK(p),pr:p.price}; toast(stK(p)==="on"?"已收藏，降价会提醒你 Saved":"已收藏，到货会提醒你 Saved") } saveMe() }
 const liveSets=()=>[...new Set(P.filter(p=>listed(p)).map(p=>p.s).filter(Boolean))];
 function alerts(){ const a=[];
   ME.wish.forEach(id=>{ const p=PM[id], s=ME.seen[id]; if(!p||!s) return;
@@ -3439,7 +3730,7 @@ function alerts(){ const a=[];
   if(ME.follow) liveSets().filter(s=>!ME.sets.includes(s)).forEach(s=>a.push({k:"set",s,t:"新系列上架"}));
   return a }
 function clearAlerts(){ ME.wish.forEach(id=>{ const p=PM[id]; if(p) ME.seen[id]={st:stK(p),pr:p.price} }); if(ME.follow) ME.sets=liveSets(); saveMe() }
-const wishBtn=(p,big)=>`<button class="wbtn${wished(p.id)?" on":""}${big?" big":""}" data-wish="${p.id}" aria-pressed="${wished(p.id)}" aria-label="${wished(p.id)?"取消收藏":"收藏"} ${esc(p.n)}"><svg width="${big?18:16}" height="${big?18:16}" viewBox="0 0 24 24" fill="${wished(p.id)?"currentColor":"none"}" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>${big?(wished(p.id)?B("已收藏","Saved"):B("收藏，到货或降价提醒我","Save & alert me")):""}</button>`;
+const wishBtn=(p,big)=>`<button class="wbtn${wished(p.id)?" on":""}${big?" big":""}${ui.wpop===p.id?" pop":""}" data-wish="${p.id}" aria-pressed="${wished(p.id)}" aria-label="${wished(p.id)?"取消收藏":"收藏"} ${esc(p.n)}"><svg width="${big?18:16}" height="${big?18:16}" viewBox="0 0 24 24" fill="${wished(p.id)?"currentColor":"none"}" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>${big?(wished(p.id)?B("已收藏","Saved"):B("收藏，到货或降价提醒我","Save & alert me")):""}</button>`;
 /* 会员：等级按近 12 个月（含本月）已送达订单的消费算，每月 1 日刷新；积分按每张订单下单当时的等级倍数，生日月下单再乘生日倍数。 */
 function winStart(t){ const d=new Date(t); return new Date(d.getFullYear(),d.getMonth()-11,1).getTime() }
 function meBtn(){ const m=member(uid), al=alerts().length+(ciDone()?0:1);
@@ -3694,6 +3985,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
+ ["v141","2026-11-27",["改名：卡价雷达→行情、最新消息→情报，首页四个入口改为毛玻璃圆角按钮（商店/行情/图鉴/代组）","商品卡：价格在左下，右下圆形「+」，鼠标移上去展开成「加入购物车」；加入后右侧滑出购物车抽屉","首页第一屏标题进场动画、两侧柔焦卡片；首页新增「今日焦点 & 卡牌聚光灯」（新弹热门/本周上涨/本周下跌/殿堂精品）","情报改成杂志卡片：16:9 封面、分类标签、日期、导语","页脚加第四栏「购物保障」（DuitNow/银行转账、Instagram）","图鉴去掉稀有度说明框，改成一行工具栏（卡牌/商品、搜索、稀有度、类型、排序、网格/列表）","行情页改成居中窄栏；导航下划线改细；关于页三张卡缓慢浮动；收藏爱心变红带弹跳，去掉购物车旁的深色下划线"]],
  ["v140","2026-11-26",["店主订单通知：顾客下单或自己取消订单时，系统马上寄电邮给店主（订单号、顾客、商品、合计、后台链接），每张订单每种通知只寄一次","后台新增「设置 › 订单通知」：填收通知的邮箱（最多 5 个），分别开关「新订单」「顾客取消」","顾客取消未付款订单改由服务器确认是本人、还没付款后才删除"]],
  ["v139","2026-11-25",["我的订单改成 Shopee 式：上方分栏（全部、待报价、待付款、待出货、待收货、已完成、已取消，有数量），每张订单卡显示商品照片、规格、数量和单价，多件商品可「查看更多」展开，底部写「共 N 件商品」和总额，右边是「查看订单详情」","新增订单详情页：进度条、该做的操作（付款、确认收货、评价等）、运送信息（快递、运单号可复制和查件、时间线）、收件信息、购买商品、费用明细；底部固定电子收据、再买一次、联系客服；会员中心的购买记录表改成最近 3 张订单卡","代组报价闭环：后台订单有「待报价」筛选，店主填报价金额、推荐配置和留言后按「确认并发送报价」（报价不再限制 RM130–250）；顾客收到电邮和网站提示，订单显示「已报价 · 待你确认」，可以「接受报价并付款」「联系客服调整」或「取消需求」；接受前付款按钮不出现","单卡说明不再有「中文 / EN」切换，跟全站语言走。中文：官方中文卡文（台湾繁体转简体），没有官方卡文的约 1,000 句卡文、900 个招式名和规则框由本店翻译并在卡下注明；英文：英文卡原文，日文卡用对应英文版卡文，没有英文版的日文卡暂时显示日文原文并注明","电脑首页系列轮播下方的小圆点可以直接点选跳到该系列","代组需求的预算选项拿掉 RM600–1,000 和 RM1,000 以上"]],
  ["v138","2026-11-25",["电脑首页：主视觉和行情走马灯左右各收窄约 3cm；系列展示左右各收窄约 3cm、高度矮约 4cm，背景加星芒、卡牌轮廓和能量几何暗纹（手机系列展示同步加装饰并加高约 1cm）","组牌代组先报价后付款：店主报价前，订单显示「等待店主报价」、金额写「待报价」、不显示付款按钮；网页端再挡一次，没报价或金额是 0 不能按「我已付款」","单卡弹窗：卡面说明右上角可切「中文 / EN」（默认跟全站语言），中文模式翻译栏目名和规则框；点弹窗外的黑色区域或按 Esc 就能关；弱点抗性照卡面写（例如 −20）","补齐 31 张缺招式资料的卡：30 周年经典收藏 30 张（例如皮卡丘 & 捷克罗姆 GX）和 Black Bolt 的 Escavalier","卡组排行：点左边的卡图也能打开卡组卡表","手机：顶部图标平均分布，店主后台按钮的房子图标恢复正常（之前显示成黑底圆点）；版本筛选三格等分铺满；系列筛选卡片缩小；行情、图鉴卡表、最贵 TOP 10、首页走马灯都改成一屏 3 张，价格不会超出格子；「本系列完整卡表 ›」不再中间空一段","手机：升跌榜「涨最多」红色、「跌最多」青色；底部栏加「图鉴」（首页、商店、图鉴、行情、卡组、更多）；商店保持一排 2 个，每张卡矮约 2cm；页脚「店铺 / 客户服务 / 信息」三栏并排","全站：隐藏的另一种语言不再占位，消息卡、页脚、链接不再出现莫名空隙；标签和消息卡加内边距，文字不贴线"]],
@@ -4474,7 +4766,7 @@ function add(id,brief,q){ const p=item(id); if(!p) return; if(!p.svc&&!sellable(
   saveCart(); addFx(p,q,isEN()?(p.svc?p.en:(p.loose?p.s+" loose packs × "+q:pname(p))):(p.svc?p.n:(p.loose?p.s+" 散包 × "+q:PN(p)))); }
 /* v94 加购反馈：商品小图飞进购物车，中间出现小鹿确认；系统设了减少动态就只显示确认 */
 let lastTap=null; document.addEventListener("pointerdown",e=>{ lastTap=e.target },true); document.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" ") lastTap=e.target },true);
-function addFx(p,q,name){ const rmo=matchMedia("(prefers-reduced-motion:reduce)").matches;
+function addFx(p,q,name){ if(typeof cdOpen==="function"&&route!=="admin") return cdOpen(p&&p.id); const rmo=matchMedia("(prefers-reduced-motion:reduce)").matches;
   const vis=el=>el&&el.offsetParent!==null&&el.getBoundingClientRect().width>0, tgt=[$("#cartbtn"),document.querySelector('#btm a[href="#cart"]')].find(vis);
   const host=lastTap&&lastTap.closest&&lastTap.closest(".prod,.qvbox,.loose,.panel,.modal .box"), im=host&&host.querySelector("img");
   if(!rmo&&tgt&&im&&vis(im)){ const a=im.getBoundingClientRect(), b=tgt.getBoundingClientRect(), f=document.createElement("img"); f.src=im.currentSrc||im.src; f.alt=""; f.className="flyimg";
@@ -4485,6 +4777,30 @@ function addFx(p,q,name){ const rmo=matchMedia("(prefers-reduced-motion:reduce)"
   let c=document.getElementById("addok"); if(!c){ c=document.createElement("div"); c.id="addok"; c.setAttribute("role","status"); c.setAttribute("aria-live","polite"); document.body.appendChild(c) }
   c.innerHTML=`<div class="aok">${buddy(54,"wow")}<b>${BT("已加入购物车","Added to cart")}</b><span>${esc(name)}</span><a href="#cart">${BT("去结账","Check out")} ›</a></div>`; c.hidden=false; c.className=rmo?"rm":"";
   clearTimeout(addFx.t); addFx.t=setTimeout(()=>{ c.hidden=true },1900) }
+/* v141 改善报告 15 第 1 项：右侧滑出购物车（参考 Myu Collectibles）。加入购物车或点右上角购物袋时打开，不跳页；
+   数量、移除都在这里改；「立即结账」去原来的购物车和结账页填收件资料。 */
+let cdLast=null, cdHi=null;
+function cdHTML(){ const n=cart.reduce((a,c)=>a+c.qty,0), sub=cart.reduce((a,c)=>{ const p=item(c.id); return a+(p.quote?0:p.price*c.qty) },0), q=cart.some(c=>item(c.id).quote);
+  const rows=cart.map((c,i)=>{ const p=item(c.id), cap=p.stock>0&&!isPre(p)?p.stock:99;
+    return `<li class="cdi${cdHi===c.id?" hi":""}"><span class="cdt">${p.svc?buddy(40):`<img src="${simg(p)}" alt="">`}</span><span class="cdb"><b>${esc(p.svc?(isEN()?p.en:p.n):PN(p))}</b><small class="muted">${esc(p.svc?(c.brief?c.brief.format+" · "+c.brief.budget:""):p.s||"")}</small>
+      <span class="cdr">${p.svc?`<span class="muted">${B("1 份","1 request")}</span>`:`<span class="cdq"><button type="button" data-cdq="${i}" data-d="-1" aria-label="${BT("少一件","One less")}">−</button><span aria-live="polite">${c.qty}</span><button type="button" data-cdq="${i}" data-d="1" aria-label="${BT("多一件","One more")}"${c.qty>=cap?" disabled":""}>+</button></span>`}<button type="button" class="cdrm" data-cdrm="${i}">${B("移除","Remove")}</button></span></span>
+      <span class="cdp">${p.quote?`<small class="muted">${B("待报价","To be quoted")}</small>`:rm(p.price*c.qty)}${!p.quote&&c.qty>1?`<small class="muted">${rm(p.price)} × ${c.qty}</small>`:""}</span></li>` }).join("");
+  return `<div class="cdh"><h2 id="cdttl">${B("购物车","Your cart")} <span class="cdn">(${n})</span></h2><button type="button" class="cdx" data-cdclose="1" aria-label="${BT("关闭购物车","Close cart")}">×</button></div>
+  ${cart.length?`<ul class="cdl">${rows}</ul><div class="cdf"><div class="cdsum"><span>${B("小计","Subtotal")}</span><b>${rm(sub)}${q?` <small class="muted">+ ${B("代组报价","deck quote")}</small>`:""}</b></div><p class="muted">${B("运费在结账时按重量和寄送地区计算。","Shipping is worked out at checkout by weight and destination.")}</p><button type="button" class="cdgo" data-cdgo="checkout">${B("立即结账","Checkout")}</button><button type="button" class="cdview" data-cdgo="cart">${B("查看购物车","View cart")}</button></div>`
+  :`<div class="cdempty">${buddy(64,"zzz")}<p>${B("购物车还是空的。","Your cart is empty.")}</p><button type="button" class="cdgo" data-cdgo="shop">${B("去逛商店","Go to shop")}</button></div>`}` }
+function cdEl(){ let d=document.getElementById("cdraw"); if(!d){ const ov=document.createElement("div"); ov.id="cdov"; ov.setAttribute("data-cdclose","1"); document.body.appendChild(ov); d=document.createElement("aside"); d.id="cdraw"; d.setAttribute("role","dialog"); d.setAttribute("aria-modal","true"); d.setAttribute("aria-labelledby","cdttl"); d.tabIndex=-1; document.body.appendChild(d) } return d }
+function cdPaint(){ const d=document.getElementById("cdraw"); if(d&&d.classList.contains("open")) d.innerHTML=cdHTML() }
+function cdOpen(hi){ const d=cdEl(); cdHi=hi||null; if(!d.classList.contains("open")) cdLast=document.activeElement; d.innerHTML=cdHTML(); document.documentElement.classList.add("cdon"); requestAnimationFrame(()=>{ d.classList.add("open"); document.getElementById("cdov").classList.add("open"); const x=d.querySelector(".cdx"); if(x) x.focus({preventScroll:true}) }); clearTimeout(cdOpen.t); cdOpen.t=setTimeout(()=>{ cdHi=null; const h=d.querySelector(".cdi.hi"); if(h) h.classList.remove("hi") },1600) }
+function cdClose(){ const d=document.getElementById("cdraw"); if(!d||!d.classList.contains("open")) return; d.classList.remove("open"); document.getElementById("cdov").classList.remove("open"); document.documentElement.classList.remove("cdon"); if(cdLast&&cdLast.focus&&document.contains(cdLast)) cdLast.focus({preventScroll:true}); cdLast=null }
+document.addEventListener("click",e=>{ const t=e.target.closest&&e.target.closest("#cartbtn,[data-cdclose],[data-cdq],[data-cdrm],[data-cdgo]"); if(!t) return;
+  if(t.id==="cartbtn"){ if(route==="admin") return; e.preventDefault(); e.stopPropagation(); return cdOpen() }
+  e.preventDefault(); e.stopPropagation(); const ds=t.dataset;
+  if(ds.cdclose) return cdClose();
+  if(ds.cdq!=null){ const c=cart[+ds.cdq]; if(!c) return; const p=item(c.id), cap=p.stock>0&&!isPre(p)?p.stock:99; c.qty=Math.min(cap,c.qty+(+ds.d)); if(c.qty<1) cart.splice(+ds.cdq,1); saveCart(); render(); return cdPaint() }
+  if(ds.cdrm!=null){ cart.splice(+ds.cdrm,1); saveCart(); render(); return cdPaint() }
+  if(ds.cdgo){ cdClose(); ui.pid=null; go(ds.cdgo==="checkout"?"cart":ds.cdgo); if(ds.cdgo==="checkout") setTimeout(()=>{ const f=document.getElementById("checkout"); if(f) f.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth",block:"start"}) },120) } },true);
+document.addEventListener("keydown",e=>{ const d=document.getElementById("cdraw"); if(!d||!d.classList.contains("open")) return; if(e.key==="Escape"){ e.stopPropagation(); return cdClose() }
+  if(e.key==="Tab"){ const f=[...d.querySelectorAll("button:not([disabled]),a[href]")]; if(!f.length) return; const a=f[0], z=f[f.length-1]; if(e.shiftKey&&document.activeElement===a){ e.preventDefault(); z.focus() } else if(!e.shiftKey&&document.activeElement===z){ e.preventDefault(); a.focus() } } },true);
 function findOrder(u,oid){ const d=all[u]||{orders:[]}; return [d,arr(d.orders).find(o=>cleanId(o.id)===oid)] }
 function patch(u,oid,ch){ const [d,o]=findOrder(u,oid); if(!o) return Promise.resolve(); Object.assign(o,ch); return saveDoc(u,{orders:d.orders}) }
 const stOf=oid=>{ const [,o]=findOrder(uid,oid); return o?rawStatus(uid,o)[0]:"" };
@@ -4610,11 +4926,12 @@ document.addEventListener("input",e=>{
   if(id==="q"){ ui.q=v; ui.shown=24; render() }
   else if(id==="pq"){ ui.pq=v; render() }
   else if(id==="mq"){ ui.mq=v; render() }
+  else if(id==="cq"){ ui.cq=v; render() }
   else if(id==="apq"){ ui.apq=v; ui.ashown=20; render() }
   else if(id&&id.startsWith("c-")&&e.target.tagName==="INPUT") ui["c"+id.slice(2)]=v;
 });
 document.addEventListener("toggle",e=>{ if(e.target.classList&&e.target.classList.contains("filt")) ui.fopen=e.target.open },true);
-document.addEventListener("compositionend",e=>{ const id=e.target.id; if(id==="q"){ui.q=e.target.value;ui.shown=24;render()} else if(id==="pq"){ui.pq=e.target.value;render()} else if(id==="mq"){ui.mq=e.target.value;render()} });
+document.addEventListener("compositionend",e=>{ const id=e.target.id; if(id==="q"){ui.q=e.target.value;ui.shown=24;render()} else if(id==="pq"){ui.pq=e.target.value;render()} else if(id==="mq"){ui.mq=e.target.value;render()} else if(id==="cq"){ui.cq=e.target.value;render()} });
 function formState(){ const s={}; document.querySelectorAll("#buildform input,#buildform select,#buildform textarea").forEach(el=>{ if(el.type==="file") return; if(el.type==="radio"){ if(el.checked) s["r:"+el.name]=el.value } else if(el.id) s[el.id]=el.value }); return s }
 function restoreForm(s){ Object.entries(s).forEach(([k,v])=>{ if(k.startsWith("r:")){ document.querySelectorAll(`input[name="${k.slice(2)}"]`).forEach(el=>el.checked=el.value===v) } else { const el=document.getElementById(k); if(el) el.value=v } }) }
 async function takeFiles(files){
