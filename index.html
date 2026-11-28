@@ -1994,6 +1994,107 @@ body>footer #foot,body>footer .ftrust{background:transparent!important}
 .dkc .im img.gone{visibility:hidden}
 .dkc .im img.gone~.dkph{display:flex;position:absolute;inset:0;flex-direction:column;justify-content:center;align-items:center;gap:4px;padding:6px;text-align:center;font-style:normal;font-size:11px;font-weight:700;line-height:1.25;color:#14254a;border-radius:6px;border:1.5px solid #d9e6e8;background:linear-gradient(160deg,#f4fbf9,#e6f2f4)}
 .dkc .im .dkph small{font-weight:500;color:#6b7a80;font-size:10px}
+
+/* ===== v143 改善方面 17 ===== */
+/* 1 首页主视觉满版：去掉左右卡背条和两边空白 */
+.hero-shell.fb{margin-left:calc(50% - var(--vw,100vw)/2)!important;margin-right:calc(50% - var(--vw,100vw)/2)!important}
+.hero-shell.fb .cbks{display:none!important}
+.hero-shell.fb .hero{border-radius:0!important;border-left:0!important;border-right:0!important}
+/* 2 行情/图鉴/代组悬停：跟商店一样，颜色和图案动、亮光扫过，不变白 */
+.hero-cta4 .hgo:hover,.hero-cta4 .hgo:focus-visible{background:var(--hgbg)!important;background-size:var(--hgsz,auto)!important;background-position:30px 0,0 0!important;filter:saturate(1.15) brightness(1.03)}
+/* 5 今日焦点：三张资料卡同样宽高，都有走势线 */
+.fcard{height:100%}
+.fcard .fbd{align-self:stretch;flex:1;display:flex;flex-direction:column}
+.fcard .frow{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:30px}
+.fcard .fspk{margin-top:auto}
+.fcard.nw .fspk{color:#1d5fa8}
+.fpct.nw{background:#e6f1fb;color:#1d5fa8}
+/* 6 页脚：铺满整页，颜色跟回到顶部的黄色一致 */
+body>footer{margin:0 -8px -8px!important;background:linear-gradient(180deg,#f8dc8a 0%,#f6d98a 40%,#f3d27a 100%)!important;color:#3a2a06}
+body>footer .totopw{margin-bottom:0}
+body>footer h3,body>footer h4,body>footer .fh,body>footer #foot h3{color:#5a3d00!important}
+body>footer a{color:#3a2a06}
+body>footer .muted,body>footer .disc{color:#5c4716!important}
+body>footer hr,body>footer .fin .disc{border-color:rgba(90,61,0,.18)!important}
+/* 7 加入购物车：购物车先晃一下，抽屉慢一点、柔一点滑出来 */
+#cdraw{transition:transform .68s cubic-bezier(.22,.8,.26,1)!important}
+#cdov{transition:opacity .55s ease!important}
+@keyframes cartWig{0%{transform:rotate(0) scale(1)}18%{transform:rotate(-14deg) scale(1.16)}36%{transform:rotate(11deg) scale(1.12)}54%{transform:rotate(-7deg) scale(1.06)}72%{transform:rotate(4deg)}100%{transform:rotate(0) scale(1)}}
+.wig svg{animation:cartWig .6s ease-out;transform-origin:50% 60%}
+@media (prefers-reduced-motion:reduce){.wig svg{animation:none}#cdraw{transition:none!important}}
+
+/* 4 系列轮播的图片缓慢漂浮（用 translate，不影响原来的旋转） */
+.fsl .fpic img{animation:gentleFloat 5s ease-in-out infinite}
+.fsl .fpic .c2{animation-duration:6.2s;animation-delay:-2.1s}
+.fsl .lg{animation:gentleFloat 6.8s ease-in-out infinite;animation-delay:-1.2s}
+/* 8 图鉴：本系列商品缩小、自动滚动，碰到就停 */
+.ixprod{gap:6px!important}
+.ixph h2{font-size:16px!important}
+.ixmq{overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.ixtr{display:flex;gap:10px;width:max-content;padding:4px 0 8px}
+.ixmq.run .ixtr{animation:ixmq var(--ixd,40s) linear infinite}
+.ixmq.run:hover .ixtr,.ixmq.run:focus-within .ixtr,.ixmq.run.hold .ixtr{animation-play-state:paused}
+@keyframes ixmq{to{transform:translateX(calc(-50% - 5px))}}
+.ixm{flex:none;width:118px;display:flex;flex-direction:column;gap:3px;padding:6px;border-radius:12px;background:#fff;border:1px solid #ece6d8;text-decoration:none;color:#14254a;transition:transform .25s ease,box-shadow .25s ease}
+.ixm:hover,.ixm:focus-visible{transform:translateY(-2px);box-shadow:0 10px 18px -12px rgba(15,60,80,.45)}
+.ixm img{width:100%;height:92px;object-fit:contain;border-radius:8px;background:#f7f4ec}
+.ixm span{font-size:11.5px;font-weight:700;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
+.ixm b{font-size:12.5px;color:#111}
+@media (prefers-reduced-motion:reduce){.ixmq.run .ixtr{animation:none}.ixmq{overflow-x:auto}}
+/* 9 图鉴的卡牌下方不放价钱和走势符号（点开的卡片资料照常） */
+html[data-route="set"] .ctl .cpr,html[data-route="set"] .crw .crwp{display:none!important}
+/* 11 图鉴加宽，跟行情页一样 */
+@media (min-width:1100px){html[data-route="set"] #view,html[data-route="series"] #view{max-width:1300px!important}}
+
+/* 12 行情：最贵 TOP 10 和系列最贵 TOP 10 两行自动滚动（方向相反），卡面有亮光扫过 */
+.ktop .kbh .ktsn{display:inline-flex;align-items:center;gap:6px}
+.ktop .kbh .ktsn img{height:20px;width:auto}
+.ktmq{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
+.ktmq .ktrow{overflow:visible!important;-webkit-mask-image:none!important;mask-image:none!important;width:max-content;scroll-snap-type:none}
+.ktmq .ktrow{animation:ktL var(--ktd,46s) linear infinite}
+.ktmq.r .ktrow{animation-name:ktR}
+.ktmq:hover .ktrow,.ktmq:focus-within .ktrow,.ktmq.hold .ktrow{animation-play-state:paused}
+@keyframes ktL{from{transform:translateX(0)}to{transform:translateX(calc(-50% - 6px))}}
+@keyframes ktR{from{transform:translateX(calc(-50% - 6px))}to{transform:translateX(0)}}
+.ktmq .kt10{flex:0 0 136px}
+.ktmq .kti{overflow:hidden;border-radius:8px}
+.ktmq .kti::after{content:"";position:absolute;inset:-20% -60%;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.55) 50%,transparent 60%);transform:translateX(-100%);animation:ktShine 4.8s ease-in-out infinite;animation-delay:calc(var(--i,0) * .45s);pointer-events:none}
+@keyframes ktShine{0%,62%{transform:translateX(-100%)}82%,100%{transform:translateX(100%)}}
+.ktop2{margin-top:-4px}
+@media (prefers-reduced-motion:reduce){.ktmq .ktrow,.ktmq .kti::after{animation:none}.ktmq{overflow-x:auto}}
+@media (max-width:640px){.ktmq .kt10{flex:0 0 108px}}
+
+/* 13 行情：殿堂精品（历代玩家追的名卡，只供欣赏） */
+.grail{display:flex;flex-direction:column;gap:12px}
+.grail .gsub{margin:0;color:var(--muted);font-size:13.5px}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px 16px;padding:18px;border-radius:22px;background:#fff;border:1px solid #ebe4d4}
+.gcard{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;background:none;border:0;padding:0;cursor:pointer;color:#14254a;font:inherit;min-width:0}
+.gcard .gim{position:relative;width:100%;aspect-ratio:63/88;border-radius:10px;overflow:hidden;box-shadow:0 12px 22px -14px rgba(0,0,0,.55);background:#f3efe6;transition:transform .3s var(--hf-ease,ease),box-shadow .3s ease}
+.gcard .gim img{width:100%;height:100%;object-fit:cover;display:block}
+.gcard .gim::after{content:"";position:absolute;inset:-30% -70%;background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.5) 50%,transparent 58%);transform:translateX(-100%);transition:transform .8s ease;pointer-events:none}
+.gcard:hover .gim,.gcard:focus-visible .gim{transform:translateY(-4px) rotate(-1deg);box-shadow:0 20px 30px -16px rgba(0,0,0,.6)}
+.gcard:hover .gim::after,.gcard:focus-visible .gim::after{transform:translateX(100%)}
+.gcard .gtg{position:absolute;left:6px;top:6px;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:99px;background:rgba(10,61,69,.86);color:#fff}
+.gcard b{font-size:13.5px;line-height:1.3;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.gcard small{font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.gcard .gp{font:800 13px var(--num);color:#111;max-width:100%;overflow-wrap:anywhere;line-height:1.3}
+.gmod{position:fixed;inset:0;z-index:200;background:rgba(16,38,55,.45);display:grid;place-items:center;padding:16px}
+.gmod .gbox{background:#fffdf9;border-radius:22px;max-width:760px;width:100%;max-height:92vh;overflow:auto;display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:22px;padding:22px;position:relative;box-shadow:0 30px 60px -20px rgba(0,0,0,.45)}
+.gmod .gbox img{width:100%;border-radius:12px;box-shadow:0 18px 30px -14px rgba(0,0,0,.5)}
+.gmod .gx{position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:99px;display:grid;place-items:center}
+.gmod h2{margin:0 40px 2px 0;font-size:22px}
+.gmod .gpr{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:6px 0;font-size:14px}
+.gmod .gpr b{font:800 18px var(--num);color:#111}
+@media (max-width:640px){.ggrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 8px;padding:12px}.gcard b{font-size:12px}.gcard small{display:none}.gcard .gp{font-size:11.5px}.gmod .gbox{grid-template-columns:1fr;padding:16px}.gmod .gbox img{max-width:220px;justify-self:center}}
+/* 14 会员各页和我的订单：去结账小链接 */
+.gopay{display:flex;justify-content:flex-end;margin:0 0 -6px}
+.gopay a{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;padding:6px 12px;border-radius:99px;background:#fff4d6;color:#7a4b00;border:1px solid #f1d58a;text-decoration:none}
+.gopay a:hover{background:#ffe9ad}
+.gopay a .n{background:#e0583a;color:#fff;border-radius:99px;min-width:18px;line-height:18px;padding:0 5px;text-align:center;font-size:11px}
+.gopay2{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:18px;background:linear-gradient(100deg,#fff6dc,#eaf6f1);border:1px dashed #e7c66a;text-decoration:none;color:#14254a}
+.gopay2 b{font-size:14.5px}.gopay2 small{display:block;color:var(--muted);font-size:12.5px}
+.gopay2 .go{margin-left:auto;font-weight:800;color:#0f5e63;white-space:nowrap}
+.gopay2:hover .go{transform:translateX(3px)}.gopay2 .go{transition:transform .25s ease}
 </style>
 
 <div class="bgfx" aria-hidden="true"></div>
@@ -2528,7 +2629,7 @@ function renderCore(){
   $("#cartbtn").hidden=adm; { const bb=$("#backbtn"); if(bb) bb.hidden=!adm } { const ob=$("#ownbtn"); if(ob) ob.hidden=adm||!owner } { const lb=$("#loginbtn"); if(lb){ lb.hidden=adm; if(window.HOLO_AUTH) HOLO_AUTH.paint() } } { const kf=document.querySelector(".kfbtn"); if(kf) kf.hidden=adm||!CONTACT.some(c=>c[3]) } { const wb=$("#wishbtn"); if(wb){ wb.hidden=adm; const wn=arr(ME.wish).length, al=alerts().length; wb.classList.toggle("has",wn>0); wb.innerHTML=wb.innerHTML.replace(/<b class="hb"[^>]*>.*?<\/b>/,"")+(al||wn?`<b class="hb" aria-hidden="true">${al||wn}</b>`:""); wb.setAttribute("aria-label",isEN()?`Wishlist${wn?" ("+wn+")":""}`:`收藏${wn?"（"+wn+" 件）":""}`); if(route==="wish") wb.setAttribute("aria-current","page"); else wb.removeAttribute("aria-current") } } { const mb=$("#mebtn"); if(mb){ mb.hidden=true; if(!adm){ const al=alerts().length; const nci=!ciDone(); mb.innerHTML=meBtn(); mb.href=al?"#wish":nci?"#lucky":"#orders"; mb.title=al?"有新提醒，去看收藏":nci?"今天还没签到":"我的会员和订单"; mb.setAttribute("aria-label",(al?al+" 条新提醒，":"")+"我的会员 My membership"); mb.classList.toggle("here",route==="orders"||route==="wish") } } } saveCart();
   setHTML("#band",adm?"":band());
   { const want=Object.keys(CURS).map(k=>`<option value="${k}" ${k===CUR?"selected":""}>${CURS[k][0]} ${k} · ${isEN()?CURS[k][4]:CURS[k][3]}</option>`).join(""); ["hcur","hcurm"].forEach(id=>{ const hc=$("#"+id); if(!hc) return; hc.hidden=adm; const cs=hc.querySelector("select"); if(cs._h!==want){ cs.innerHTML=want; cs._h=want } cs.value=CUR; const cv=hc.querySelector(".cv"); if(cv) cv.innerHTML=`<span class="cs">${esc(CURS[CUR][0])}</span><span class="cc"> ${CUR}</span>`; cs.setAttribute("aria-label",isEN()?"Currency":"货币") }) }
-  $("#foot").innerHTML=adm?`<a href="#home">${BL("回到顾客前台","Back to storefront")}</a>`:`${DOTS}<span class="muted" style="font-size:13px">© ${new Date().getFullYear()} Holofen ${B("版权所有","All rights reserved")}</span>`;
+  $("#foot").innerHTML=adm?`<a href="#home">${BL("回到顾客前台","Back to storefront")}</a>`:"";
   const keep=document.activeElement&&document.activeElement.id, pos=keep&&document.activeElement.selectionStart;
   /* v86 内容没变就不重画：刷新后资料一份份载入时，首页不会一直闪 */
   const vch=setHTML("#view",subnav()+(V[route]||V.home)());
@@ -2679,6 +2780,52 @@ V.howto=()=>{ ui.ncat="learn"; return V.news() };
    日文版还没有可核实的来源，所以日文版显示「暂无数据」，绝不拿英文版价格冒充。 */
 const cEd=c=>c.ed||"en";
 const edTag=c=>`<span class="edtag">${cEd(c)==="jp"?B("日","JP"):B("英","EN")}</span>`;
+
+
+/* v143 改善方面 17 第 13 项：殿堂精品。名卡资料和图片来自 PriceCharting（2026-11-28 读取）；没评级价＝PriceCharting「Ungraded」成交价，PSA 10 只在页面有显示时列出。只供欣赏，本店不出售。 */
+const GR_DATE="2026-11-28";
+const GRAILS=[
+ ["illustrator","Illustrator Pikachu","插画家皮卡丘","Pokemon Japanese Promo","illustrator-pikachu","japanese-promo",null,16492000,"插画比赛奖品"],
+ ["rayquaza-gs","Rayquaza [Gold Star] #107","烈空坐 金星","EX Deoxys","rayquaza-gold-star-107","deoxys",14308.54,365750,"金星"],
+ ["umbreon-gs","Umbreon [Gold Star] #17","月亮伊布 金星","POP Series 5","umbreon-gold-star-17","pop-series-5",6950,null,"金星"],
+ ["charizard-1st","Charizard [1st Edition] #4","喷火龙 初版","Base Set","charizard-1st-edition-4","base-set",6736.22,null,"初版"],
+ ["mew-ex-play","Mew ex [Play] #7","梦幻 ex PLAY","Japanese Player's Club","mew-ex-play-7","japanese-player%27s-club",5999,24600,"会员限定"],
+ ["espeon-gs","Espeon [Gold Star] #16","太阳伊布 金星","POP Series 5","espeon-gold-star-16","pop-series-5",5650.34,null,"金星"],
+ ["torchic-gs-en","Torchic [Gold Star] #108","火稚鸡 金星","EX Team Rocket Returns","torchic-gold-star-108","team-rocket-returns",5550,null,"金星"],
+ ["lillie-397","Lillie #397/SM-P","莉莉艾","Japanese Promo","lillie-397sm-p","japanese-promo",3400,null,"人气支援者"],
+ ["torchic-gs-jp","Torchic [Gold Star] #20","火稚鸡 金星（日）","Japanese Rocket Gang Strikes Back","torchic-gold-star-20","japanese-rocket-gang-strikes-back",3050,null,"金星"],
+ ["latios-gs-en","Latios [Gold Star] #106","拉帝欧斯 金星","EX Deoxys","latios-gold-star-106","deoxys",1962.5,null,"金星"],
+ ["latios-gs-jp","Latios [Gold Star] #66","拉帝欧斯 金星（日）","Japanese Clash of the Blue Sky","latios-gold-star-66","japanese-clash-of-the-blue-sky",1755,null,"金星"],
+ ["lugia-1st","Lugia [1st Edition] #9","洛奇亚 初版","Neo Genesis","lugia-1st-edition-9","neo-genesis",1407.19,10436,"初版"],
+ ["blastoise-1st","Blastoise [1st Edition] #2","水箭龟 初版","Base Set","blastoise-1st-edition-2","base-set",846.5,null,"初版"],
+ ["shining-gyarados","Shining Gyarados #65","闪亮暴鲤龙","Neo Revelation","shining-gyarados-65","neo-revelation",511.84,null,"闪亮"],
+ ["shining-mew","Shining Mew [CoroCoro] #151","闪亮梦幻 CoroCoro","Japanese Promo","shining-mew-corocoro-151","japanese-promo",null,null,"杂志附录"],
+ ["trophy-pikachu","Trophy Pikachu [Gold] #1","奖杯皮卡丘 金","Japanese Promo","trophy-pikachu-gold-1","japanese-promo",null,null,"赛事奖杯"]
+].map(x=>({img:"big/gr-"+x[0]+".jpg",n:x[1],zh:x[2],s:x[3],u:"https://www.pricecharting.com/game/pokemon-"+x[5]+"/"+x[4],raw:x[6],psa:x[7],tg:x[8]}))
+ .concat(INTL.filter(c=>c.usd>=1000).map(c=>({img:"big/"+c.img+".jpg",n:c.n,zh:"",s:c.s,u:c.u,raw:c.usd,psa:null,tg:c.lang==="cn"?"中文版":"日文版"})))
+ .sort((a,b)=>(b.psa||b.raw||0)-(a.psa||a.raw||0));
+const grRM=u=>{ const r=rm(Math.round(u*FX)); return r.replace(/\.00(?=\D*$)/,"") };
+function grailSec(){ return `<section class="grail" aria-label="${BT("殿堂精品","Hall of fame")}"><div class="kbh"><h2>${B("殿堂精品","Hall of Fame")}</h2><span class="muted">${GRAILS.length} ${B("张","cards")}</span></div>
+  <p class="gsub">${B("从宝可梦卡牌推出以来，玩家最想要的名卡：比赛奖品、金星、初版、闪亮和限定卡。价格来自 PriceCharting（"+GR_DATE+"），只供欣赏，本店不出售。","The cards collectors chase most since the game began: prizes, Gold Stars, 1st Editions, Shinings and promos. Prices from PriceCharting ("+GR_DATE+"). Display only, not for sale.")}</p>
+  <div class="ggrid">${GRAILS.map((g,i)=>`<button type="button" class="gcard" data-grail="${i}"><span class="gim"><img loading="lazy" src="${g.img}" alt=""><span class="gtg">${B(g.tg,GRTG[g.tg]||g.tg)}</span></span><b>${esc(isEN()||!g.zh?g.n:g.zh)}</b><small>${esc(g.s)}</small><span class="gp">${g.psa?"PSA 10 "+grRM(g.psa):g.raw?grRM(g.raw):B("成交太少","Too few sales")}</span></button>`).join("")}</div></section>` }
+const GRTG={"插画比赛奖品":"Contest prize","金星":"Gold Star","初版":"1st Edition","会员限定":"Members only","人气支援者":"Fan favourite","闪亮":"Shining","杂志附录":"Magazine promo","赛事奖杯":"Trophy card","中文版":"Chinese","日文版":"Japanese"};
+function grOpen(i){ const g=GRAILS[i]; if(!g) return; grClose(); const m=document.createElement("div"); m.className="gmod"; m.innerHTML=`<div class="gbox" role="dialog" aria-modal="true" aria-label="${esc(g.n)}"><button class="gx" data-gx="1" aria-label="${BT("关闭","Close")}">✕</button><img src="${g.img}" alt="${esc(g.n)}"><div class="stack" style="gap:10px"><div><span class="chip">${B(g.tg,GRTG[g.tg]||g.tg)}</span><h2>${esc(isEN()||!g.zh?g.n:g.zh)}</h2>${g.zh&&!isEN()?`<div class="muted">${esc(g.n)}</div>`:""}<div class="muted">${esc(g.s)}</div></div>
+  <div class="gpr"><span class="muted">${B("没评级","Ungraded")}</span><b>${g.raw?grRM(g.raw)+` <small class="muted" style="font:500 12px var(--body)">≈ US$${g.raw.toLocaleString("en-US")}</small>`:B("成交太少，没有参考价","Too few sales to show")}</b>${g.psa?`<span class="muted">PSA 10</span><b>${grRM(g.psa)} <small class="muted" style="font:500 12px var(--body)">≈ US$${g.psa.toLocaleString("en-US")}</small></b>`:""}</div>
+  <p class="muted" style="font-size:12.5px;margin:0">${B(`价格是 PriceCharting 的成交参考价，${GR_DATE} 读取，按 1 USD = RM${FX.toFixed(4)} 换算。名卡成交很少，价格可能差很多。只供欣赏，本店不出售，也不是投资建议。`,`PriceCharting sale reference, read ${GR_DATE}, at 1 USD = RM${FX.toFixed(4)}. Few sales, so prices can swing a lot. Display only, not for sale, not investment advice.`)}</p>
+  <a href="${g.u}" target="_blank" rel="noopener">${B("在 PriceCharting 看成交记录","See sales on PriceCharting")} ›</a></div></div>`; document.body.appendChild(m); grOpen.last=document.activeElement; const x=m.querySelector(".gx"); if(x) x.focus() }
+function grClose(){ document.querySelectorAll(".gmod").forEach(m=>m.remove()); if(grOpen.last&&grOpen.last.focus) try{ grOpen.last.focus({preventScroll:true}) }catch(_){} grOpen.last=null }
+document.addEventListener("click",e=>{ const g=e.target.closest&&e.target.closest("[data-grail]"); if(g) return grOpen(+g.dataset.grail); if(e.target.closest&&(e.target.closest("[data-gx]")||e.target.classList.contains("gmod"))) grClose() });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&document.querySelector(".gmod")) grClose() });
+addEventListener("hashchange",()=>{ document.querySelectorAll(".gmod").forEach(m=>m.remove()) });
+/* v143 改善方面 17 第 12 项：行情页两行 TOP 10 自动滚动。第二行是「本店有卖的系列」随机一个，滚完一轮换另一个系列；每次进来都重新随机。 */
+const KTC=(c,i)=>`<a class="kt10" href="#card/${c.k}" style="--i:${i}"><span class="kti">${cImg(c)}<i>${i+1}</i></span><b>${cNH(c)}</b><small>${esc(c.s)}</small><span class="ktp">${rm(cRM(c))}</span></a>`;
+function ktMq(l,dir){ if(!l.length) return ""; const h=l.map(KTC).join(""); return `<div class="ktmq ${dir}" style="--ktd:${Math.max(24,l.length*4.6)}s"><div class="ktrow">${h}${h.replace(/<a class="kt10"/g,'<a class="kt10" tabindex="-1" aria-hidden="true"')}</div></div>` }
+function ktTop(s){ return Object.values(CARDS).filter(c=>c.s===s&&cRM(c)!=null).sort((a,b)=>cRM(b)-cRM(a)).slice(0,10) }
+function ktPool(){ return SETS.filter(s=>P.some(p=>p.s===s&&listed(p))&&ktTop(s).length>=5) }
+function ktSet(){ const pool=ktPool(); if(!pool.length) return null; if(!ui.ktset||!pool.includes(ui.ktset)) ui.ktset=pool[Math.floor(Math.random()*pool.length)]; return ui.ktset }
+addEventListener("hashchange",()=>{ ui.ktset=null });
+document.addEventListener("animationiteration",e=>{ const r=e.target; if(!r.classList||!r.classList.contains("ktrow")||!r.parentElement.classList.contains("r")) return; const pool=ktPool().filter(s=>s!==ui.ktset); if(!pool.length) return; ui.ktset=pool[Math.floor(Math.random()*pool.length)]; const l=ktTop(ui.ktset), h=l.map(KTC).join(""); r.innerHTML=h+h.replace(/<a class="kt10"/g,'<a class="kt10" tabindex="-1" aria-hidden="true"'); r.parentElement.style.setProperty("--ktd",Math.max(24,l.length*4.6)+"s"); const n=r.closest(".ktop").querySelector(".ktsn"); if(n) n.innerHTML=slogo(ui.ktset,"")+`<span>${esc(ui.ktset)}</span>` });
+document.addEventListener("touchstart",e=>{ const m=e.target.closest&&e.target.closest(".ktmq"); document.querySelectorAll(".ktmq.hold").forEach(x=>{ if(x!==m) x.classList.remove("hold") }); if(m){ m.classList.add("hold"); clearTimeout(m._t); m._t=setTimeout(()=>m.classList.remove("hold"),4000) } },{passive:true});
 V.market=()=>{
   const med=ui.med||"";
   const edbar=`<div class="seg edseg" role="group" aria-label="${BT("版本","Edition")}" style="margin:4px 0 8px">${[["","全部版本","All editions"],["en","英文版","English"],["jp","日文版","Japanese"]].map(r=>`<button data-med="${r[0]}" class="${med===r[0]?"on":""}" aria-pressed="${med===r[0]}">${B(r[1],r[2])}</button>`).join("")}</div>`;
@@ -2709,7 +2856,9 @@ V.market=()=>{
    <div class="kbtab" role="tablist">${[["up","▲ 涨最多","▲ Biggest Gainers"],["dn","▼ 跌最多","▼ Biggest Drops"]].map(t=>`<button type="button" role="tab" data-mcol="${t[0]}" class="${mc===t[0]?"on":""}" aria-selected="${mc===t[0]}">${B(t[1],t[2])}</button>`).join("")}</div>
    <div class="kbcols"><div class="kbc up${mc==="up"?" on":""}">${col("▲ 这周涨最多","▲ Biggest Gainers This Week",gain)}</div><div class="kbc dn${mc==="dn"?" on":""}">${col("▼ 这周跌最多","▼ Biggest Drops This Week",lose)}</div></div></section>
   <section class="ktop" aria-label="${BT("最贵 TOP 10","Top 10 by price")}"><div class="kbh"><h2>${B("最贵 TOP 10","Top 10 Most Valuable")}</h2><span class="muted">${sel?esc(sel):B("全部系列","All sets")}</span></div>
-   <div class="ktrow">${hot.map((c,i)=>`<a class="kt10" href="#card/${c.k}"><span class="kti">${cImg(c)}<i>${i+1}</i></span><b>${cNH(c)}</b><small>${esc(c.s)}</small><span class="ktp">${rm(cRM(c))}</span></a>`).join("")}</div></section>
+   ${ktMq(hot,"l")}</section>
+  ${(()=>{ const ts=ktSet(); return ts?`<section class="ktop ktop2" aria-label="${BT("系列最贵 TOP 10","Top 10 in a set")}"><div class="kbh"><h2>${B("系列最贵 TOP 10","Top 10 by Set")}</h2><span class="muted ktsn">${slogo(ts,"")}<span>${esc(ts)}</span></span></div>${ktMq(ktTop(ts),"r")}</section>`:"" })()}
+  ${grailSec()}
   <details class="note mhow" style="font-size:12.5px"><summary>${B("这些价格怎么来的？","Where do these prices come from?")}</summary>${B(`涨跌是 Cardmarket 近 7 天平均成交价对比近 30 天，只算 RM20 以上、有涨跌数据的 ${mov.length} 张卡。价格是 TCGplayer 市场价，都经 TCGdex 读取；本店跟踪的 73 张卡用 PriceCharting。美元按 1 USD = RM${FX.toFixed(4)}、欧元按 1 EUR = RM${FX_EUR.toFixed(4)}（${FX_DATE}）换成马币。这些都是第三方参考价，不是本店收购价或售价，也不是投资建议；每周一更新一次。`,`Change = Cardmarket 7-day vs 30-day average, for the ${mov.length} cards over RM20 with data. Prices are TCGplayer market via TCGdex; the 73 cards we track use PriceCharting. 1 USD = RM${FX.toFixed(4)}, 1 EUR = RM${FX_EUR.toFixed(4)} (${FX_DATE}). Third-party reference prices, not our buy or sell price, and not investment advice. Updated every Monday.`)}</details>`}`;
 };
 function mdetail(p){ const m=MV[p.id];
@@ -3205,23 +3354,23 @@ V.card=()=>{ const c=CARDS[ui.card]; if(!c) return V.market(); const p=c.p, h=HI
 V.set=()=>{
   const s=ui.set, st=SI[s], d=SC[s]; if(!st) return V.series();
   const all=CBYSET[s]||[], rset=RORD.filter(r=>all.some(c=>c.r===r)), fr=ui.crar||"", fk=ui.ckind||"";
-  const qw=(ui.cq||"").trim().toLowerCase().split(/\s+/).filter(Boolean), so=ui.csort||"", vw=ui.cview||"g", mode="c";
+  const qw=(ui.cq||"").trim().toLowerCase().split(/\s+/).filter(Boolean), so=ui.csort==null?"rh":ui.csort, vw=ui.cview||"g", mode="c";
   const list0=all.filter(c=>(!fr||c.r===fr)&&(!fk||kindKey(c)===fk)&&(!qw.length||qw.every(w=>(c.n+" "+(c.zh||"")+" "+c.num+" "+String(c.num).replace(/^0+/,"")).toLowerCase().includes(w))));
-  const pv=c=>cRM(c)==null?-1:cRM(c), list=so==="hi"?list0.slice().sort((a,b)=>pv(b)-pv(a)):so==="lo"?list0.slice().sort((a,b)=>(cRM(a)==null?1e9:cRM(a))-(cRM(b)==null?1e9:cRM(b))):list0;
+  const pv=c=>cRM(c)==null?-1:cRM(c), rk=c=>RORD.indexOf(c.r), nn=c=>parseInt(c.num,10)||0, list=so==="rh"?list0.slice().sort((a,b)=>rk(b)-rk(a)||pv(b)-pv(a)||nn(a)-nn(b)):so==="rl"?list0.slice().sort((a,b)=>rk(a)-rk(b)||nn(a)-nn(b)):so==="hi"?list0.slice().sort((a,b)=>pv(b)-pv(a)):so==="lo"?list0.slice().sort((a,b)=>(cRM(a)==null?1e9:cRM(a))-(cRM(b)==null?1e9:cRM(b))):list0;
   const ccl=list.filter(c=>c.r==="CC"), main=list.filter(c=>c.r!=="CC"&&(!/^\d+$/.test(c.num)||+c.num<=d.printed)), sec=list.filter(c=>c.r!=="CC"&&/^\d+$/.test(c.num)&&+c.num>d.printed);
   const prods=P.filter(p=>listed(p)&&p.s===s).sort((a,b)=>b.price-a.price);
   const promo=PROMOS[s]||[];
   return `<div class="crumb">${B("图鉴","Card Index")} › ${esc(s)}</div>
   <div class="row sethead"><h1 style="margin:0"><span>${esc(s)}</span> ${B("卡牌列表","card list")}</h1></div><p class="muted" style="margin:0">${B(st.date+" 发售","Released "+st.date)} · ${setCnt(s)}</p>
+  ${prods.length?`<section class="ixprod" aria-label="${BT("本系列商品","From this set in our shop")}"><div class="ixph"><h2>${B("本系列商品","From this set in our shop")} <span class="muted">${prods.length}</span></h2><a href="#shop">${B("去商店看全部","See the whole shop")} ›</a></div>${(()=>{ const mini=p=>`<a class="ixm" href="#p/${p.id}" aria-label="${esc(pname(p))}"><img loading="lazy" src="${simg(p)}" alt=""><span>${PZH(p)}</span><b>${p.price>0?rm(p.price):B("价格待定","Price TBD")}</b></a>`, run=prods.length>=4; return `<div class="ixmq${run?" run":""}" style="--ixd:${Math.max(18,prods.length*5)}s"><div class="ixtr">${prods.map(mini).join("")}${run?prods.map(mini).join("").replace(/<a class="ixm"/g,'<a class="ixm" tabindex="-1" aria-hidden="true"'):""}</div></div>` })()}</section>`:""}
   <div class="seg2 slang" role="group" aria-label="版本 Edition">${[["",B("英文版","English"),SETS[0]],["ja",B("日文版","Japanese"),JSETS[0]]].filter(x=>x[2]).map(x=>`<a href="${setUrl(x[2])}" class="${(st.ja?"ja":"")===x[0]?"on":""}">${x[1]}</a>`).join("")}</div>
   <nav class="serstrip setsw" aria-label="切换系列 Other sets">${(st.ja?JSETS:SETS).map(x=>`<a href="${setUrl(x)}" class="${x===s?"on":""}" ${x===s?'aria-current="page"':""} style="--sc:${SETC[x]||"#1c8fc4"}">${slogo(x,"")}<span>${esc(x)}</span></a>`).join("")}</nav>
-  ${prods.length?`<section class="ixprod" aria-label="${BT("本系列商品","From this set in our shop")}"><div class="ixph"><h2>${B("本系列商品","From this set in our shop")} <span class="muted">${prods.length}</span></h2><a href="#shop">${B("去商店看全部","See the whole shop")} ›</a></div><div class="ixprow">${prods.map(prodCard).join("")}</div></section>`:""}
   <a class="svcstrip" href="#build">${buddy(44,"wow")}<span><b>${B("想要一副用 "+s+" 卡牌组成的卡组？","Want a deck with "+s+" cards?")}</b><small>${B("代组服务：说预算和打法，我们帮你配好 60 张，1 天内报价","Deck building: tell us your budget and style, we build the 60 cards and quote within 1 day")}</small></span><span class="go">${B("填需求","Start")} ›</span></a>
   <div class="ixbar" role="toolbar" aria-label="${BT("图鉴筛选","Card index filters")}">
    ${mode==="c"?`<label class="ixq">${ic("search",17)}<input id="cq" type="search" value="${esc(ui.cq||"")}" placeholder="${isEN()?"Name or number":"卡名或编号"}" aria-label="${BT("搜索这个系列的卡","Search this set")}"></label>
    <select id="ix-r" aria-label="${BT("稀有度","Rarity")}"><option value="">${isEN()?"All rarities":"所有稀有度"}</option>${rset.map(r=>`<option value="${r}" ${fr===r?"selected":""}>${RARX[r][2]} ${isEN()?RARX[r][1]:RARX[r][0]} (${all.filter(c=>c.r===r).length})</option>`).join("")}</select>
    <select id="ix-k" aria-label="${BT("种类","Card type")}"><option value="">${isEN()?"All types":"所有种类"}</option>${Object.entries(KCAT).map(([k,v])=>{ const n=all.filter(c=>kindKey(c)===k).length; return n?`<option value="${k}" ${fk===k?"selected":""}>${isEN()?v[1]:v[0]} (${n})</option>`:"" }).join("")}</select>
-   <select id="ix-s" aria-label="${BT("排序","Sort")}">${[["","编号顺序","By number"],["hi","价格高到低","Price: high to low"],["lo","价格低到高","Price: low to high"]].map(x=>`<option value="${x[0]}" ${so===x[0]?"selected":""}>${isEN()?x[2]:x[1]}</option>`).join("")}</select>
+   <select id="ix-s" aria-label="${BT("排序","Sort")}">${[["rh","稀有度高到低","Rarity: high to low"],["rl","稀有度低到高","Rarity: low to high"],["","编号顺序","By number"],["hi","价格高到低","Price: high to low"],["lo","价格低到高","Price: low to high"]].map(x=>`<option value="${x[0]}" ${so===x[0]?"selected":""}>${isEN()?x[2]:x[1]}</option>`).join("")}</select>
    <div class="ixv" role="group" aria-label="${BT("显示方式","View")}"><button type="button" data-cview="g" class="${vw==="g"?"on":""}" aria-pressed="${vw==="g"}" aria-label="${BT("网格","Grid")}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></button><button type="button" data-cview="l" class="${vw==="l"?"on":""}" aria-pressed="${vw==="l"}" aria-label="${BT("列表","List")}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></button></div>`:""}
   </div>
   ${mode==="p"?(prods.length?`<div class="grid">${prods.map(prodCard).join("")}</div>`:`<p class="muted">${B("本店暂时没有这个系列的商品。","We have no products from this set yet.")}</p>`):`${(fr||fk||qw.length)?`<p class="muted ixn">${B(`找到 ${list.length} / ${all.length} 张`,`${list.length} of ${all.length} cards`)} · <button type="button" class="lnk" data-crar="" data-ckind="" data-cqclr="1">${B("清除筛选","Clear")}</button></p>`:""}
@@ -3234,6 +3383,7 @@ V.set=()=>{
 };
 /* v141 图鉴列表模式：一行一张卡（缩图、编号、卡名、稀有度、参考价、涨跌） */
 function crow2(c){ return `<a class="crw" href="#card/${c.k}"><span class="crwi">${cImg(c)}</span><span class="crwn">Nº ${esc(String(c.num).padStart(3,"0"))}</span><span class="crwb"><b>${cNH(c)}</b>${rarB(c.r)}</span><span class="crwp">${cPriceTxt(c)}${trPill(c)}</span></a>` }
+document.addEventListener("touchstart",e=>{ const m=e.target.closest&&e.target.closest(".ixmq.run"); document.querySelectorAll(".ixmq.hold").forEach(x=>{ if(x!==m) x.classList.remove("hold") }); if(m){ m.classList.add("hold"); clearTimeout(m._t); m._t=setTimeout(()=>m.classList.remove("hold"),4000) } },{passive:true});
 document.addEventListener("change",e=>{ const t=e.target; if(!t||!t.id) return; if(t.id==="ix-r"){ ui.crar=t.value; render() } else if(t.id==="ix-k"){ ui.ckind=t.value; render() } else if(t.id==="ix-s"){ ui.csort=t.value; render() } });
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ixm],[data-cview],[data-cqclr]"); if(!b) return; if(b.dataset.ixm){ ui.ixm=b.dataset.ixm; return render() } if(b.dataset.cview){ ui.cview=b.dataset.cview; return render() } if(b.dataset.cqclr){ ui.cq=""; render() } });
 const backBtn=fb=>`<button type="button" class="backbtn" data-back="${esc(fb)}" aria-label="${BT("返回","Back")}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>${B("返回","Back")}</button>`;
@@ -3264,9 +3414,9 @@ function mktSpot(){ const all=Object.values(CARDS).filter(c=>cEd(c)!=="jp"&&cRM(
   if(!mov.length) return "";
   const byP=(a,b)=>cRM(b)-cRM(a), up=mov.filter(c=>c.tr>0).sort((a,b)=>b.tr-a.tr||byP(a,b)), dn=mov.filter(c=>c.tr<0).sort((a,b)=>a.tr-b.tr||byP(a,b)), nw=all.filter(c=>c.s===SETS[0]).sort(byP), top=all.slice().sort(byP);
   const glow=c=>(TYPEC[c.ty]||["#9fb8c0"])[0];
-  const spark=c=>{ if(c.tr==null) return ""; const u=c.tr>=0, y0=u?30:8, y1=u?8:30; return `<svg class="fspk" viewBox="0 0 120 38" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="fsg${u?"u":"d"}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity=".22"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs><path d="M2 ${y0} C 40 ${y0}, 80 ${y1}, 118 ${y1} L118 38 L2 38 Z" fill="url(#fsg${u?"u":"d"})"/><path d="M2 ${y0} C 40 ${y0}, 80 ${y1}, 118 ${y1}" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>` };
+  const spark=c=>{ if(c.tr==null) return `<svg class="fspk" viewBox="0 0 120 38" preserveAspectRatio="none" aria-hidden="true"><path d="M2 22 C 40 22, 80 20, 118 20 L118 38 L2 38 Z" fill="currentColor" fill-opacity=".08"/><path d="M2 22 C 40 22, 80 20, 118 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="4 5"/></svg>`; const u=c.tr>=0, y0=u?30:8, y1=u?8:30; return `<svg class="fspk" viewBox="0 0 120 38" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="fsg${u?"u":"d"}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity=".22"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs><path d="M2 ${y0} C 40 ${y0}, 80 ${y1}, 118 ${y1} L118 38 L2 38 Z" fill="url(#fsg${u?"u":"d"})"/><path d="M2 ${y0} C 40 ${y0}, 80 ${y1}, 118 ${y1}" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>` };
   const pct=c=>c.tr==null?"":`<span class="fpct ${c.tr>0?"up":c.tr<0?"dn":""}">${c.tr>0?"▲":c.tr<0?"▼":"–"} ${Math.abs(c.tr)}%</span>`;
-  const focus=(c,k,z,e,tag)=>c?`<a class="fcard ${k}" href="#card/${c.k}" style="--gl:${glow(c)}"><span class="fwm" aria-hidden="true">${c.tr!=null?(c.tr>0?"+":"")+c.tr+"%":"NEW"}</span><span class="fhd"><span class="fbdg">${B(z,e)}</span><span class="f7">${tag}</span></span><span class="fim">${cImg(c,true)}</span><span class="fbd"><b>${cNH(c)}</b><small>${esc(c.s)} · #${esc(c.num)}</small><span class="frow"><span class="fpr">${rm(cRM(c))}</span>${pct(c)}</span>${spark(c)}</span></a>`:"";
+  const focus=(c,k,z,e,tag)=>c?`<a class="fcard ${k}" href="#card/${c.k}" style="--gl:${glow(c)}"><span class="fwm" aria-hidden="true">${c.tr!=null?(c.tr>0?"+":"")+c.tr+"%":"NEW"}</span><span class="fhd"><span class="fbdg">${B(z,e)}</span><span class="f7">${tag}</span></span><span class="fim">${cImg(c,true)}</span><span class="fbd"><b>${cNH(c)}</b><small>${esc(c.s)} · #${esc(c.num)}</small><span class="frow"><span class="fpr">${rm(cRM(c))}</span>${c.tr==null?`<span class="fpct nw">${B("新系列","New set")}</span>`:pct(c)}</span>${spark(c)}</span></a>`:"";
   const T=[["new","新弹热门","New set",nw],["up","本周上涨","Up this week",up],["dn","本周下跌","Down this week",dn],["top","殿堂精品","Hall of fame",top]];
   const cur=T.find(t=>t[0]===ui.spot)||T[0], six=cur[3].slice(0,6);
   return `<section class="fb band sky mspot" aria-label="${BT("今日焦点和卡牌聚光灯","Today's focus and spotlight")}"><div class="fin">
@@ -4114,6 +4264,7 @@ document.addEventListener("change",e=>{ const t=e.target; if(t&&t.dataset&&t.dat
 document.addEventListener("change",e=>{ const c=e.target.closest&&e.target.closest("[data-sperm]"); if(!c||!window.HOLO_AUTH) return; const em=c.dataset.sperm, ps=[...document.querySelectorAll("[data-sperm]")].filter(x=>x.dataset.sperm===em&&x.checked).map(x=>x.value); HOLO_AUTH.setPerms(em,ps) });
 /* 2026-11-23 店主要：后台有版本记录，写清楚每次改了什么。以后每次上线都在最上面加一条。 */
 const CHANGELOG=[
+ ["v143","2026-11-28",["首页主视觉满版，去掉左右卡背条和两边空白","行情、图鉴、代组入口悬停时跟商店一样图案流动、亮光扫过，不再变白","系列轮播的卡图和商品图缓慢漂浮","今日焦点三张资料卡同样大小，新晋热门也有走势线和「新系列」标签","页脚铺满整页，底色换成回到顶部的黄色；删掉重复的版权行","加入购物车：购物车图标先晃一下，抽屉再慢慢滑出来","补齐 Surging Sparks 6 件、Journey Together 7 件商品（PriceCharting 2026-11-28 价格和图片），商店、后台和图鉴都有","图鉴：本系列商品缩小一半、自动滚动（碰到就停），放在英文版/日文版上方；卡牌下方不放价钱和走势符号；排序加「稀有度高到低/低到高」，默认高到低；页面加宽到 1300","行情：最贵 TOP 10 下面加「系列最贵 TOP 10」（本店有卖的系列随机一个，滚完一轮换系列），两行反向自动滚动、卡面闪亮","行情：新增「殿堂精品」30 张名卡（插画家皮卡丘、金星、初版、闪亮等），点开看 PriceCharting 参考价，只供欣赏","会员中心、签到抽奖、会员福利都有「去结账」小链接；我的订单底部有去结账提示卡"]],
  ["v142.1","2026-11-28",["员工权限每位管理员多一格「AI 爬取和截图」；店主永远有","有这项权限的人在员工权限页拿到自己的专用链接（可复制、可换新），用这条链接打开网站，Cloudflare 才放行 AI 和自动截图工具","有权限的人登录后不显示追踪水印，后台截图也不变模糊；成本利润照样打码","收回权限或换新链接，旧链接 5 分钟内失效"]],
  ["v142","2026-11-28",["首页主视觉改成一列列卡牌上下滚动（参考 kado.hk），logo、标题和四个入口放在中间；原来两条横向滚动的卡合并进来","四个入口各有自己的颜色和图案（松石绿、天蓝、薄荷、奶油金），商店最大","今日焦点卡图放大，资料放在下方白卡；商品、购物车、聚光灯的价钱改成黑色","加入购物车：先看到商品飞进购物车，再滑出购物车；购物车抽屉删掉「查看购物车」，结账页只在按「立即结账」时出现；收藏页不再点亮购物车下划线","图鉴删掉「单卡 / 密封产品」切换，本系列商品放在上方横向滚动","行情页左右各加宽约 150px，升跌榜卡图放大、加走势小线；删掉「各系列高价前 15」和以下内容","卡组：51 张缺的卡图存进本站，另外 26 张从 Limitless 或 pokemontcg.io 读取；22 副原本只有「原页」的卡组抄好 60 张牌表，40 行都能直接展开；拿不到图时显示卡名卡片，不再空白","页头 logo 和 Holofen 字放大；页脚背景换成奶油黄到薄荷的渐变"]],
  ["v141","2026-11-27",["改名：卡价雷达→行情、最新消息→情报，首页四个入口改为毛玻璃圆角按钮（商店/行情/图鉴/代组）","商品卡：价格在左下，右下圆形「+」，鼠标移上去展开成「加入购物车」；加入后右侧滑出购物车抽屉","首页第一屏标题进场动画、两侧柔焦卡片；首页新增「今日焦点 & 卡牌聚光灯」（新弹热门/本周上涨/本周下跌/殿堂精品）","情报改成杂志卡片：16:9 封面、分类标签、日期、导语","页脚加第四栏「购物保障」（DuitNow/银行转账、Instagram）","图鉴去掉稀有度说明框，改成一行工具栏（卡牌/商品、搜索、稀有度、类型、排序、网格/列表）","行情页改成居中窄栏；导航下划线改细；关于页三张卡缓慢浮动；收藏爱心变红带弹跳，去掉购物车旁的深色下划线"]],
@@ -4809,7 +4960,7 @@ V.member=()=>{ const E=isEN();
    [B("线下比赛和新手教学","Tournaments and beginner sessions"),B("开实体店后定期举办。日期和地点：","Planned once our store opens. Dates and venue:"),OWNER_TBD(),0]];
   const os=liveO(uid,mine.orders).map(o=>eff(uid,o)).sort((a,b)=>b.at-a.at), bought=os.filter(o=>PAID.includes(o.status));
   const histSec=(()=>{ const os=myOrders().slice(0,3); return os.length?`<section class="panel stack" style="gap:8px"><div class="row" style="justify-content:space-between">${H2("最近订单","Recent orders")}<a href="#orders">${B("全部订单","All orders")} ›</a></div><div class="olist2">${os.map(oCard).join("")}</div></section>`:"" })();
-  const nm=(()=>{ const u=window.HOLO_AUTH&&HOLO_AUTH.user&&HOLO_AUTH.user(); const md=(u&&u.user_metadata)||{}; return ME.nick||(ME.prof&&ME.prof.name)||md.name||md.full_name||((u&&u.email)||myEmail()||"").split("@")[0]||B("会员","Member") })();
+  const nm=(()=>{ const u=window.HOLO_AUTH&&HOLO_AUTH.user&&HOLO_AUTH.user(); const md=(u&&u.user_metadata)||{}; return ME.nick||(ME.prof&&ME.prof.name)||md.name||md.full_name||((u&&u.email)||myEmail()||"").split("@")[0]||(isEN()?"Member":"会员") })();
   const cps=couponsOf(uid);
   const unr=new Set(openOrders().map(x=>x[0])), GR=[["unpaid","待付款","To pay","M3 7h18v12H3zM3 11h18M7 15h3"],["review","待审核","In review","M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7zM8.5 12l2.5 2.5 4.5-5"],["approved","备货中","Packing","M4 8l8-4 8 4v8l-8 4-8-4zM4 8l8 4 8-4M12 12v8"],["shipped","已寄出","Shipped","M2 6h12v10H2zM14 10h4l3 3v3h-7zM6 19a2 2 0 1 0 0-.1M17 19a2 2 0 1 0 0-.1"],["delivered","待评价","To review","M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"]];
   const top=`<section class="panel mtop"><label class="mav" data-avpick="1" title="${isEN()?"Change avatar":"换头像"}">${avUrl(ME.av)?`<img src="${esc(avUrl(ME.av))}" alt="">`:esc(String(nm)[0]||"?").toUpperCase()}</label><div class="mwho"><b>${esc(nm)}</b><span class="mtier">${B(m.tier[0],m.tier[1])}</span><button type="button" class="linkbtn mavx" data-avpick="1">${B("换头像","Change avatar")}</button></div><div class="mstat"><a href="#member" data-mjump="mcp"><b>${cps.filter(c=>!c.used).length}</b><small>${B("优惠券","Coupons")}</small></a><a href="#member" data-mjump="mrw"><b>${m.left}</b><small>${B("可用积分","Points")}</small></a></div></section>
@@ -4906,7 +5057,7 @@ function addFx(p,q,name){ const useCd=typeof cdOpen==="function"&&route!=="admin
     const w=Math.min(90,a.width), h=w*(a.height/a.width||1.4); f.style.cssText=`left:${a.left+a.width/2-w/2}px;top:${a.top+a.height/2-h/2}px;width:${w}px;height:${h}px`; document.body.appendChild(f);
     const dx=b.left+b.width/2-(a.left+a.width/2), dy=b.top+b.height/2-(a.top+a.height/2);
     const an=f.animate([{transform:"translate(0,0) scale(1)",opacity:1},{transform:`translate(${dx*.5}px,${dy*.5-60}px) scale(.7)`,opacity:1,offset:.55},{transform:`translate(${dx}px,${dy}px) scale(.18)`,opacity:.4}],{duration:650,easing:"cubic-bezier(.5,0,.4,1)"});
-    flew=true; let done=false; const fin=()=>{ if(done) return; done=true; f.remove(); tgt.animate([{transform:"scale(1)"},{transform:"scale(1.18)"},{transform:"scale(1)"}],{duration:260,easing:"ease-out"}); if(useCd) cdOpen(p&&p.id) };
+    flew=true; let done=false; const fin=()=>{ if(done) return; done=true; f.remove(); const cb=tgt; if(cb){ cb.classList.remove("wig"); void cb.offsetWidth; cb.classList.add("wig"); setTimeout(()=>cb.classList.remove("wig"),700) } else tgt.animate([{transform:"scale(1)"},{transform:"scale(1.18)"},{transform:"scale(1)"}],{duration:260,easing:"ease-out"}); if(useCd) setTimeout(()=>cdOpen(p&&p.id),rmo?0:420) };
     an.onfinish=fin; setTimeout(fin,900) }
   /* v142 改善方面 15：先看到商品飞进购物车，再滑出购物车 */
   if(useCd){ if(!flew) cdOpen(p&&p.id); return }
@@ -5124,6 +5275,13 @@ document.addEventListener("pointermove",e=>{
   g.style.transform=`rotateY(${((x-.5)*16).toFixed(1)}deg) rotateX(${((.5-y)*16).toFixed(1)}deg)`; g.style.setProperty("--mx",(x*100).toFixed(0)+"%"); g.style.setProperty("--my",(y*100).toFixed(0)+"%");
 });
 document.addEventListener("pointerout",e=>{ const g=e.target.closest&&e.target.closest(".gcard .in"); if(g&&!g.contains(e.relatedTarget)) g.style.transform="" });
+/* v143 改善方面 17 第 14 项：会员中心各分页和我的订单都有去结账的小链接 */
+const cartQ=()=>cart.reduce((a,c)=>a+c.qty,0);
+const goPay=()=>`<div class="gopay"><a href="#cart">${ic("bag",15)}${B("去结账","Checkout")}${cartQ()?`<span class="n">${cartQ()}</span>`:""}</a></div>`;
+const goPay2=()=>{ const n=cartQ(); return `<a class="gopay2" href="${n?"#cart":"#shop"}">${buddy(40,n?"wow":"")}<span><b>${n?B(`购物车还有 ${n} 件在等你`,`${n} item${n>1?"s":""} waiting in your cart`):B("想再添点什么？","Fancy something new?")}</b><small>${n?B("趁还有货，去结账吧","Check out while it's in stock"):B("逛逛新到的卡盒和补充包","Browse the latest boxes and packs")}</small></span><span class="go">${n?B("去结账","Checkout"):B("去商店","Shop")} ›</span></a>` };
+["member","lucky","perks"].forEach(k=>{ const f=V[k]; if(typeof f==="function") V[k]=(...a)=>goPay()+f(...a) });
+{ const f=V.orders; V.orders=(...a)=>{ const h=f(...a); return h+goPay2() } }
+
 window.addEventListener("hashchange",readHash);
 /* hero spotlight follows the pointer (fine pointers only, off for reduced motion) */
 if(matchMedia("(pointer:fine)").matches&&!matchMedia("(prefers-reduced-motion:reduce)").matches){document.addEventListener("pointermove",e=>{const h=document.querySelector(".hero");if(!h)return;const r=h.getBoundingClientRect();if(e.clientY<r.top||e.clientY>r.bottom)return;h.style.setProperty("--px",(e.clientX-r.left)+"px");h.style.setProperty("--py",(e.clientY-r.top)+"px")},{passive:true})}
@@ -5341,7 +5499,7 @@ readHash(); initStore(); initExtra(); initLucky(); initFaq(); initPay(); setTime
 </script>
 <script>
 /* v84 全站横向滑动区：左右按钮、滑鼠拖动（带惯性）、滑鼠滚轮也能左右滑。适用于系列选择条、筛选按钮、横排商品等 */
-(function(){ const SEL=".serstrip,.crow,.mrow,.chips,.tape,nav.sub,.mfilt .seg,.ncrow,.ixprow";
+(function(){ const SEL=".serstrip,.crow,.mrow,.chips,.tape,nav.sub,.mfilt .seg,.ncrow";
   const RM=matchMedia("(prefers-reduced-motion:reduce)");
   function glide(el,to){ to=Math.max(0,Math.min(el.scrollWidth-el.clientWidth,to)); if(RM.matches){ el.scrollLeft=to; return } el._to=to; if(el._g) return; el._g=1;
     (function step(){ const d=el._to-el.scrollLeft; if(Math.abs(d)<1){ el.scrollLeft=el._to; el._g=0; return } el.scrollLeft+=d*.2; requestAnimationFrame(step) })() }
